@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="64dp"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/vh_task_history__iv__status"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_circle_done_task"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_thumb_up_white_24dp"/>
+
+            <TextView
+                android:id="@+id/vh_task_history__tv__date_time_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#9E9E9E"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold"
+                tools:text="11/10/2018"/>
+
+            <TextView
+                android:id="@+id/vh_task_history__tv__name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="72dp"
+                android:layout_toLeftOf="@id/vh_task_history__tv__date_time_short"
+                android:maxLines="3"
+                android:paddingBottom="18dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/md_blue_grey_700"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Work 2 sprints on Todozy"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/vh_task_history__tv__date_time_full"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:textSize="@dimen/text_size_xsmall"
+            tools:text="Date/time"/>
+
+        <LinearLayout
+            android:id="@+id/vh_task_history__ll__options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="64dp">
+
+            <TextView
+                android:id="@+id/vh_task_history__tv__mark_as_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textAllCaps="true"
+                android:paddingTop="16dp"
+                android:text="@string/mark_as_done"
+                android:textColor="@color/md_blue_500"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/vh_task_history__tv__mask_as_not_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textAllCaps="true"
+                android:paddingTop="16dp"
+                android:text="@string/mark_as_not_done"
+                android:textColor="@color/md_blue_500"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/vh_task_history__tv__delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp"
+                android:text="@string/delete"
+                android:textAllCaps="true"
+                android:textColor="@color/md_red_300"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

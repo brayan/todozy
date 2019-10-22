@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/alarm__ll__options"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/alarm__tv__date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/md_blue_300"
+        android:textSize="@dimen/text_size_xlarge"
+        tools:text="@string/today"/>
+
+
+    <TextView
+        android:id="@+id/alarm__tv__time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:fontFamily="sans-serif-light"
+        android:includeFontPadding="false"
+        android:paddingLeft="16dp"
+        android:textColor="@color/md_teal_300"
+        android:textSize="42sp"
+        tools:text="15:30"/>
+
+    <TextView
+        android:id="@+id/alarm__tv__repeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/md_blue_grey_300"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="Every day"/>
+
+</LinearLayout>

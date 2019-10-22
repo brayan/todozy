@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="MarginLeftRightLandscape">
+        <item name="android:layout_marginRight">56sp</item>
+        <item name="android:layout_marginLeft">56sp</item>
+    </style>
+
+    <style name="PaddingLeftRightLandscape">
+        <item name="android:paddingRight">56sp</item>
+        <item name="android:paddingLeft">56sp</item>
+    </style>
+
+</resources>

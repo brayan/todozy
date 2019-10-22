@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--ViewHolder-->
+    <dimen name="text_size_xxsmall">15sp</dimen>
+    <dimen name="text_size_xsmall">18sp</dimen>
+    <dimen name="text_size_small">20sp</dimen>
+    <dimen name="text_size_medium">22sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_xlarge">26sp</dimen>
+    <dimen name="text_size_xxlarge">28sp</dimen>
+    <dimen name="text_size_xxxlarge">30sp</dimen>
+    <dimen name="text_size_xxxxlarge">32sp</dimen>
+
+</resources>

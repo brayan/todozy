@@ -1,0 +1,48 @@
+package br.com.sailboat.todozy.ui.task.insert
+
+import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.ui.base.mpv.BaseMVPContract
+import java.util.*
+
+interface InsertTaskContract {
+
+    interface View : BaseMVPContract.View {
+        fun showAlarmDatePickerDialog(alarm: Calendar)
+        fun showAlarmTimePickerDialog(alarm: Calendar)
+        fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType?)
+        fun setName(name: String)
+        fun setNotes(notes: String)
+        fun showAlarm()
+        fun showAlarmWithAnimation()
+        fun hideAlarm()
+        fun hideAlarmWithAnimation()
+        fun setAlarmDate(date: Calendar)
+        fun setAlarmTime(time: Calendar)
+        fun setRepeatType(repeatType: RepeatType)
+        fun getName(): String
+        fun getNotes(): String
+        fun showWeekDaysSelector(selectedDays: String?)
+        fun getTaskToEdit(): Long
+        fun showNewTaskTitle()
+        fun showEditTaskTitle()
+        fun showErrorOnSave()
+        fun showProgress()
+        fun closeProgress()
+        fun setScreenToHideKeyboard()
+        fun setCustomRepeatType(custom: String)
+    }
+
+    interface Presenter : BaseMVPContract.Presenter {
+        fun onAlarmDateSelected(year: Int, month: Int, day: Int)
+        fun onSelectRepeatAlarmCustom(days: String)
+        fun onClickMenuSave()
+        fun onAlarmTimeSelected(hourOfDay: Int, minute: Int)
+        fun onSelectAlarmType(notRepeat: RepeatType)
+        fun onClickAddAlarm()
+        fun onClickAlarmDate()
+        fun onClickAlarmTime()
+        fun onClickRepeatAlarm()
+        fun onClickItemCustomRepeatAlarm()
+    }
+
+}

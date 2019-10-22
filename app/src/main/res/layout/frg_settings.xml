@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar"/>
+
+    <TextView
+        style="@style/TextViewLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:text="@string/notifications"/>
+
+    <LinearLayout
+        android:id="@+id/frg_settings__ll__tone"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:text="@string/notification_tone"
+            android:textColor="@color/md_blue_grey_700"
+            android:textSize="@dimen/text_size_small"/>
+
+        <TextView
+            android:id="@+id/frg_settings__tv__current_tone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:textColor="@color/md_blue_grey_500"
+            android:textSize="@dimen/text_size_xsmall"
+            tools:text="Default ringtone (Hello)"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <include layout="@layout/divider"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frg_settings__frame__vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="@string/vibrate"
+            android:textColor="@color/md_blue_grey_700"
+            android:textSize="@dimen/text_size_small"/>
+
+        <CheckBox
+            android:id="@+id/frg_settings__cb__vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="16dp"/>
+
+    </FrameLayout>
+
+    <include layout="@layout/divider"/>
+
+    <TextView
+        android:id="@+id/frg_settings__tv__about"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:text="@string/about"
+        android:textColor="@color/md_blue_grey_700"
+        android:textSize="@dimen/text_size_small"/>
+
+    <include layout="@layout/divider"/>
+
+</LinearLayout>
