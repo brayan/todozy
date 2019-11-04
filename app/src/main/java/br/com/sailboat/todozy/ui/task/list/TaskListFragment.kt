@@ -1,12 +1,10 @@
 package br.com.sailboat.todozy.ui.task.list
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,32 +49,14 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     override fun initViews() {
         setMainTitle()
 
-        ept_view__tv__message1.setText(R.string.no_tasks)
-        ept_view__tv__message2.setText(R.string.ept_click_to_add)
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
 
-        recycler.run {
-            adapter = TaskListAdapter(object : TaskListAdapter.Callback {
-                override val taskViewList = presenter.getTaskViewList()
-                override fun onClickTask(position: Int) = presenter.onClickTask(position)
-            })
-            layoutManager = LinearLayoutManager(activity)
-        }
+        tvEmptyViewMessagePrimary.setText(R.string.no_tasks)
+        tvEmptyViewMessageSecondary.setText(R.string.ept_click_to_add)
 
-        val itemTouchHelper = ItemTouchHelper(SwipeTaskLeftRight(activity!!, object: SwipeTaskLeftRight.Callback {
-            override fun onSwiped(position: Int, direction: Int) {
-                if (direction == ItemTouchHelper.LEFT) {
-                    presenter.onTaskSwipedLeft(position)
-                } else {
-                    presenter.onTaskSwipedRight(position)
-                }
-            }
-        }))
-
-        itemTouchHelper.attachToRecyclerView(recycler)
+        initRecyclerView()
 
         fab.setOnClickListener { presenter.onClickNewTask() }
-
-        recycler.hideFabWhenScrolling(fab)
     }
 
     override fun checkAndPerformFirstTimeConfigurations() {
@@ -103,8 +83,8 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun setMainTitle() = toolbar.setTitle(R.string.app_name)
 
-    override fun setTitle(title: String) {
-        toolbar.title = title
+    override fun setEmptyTitle() {
+        toolbar.title = ""
     }
 
     override fun showEmptyView() = ept_view.visible()
@@ -115,14 +95,14 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     }
 
     override fun showMetrics(taskMetrics: TaskMetrics) {
-        task_metrics__tv__fire.text = taskMetrics.consecutiveDone.toString()
-        task_metrics__tv__done.text = taskMetrics.doneTasks.toString()
-        task_metrics__tv__not_done.text = taskMetrics.notDoneTasks.toString()
+        tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
+        tvMetricsDone.text = taskMetrics.doneTasks.toString()
+        tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
 
         if (taskMetrics.consecutiveDone == 0) {
-            task_metrics__tv__fire.gone()
+            tvMetricsFire.gone()
         } else {
-            task_metrics__tv__fire.visible()
+            tvMetricsFire.visible()
         }
 
         appbar.setExpanded(true, true)
@@ -146,12 +126,10 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     }
 
     private fun initSearchViewMenu(menu: Menu) {
-        val menuSearchView = menu.findItem(R.id.menu_search)
-
-        if (menuSearchView != null) {
-            val searchView = menuSearchView.actionView as SearchView
+        menu.findItem(R.id.menu_search)?.run {
+            val searchView = this.actionView as SearchView
             initListenerSearchView(searchView)
-            updateSearchView(searchView, menuSearchView)
+            updateSearchView(searchView, this)
         }
     }
 
@@ -189,8 +167,6 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     private fun updateSearchView(searchView: SearchView, menuSearchView: MenuItem) {
 
-        menuSearchView.isVisible = searchViewOpen
-
         if (searchViewOpen) {
             menuSearchView.expandActionView()
             searchView.setQuery(presenter.getTextForSearch(), true)
@@ -200,6 +176,25 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
             searchView.requestFocusFromTouch()
         }
 
+    }
+
+    private fun initRecyclerView() {
+        recycler.run {
+            adapter = TaskListAdapter(object : TaskListAdapter.Callback {
+                override val taskViewList = presenter.getTaskViewList()
+                override fun onClickTask(position: Int) = presenter.onClickTask(position)
+            })
+            layoutManager = LinearLayoutManager(activity)
+        }
+
+        val itemTouchHelper = ItemTouchHelper(SwipeTaskLeftRight(activity!!, object : SwipeTaskLeftRight.Callback {
+            override fun onSwipeLeft(position: Int) = presenter.onSwipeTaskLeft(position)
+            override fun onSwipeRight(position: Int) = presenter.onSwipeTaskRight(position)
+        }))
+
+        recycler.hideFabWhenScrolling(fab)
+
+        itemTouchHelper.attachToRecyclerView(recycler)
     }
 
 }

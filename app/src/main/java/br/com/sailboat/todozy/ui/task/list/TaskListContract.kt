@@ -14,8 +14,8 @@ interface TaskListContract {
         fun hideTasks()
         fun removeTaskFromList(position: Int)
         fun setAlarmUpdateTasks()
+        fun setEmptyTitle()
         fun setMainTitle()
-        fun setTitle(title: String)
         fun showEmptyView()
         fun showErrorOnSwipeTask()
         fun showMetrics(taskMetrics: TaskMetrics)
@@ -34,8 +34,8 @@ interface TaskListContract {
         fun onClickMenuTaskHistory()
         fun onClickNewTask()
         fun onClickTask(position: Int)
-        fun onTaskSwipedLeft(position: Int)
-        fun onTaskSwipedRight(position: Int)
+        fun onSwipeTaskLeft(position: Int)
+        fun onSwipeTaskRight(position: Int)
         fun submitTextForSearch(text: String)
     }
 

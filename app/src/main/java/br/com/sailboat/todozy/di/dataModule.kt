@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.domain.tasks.SaveTask
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<TaskRepository> { TaskRepositoryMock() }
+    single<TaskRepository> { TaskRepositoryImpl(get()) }
     single<AlarmRepository> { AlarmRepositoryImpl(get(), get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
     single { DatabaseOpenHelper(get()) }

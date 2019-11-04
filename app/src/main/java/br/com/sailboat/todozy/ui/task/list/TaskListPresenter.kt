@@ -48,13 +48,13 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
         view?.showTaskDetails(task.taskId)
     }
 
-    override fun onTaskSwipedLeft(position: Int) = onTaskSwiped(position, TaskStatus.DONE)
+    override fun onSwipeTaskLeft(position: Int) = onTaskSwiped(position, TaskStatus.DONE)
 
-    override fun onTaskSwipedRight(position: Int) = onTaskSwiped(position, TaskStatus.NOT_DONE)
+    override fun onSwipeTaskRight(position: Int) = onTaskSwiped(position, TaskStatus.NOT_DONE)
 
     override fun submitTextForSearch(text: String) {
         viewModel.filter.text = text
-        loadTasks() // handle the previus launched async operations?
+        loadTasks() // handle the previous launched async operations?
     }
 
     private fun loadTasks() {
@@ -126,7 +126,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
 
     private fun updateMetrics() {
         if (viewModel.taskMetrics != null) {
-            view?.setTitle("")
+            view?.setEmptyTitle()
             view?.showMetrics(viewModel.taskMetrics!!)
         } else {
             view?.setMainTitle()

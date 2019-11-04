@@ -33,7 +33,7 @@
                 app:srcCompat="@drawable/ic_fire_black_24dp"/>
 
             <TextView
-                android:id="@+id/task_metrics__tv__fire"
+                android:id="@+id/tvMetricsFire"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -63,7 +63,7 @@
                 app:srcCompat="@drawable/ic_thumb_up_white_24dp"/>
 
             <TextView
-                android:id="@+id/task_metrics__tv__done"
+                android:id="@+id/tvMetricsDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -92,7 +92,7 @@
                 android:tint="@color/md_red_300"/>
 
             <TextView
-                android:id="@+id/task_metrics__tv__not_done"
+                android:id="@+id/tvMetricsNotDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

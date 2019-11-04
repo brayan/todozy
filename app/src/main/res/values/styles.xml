@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme.SplashScreen">
-        <item name="android:windowBackground">@color/md_blue_200</item>
+        <item name="android:windowBackground">@color/md_blue_100</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeParent">
@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">@color/md_blue_700</item>
         <item name="colorAccent">@color/md_teal_A700</item>
         <item name="actionModeBackground">@color/md_blue_500</item>
+        <item name="android:navigationBarColor">@color/grey_80</item>
     </style>
 
     <style name="AppThemeParent" parent="Theme.AppCompat.Light.NoActionBar">

@@ -8,10 +8,12 @@ import br.com.sailboat.todozy.domain.helper.isBeforeNow
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.tasks.CheckTaskFields
+import br.com.sailboat.todozy.domain.tasks.CheckTaskFields.Condition.ALARM_NOT_VALID
+import br.com.sailboat.todozy.domain.tasks.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
 import br.com.sailboat.todozy.domain.tasks.GetTask
 import br.com.sailboat.todozy.domain.tasks.SaveTask
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
-import br.com.sailboat.todozy.ui.helper.RepeatTypeView
 import java.util.*
 
 class InsertTaskPresenter(private val getTask: GetTask,
@@ -51,11 +53,10 @@ class InsertTaskPresenter(private val getTask: GetTask,
         viewModel.alarm?.run { view?.showAlarmTimePickerDialog(this) }
     }
 
-    override fun onClickMenuSave() {
+    override fun onClickSaveTask() {
         try {
             view?.hideKeyboard()
             extractInfoFromViews()
-            performValidations()
             saveRecords()
 
         } catch (e: RequiredFieldNotFilledException) {
@@ -205,32 +206,23 @@ class InsertTaskPresenter(private val getTask: GetTask,
     private fun saveRecords() = launchAsync {
         try {
             val task = getTaskFromViews()
+            val conditions = CheckTaskFields().invoke(task)
+            conditions.forEach {
+                when (it) {
+                    TASK_NAME_NOT_FILLED -> view?.showErrorTaskNameCantBeBlank()
+                    ALARM_NOT_VALID -> view?.showErrorAlarmNotValid()
+                }
+
+                return@launchAsync
+            }
+
             saveTask(task)
-
-//            AlarmManagerHelper.cancelAlarm(getContext(), task)
-//            AlarmSQLite.newInstance(getContext()).deleteByTask(task.getId())
-//
-//            if (viewModel.alarm != null) {
-//                alarm = Alarm()
-//                alarm.setDays(viewModel.selectedDays)
-//                alarm.setNextAlarmDate(parseCalendarToString(viewModel.alarm))
-//                alarm.setRepeatType(viewModel.repeatAlarmItem.id)
-//                alarm.setInsertingDate(parseCalendarToString(Calendar.getInstance()))
-//                alarm.setTaskId(task.getId())
-//                alarm.setId(viewModel.alarmId)
-//
-//                AlarmSQLite.newInstance(getContext()).save(alarm)
-//
-//                AlarmManagerHelper.setNextValidAlarm(getContext(), task, alarm)
-//            }
-//
-//
-//            closeActivityWithResultOk()
-
+            view?.closeWithResultOk()
 
         } catch (e: Exception) {
             view?.log(e)
             // TODO: Show error
+            view?.showSimpleMessage("Error on save Task!!!!!")
         }
 
     }
@@ -241,42 +233,15 @@ class InsertTaskPresenter(private val getTask: GetTask,
             Alarm(dateTime = this, repeatType = viewModel.repeatAlarmType!!)
         }
 
-        val task = Task(id = viewModel.taskId,
+        return Task(id = viewModel.taskId,
                 name = viewModel.name,
                 notes = viewModel.notes,
                 alarm = alarm)
-
-        return task
     }
 
     private fun extractInfoFromViews() {
         viewModel.name = view?.getName() ?: ""
         viewModel.notes = view?.getNotes() ?: ""
-    }
-
-    @Throws(Exception::class)
-    private fun performValidations() {
-        validateName()
-        validarAlarm()
-    }
-
-    @Throws(Exception::class)
-    private fun validateName() {
-        val name = viewModel.name
-
-        if (name.isEmpty()) {
-            //throw RequiredFieldNotFilledException(getString(R.string.exception_task_name))
-        }
-    }
-
-    @Throws(Exception::class)
-    private fun validarAlarm() {
-        val alarm = viewModel.alarm
-
-        if (alarm?.isBeforeNow() == true) {
-            //throw RequiredFieldNotFilledException(getString(R.string.msg_invalid_date_time))
-        }
-
     }
 
     private fun initAlarm() {

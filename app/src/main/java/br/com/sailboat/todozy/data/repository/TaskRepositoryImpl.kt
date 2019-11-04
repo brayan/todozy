@@ -3,6 +3,7 @@ package br.com.sailboat.todozy.data.repository
 import android.content.Context
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
 import br.com.sailboat.todozy.data.mapper.mapToAlarm
+import br.com.sailboat.todozy.data.mapper.mapToAlarmData
 import br.com.sailboat.todozy.data.mapper.mapToTask
 import br.com.sailboat.todozy.data.mapper.mapToTaskData
 import br.com.sailboat.todozy.data.model.TaskData
@@ -53,9 +54,17 @@ class TaskRepositoryImpl(database: DatabaseOpenHelper) : TaskRepository {
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun insert(task: Task) = taskDao.insert(task.mapToTaskData())
+    override suspend fun insert(task: Task) {
+        taskDao.insert(task.mapToTaskData())
+        task.alarm?.run { alarmDao.save(mapToAlarmData(task.id)) }
+    }
 
-    override suspend fun update(task: Task) = taskDao.update(task.mapToTaskData(), true)
+    override suspend fun update(task: Task) {
+        taskDao.update(task.mapToTaskData(), true)
+        alarmDao.deleteByTask(task.id)
+
+        task.alarm?.run { alarmDao.save(mapToAlarmData(task.id)) }
+    }
 
     override suspend fun disableTask(task: Task) = taskDao.update(task.mapToTaskData(), false)
 

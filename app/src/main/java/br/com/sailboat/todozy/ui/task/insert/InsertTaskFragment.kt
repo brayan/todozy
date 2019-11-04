@@ -2,6 +2,8 @@ package br.com.sailboat.todozy.ui.task.insert
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.RepeatType
@@ -14,7 +16,9 @@ import br.com.sailboat.todozy.ui.dialog.week_days.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.ui.helper.*
 import kotlinx.android.synthetic.main.alarm_insert.*
 import kotlinx.android.synthetic.main.frg_insert_task.*
+import kotlinx.android.synthetic.main.frg_task_list.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar.toolbar
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -36,6 +40,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
     }
 
     override fun initViews() {
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
@@ -49,7 +54,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_save -> presenter.onClickMenuSave()
+            R.id.menu_save -> presenter.onClickSaveTask()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -109,7 +114,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
     }
 
     override fun showAlarm() {
-        alarm__ll__options!!.visibility = View.VISIBLE
+        alarm__ll__options.visibility = View.VISIBLE
     }
 
     override fun showAlarmWithAnimation() {
@@ -184,6 +189,14 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
 
     override fun setCustomRepeatType(custom: String) {
         activity?.run { WeekDaysHelper().getCustomRepeat(this, custom) }
+    }
+
+    override fun showErrorTaskNameCantBeBlank() {
+        frag_insert_task__et__name.error = getString(R.string.exception_task_name)
+    }
+
+    override fun showErrorAlarmNotValid() {
+        Toast.makeText(activity, "Alarm not valid", Toast.LENGTH_SHORT).show()
     }
 
     private fun initAlarmViews() {

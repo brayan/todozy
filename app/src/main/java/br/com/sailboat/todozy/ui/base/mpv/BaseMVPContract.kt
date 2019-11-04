@@ -15,6 +15,7 @@ interface BaseMVPContract {
     interface Presenter {
         fun attachView(view: View)
         fun start()
+        fun destroy()
         fun onResult(result: ViewResult)
     }
 

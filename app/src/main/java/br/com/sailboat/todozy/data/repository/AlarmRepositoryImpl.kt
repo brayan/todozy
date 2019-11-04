@@ -21,17 +21,19 @@ class AlarmRepositoryImpl(database: DatabaseOpenHelper, context: Context) : Alar
     }
 
     override suspend fun deleteAlarmByTask(task: Task) {
-        this.alarmSQLite.deleteByTask(task.id)
+        alarmSQLite.deleteByTask(task.id)
         alarmManager.cancelAlarm(task)
     }
 
     override suspend fun update(alarm: Alarm, task: Task) {
-        this.alarmSQLite.update(alarm.mapToAlarmData(task.id))
+        alarmSQLite.update(alarm.mapToAlarmData(task.id))
+        alarmManager.cancelAlarm(task)
         alarmManager.setNextValidAlarm(task, alarm)
     }
 
     override suspend fun save(alarm: Alarm, task: Task) {
-        this.alarmSQLite.save(alarm.mapToAlarmData(task.id))
+        alarmSQLite.save(alarm.mapToAlarmData(task.id))
+        alarmManager.cancelAlarm(task)
         alarmManager.setNextValidAlarm(task, alarm)
     }
 

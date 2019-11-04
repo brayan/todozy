@@ -9,14 +9,17 @@ class SaveTask(private val taskRepository: TaskRepository) {
 
     suspend operator fun invoke(task: Task) {
 
-        // TODO: VALIDATE
+        val conditions = CheckTaskFields().invoke(task)
+
+        if (conditions.isNotEmpty()) {
+            throw CheckTaskFields.TaskFieldsException(conditions)
+        }
 
         if (task.id == EntityHelper.NO_ID) {
             taskRepository.insert(task)
         } else {
             taskRepository.update(task)
         }
-
 
     }
 

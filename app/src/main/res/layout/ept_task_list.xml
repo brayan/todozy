@@ -28,7 +28,7 @@
             app:srcCompat="@drawable/ept_task_list_landscape"/>
 
         <TextView
-            android:id="@+id/ept_view__tv__message1"
+            android:id="@+id/tvEmptyViewMessagePrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -39,7 +39,7 @@
             android:textSize="@dimen/text_size_medium"/>
 
         <TextView
-            android:id="@+id/ept_view__tv__message2"
+            android:id="@+id/tvEmptyViewMessageSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

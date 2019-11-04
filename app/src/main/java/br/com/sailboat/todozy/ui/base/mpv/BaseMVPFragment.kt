@@ -31,6 +31,11 @@ abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), 
         presenter.start()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroy()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             presenter.onResult(ViewResult.SUCCESS)

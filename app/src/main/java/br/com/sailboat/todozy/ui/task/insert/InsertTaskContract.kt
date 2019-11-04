@@ -25,7 +25,9 @@ interface InsertTaskContract {
         fun getTaskToEdit(): Long
         fun showNewTaskTitle()
         fun showEditTaskTitle()
+        fun showErrorAlarmNotValid()
         fun showErrorOnSave()
+        fun showErrorTaskNameCantBeBlank()
         fun showProgress()
         fun closeProgress()
         fun setScreenToHideKeyboard()
@@ -35,7 +37,7 @@ interface InsertTaskContract {
     interface Presenter : BaseMVPContract.Presenter {
         fun onAlarmDateSelected(year: Int, month: Int, day: Int)
         fun onSelectRepeatAlarmCustom(days: String)
-        fun onClickMenuSave()
+        fun onClickSaveTask()
         fun onAlarmTimeSelected(hourOfDay: Int, minute: Int)
         fun onSelectAlarmType(notRepeat: RepeatType)
         fun onClickAddAlarm()

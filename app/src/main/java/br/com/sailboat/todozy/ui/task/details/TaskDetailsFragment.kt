@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
@@ -15,9 +16,11 @@ import br.com.sailboat.todozy.ui.helper.putTaskId
 import br.com.sailboat.todozy.ui.history.TaskHistoryActivity
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
 import kotlinx.android.synthetic.main.appbar_task_details.*
+import kotlinx.android.synthetic.main.appbar_task_details.toolbar
 import kotlinx.android.synthetic.main.fab.*
 import kotlinx.android.synthetic.main.recycler.*
 import kotlinx.android.synthetic.main.task_metrics.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
 
 
@@ -46,16 +49,18 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
         fab.setOnClickListener { presenter.onClickEditTask() }
 
         recycler.adapter = TaskDetailsAdapter(this)
+
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
         toolbar.setNavigationOnClickListener { activity!!.onBackPressed() }
     }
 
     override fun setDoneTasks(amount: String) {
-        task_metrics__tv__done.text = amount
+        tvMetricsDone.text = amount
     }
 
     override fun setNotDoneTasks(amount: String) {
-        task_metrics__tv__not_done.text = amount
+        tvMetricsNotDone.text = amount
     }
 
     override fun showDialogDeleteTask() {
@@ -83,7 +88,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun setFire(fire: String) {
-        task_metrics__tv__fire.setText(fire)
+        tvMetricsFire.setText(fire)
     }
 
     override fun showFire() {

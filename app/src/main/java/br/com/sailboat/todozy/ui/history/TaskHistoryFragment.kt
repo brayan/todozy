@@ -174,8 +174,8 @@ class TaskHistoryFragment: BaseMVPFragment<TaskHistoryContract.Presenter>(), Tas
 //    }
 
     private fun initMetricView() {
-        tvDoneTasks = view!!.findViewById<View>(R.id.task_metrics__tv__done) as TextView
-        tvNotDoneTasks = view!!.findViewById<View>(R.id.task_metrics__tv__not_done) as TextView
+        tvDoneTasks = view!!.findViewById<View>(R.id.tvMetricsDone) as TextView
+        tvNotDoneTasks = view!!.findViewById<View>(R.id.tvMetricsNotDone) as TextView
     }
 
 //    private fun getLinLayManager(): LinearLayoutManager {
