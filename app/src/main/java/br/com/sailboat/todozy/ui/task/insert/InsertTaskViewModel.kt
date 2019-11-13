@@ -11,7 +11,7 @@ class InsertTaskViewModel {
     var name = ""
     var notes = ""
     var alarm: Calendar? = null
-    var repeatAlarmType: RepeatType? = null
+    var repeatAlarmType = RepeatType.NOT_REPEAT
     var selectedDays: String? = null
 
 }

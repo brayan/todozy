@@ -1,5 +1,5 @@
 package br.com.sailboat.todozy.domain.filter
 
-import br.com.sailboat.todozy.domain.model.TaskType
+import br.com.sailboat.todozy.domain.model.TaskCategory
 
-data class TaskFilter(var type: TaskType) : BaseFilter()
+data class TaskFilter(var category: TaskCategory) : BaseFilter()

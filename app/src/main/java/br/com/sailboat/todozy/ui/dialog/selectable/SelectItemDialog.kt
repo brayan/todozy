@@ -8,14 +8,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dlg_reycler.*
+import kotlinx.android.synthetic.main.dlg_reycler.view.*
 
 class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), SelectableItemAdapter.Callback {
 
     override lateinit var selectableItems: List<SelectableItem>
     override var selectedItem: SelectableItem? = null
-
-    private var items: List<SelectableItem>? = null
 
     interface Callback {
         fun onClickItem(item: SelectableItem)
@@ -26,7 +24,7 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), S
         fun show(manager: FragmentManager, title: String, items: List<SelectableItem>,
                  selectedItem: SelectableItem?, callback: Callback) {
             val dialog = SelectItemDialog(callback)
-            dialog.items = items
+            dialog.selectableItems = items
             dialog.selectedItem = selectedItem
             dialog.title = title
             dialog.show(manager, SelectItemDialog::class.java.name)
@@ -35,26 +33,27 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), S
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = View.inflate(activity, R.layout.dlg_reycler, null)
-        recycler.layoutManager = LinearLayoutManager(activity)
-        recycler.adapter = SelectableItemAdapter(this)
-        updateViews()
+        view.recycler.layoutManager = LinearLayoutManager(activity)
+        view.recycler.adapter = SelectableItemAdapter(this)
+        updateViews(view)
+
         return buildDialog(view)
     }
 
     override fun onClickItem(position: Int) {
-        callback.onClickItem(items!![position])
+        callback.onClickItem(selectableItems[position])
         dismiss()
     }
 
-    private fun updateViews() {
+    private fun updateViews(view: View) {
         if (title?.isNotEmpty() == true) {
-            dlg_recycler__tv__title.text = title
-            dlg_recycler__tv__title.visibility = View.VISIBLE
+            view.dlg_recycler__tv__title.text = title
+            view.dlg_recycler__tv__title.visibility = View.VISIBLE
         } else {
-            dlg_recycler__tv__title.visibility = View.GONE
+            view.dlg_recycler__tv__title.visibility = View.GONE
         }
 
-        recycler.adapter?.notifyDataSetChanged()
+        view.recycler.adapter?.notifyDataSetChanged()
     }
 
     private fun buildDialog(view: View): Dialog {

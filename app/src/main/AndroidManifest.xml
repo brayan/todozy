@@ -15,10 +15,18 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
-
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
-        <uses-library android:name="android.test.runner"
-            android:required="false" />
+        <uses-library android:name="android.test.runner" android:required="false" />
+
+        <receiver android:name=".ui.receivers.BootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ui.receivers.AlarmReceiver" />
+
+        <receiver android:name=".ui.receivers.AlarmUpdateReceiver" />
 
         <activity
             android:name=".ui.LauncherActivity"

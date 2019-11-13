@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.tasks.GetTaskMetrics
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
+import kotlinx.coroutines.runBlocking
 
 class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
                            private val getTaskMetrics: GetTaskMetrics,
@@ -75,7 +76,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         }
     }
 
-    private fun loadDetails() = launchAsync {
+    private fun loadDetails() = runBlocking {
         try {
             val taskId = viewModel.taskId
 
@@ -102,7 +103,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
     }
 
     private fun extractTaskId() {
-        viewModel.taskId = view?.taskId ?: EntityHelper.NO_ID
+        viewModel.taskId = view?.getTaskId() ?: EntityHelper.NO_ID
     }
 
 }

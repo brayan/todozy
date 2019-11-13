@@ -9,12 +9,12 @@ import br.com.sailboat.todozy.ui.model.view_holder.TaskViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface Callback : TaskViewHolder.Callback {
+    interface Callback : TaskHistoryViewHolder.Callback {
         val history: List<ItemView>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        ViewType.TASK_HISTORY.ordinal -> TaskViewHolder(parent, callback)
+        ViewType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, callback)
         ViewType.SUBHEADER.ordinal -> SubheaderViewHolder(parent)
         else -> throw RuntimeException("ViewHolder not found")
     }

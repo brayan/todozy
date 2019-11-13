@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.domain.exceptions.RequiredFieldNotFilledException
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.helper.getInitialAlarm
 import br.com.sailboat.todozy.domain.helper.incrementToNextValidDate
-import br.com.sailboat.todozy.domain.helper.isBeforeNow
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
@@ -14,6 +13,7 @@ import br.com.sailboat.todozy.domain.tasks.CheckTaskFields.Condition.TASK_NAME_N
 import br.com.sailboat.todozy.domain.tasks.GetTask
 import br.com.sailboat.todozy.domain.tasks.SaveTask
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class InsertTaskPresenter(private val getTask: GetTask,
@@ -197,13 +197,13 @@ class InsertTaskPresenter(private val getTask: GetTask,
 
     private fun updateAlarmRepeatTypeView() {
         if (viewModel.repeatAlarmType == RepeatType.CUSTOM) {
-            view?.setCustomRepeatType(viewModel.selectedDays!!)
+            view?.setCustomRepeatType(viewModel.selectedDays)
         } else {
             view?.setRepeatType(viewModel.repeatAlarmType!!)
         }
     }
 
-    private fun saveRecords() = launchAsync {
+    private fun saveRecords() = runBlocking {
         try {
             val task = getTaskFromViews()
             val conditions = CheckTaskFields().invoke(task)
@@ -213,7 +213,7 @@ class InsertTaskPresenter(private val getTask: GetTask,
                     ALARM_NOT_VALID -> view?.showErrorAlarmNotValid()
                 }
 
-                return@launchAsync
+                return@runBlocking
             }
 
             saveTask(task)
@@ -264,7 +264,7 @@ class InsertTaskPresenter(private val getTask: GetTask,
     private fun updateNotes() = view?.setNotes(viewModel.notes)
 
     private fun extractTaskId() {
-        viewModel.taskId = view?.getTaskToEdit() ?: EntityHelper.NO_ID
+        viewModel.taskId = view?.getTaskId() ?: EntityHelper.NO_ID
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.*
 class WeekDaysHelper {
 
 
-    fun getCustomRepeat(ctx: Context, days: String): String {
+    fun getCustomRepeat(ctx: Context, days: String?): String {
         var days = days
         if (days.isNullOrEmpty()) {
             return ctx.getString(R.string.custom)

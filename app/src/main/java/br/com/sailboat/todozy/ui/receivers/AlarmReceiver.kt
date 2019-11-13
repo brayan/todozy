@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
@@ -24,6 +25,8 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     val databaseOpenHelper: DatabaseOpenHelper by inject()
 
     override fun onReceive(context: Context?, intent: Intent?) {
+
+        context?.run { Toast.makeText(context, "ALARM!!!", Toast.LENGTH_LONG).show() }
 
         if (context != null && intent != null) {
             val builder = buildNotification(context, intent)

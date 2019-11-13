@@ -17,7 +17,7 @@ class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
 
 
     override fun bind(item: DayView) = with(itemView) {
-        vh_week_day__tv__name.setText(item.name)
+        vh_week_day__tv__name.text = item.name
 
         if (callback.isDaySelected(item.id)) {
             vh_week_day__tv__name.setBackgroundResource(R.drawable.shape_circle_blue)

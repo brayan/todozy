@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.data.repository
 
-import android.content.Context
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
 import br.com.sailboat.todozy.data.mapper.mapToAlarm
 import br.com.sailboat.todozy.data.mapper.mapToAlarmData
@@ -9,19 +8,19 @@ import br.com.sailboat.todozy.data.mapper.mapToTaskData
 import br.com.sailboat.todozy.data.model.TaskData
 import br.com.sailboat.todozy.data.sqlite.AlarmSQLite
 import br.com.sailboat.todozy.data.sqlite.TaskSQLite
-import br.com.sailboat.todozy.domain.model.Task
-import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.domain.filter.TaskFilter
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.repository.AlarmRepository
+import br.com.sailboat.todozy.domain.repository.TaskRepository
 
-class TaskRepositoryImpl(database: DatabaseOpenHelper) : TaskRepository {
+class TaskRepositoryImpl(private val alarmRepository: AlarmRepository, database: DatabaseOpenHelper) : TaskRepository {
 
     private val taskDao by lazy { TaskSQLite(database) }
-    private val alarmDao by lazy { AlarmSQLite(database) }
 
     override suspend fun getTask(taskId: Long): Task? {
         val taskData = taskDao.getTask(taskId) ?: return null
-        val alarmData = alarmDao.getAlarmByTask(taskId)
-        return taskData.mapToTask(alarmData?.mapToAlarm())
+        val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
+        return taskData.mapToTask(alarm)
     }
 
     override suspend fun getBeforeTodayTasks(filter: TaskFilter): List<Task> {
@@ -55,22 +54,21 @@ class TaskRepositoryImpl(database: DatabaseOpenHelper) : TaskRepository {
     }
 
     override suspend fun insert(task: Task) {
-        taskDao.insert(task.mapToTaskData())
-        task.alarm?.run { alarmDao.save(mapToAlarmData(task.id)) }
+        task.id = taskDao.insert(task.mapToTaskData())
+        task.alarm?.run { alarmRepository.save(this, task) }
     }
 
     override suspend fun update(task: Task) {
         taskDao.update(task.mapToTaskData(), true)
-        alarmDao.deleteByTask(task.id)
-
-        task.alarm?.run { alarmDao.save(mapToAlarmData(task.id)) }
+        alarmRepository.deleteAlarmByTask(task)
+        task.alarm?.run { alarmRepository.save(this, task) }
     }
 
     override suspend fun disableTask(task: Task) = taskDao.update(task.mapToTaskData(), false)
 
-    private fun List<TaskData>.loadAlarmsAndMapToTasks() = map { taskData ->
-        val alarmData = alarmDao.getAlarmByTask(taskData.id)
-        taskData.mapToTask(alarmData?.mapToAlarm())
+    private suspend fun List<TaskData>.loadAlarmsAndMapToTasks() = map { taskData ->
+        val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
+        taskData.mapToTask(alarm)
     }
 
 }

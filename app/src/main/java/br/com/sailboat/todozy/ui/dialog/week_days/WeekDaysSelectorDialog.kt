@@ -1,9 +1,10 @@
 package br.com.sailboat.todozy.ui.dialog.week_days
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,9 +20,14 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
 
     private var selectedDays: String? = null
     private val hashSelectedDays = mutableMapOf<Int, DayView>()
-    private var recycler: RecyclerView? = null
     private var loadedDays = mutableListOf<DayView>()
     override val days = loadedDays
+
+    private lateinit var recyclerView: RecyclerView
+
+    interface Callback {
+        fun onClickOk(selectedDays: String)
+    }
 
     companion object {
         fun show(manager: FragmentManager, selectedDays: String?, callback: Callback) {
@@ -46,7 +52,7 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
     private fun buildDialog(view: View): Dialog {
         val builder = AlertDialog.Builder(activity!!)
         builder.setView(view)
-        builder.setPositiveButton(android.R.string.ok) { dialog, which -> callback!!.onClickOk(getSelectedDays()) }
+        builder.setPositiveButton(android.R.string.ok) { _, _ -> callback.onClickOk(getSelectedDays()) }
 
         builder.setNegativeButton(R.string.cancel, null)
 
@@ -56,6 +62,7 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
     private fun initViews(view: View) {
         view.recycler.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
         view.recycler.adapter = WeekDaysSelectorAdapter(this)
+        this.recyclerView = view.recycler
     }
 
     private fun initDays() {
@@ -78,22 +85,22 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
     }
 
     private fun getSelectedDays(): String {
-        if (hashSelectedDays.size > 0) {
+        return if (hashSelectedDays.isNotEmpty()) {
             var days = ""
 
             for (day in hashSelectedDays.values) {
                 days += day.id
             }
 
-            return days
+            days
 
         } else {
-            return ""
+            ""
         }
     }
 
     override fun isDaySelected(id: Int): Boolean {
-        return hashSelectedDays.get(id) != null
+        return hashSelectedDays[id] != null
     }
 
     override fun onClickDay(position: Int) {
@@ -102,14 +109,14 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
         if (isDaySelected(day.id)) {
             hashSelectedDays.remove(day.id)
         } else {
-            hashSelectedDays.put(day.id, day)
+            hashSelectedDays[day.id] = day
         }
 
-        recycler?.adapter?.notifyItemChanged(position)
+        recyclerView.adapter?.notifyItemChanged(position)
 
     }
 
-    fun getDayViewFromId(id: Int): DayView {
+    private fun getDayViewFromId(id: Int): DayView {
         when (id) {
             Calendar.SUNDAY -> {
                 return DayView(id, getString(R.string.sunday))
@@ -136,11 +143,6 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
                 throw IllegalArgumentException("Invalid Day ID")
             }
         }
-    }
-
-
-    interface Callback {
-        fun onClickOk(selectedDays: String)
     }
 
 }

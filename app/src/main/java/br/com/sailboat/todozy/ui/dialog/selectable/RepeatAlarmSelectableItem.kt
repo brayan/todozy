@@ -8,56 +8,50 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
 
     NOT_REPEAT {
         override fun getId(): Int {
-            return RepeatType.NOT_REPEAT.ordinal
+            return ordinal
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.NOT_REPEAT)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.NOT_REPEAT).description
         }
     },
     DAY {
         override fun getId(): Int {
-            return RepeatType.DAY.ordinal
+            return ordinal
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.DAY)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.DAY).description
         }
     },
     WEEK {
         override fun getId(): Int {
-            return RepeatType.WEEK.ordinal
+            return ordinal
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.WEEK)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.WEEK).description
         }
     },
     MONTH {
-        override fun getId(): Int {
-            return RepeatType.MONTH.ordinal
-        }
+        override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.MONTH)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.MONTH).description
         }
     },
     YEAR {
-        override fun getId(): Int {
-            return RepeatType.YEAR.ordinal
-        }
+        override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.YEAR)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.YEAR).description
         }
     },
     CUSTOM {
-        override fun getId(): Int {
-            return RepeatType.CUSTOM.ordinal
-        }
+        override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.CUSTOM)!!.description
+            return RepeatTypeView.getFromRepeatType(RepeatType.CUSTOM).description
         }
     };
 
@@ -83,6 +77,29 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
                 }
                 else -> {
                     return NOT_REPEAT
+                }
+            }
+        }
+
+        fun getRepeatTypeFromSelectable(repeatAlarm: RepeatAlarmSelectableItem): RepeatType {
+            when (repeatAlarm) {
+                DAY -> {
+                    return RepeatType.DAY
+                }
+                WEEK -> {
+                    return RepeatType.WEEK
+                }
+                MONTH -> {
+                    return RepeatType.MONTH
+                }
+                YEAR -> {
+                    return RepeatType.YEAR
+                }
+                CUSTOM -> {
+                    return RepeatType.CUSTOM
+                }
+                else -> {
+                    return RepeatType.NOT_REPEAT
                 }
             }
         }

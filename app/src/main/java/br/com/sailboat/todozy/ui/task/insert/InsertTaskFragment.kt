@@ -9,15 +9,15 @@ import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
 import br.com.sailboat.todozy.ui.dialog.DateSelectorDialog
+import br.com.sailboat.todozy.ui.dialog.ProgressDialog
 import br.com.sailboat.todozy.ui.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.ui.dialog.selectable.RepeatAlarmSelectableItem
+import br.com.sailboat.todozy.ui.dialog.selectable.SelectItemDialog
 import br.com.sailboat.todozy.ui.dialog.selectable.SelectableItem
 import br.com.sailboat.todozy.ui.dialog.week_days.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.ui.helper.*
 import kotlinx.android.synthetic.main.alarm_insert.*
 import kotlinx.android.synthetic.main.frg_insert_task.*
-import kotlinx.android.synthetic.main.frg_task_list.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -26,6 +26,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
 
     override val presenter: InsertTaskContract.Presenter by inject()
     override val layoutId = R.layout.frg_insert_task
+    val progressDialog by lazy { ProgressDialog() }
 
     companion object {
         fun newInstance() = InsertTaskFragment()
@@ -60,7 +61,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
         return true
     }
 
-    override fun getTaskToEdit(): Long {
+    override fun getTaskId(): Long {
         return arguments?.getTaskId() ?: EntityHelper.NO_ID
     }
 
@@ -86,9 +87,11 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
         })
     }
 
-    override fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType?) {
-//        SelectItemDialog.show(fragmentManager, getString(R.string.repeat_alarm), RepeatAlarmSelectableItem.getItems(),
-//                RepeatTypeView.getFromRepeatType(repeatAlarmItem), SelectItemDialog.Callback { item -> onClickItemRepeatAlarm(item) })
+    override fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType) {
+        SelectItemDialog.show(fragmentManager!!, getString(R.string.repeat_alarm), RepeatAlarmSelectableItem.getItems(),
+                RepeatAlarmSelectableItem.getFromId(repeatAlarmItem.ordinal), object: SelectItemDialog.Callback {
+            override fun onClickItem(item: SelectableItem) = onSelectItemRepeatAlarm(item)
+        })
     }
 
     override fun showWeekDaysSelector(days: String?) {
@@ -176,19 +179,19 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog.show(fragmentManager!!, "PROGRESS")
     }
 
     override fun closeProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog.dismissAllowingStateLoss()
     }
 
     override fun setScreenToHideKeyboard() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activity?.run { setActivityToHideKeyboard() }
     }
 
-    override fun setCustomRepeatType(custom: String) {
-        activity?.run { WeekDaysHelper().getCustomRepeat(this, custom) }
+    override fun setCustomRepeatType(custom: String?) {
+        activity?.run { alarm__tv__repeat.text = WeekDaysHelper().getCustomRepeat(this, custom) }
     }
 
     override fun showErrorTaskNameCantBeBlank() {
@@ -218,7 +221,7 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
         })
     }
 
-    private fun onClickItemRepeatAlarm(item: SelectableItem) {
+    private fun onSelectItemRepeatAlarm(item: SelectableItem) {
         when (item as RepeatAlarmSelectableItem) {
             RepeatAlarmSelectableItem.NOT_REPEAT -> {
                 presenter.onSelectAlarmType(RepeatType.NOT_REPEAT)

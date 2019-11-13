@@ -1,13 +1,12 @@
 package br.com.sailboat.todozy.data.sqlite
 
-import android.content.Context
 import android.database.Cursor
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
-import br.com.sailboat.todozy.domain.filter.BaseFilter
 import br.com.sailboat.todozy.data.base.BaseSQLite
 import br.com.sailboat.todozy.data.helper.TaskHistoryQueryBuilder
 import br.com.sailboat.todozy.data.model.TaskHistoryData
 import br.com.sailboat.todozy.domain.exceptions.EntityNotFoundException
+import br.com.sailboat.todozy.domain.filter.BaseFilter
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.TaskStatus

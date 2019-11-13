@@ -6,30 +6,25 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
 import br.com.sailboat.todozy.ui.dialog.TwoOptionsDialog
-import br.com.sailboat.todozy.ui.helper.DialogHelper
-import br.com.sailboat.todozy.ui.helper.getTaskId
-import br.com.sailboat.todozy.ui.helper.putTaskId
+import br.com.sailboat.todozy.ui.helper.*
 import br.com.sailboat.todozy.ui.history.TaskHistoryActivity
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
 import kotlinx.android.synthetic.main.appbar_task_details.*
-import kotlinx.android.synthetic.main.appbar_task_details.toolbar
 import kotlinx.android.synthetic.main.fab.*
 import kotlinx.android.synthetic.main.recycler.*
 import kotlinx.android.synthetic.main.task_metrics.*
-import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
 
 
-class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), TaskDetailsContract.View, TaskDetailsAdapter.Callback {
+class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), TaskDetailsContract.View {
 
     override val presenter: TaskDetailsContract.Presenter by inject()
     override val layoutId = R.layout.frg_task_details
-    override val taskId: Long = arguments?.getTaskId() ?: EntityHelper.NO_ID
-    override val details = presenter.details
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -48,7 +43,12 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
         fab.setImageResource(R.drawable.ic_edit_white_24dp)
         fab.setOnClickListener { presenter.onClickEditTask() }
 
-        recycler.adapter = TaskDetailsAdapter(this)
+        recycler.run {
+            adapter = TaskDetailsAdapter(object: TaskDetailsAdapter.Callback {
+                override val details = presenter.details
+            })
+            layoutManager = LinearLayoutManager(activity)
+        }
 
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
@@ -88,19 +88,19 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun setFire(fire: String) {
-        tvMetricsFire.setText(fire)
+        tvMetricsFire.text = fire
     }
 
     override fun showFire() {
-        task_metrics__ll__fire.setVisibility(View.VISIBLE)
+        task_metrics__ll__fire.visible()
     }
 
     override fun hideFire() {
-        task_metrics__ll__fire.setVisibility(View.GONE)
+        task_metrics__ll__fire.gone()
     }
 
     override fun updateDetails() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        recycler.adapter?.notifyDataSetChanged()
     }
 
     override fun showProgress() {
@@ -129,6 +129,10 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
 
     override fun closeWithResultNotOk() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getTaskId(): Long {
+        return arguments?.getTaskId() ?: EntityHelper.NO_ID
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

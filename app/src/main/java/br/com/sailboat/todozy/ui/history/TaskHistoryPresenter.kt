@@ -8,12 +8,14 @@ import br.com.sailboat.todozy.domain.tasks.GetTask
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
 import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
+import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
 import java.util.*
 
 class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private val viewModel by lazy { TaskHistoryViewModel() }
+    override val history by lazy { viewModel.history }
 
     override fun onStart() {
         extractTaskId()
@@ -25,7 +27,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         updateContentViews()
     }
 
-    fun onClickHistory(position: Int) {
+    override fun onClickHistory(position: Int) {
         if (isShowingOptions(position)) {
             clearHistorySelectedPosition()
             view?.refreshHistoryItem(position)
@@ -45,15 +47,15 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
 
     }
 
-    fun isShowingOptions(position: Int): Boolean {
+    override fun isShowingOptions(position: Int): Boolean {
         return viewModel.selectedItemPosition == position
     }
 
-    fun onClickDelete(position: Int) {
+    override fun onClickDelete(position: Int) {
         view?.showDeleteItemDialog(position)
     }
 
-    fun checkIfTaskDesabled(position: Int): Boolean {
+    override fun checkIfTaskDesabled(position: Int): Boolean {
         try {
             val history = viewModel.history[position] as? TaskHistoryView
             // val task = getTask(history.tas)
@@ -74,11 +76,11 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
     }
 
 
-    fun onClickMarkTaskAsDone(position: Int) {
+    override fun onClickMarkTaskAsDone(position: Int) {
         updateHistoryStatus(position, TaskStatus.DONE)
     }
 
-    fun onClickMarkTaskAsNot(position: Int) {
+    override fun onClickMarkTaskAsNot(position: Int) {
         updateHistoryStatus(position, TaskStatus.NOT_DONE)
     }
 
@@ -105,16 +107,16 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
 //        view?.scrollToTop()
 //    }
 
-    fun onClickMenuClearHistory() {
+    override fun onClickMenuClearHistory() {
         view?.showDialogClearHistory()
     }
 
-    fun onClickMenuFilter() {
+    override fun onClickMenuFilter() {
         //        view?.showDateFilterDialog(viewModel.getFilter().getDate());
         view?.showFilterDialog(viewModel.filter)
     }
 
-    fun onClickOkDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
+    override fun onClickOkDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
         viewModel.filter.initialDate = initialDate
         viewModel.filter.finalDate = finalDate
         viewModel.filter.date = DateFilterTaskHistorySelectableItem.DATE_RANGE
@@ -123,17 +125,17 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         view?.scrollToTop()
     }
 
-    fun onClickYesClearHistoryKeepAmountDialog() {
+    override fun onClickYesClearHistoryKeepAmountDialog() {
         setAllHistoryAsDisabled()
         loadHistoryTasks()
     }
 
-    fun onClickYesClearAllHistoryDialog() {
+    override fun onClickYesClearAllHistoryDialog() {
         deleteAllHistory()
         loadHistoryTasks()
     }
 
-    fun onClickFilterNoFilter() {
+    override fun onClickFilterNoFilter() {
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.NO_FILTER) {
             viewModel.filter.date = DateFilterTaskHistorySelectableItem.NO_FILTER
             viewModel.filter.initialDate = null
@@ -144,7 +146,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         }
     }
 
-    fun onClickFilterToday() {
+    override fun onClickFilterToday() {
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.TODAY) {
             viewModel.filter.date = DateFilterTaskHistorySelectableItem.TODAY
 
@@ -162,7 +164,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         }
     }
 
-    fun onClickFilterYesterday() {
+    override fun onClickFilterYesterday() {
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.YESTERDAY) {
             viewModel.filter.date = DateFilterTaskHistorySelectableItem.YESTERDAY
 
@@ -182,7 +184,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         }
     }
 
-    fun onClickFilterLastSevenDays() {
+    override fun onClickFilterLastSevenDays() {
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.LAST_7_DAYS) {
             viewModel.filter.date = DateFilterTaskHistorySelectableItem.LAST_7_DAYS
 
@@ -201,7 +203,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         }
     }
 
-    fun onClickFilterLastThirtyDays() {
+    override fun onClickFilterLastThirtyDays() {
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.LAST_30_DAYS) {
             viewModel.filter.date = DateFilterTaskHistorySelectableItem.LAST_30_DAYS
 
@@ -220,16 +222,20 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         }
     }
 
-    fun onClickFilterDateRange() {
+    override fun onClickFilterDateRange() {
         // view?.showDateRangeSelectorDialog(viewModel.filter.initialDate, viewModel.filter.finalDate)
     }
 
-    fun onClickClearHistoryKeepAmount() {
+    override fun onClickClearHistoryKeepAmount() {
         view?.showClearHistoryKeepAmountDialog()
     }
 
-    fun onClickAllHistory() {
+    override fun onClickAllHistory() {
         view?.showClearAllHistoryDialog()
+    }
+
+    override fun onClickYesDeleteHistory() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun loadHistoryTasks() = launchAsync {
@@ -281,8 +287,7 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
         if (viewModel.filter.date !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
 //            view?.setSubtitle(getString(viewModel.filter.date.getName()).toUpperCase())
         } else {
-            // view?.setSubtitle(DateHelper.getShortDate(getContext(), initialDate) + " - " + DateHelper.getShortDate(getContext(), finalDate))
-            view?.setDateRangeSubtitle(initialDate, finalDate)
+            view?.setDateRangeSubtitle(initialDate!!, finalDate!!)
         }
 
     }
@@ -348,16 +353,16 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
 
     }
 
-    fun onClickFilterDate() {
-        view?.showDateFilterDialog(viewModel.filter?.date)
+    override fun onClickFilterDate() {
+        view?.showDateFilterDialog(viewModel.filter.date)
     }
 
-    fun onClickFilterStatus() {
-        view?.showStatusFilterDialog(viewModel.filter?.status)
+    override fun onClickFilterStatus() {
+        view?.showStatusFilterDialog(viewModel.filter.status)
     }
 
-    fun onClickFilterStatusItem(item: TaskStatusSelectableItem) {
-        viewModel.filter?.status = item
+    override fun onClickFilterStatusItem(item: TaskStatusSelectableItem) {
+        viewModel.filter.status = item
         loadHistoryTasks()
     }
 

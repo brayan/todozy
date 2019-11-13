@@ -9,7 +9,7 @@ interface InsertTaskContract {
     interface View : BaseMVPContract.View {
         fun showAlarmDatePickerDialog(alarm: Calendar)
         fun showAlarmTimePickerDialog(alarm: Calendar)
-        fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType?)
+        fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType)
         fun setName(name: String)
         fun setNotes(notes: String)
         fun showAlarm()
@@ -22,7 +22,7 @@ interface InsertTaskContract {
         fun getName(): String
         fun getNotes(): String
         fun showWeekDaysSelector(selectedDays: String?)
-        fun getTaskToEdit(): Long
+        fun getTaskId(): Long
         fun showNewTaskTitle()
         fun showEditTaskTitle()
         fun showErrorAlarmNotValid()
@@ -31,7 +31,7 @@ interface InsertTaskContract {
         fun showProgress()
         fun closeProgress()
         fun setScreenToHideKeyboard()
-        fun setCustomRepeatType(custom: String)
+        fun setCustomRepeatType(custom: String?)
     }
 
     interface Presenter : BaseMVPContract.Presenter {
@@ -39,7 +39,7 @@ interface InsertTaskContract {
         fun onSelectRepeatAlarmCustom(days: String)
         fun onClickSaveTask()
         fun onAlarmTimeSelected(hourOfDay: Int, minute: Int)
-        fun onSelectAlarmType(notRepeat: RepeatType)
+        fun onSelectAlarmType(alarmType: RepeatType)
         fun onClickAddAlarm()
         fun onClickAlarmDate()
         fun onClickAlarmTime()

@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.data.repository
 
-import android.content.Context
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
 import br.com.sailboat.todozy.data.mapper.mapToTaskHistoryList
 import br.com.sailboat.todozy.data.sqlite.TaskHistorySQLite
@@ -12,6 +11,18 @@ class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryReposi
 
     private val taskHistorySQLite by lazy { TaskHistorySQLite(database) }
 
+    override suspend fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistory> {
+        return taskHistorySQLite.getTodayHistory(filter).mapToTaskHistoryList()
+    }
+
+    override suspend fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistory> {
+        return taskHistorySQLite.getYesterdayHistory(filter).mapToTaskHistoryList()
+    }
+
+    override suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistory> {
+        return taskHistorySQLite.getPreviousDaysHistory(filter).mapToTaskHistoryList()
+    }
+
     override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
         return taskHistorySQLite.getTotalOfNotDoneTasks(filter)
     }
@@ -20,8 +31,8 @@ class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryReposi
         return taskHistorySQLite.getTotalOfDoneTasks(filter)
     }
 
-    override suspend fun getTaskHistory(filter: TaskHistoryFilter): List<TaskHistory> {
-        return taskHistorySQLite.getTaskHistoryByTask(filter.taskId).mapToTaskHistoryList()
+    override suspend fun getTaskHistory(taskId: Long): List<TaskHistory> {
+        return taskHistorySQLite.getTaskHistoryByTask(taskId).mapToTaskHistoryList()
     }
 
 }

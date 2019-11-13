@@ -8,31 +8,32 @@ import br.com.sailboat.todozy.domain.tasks.GetTask
 import br.com.sailboat.todozy.ui.helper.RepeatTypeView
 import br.com.sailboat.todozy.ui.model.*
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 
 class GetTaskDetailsView(private val context: Context, private val getTask: GetTask) {
 
-    suspend operator fun invoke(taskId: Long): List<ItemView> = coroutineScope {
-        val itemViews = ArrayList<ItemView>()
+    suspend operator fun invoke(taskId: Long): List<ItemView> = runBlocking {
+        val itemViews = mutableListOf<ItemView>()
 
         val task = getTask(taskId)
 
         addTitle(itemViews, task)
         task.alarm?.run { addAlarm(context, this, itemViews) }
-        task.notes?.run { addNotes(context, itemViews, this) }
+        task.notes?.takeIf { it.isNotBlank() }?.run { addNotes(context, itemViews, this) }
 
         itemViews
     }
 
-    private fun addTitle(itemViews: ArrayList<ItemView>, task: Task) {
+    private fun addTitle(itemViews: MutableList<ItemView>, task: Task) {
         val item = TitleItemView(task.name)
         itemViews.add(item)
     }
 
-    private fun addNotes(context: Context, itemViews: ArrayList<ItemView>, notes: String) {
+    private fun addNotes(context: Context, itemViews: MutableList<ItemView>, notes: String) {
         itemViews.add(getLabelValueNotes(context, notes))
     }
 
-    private fun addAlarm(context: Context, alarm: Alarm, itemViews: ArrayList<ItemView>) {
+    private fun addAlarm(context: Context, alarm: Alarm, itemViews: MutableList<ItemView>) {
         val item = LabelItemView(context.getString(R.string.alarm), ViewType.LABEL.ordinal)
         itemViews.add(item)
 

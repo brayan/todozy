@@ -92,7 +92,7 @@ class TaskSQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         return getListFromQuery(sb.toString(), null)
     }
 
-    fun insert(task: TaskData) {
+    fun insert(task: TaskData): Long {
         val sql = StringBuilder()
 
         sql.append(" INSERT INTO Task ")
@@ -105,7 +105,7 @@ class TaskSQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
         statement.bindLong(4, parseBooleanToInt(true).toLong())
 
-        task.id = insert(statement)
+        return insert(statement)
     }
 
     fun update(task: TaskData, enable: Boolean) {

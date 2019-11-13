@@ -25,6 +25,10 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
 
     private var callback: Callback? = null
 
+    interface Callback {
+        fun onClickOk(initialDate: Calendar, finalDate: Calendar)
+    }
+
     companion object {
         fun show(manager: FragmentManager, callback: Callback) {
             show(manager, null, null, callback)
@@ -33,8 +37,8 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
         fun show(manager: FragmentManager, initialDate: Calendar?, finalDate: Calendar?, callback: Callback) {
             val dialog = DateRangeSelectorDialog()
             dialog.callback = callback
-            dialog.setInitialDate(initialDate)
-            dialog.setFinalDate(finalDate)
+            dialog.initialDate = initialDate
+            dialog.finalDate = finalDate
             dialog.show(manager, DateRangeSelectorDialog::class.java.name)
         }
     }
@@ -57,7 +61,7 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
         tvFinalDate = view.findViewById<View>(R.id.dlg_date_range_selector__tv__final) as TextView
 
         view.findViewById<View>(R.id.dlg_date_range_selector__ll__initial).setOnClickListener {
-            DateSelectorDialog.show(fragmentManager!!, getInitialDate(), object : DateSelectorDialog.Callback {
+            DateSelectorDialog.show(fragmentManager!!, initialDate, object : DateSelectorDialog.Callback {
                 override fun onDateSet(year: Int, month: Int, day: Int) {
                     val newInitialDate = Calendar.getInstance()
                     newInitialDate.set(Calendar.YEAR, year)
@@ -75,9 +79,9 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
                         return
                     }
 
-                    getInitialDate()!!.set(Calendar.YEAR, year)
-                    getInitialDate()!!.set(Calendar.MONTH, month)
-                    getInitialDate()!!.set(Calendar.DAY_OF_MONTH, day)
+                    initialDate!!.set(Calendar.YEAR, year)
+                    initialDate!!.set(Calendar.MONTH, month)
+                    initialDate!!.set(Calendar.DAY_OF_MONTH, day)
 
                     updateViews()
                 }
@@ -85,7 +89,7 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
         }
 
         view.findViewById<View>(R.id.dlg_date_range_selector__ll__final).setOnClickListener {
-            DateSelectorDialog.show(fragmentManager!!, getFinalDate(), object : DateSelectorDialog.Callback {
+            DateSelectorDialog.show(fragmentManager!!, finalDate, object : DateSelectorDialog.Callback {
                 override fun onDateSet(year: Int, month: Int, day: Int) {
                     val newFinalDate = Calendar.getInstance()
                     newFinalDate.set(Calendar.YEAR, year)
@@ -103,9 +107,9 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
                         return
                     }
 
-                    getFinalDate()!!.set(Calendar.YEAR, year)
-                    getFinalDate()!!.set(Calendar.MONTH, month)
-                    getFinalDate()!!.set(Calendar.DAY_OF_MONTH, day)
+                    finalDate!!.set(Calendar.YEAR, year)
+                    finalDate!!.set(Calendar.MONTH, month)
+                    finalDate!!.set(Calendar.DAY_OF_MONTH, day)
 
                     updateViews()
                 }
@@ -114,14 +118,14 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
     }
 
     private fun updateViews() {
-        tvInitialDate!!.setText(getInitialDate()?.toShortDateView(activity!!))
-        tvFinalDate!!.setText(getFinalDate()?.toShortDateView(activity!!))
+        tvInitialDate!!.setText(initialDate?.toShortDateView(activity!!))
+        tvFinalDate!!.setText(finalDate?.toShortDateView(activity!!))
     }
 
     private fun construirDialog(view: View): Dialog {
         val builder = AlertDialog.Builder(activity!!)
         builder.setView(view)
-        builder.setPositiveButton(android.R.string.ok) { dialog, which -> callback!!.onClickOk(getInitialDate(), getFinalDate()) }
+        builder.setPositiveButton(android.R.string.ok) { _, _ -> callback!!.onClickOk(initialDate!!, finalDate!!) }
 
         builder.setNegativeButton(R.string.cancel, null)
 
@@ -131,33 +135,13 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
     private fun initDates() {
         if (initialDate == null) {
             initialDate = Calendar.getInstance()
+            initialDate!!.clearTime()
         }
-        initialDate!!.clearTime()
 
         if (finalDate == null) {
             finalDate = Calendar.getInstance()
+            finalDate!!.setFinalTimeToCalendar()
         }
-        finalDate!!.setFinalTimeToCalendar()
     }
-
-    fun getInitialDate(): Calendar? {
-        return initialDate
-    }
-
-    fun setInitialDate(initialDate: Calendar?) {
-        this.initialDate = initialDate
-    }
-
-    fun getFinalDate(): Calendar? {
-        return finalDate
-    }
-
-    fun setFinalDate(finalDate: Calendar?) {
-        this.finalDate = finalDate
-    }
-
-
-    interface Callback {
-        fun onClickOk(initialDate: Calendar?, finalDate: Calendar?)
-    }
+    
 }

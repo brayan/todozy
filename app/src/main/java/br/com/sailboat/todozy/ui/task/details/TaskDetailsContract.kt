@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.ui.model.ItemView
 interface TaskDetailsContract {
 
     interface View : BaseMVPContract.View {
-        val taskId: Long
         fun setDoneTasks(amount: String)
         fun setNotDoneTasks(amount: String)
         fun showDialogDeleteTask()
@@ -23,6 +22,7 @@ interface TaskDetailsContract {
         fun showErrorOnDeleteTask()
         fun setTaskDetailsTitle()
         fun setEmptyTitle()
+        fun getTaskId(): Long
     }
 
     interface Presenter : BaseMVPContract.Presenter {
