@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.data.DatabaseOpenHelper
 import br.com.sailboat.todozy.data.repository.AlarmRepositoryImpl
 import br.com.sailboat.todozy.data.repository.TaskHistoryRepositoryImpl
 import br.com.sailboat.todozy.data.repository.TaskRepositoryImpl
+import br.com.sailboat.todozy.data.repository.mock.TaskHistoryRepositoryMock
 import br.com.sailboat.todozy.data.repository.mock.TaskRepositoryMock
 import br.com.sailboat.todozy.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
@@ -13,7 +14,9 @@ import org.koin.dsl.module
 
 val dataModule = module {
     single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
+//    single<TaskRepository> { TaskRepositoryMock() }
     single<AlarmRepository> { AlarmRepositoryImpl(get(), get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
+//    single<TaskHistoryRepository> { TaskHistoryRepositoryMock() }
     single { DatabaseOpenHelper(get()) }
 }

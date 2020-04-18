@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.ui.history
+package br.com.sailboat.todozy.ui.task.history
 
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
@@ -9,7 +9,7 @@ import java.util.ArrayList
 class TaskHistoryViewModel {
 
     var taskId = EntityHelper.NO_ID
-    val history = ArrayList<ItemView>()
+    val history = mutableListOf<ItemView>()
     var selectedItemPosition: Int = 0
     var filter: TaskHistoryFilter = TaskHistoryFilter()
     var taskMetrics: TaskMetrics? = null

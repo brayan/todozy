@@ -42,7 +42,7 @@
 
         <activity android:name=".ui.task.details.TaskDetailsActivity"/>
 
-        <activity android:name=".ui.history.TaskHistoryActivity"/>
+        <activity android:name=".ui.task.history.TaskHistoryActivity"/>
 
         <activity android:name=".ui.task.insert.InsertTaskActivity"/>
 

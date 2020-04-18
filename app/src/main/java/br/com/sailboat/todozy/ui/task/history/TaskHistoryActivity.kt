@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.ui.history
+package br.com.sailboat.todozy.ui.task.history
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.ui.base.BaseActivity
 import br.com.sailboat.todozy.ui.helper.*
-import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
-import br.com.sailboat.todozy.ui.task.insert.InsertTaskFragment
 
 class TaskHistoryActivity : BaseActivity() {
 

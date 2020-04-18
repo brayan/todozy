@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import br.com.sailboat.todozy.ui.base.BaseFragment
+import br.com.sailboat.todozy.ui.dialog.ProgressDialog
 import br.com.sailboat.todozy.ui.helper.hideKeyboard
 import br.com.sailboat.todozy.ui.helper.log
 import br.com.sailboat.todozy.ui.model.ViewResult
@@ -14,6 +15,7 @@ import br.com.sailboat.todozy.ui.model.ViewResult
 abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), BaseMVPContract.View {
 
     abstract val presenter: P
+    var progress = ProgressDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,14 @@ abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), 
     override fun closeWithResultNotOk() {
         activity?.setResult(Activity.RESULT_CANCELED)
         activity?.finish()
+    }
+
+    override fun showProgress() {
+        fragmentManager?.run { progress.show(this, "PROGRESS") }
+    }
+
+    override fun hideProgress() {
+        fragmentManager?.run { progress.dismiss() }
     }
 
 }

@@ -146,14 +146,14 @@ class InsertTaskPresenter(private val getTask: GetTask,
                 viewModel.selectedDays = customDays
             }
 
-            view?.closeProgress()
+            view?.hideProgress()
             view?.setScreenToHideKeyboard()
             updateName()
             updateNotes()
             updateViews()
 
         } catch (e: Exception) {
-            view?.closeProgress()
+            view?.hideProgress()
             view?.log(e)
             view?.closeWithResultNotOk()
         }

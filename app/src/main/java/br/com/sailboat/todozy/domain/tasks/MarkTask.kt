@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.domain.alarm.UpdateAlarm
 import br.com.sailboat.todozy.domain.history.AddHistory
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import kotlinx.coroutines.runBlocking
 
 class MarkTask(private val getAlarm: GetAlarm,
                private val getTask: GetTask,
@@ -15,8 +16,8 @@ class MarkTask(private val getAlarm: GetAlarm,
                private val addHistory: AddHistory) {
 
 
-    suspend operator fun invoke(taskId: Long, status: TaskStatus) {
-        val alarm = this.getAlarm(taskId)
+    suspend operator fun invoke(taskId: Long, status: TaskStatus) = runBlocking {
+        val alarm = getAlarm(taskId)
         val task = getTask(taskId)
 
         if (alarm == null) {

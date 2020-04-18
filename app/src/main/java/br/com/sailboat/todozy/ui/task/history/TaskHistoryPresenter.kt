@@ -1,18 +1,20 @@
-package br.com.sailboat.todozy.ui.history
+package br.com.sailboat.todozy.ui.task.history
 
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.helper.clearTime
 import br.com.sailboat.todozy.domain.helper.setFinalTimeToCalendar
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.tasks.GetTask
+import br.com.sailboat.todozy.domain.tasks.GetTaskMetrics
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
 import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
-import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
 import java.util.*
 
-class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
+class TaskHistoryPresenter(
+        private val getTaskMetrics: GetTaskMetrics,
+        private val getHistoryView: GetHistoryView) :
+        BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private val viewModel by lazy { TaskHistoryViewModel() }
     override val history by lazy { viewModel.history }
@@ -28,21 +30,23 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
     }
 
     override fun onClickHistory(position: Int) {
-        if (isShowingOptions(position)) {
-            clearHistorySelectedPosition()
-            view?.refreshHistoryItem(position)
-
-        } else if (hasHistorySelected()) {
-            val oldSelectedPosition = viewModel.selectedItemPosition
-            viewModel.selectedItemPosition = position
-            view?.refreshHistoryItem(oldSelectedPosition)
-            view?.refreshHistoryItem(position)
-            view?.scrollTo(position)
-
-        } else {
-            viewModel.selectedItemPosition = position
-            view?.refreshHistoryItem(position)
-            view?.scrollTo(position)
+        when {
+            isShowingOptions(position) -> {
+                clearHistorySelectedPosition()
+                view?.updateHistoryItem(position)
+            }
+            hasHistorySelected() -> {
+                val oldSelectedPosition = viewModel.selectedItemPosition
+                viewModel.selectedItemPosition = position
+                view?.updateHistoryItem(oldSelectedPosition)
+                view?.updateHistoryItem(position)
+                view?.scrollTo(position)
+            }
+            else -> {
+                viewModel.selectedItemPosition = position
+                view?.updateHistoryItem(position)
+                view?.scrollTo(position)
+            }
         }
 
     }
@@ -241,38 +245,38 @@ class TaskHistoryPresenter(private val getTask: GetTask) : BasePresenter<TaskHis
     private fun loadHistoryTasks() = launchAsync {
 
         try {
-//            history = TaskHistoryLoader.loadHistory(getContext(), viewModel.filter)
-//            taskMetrics = TaskMetricsLoader.getMetrics(getContext(), viewModel.filter)
-//
-//            getHistory().clear()
-//            getHistory().addAll(history)
-//            viewModel.taskMetrics = taskMetrics
-//            updateContentViews()
+            val taskMetrics = getTaskMetrics(viewModel.taskId)
+            viewModel.taskMetrics = taskMetrics
 
-        } catch(e: Exception) {
-//            printLogAndShowDialog(e)
-//            updateContentViews()
+            val history = getHistoryView(viewModel.filter)
+            viewModel.history.clear()
+            viewModel.history.addAll(history)
+
+            updateContentViews()
+
+        } catch (e: Exception) {
+            view?.log(e)
+            updateContentViews()
         }
     }
 
     private fun updateContentViews() {
         updateSubtitle()
-//        view?.updateRecycler()
+        view?.updateAllItems()
         updateTasksVisibility()
-        updateAmountOfTasks()
+        updateMetrics()
     }
 
-    private fun updateAmountOfTasks() {
+    private fun updateMetrics() {
         val metrics = viewModel.taskMetrics
 
         if (metrics != null) {
-//            view?.setDoneTasks(String.valueOf(metrics.getDoneTasks()))
-//            view?.setNotDoneTasks(String.valueOf(metrics.getNotDoneTasks()))
+            view?.setDoneTasks(metrics.doneTasks.toString())
+            view?.setNotDoneTasks(metrics.notDoneTasks.toString())
         } else {
             view?.setDoneTasks("0")
             view?.setNotDoneTasks("0")
         }
-
     }
 
     private fun updateSubtitle() {

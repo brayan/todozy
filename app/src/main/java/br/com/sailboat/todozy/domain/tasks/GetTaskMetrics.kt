@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.domain.tasks
 
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
@@ -18,7 +19,11 @@ class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
     }
 
     private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter) : Int {
-        val history = taskHistoryRepository.getTaskHistory(filter)
+        if (filter.taskId == EntityHelper.NO_ID) {
+            return 0
+        }
+
+        val history = taskHistoryRepository.getTaskHistory(filter.taskId)
 
         var consecutiveDone = 0
 

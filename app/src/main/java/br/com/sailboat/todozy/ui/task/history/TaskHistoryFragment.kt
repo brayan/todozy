@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.ui.history
+package br.com.sailboat.todozy.ui.task.history
 
 import android.os.Bundle
 import android.view.Menu
@@ -41,7 +41,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_history_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -80,8 +79,12 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
         }
     }
 
-    override fun refreshHistoryItem(position: Int) {
+    override fun updateHistoryItem(position: Int) {
         recycler.adapter?.notifyItemChanged(position)
+    }
+
+    override fun updateAllItems() {
+        recycler.adapter?.notifyDataSetChanged()
     }
 
     override fun scrollTo(position: Int) {
@@ -123,7 +126,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
                 onClickClearHistory(item)
             }
         })
-
     }
 
     override fun setDoneTasks(doneTasks: String) {
@@ -139,7 +141,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
             override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
                 presenter.onClickOkDateRangeSelectorDialog(initialDate, finalDate)
             }
-
         })
     }
 

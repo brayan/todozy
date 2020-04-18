@@ -17,8 +17,6 @@ interface TaskDetailsContract {
         fun showFire()
         fun hideFire()
         fun updateDetails()
-        fun showProgress()
-        fun closeProgress()
         fun showErrorOnDeleteTask()
         fun setTaskDetailsTitle()
         fun setEmptyTitle()

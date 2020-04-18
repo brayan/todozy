@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.ui.history
+package br.com.sailboat.todozy.ui.task.history
 
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPContract
@@ -23,7 +23,8 @@ interface TaskHistoryContract {
         fun showStatusFilterDialog(status: TaskStatusSelectableItem)
         fun setEmptySubtitle()
         fun setDateRangeSubtitle(initialDate: Calendar, finalDate: Calendar)
-        fun refreshHistoryItem(position: Int)
+        fun updateHistoryItem(position: Int)
+        fun updateAllItems()
         fun scrollTo(position: Int)
         fun removeHistoryItem(position: Int)
         fun scrollToTop()

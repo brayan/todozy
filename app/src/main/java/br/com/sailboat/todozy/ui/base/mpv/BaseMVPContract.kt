@@ -10,6 +10,8 @@ interface BaseMVPContract {
         fun showSimpleMessage(message: String)
         fun closeWithResultOk()
         fun closeWithResultNotOk()
+        fun showProgress()
+        fun hideProgress()
     }
 
     interface Presenter {

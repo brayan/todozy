@@ -10,6 +10,6 @@ data class TaskHistoryFilter(var initialDate: Calendar? = null,
                              var finalDate: Calendar? = null,
                              var status: TaskStatusSelectableItem = TaskStatusSelectableItem.NO_FILTER,
                              var date: DateFilterTaskHistorySelectableItem = DateFilterTaskHistorySelectableItem.NO_FILTER,
-                             var category: TaskHistoryCategory,
+                             var category: TaskHistoryCategory? = null,
                              var taskId: Long = EntityHelper.NO_ID) : BaseFilter()
 

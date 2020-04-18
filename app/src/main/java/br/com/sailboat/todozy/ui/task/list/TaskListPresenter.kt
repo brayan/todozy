@@ -1,11 +1,15 @@
 package br.com.sailboat.todozy.ui.task.list
 
 import br.com.sailboat.todozy.domain.alarm.GetAlarm
+import br.com.sailboat.todozy.domain.filter.TaskFilter
 import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.TaskCategory
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.tasks.GetTaskMetrics
 import br.com.sailboat.todozy.domain.tasks.MarkTask
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
+import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskItemView
 import kotlinx.coroutines.delay
 
@@ -15,21 +19,24 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
                         private val markTask: MarkTask)
     : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
 
-    private val viewModel by lazy { TaskListViewModel() }
+    private val tasksView = mutableListOf<ItemView>()
+    private var taskMetrics: TaskMetrics? = null
+    private var filter = TaskFilter(TaskCategory.TODAY)
 
     override fun onStart() {
         view?.checkAndPerformFirstTimeConfigurations()
         view?.setAlarmUpdateTasks()
-    }
-
-    override fun postStart() {
         loadTasks()
         updateMetrics()
     }
 
-    override fun getTaskViewList() = viewModel.tasksView
+    override fun onRestart() {
+        updateViews()
+    }
 
-    override fun getTextForSearch() = viewModel.filter.text
+    override fun getTaskViewList() = tasksView
+
+    override fun getTextForSearch() = filter.text
 
     override fun onClickMenuSettings() {
         view?.showSettings()
@@ -44,7 +51,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
     }
 
     override fun onClickTask(position: Int) {
-        val task = viewModel.tasksView[position] as TaskItemView
+        val task = tasksView[position] as TaskItemView
         view?.showTaskDetails(task.taskId)
     }
 
@@ -53,21 +60,22 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
     override fun onSwipeTaskRight(position: Int) = onTaskSwiped(position, TaskStatus.NOT_DONE)
 
     override fun submitTextForSearch(text: String) {
-        viewModel.filter.text = text
+        filter.text = text
         loadTasks() // handle the previous launched async operations?
     }
 
     private fun loadTasks() {
         launchAsync {
             try {
-                val tasks = getTasksViewUseCase(viewModel.filter)
-                viewModel.tasksView.clear()
-                viewModel.tasksView.addAll(tasks)
-
+                view?.showProgress()
+                val tasks = getTasksViewUseCase(filter)
+                tasksView.clear()
+                tasksView.addAll(tasks)
                 updateViews()
-
             } catch (e: Exception) {
                 view?.log(e)
+            } finally {
+                view?.hideProgress()
             }
         }
     }
@@ -75,21 +83,21 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
     private fun onTaskSwiped(position: Int, status: TaskStatus) {
         launchAsync {
             try {
-                viewModel.taskMetrics = null
+                taskMetrics = null
                 updateMetrics()
 
-                val taskId = (viewModel.tasksView[position] as TaskItemView).taskId
+                val taskId = (tasksView[position] as TaskItemView).taskId
 
                 markTask(taskId, status)
 
-                viewModel.tasksView.removeAt(position)
+                tasksView.removeAt(position)
                 view?.removeTaskFromList(position)
 
                 val alarm = getAlarm(taskId)
 
                 alarm?.run {
                     if (RepeatType.isAlarmRepeating(alarm)) {
-                        viewModel.taskMetrics = getTaskMetrics(taskId)
+                        taskMetrics = getTaskMetrics(taskId)
                         updateMetrics()
                     }
                 }
@@ -107,30 +115,30 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
         }
     }
 
-    private fun updateViews() {
-        view?.closeNotifications()
-        view?.updateTasks()
+    private fun updateViews() = view?.run {
+        closeNotifications()
+        updateTasks()
         updateTasksVisibility()
         updateMetrics()
     }
 
-    private fun updateTasksVisibility() {
-        if (viewModel.tasksView.isEmpty()) {
-            view?.hideTasks()
-            view?.showEmptyView()
+    private fun updateTasksVisibility() = view?.run {
+        if (tasksView.isEmpty()) {
+            hideTasks()
+            showEmptyView()
         } else {
-            view?.showTasks()
-            view?.hideEmptyView()
+            showTasks()
+            hideEmptyView()
         }
     }
 
-    private fun updateMetrics() {
-        if (viewModel.taskMetrics != null) {
-            view?.setEmptyTitle()
-            view?.showMetrics(viewModel.taskMetrics!!)
+    private fun updateMetrics() = view?.run {
+        if (taskMetrics != null) {
+            setEmptyTitle()
+            showMetrics(taskMetrics!!)
         } else {
-            view?.setMainTitle()
-            view?.hideMetrics()
+            setMainTitle()
+            hideMetrics()
         }
     }
 

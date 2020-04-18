@@ -38,10 +38,10 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
             // TODO: DISABLETASK
             // DisableTask(taskId)
 
-            view?.closeProgress()
+            view?.hideProgress()
             view?.closeWithResultOk()
         } catch (e: Exception) {
-            view?.closeProgress()
+            view?.hideProgress()
             view?.log(e)
             view?.showErrorOnDeleteTask()
         }

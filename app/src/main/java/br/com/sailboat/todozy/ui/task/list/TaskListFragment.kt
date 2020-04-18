@@ -14,7 +14,7 @@ import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
 import br.com.sailboat.todozy.ui.helper.*
 import br.com.sailboat.todozy.ui.helper.SwipeTaskLeftRight
-import br.com.sailboat.todozy.ui.history.TaskHistoryActivity
+import br.com.sailboat.todozy.ui.task.history.TaskHistoryActivity
 import br.com.sailboat.todozy.ui.settings.SettingsActivity
 import br.com.sailboat.todozy.ui.task.details.TaskDetailsActivity
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity

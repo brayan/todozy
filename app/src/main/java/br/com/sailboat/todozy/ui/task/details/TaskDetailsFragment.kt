@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
 import br.com.sailboat.todozy.ui.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.ui.helper.*
-import br.com.sailboat.todozy.ui.history.TaskHistoryActivity
+import br.com.sailboat.todozy.ui.task.history.TaskHistoryActivity
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
 import kotlinx.android.synthetic.main.appbar_task_details.*
 import kotlinx.android.synthetic.main.fab.*
@@ -101,14 +101,6 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
 
     override fun updateDetails() {
         recycler.adapter?.notifyDataSetChanged()
-    }
-
-    override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun closeProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showErrorOnDeleteTask() {

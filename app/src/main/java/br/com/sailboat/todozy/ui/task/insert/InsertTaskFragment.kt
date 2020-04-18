@@ -178,14 +178,6 @@ class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), Inse
         }
     }
 
-    override fun showProgress() {
-        progressDialog.show(fragmentManager!!, "PROGRESS")
-    }
-
-    override fun closeProgress() {
-        progressDialog.dismissAllowingStateLoss()
-    }
-
     override fun setScreenToHideKeyboard() {
         activity?.run { setActivityToHideKeyboard() }
     }

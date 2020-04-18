@@ -16,7 +16,10 @@ fun TaskData.mapToTask(alarm: Alarm?) = Task(id = id,
 
 fun Task.mapToTaskData() = TaskData(id = id, name = name, notes = notes)
 
-fun TaskHistoryData.mapToTaskHistory() = TaskHistory(taskId = taskId, status = TaskStatus.indexOf(status))
+fun TaskHistoryData.mapToTaskHistory() = TaskHistory(taskId = taskId,
+        taskName = taskName ?: "",
+        status = TaskStatus.indexOf(status),
+        insertingDate = "") // TODO: PASS DATE
 
 fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
 

@@ -28,8 +28,6 @@ interface InsertTaskContract {
         fun showErrorAlarmNotValid()
         fun showErrorOnSave()
         fun showErrorTaskNameCantBeBlank()
-        fun showProgress()
-        fun closeProgress()
         fun setScreenToHideKeyboard()
         fun setCustomRepeatType(custom: String?)
     }
