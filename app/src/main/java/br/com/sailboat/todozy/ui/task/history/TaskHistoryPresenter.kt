@@ -9,6 +9,7 @@ import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
 import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskHistoryPresenter(
@@ -242,7 +243,7 @@ class TaskHistoryPresenter(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun loadHistoryTasks() = launchAsync {
+    private fun loadHistoryTasks() = runBlocking {
 
         try {
             val taskMetrics = getTaskMetrics(viewModel.taskId)

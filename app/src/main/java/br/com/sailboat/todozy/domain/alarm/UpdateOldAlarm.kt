@@ -6,10 +6,14 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.repository.AlarmRepository
 
-class SetNextValidAlarm(private val alarmRepository: AlarmRepository) {
+class UpdateOldAlarm(private val alarmRepository: AlarmRepository) {
 
     suspend operator fun invoke(alarm: Alarm, task: Task): Alarm {
-        alarm.dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays)
+
+        if (alarm.dateTime.isBeforeNow()) {
+            alarm.dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays)
+        }
+
         alarmRepository.setAlarm(alarm, task)
 
         return alarm

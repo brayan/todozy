@@ -15,7 +15,7 @@ class TaskSQLiteTest {
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        taskSQLite = TaskSQLite(context)
+        taskSQLite = TaskSQLite(DatabaseOpenHelper(context))
     }
 
     @After

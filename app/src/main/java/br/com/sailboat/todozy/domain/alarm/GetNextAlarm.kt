@@ -5,13 +5,12 @@ import br.com.sailboat.todozy.domain.helper.isBeforeNow
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.repository.AlarmRepository
+import java.util.*
 
-class SetNextValidAlarm(private val alarmRepository: AlarmRepository) {
+class GetNextAlarm {
 
-    suspend operator fun invoke(alarm: Alarm, task: Task): Alarm {
+    operator fun invoke(alarm: Alarm): Alarm {
         alarm.dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays)
-        alarmRepository.setAlarm(alarm, task)
-
         return alarm
     }
 

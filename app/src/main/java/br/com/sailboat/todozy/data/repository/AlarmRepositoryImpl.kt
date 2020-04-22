@@ -16,8 +16,7 @@ class AlarmRepositoryImpl(database: DatabaseOpenHelper, context: Context) : Alar
     private val alarmManager by lazy { AlarmManagerHelper(context) }
 
     override suspend fun getAlarmByTaskId(taskId: Long): Alarm? {
-        val alarmData = this.alarmSQLite.getAlarmByTask(taskId)
-        return alarmData?.mapToAlarm()
+        return alarmSQLite.getAlarmByTask(taskId)?.mapToAlarm()
     }
 
     override suspend fun deleteAlarmByTask(task: Task) {

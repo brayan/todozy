@@ -18,7 +18,7 @@ fun Task.mapToTaskData() = TaskData(id = id, name = name, notes = notes)
 
 fun TaskHistoryData.mapToTaskHistory() = TaskHistory(taskId = taskId,
         taskName = taskName ?: "",
-        status = TaskStatus.indexOf(status),
+        status = TaskStatus.getById(status),
         insertingDate = "") // TODO: PASS DATE
 
 fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }

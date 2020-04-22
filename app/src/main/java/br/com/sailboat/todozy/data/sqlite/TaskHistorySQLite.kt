@@ -26,7 +26,7 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
             .toString()
 
 
-    fun save(taskHistory: TaskHistoryData) {
+    fun save(taskId: Long, taskStatus: Int): Long {
         val sql = StringBuilder()
 
         sql.append(" INSERT INTO TaskHistory ")
@@ -34,12 +34,12 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         sql.append(" VALUES (?, ?, ?, ?); ")
 
         val statement = compileStatement(sql.toString())
-        statement.bindLong(1, taskHistory.taskId)
-        statement.bindLong(2, taskHistory.status.toLong())
+        statement.bindLong(1, taskId)
+        statement.bindLong(2, taskStatus.toLong())
         statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
-        statement.bindLong(4, parseBooleanToInt(taskHistory.enabled).toLong())
+        statement.bindLong(4, parseBooleanToInt(true).toLong())
 
-        taskHistory.id = insert(statement)
+        return insert(statement)
     }
 
     fun update(taskHistory: TaskHistoryData) {
@@ -224,7 +224,7 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
     private fun Cursor.mapToTaskHistoryData() = TaskHistoryData(id = getLong(this, "id") ?: EntityHelper.NO_ID,
             taskId = getLong(this, "fkTaskId") ?: EntityHelper.NO_ID,
             taskName = getString(this, "name"),
-            status = getInt(this, "status") ?: TaskStatus.DONE.ordinal,
+            status = getInt(this, "status") ?: TaskStatus.DONE.id,
             insertingDate = getString(this, "insertingDate"),
             enabled = getBoolean(this, "enabled") ?: true)
 

@@ -2,9 +2,12 @@ package br.com.sailboat.todozy.data.repository
 
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
 import br.com.sailboat.todozy.data.mapper.mapToTaskHistoryList
+import br.com.sailboat.todozy.data.model.TaskHistoryData
 import br.com.sailboat.todozy.data.sqlite.TaskHistorySQLite
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 
 class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryRepository {
@@ -21,6 +24,10 @@ class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryReposi
 
     override suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistory> {
         return taskHistorySQLite.getPreviousDaysHistory(filter).mapToTaskHistoryList()
+    }
+
+    override suspend fun insert(task: Task, status: TaskStatus) {
+        taskHistorySQLite.save(task.id, status.id)
     }
 
     override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {

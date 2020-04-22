@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.data.repository.mock
 
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
@@ -49,6 +50,10 @@ class TaskHistoryRepositoryMock : TaskHistoryRepository {
         history.add(TaskHistory(0, "Task", TaskStatus.DONE, "2020-04-15 20:13:30"))
 
         return history
+    }
+
+    override suspend fun insert(task: Task, status: TaskStatus) {
+
     }
 
 }
