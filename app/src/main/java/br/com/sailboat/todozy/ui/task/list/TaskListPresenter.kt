@@ -80,38 +80,37 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
         }
     }
 
-    private fun onTaskSwiped(position: Int, status: TaskStatus) {
-        launchAsync {
-            try {
-                taskMetrics = null
-                updateMetrics()
+    private fun onTaskSwiped(position: Int, status: TaskStatus) = launchAsync {
+        try {
+            taskMetrics = null
+            updateMetrics()
 
-                val taskId = (tasksView[position] as TaskItemView).taskId
+            val taskId = (tasksView[position] as TaskItemView).taskId
 
-                markTask(taskId, status)
+            markTask(taskId, status)
 
-                tasksView.removeAt(position)
-                view?.removeTaskFromList(position)
+            tasksView.removeAt(position)
+            view?.removeTaskFromList(position)
 
-                val alarm = getAlarm(taskId)
+            val alarm = getAlarm(taskId)
 
-                alarm?.run {
-                    if (RepeatType.isAlarmRepeating(alarm)) {
-                        taskMetrics = getTaskMetrics(taskId)
-                        updateMetrics()
-                    }
+            alarm?.run {
+                if (RepeatType.isAlarmRepeating(alarm)) {
+                    taskMetrics = getTaskMetrics(taskId)
+                    updateMetrics()
                 }
-
-                delay(4000)
-
-                loadTasks()
-
-            } catch (e: Exception) {
-                view?.showErrorOnSwipeTask()
-                view?.log(e)
-                updateViews()
             }
 
+            delay(4000)
+
+            loadTasks()
+            taskMetrics = null
+            updateMetrics()
+
+        } catch (e: Exception) {
+            view?.showErrorOnSwipeTask()
+            view?.log(e)
+            updateViews()
         }
     }
 

@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.domain.model
 
 enum class TaskStatus(val id: Int) {
 
-    DONE(0), NOT_DONE(1);
+    NOT_DONE(0), DONE(1);
 
     companion object {
 
