@@ -29,11 +29,8 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     override val presenter: TaskListContract.Presenter by inject()
     override val layoutId = R.layout.frg_task_list
 
-    private var searchViewOpen = false
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
-        initSearchViewMenu(menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -57,6 +54,10 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         initRecyclerView()
 
         fab.setOnClickListener { presenter.onClickNewTask() }
+    }
+
+    override fun onSubmitSearch(search: String) {
+        presenter.submitTextForSearch(search)
     }
 
     override fun checkAndPerformFirstTimeConfigurations() {
@@ -123,59 +124,6 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun updateTasks() {
         recycler.adapter?.notifyDataSetChanged()
-    }
-
-    private fun initSearchViewMenu(menu: Menu) {
-        menu.findItem(R.id.menu_search)?.run {
-            val searchView = this.actionView as SearchView
-            initListenerSearchView(searchView)
-            updateSearchView(searchView, this)
-        }
-    }
-
-    private fun initListenerSearchView(searchView: SearchView) {
-        searchView.setOnSearchClickListener { searchViewOpen = true }
-
-        searchView.setOnCloseListener {
-            searchViewOpen = false
-            false
-        }
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            private var timer = Timer()
-            private val DELAY: Long = 500
-
-            override fun onQueryTextChange(text: String): Boolean {
-                timer.cancel()
-                timer = Timer()
-                timer.schedule(object : TimerTask() {
-                    override fun run() {
-                        presenter.submitTextForSearch(text)
-                    }
-                }, DELAY)
-
-                return true
-
-            }
-
-            override fun onQueryTextSubmit(text: String): Boolean {
-                return true
-            }
-        })
-    }
-
-    private fun updateSearchView(searchView: SearchView, menuSearchView: MenuItem) {
-
-        if (searchViewOpen) {
-            menuSearchView.expandActionView()
-            searchView.setQuery(presenter.getTextForSearch(), true)
-            searchView.clearFocus()
-            searchView.isFocusable = true
-            searchView.isIconified = false
-            searchView.requestFocusFromTouch()
-        }
-
     }
 
     private fun initRecyclerView() {

@@ -29,10 +29,10 @@ class GetHistoryView(private val context: Context,
             TaskHistoryCategory.PREVIOUS_DAYS to R.string.previous_days)
 
     suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
-        historyCategories.map { taskType ->
+        historyCategories.map { category ->
             async {
-                filter.category = taskType.key
-                getTaskHistoryView(filter, taskType.value)
+                filter.category = category.key
+                getTaskHistoryView(filter, category.value)
             }
         }.awaitAll().flatten()
     }

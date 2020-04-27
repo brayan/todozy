@@ -29,10 +29,12 @@ interface TaskHistoryContract {
         fun removeHistoryItem(position: Int)
         fun scrollToTop()
         fun getTaskId(): Long
+        fun hideHistory()
+        fun showHistory()
     }
 
     interface Presenter : BaseMVPContract.Presenter {
-        val history: List<ItemView>
+        fun getHistoryViewList(): List<ItemView>
         fun onClickFilterDate()
         fun onClickFilterStatus()
         fun onClickMenuFilter()
@@ -57,6 +59,7 @@ interface TaskHistoryContract {
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
         fun checkIfTaskDesabled(position: Int): Boolean
+        fun onSubmitSearch(search: String)
     }
 
 

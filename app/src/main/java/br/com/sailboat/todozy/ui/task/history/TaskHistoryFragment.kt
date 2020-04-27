@@ -17,7 +17,7 @@ import br.com.sailboat.todozy.ui.dialog.selectable.*
 import br.com.sailboat.todozy.ui.helper.*
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
-import kotlinx.android.synthetic.main.recycler.*
+import kotlinx.android.synthetic.main.frg_task_history.*
 import kotlinx.android.synthetic.main.task_metrics.*
 import kotlinx.android.synthetic.main.toolbar_scroll.*
 import org.koin.android.ext.android.inject
@@ -53,6 +53,30 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    override fun initViews() {
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbar.setTitle(R.string.history)
+
+        recycler.run {
+            adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
+                override fun onClickMarkTaskAsDone(position: Int) = presenter.onClickMarkTaskAsDone(position)
+                override fun onClickMarkTaskAsNot(position: Int) = presenter.onClickMarkTaskAsNot(position)
+                override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
+                override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
+                override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
+                override fun checkIfTaskDesabled(position: Int) = presenter.checkIfTaskDesabled(position)
+                override val history: List<ItemView> = presenter.getHistoryViewList()
+            })
+            layoutManager = LinearLayoutManager(activity)
+        }
+    }
+
+    override fun onSubmitSearch(search: String) {
+        presenter.onSubmitSearch(search)
     }
 
     override fun showFilterDialog(filter: TaskHistoryFilter) {
@@ -101,23 +125,12 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
         return arguments?.getTaskId() ?: EntityHelper.NO_ID
     }
 
-    override fun initViews() {
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    override fun hideHistory() {
+        recycler.gone()
+    }
 
-        recycler.run {
-            adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
-                override fun onClickMarkTaskAsDone(position: Int) = presenter.onClickMarkTaskAsDone(position)
-                override fun onClickMarkTaskAsNot(position: Int) = presenter.onClickMarkTaskAsNot(position)
-                override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
-                override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
-                override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
-                override fun checkIfTaskDesabled(position: Int) = presenter.checkIfTaskDesabled(position)
-                override val history: List<ItemView> = presenter.history
-            })
-            layoutManager = LinearLayoutManager(activity)
-        }
+    override fun showHistory() {
+        recycler.visible()
     }
 
     override fun showDialogClearHistory() {

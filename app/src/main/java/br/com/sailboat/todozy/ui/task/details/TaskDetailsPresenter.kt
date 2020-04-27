@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.ui.task.details
 
 import br.com.sailboat.todozy.domain.alarm.GetAlarm
+import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.tasks.GetTaskMetrics
@@ -82,7 +83,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
 
             val taskDetails = getTaskDetailsView(taskId)
 
-            viewModel.taskMetrics = getTaskMetrics(taskId)
+            viewModel.taskMetrics = getTaskMetrics(TaskHistoryFilter(taskId = taskId))
 
             viewModel.alarm = getAlarm(taskId)
 

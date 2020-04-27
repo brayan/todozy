@@ -8,9 +8,7 @@ import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 
 class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
 
-    suspend operator fun invoke(taskId: Long): TaskMetrics {
-        val filter = TaskHistoryFilter(taskId = taskId)
-
+    suspend operator fun invoke(filter: TaskHistoryFilter): TaskMetrics {
         val done = taskHistoryRepository.getTotalOfDoneTasks(filter)
         val notDone = taskHistoryRepository.getTotalOfNotDoneTasks(filter)
         val consecutiveDone = getTotalOfConsecutiveDoneTasks(filter)

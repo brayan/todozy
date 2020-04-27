@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.ui.task.list
 
 import br.com.sailboat.todozy.domain.alarm.GetAlarm
 import br.com.sailboat.todozy.domain.filter.TaskFilter
+import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -96,7 +97,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
 
             alarm?.run {
                 if (RepeatType.isAlarmRepeating(alarm)) {
-                    taskMetrics = getTaskMetrics(taskId)
+                    taskMetrics = getTaskMetrics(TaskHistoryFilter(taskId = taskId))
                     updateMetrics()
                 }
             }
