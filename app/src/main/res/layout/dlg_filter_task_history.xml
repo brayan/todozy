@@ -36,7 +36,7 @@
             android:text="@string/label_date" />
 
         <TextView
-            android:id="@+id/dlg_filter_task_history__tv__date"
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"
@@ -62,7 +62,7 @@
             android:text="@string/label_status" />
 
         <TextView
-            android:id="@+id/dlg_filter_task_history__tv__status"
+            android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"

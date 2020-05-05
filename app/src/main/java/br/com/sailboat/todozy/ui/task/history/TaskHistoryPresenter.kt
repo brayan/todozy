@@ -12,7 +12,6 @@ import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectab
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskHistoryPresenter(
@@ -25,6 +24,8 @@ class TaskHistoryPresenter(
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
     private var taskMetrics: TaskMetrics? = null
+    private var dateRangeType = DateFilterTaskHistorySelectableItem.NO_FILTER
+    private var statusSelectableItem = TaskStatusSelectableItem.NO_FILTER
 
     override fun onStart() {
         extractTaskId()
@@ -89,14 +90,31 @@ class TaskHistoryPresenter(
     override fun onSubmitSearch(search: String) {
         filter.text = search
         loadHistoryTasks()
-//        view?.scrollToTop()
+    }
+
+    override fun onClickDateRange(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem) {
+        if (dateRangeTypeSelected === dateRangeType) {
+            return
+        }
+
+        dateRangeType = dateRangeTypeSelected
+
+        when (dateRangeTypeSelected) {
+            DateFilterTaskHistorySelectableItem.NO_FILTER -> onClickFilterNoFilter()
+            DateFilterTaskHistorySelectableItem.TODAY -> onClickFilterToday()
+            DateFilterTaskHistorySelectableItem.YESTERDAY -> onClickFilterYesterday()
+            DateFilterTaskHistorySelectableItem.LAST_7_DAYS -> onClickFilterLastSevenDays()
+            DateFilterTaskHistorySelectableItem.LAST_30_DAYS -> onClickFilterLastThirtyDays()
+            DateFilterTaskHistorySelectableItem.DATE_RANGE -> onClickFilterDateRange()
+        }
+
     }
 
     override fun onClickMarkTaskAsDone(position: Int) {
         updateHistoryStatus(position, TaskStatus.DONE)
     }
 
-    override fun onClickMarkTaskAsNot(position: Int) {
+    override fun onClickMarkTaskAsNotDone(position: Int) {
         updateHistoryStatus(position, TaskStatus.NOT_DONE)
     }
 
@@ -116,26 +134,18 @@ class TaskHistoryPresenter(
 
     }
 
-
-//    override fun submitTextForSearch(text: String) {
-//        filter.text = text
-//        loadHistoryTasks() // handle the previus launched async operations?
-//        view?.scrollToTop()
-//    }
-
     override fun onClickMenuClearHistory() {
         view?.showDialogClearHistory()
     }
 
     override fun onClickMenuFilter() {
-        //        view?.showDateFilterDialog(getFilter().getDate());
-        view?.showFilterDialog(filter)
+        view?.showFilterDialog(dateRangeType, statusSelectableItem)
     }
 
     override fun onClickOkDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
         filter.initialDate = initialDate
         filter.finalDate = finalDate
-        filter.date = DateFilterTaskHistorySelectableItem.DATE_RANGE
+        dateRangeType = DateFilterTaskHistorySelectableItem.DATE_RANGE
 
         loadHistoryTasks()
         view?.scrollToTop()
@@ -152,90 +162,66 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickFilterNoFilter() {
-        if (filter.date !== DateFilterTaskHistorySelectableItem.NO_FILTER) {
-            filter.date = DateFilterTaskHistorySelectableItem.NO_FILTER
-            filter.initialDate = null
-            filter.finalDate = null
-
-            loadHistoryTasks()
-            view?.scrollToTop()
-        }
+        filter.initialDate = null
+        filter.finalDate = null
+        loadHistoryTasks()
     }
 
     override fun onClickFilterToday() {
-        if (filter.date !== DateFilterTaskHistorySelectableItem.TODAY) {
-            filter.date = DateFilterTaskHistorySelectableItem.TODAY
+        val initial = Calendar.getInstance()
+        initial.clearTime()
 
-            val initial = Calendar.getInstance()
-            initial.clearTime()
+        val finalTime = Calendar.getInstance()
+        finalTime.setFinalTimeToCalendar()
 
-            val finalTime = Calendar.getInstance()
-            finalTime.setFinalTimeToCalendar()
+        filter.initialDate = initial
+        filter.finalDate = finalTime
 
-            filter.initialDate = initial
-            filter.finalDate = finalTime
+        loadHistoryTasks()
 
-            loadHistoryTasks()
-            view?.scrollToTop()
-        }
     }
 
     override fun onClickFilterYesterday() {
-        if (filter.date !== DateFilterTaskHistorySelectableItem.YESTERDAY) {
-            filter.date = DateFilterTaskHistorySelectableItem.YESTERDAY
+        val initial = Calendar.getInstance()
+        initial.add(Calendar.DAY_OF_MONTH, -1)
+        initial.clearTime()
 
-            val initial = Calendar.getInstance()
-            initial.add(Calendar.DAY_OF_MONTH, -1)
-            initial.clearTime()
+        val finalTime = Calendar.getInstance()
+        finalTime.add(Calendar.DAY_OF_MONTH, -1)
+        finalTime.setFinalTimeToCalendar()
 
-            val finalTime = Calendar.getInstance()
-            finalTime.add(Calendar.DAY_OF_MONTH, -1)
-            finalTime.setFinalTimeToCalendar()
+        filter.initialDate = initial
+        filter.finalDate = finalTime
 
-            filter.initialDate = initial
-            filter.finalDate = finalTime
-
-            loadHistoryTasks()
-            view?.scrollToTop()
-        }
+        loadHistoryTasks()
     }
 
     override fun onClickFilterLastSevenDays() {
-        if (filter.date !== DateFilterTaskHistorySelectableItem.LAST_7_DAYS) {
-            filter.date = DateFilterTaskHistorySelectableItem.LAST_7_DAYS
+        val initial = Calendar.getInstance()
+        initial.add(Calendar.DAY_OF_MONTH, -7)
+        initial.clearTime()
 
-            val initial = Calendar.getInstance()
-            initial.add(Calendar.DAY_OF_MONTH, -7)
-            initial.clearTime()
+        val finalTime = Calendar.getInstance()
+        finalTime.setFinalTimeToCalendar()
 
-            val finalTime = Calendar.getInstance()
-            finalTime.setFinalTimeToCalendar()
+        filter.initialDate = initial
+        filter.finalDate = finalTime
 
-            filter.initialDate = initial
-            filter.finalDate = finalTime
-
-            loadHistoryTasks()
-            view?.scrollToTop()
-        }
+        loadHistoryTasks()
     }
 
     override fun onClickFilterLastThirtyDays() {
-        if (filter.date !== DateFilterTaskHistorySelectableItem.LAST_30_DAYS) {
-            filter.date = DateFilterTaskHistorySelectableItem.LAST_30_DAYS
+        val initial = Calendar.getInstance()
+        initial.add(Calendar.DAY_OF_MONTH, -30)
+        initial.clearTime()
 
-            val initial = Calendar.getInstance()
-            initial.add(Calendar.DAY_OF_MONTH, -30)
-            initial.clearTime()
+        val finalTime = Calendar.getInstance()
+        finalTime.setFinalTimeToCalendar()
 
-            val finalTime = Calendar.getInstance()
-            finalTime.setFinalTimeToCalendar()
+        filter.initialDate = initial
+        filter.finalDate = finalTime
 
-            filter.initialDate = initial
-            filter.finalDate = finalTime
-
-            loadHistoryTasks()
-            view?.scrollToTop()
-        }
+        loadHistoryTasks()
     }
 
     override fun onClickFilterDateRange() {
@@ -256,7 +242,6 @@ class TaskHistoryPresenter(
 
     private fun loadHistoryTasks() = launchAsync {
         try {
-            // TODO: Filter metrics by select filter
             taskMetrics = getTaskMetrics(filter)
 
             val historyView = getHistoryView(filter)
@@ -274,7 +259,7 @@ class TaskHistoryPresenter(
     private fun updateContentViews() {
         updateSubtitle()
         view?.updateAllItems()
-        updateTasksVisibility()
+        updateHistoryVisibility()
         updateMetrics()
     }
 
@@ -294,12 +279,12 @@ class TaskHistoryPresenter(
         val initialDate = filter.initialDate
         val finalDate = filter.finalDate
 
-        if (filter.date === DateFilterTaskHistorySelectableItem.NO_FILTER) {
+        if (dateRangeType === DateFilterTaskHistorySelectableItem.NO_FILTER) {
             view?.setEmptySubtitle()
             return
         }
 
-        if (filter.date !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
+        if (dateRangeType !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
 //            view?.setSubtitle(getString(filter.date.getName()).toUpperCase())
         } else {
             view?.setDateRangeSubtitle(initialDate!!, finalDate!!)
@@ -307,14 +292,14 @@ class TaskHistoryPresenter(
 
     }
 
-    private fun updateTasksVisibility() {
+    private fun updateHistoryVisibility() {
         if (isTasksEmpty()) {
             view?.hideHistory()
-//            view?.showEmptyView()
+            view?.showEmptyView()
 //            view?.expandToolbar()
         } else {
             view?.showHistory()
-//            view?.hideEmptyView()
+            view?.hideEmptyView()
         }
     }
 
@@ -373,15 +358,25 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickFilterDate() {
-        view?.showDateFilterDialog(filter.date)
+        view?.showDateFilterDialog(dateRangeType)
     }
 
     override fun onClickFilterStatus() {
-        view?.showStatusFilterDialog(filter.status)
+        view?.showStatusFilterDialog(statusSelectableItem)
     }
 
     override fun onClickFilterStatusItem(item: TaskStatusSelectableItem) {
-        filter.status = item
+        if (item === statusSelectableItem) {
+            return
+        }
+        statusSelectableItem = item
+
+        when (statusSelectableItem) {
+            TaskStatusSelectableItem.NO_FILTER -> filter.status = null
+            TaskStatusSelectableItem.TASKS_DONE -> filter.status = TaskStatus.DONE
+            TaskStatusSelectableItem.TASKS_NOT_DONE -> filter.status = TaskStatus.NOT_DONE
+        }
+
         loadHistoryTasks()
     }
 

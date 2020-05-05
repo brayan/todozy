@@ -29,7 +29,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     interface Callback {
         fun onClickMarkTaskAsDone(position: Int)
-        fun onClickMarkTaskAsNot(position: Int)
+        fun onClickMarkTaskAsNotDone(position: Int)
         fun onClickHistory(position: Int)
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
@@ -118,7 +118,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     private fun initViewMarkAsNotDone() = with(itemView) {
         vh_task_history__tv__mark_as_done.gone()
         vh_task_history__tv__mask_as_not_done.visible()
-        vh_task_history__tv__mask_as_not_done.setOnClickListener { callback.onClickMarkTaskAsNot(getAdapterPosition()) }
+        vh_task_history__tv__mask_as_not_done.setOnClickListener { callback.onClickMarkTaskAsNotDone(getAdapterPosition()) }
     }
 
     private fun initViewMarkAsDone() = with(itemView) {

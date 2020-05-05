@@ -148,4 +148,5 @@
     <string name="product_added">Produto adicionado!</string>
     <string name="exception_product_name">É necessário inserir o nome do produto</string>
     <string name="exception_product_quantity">É necessário inserir a quantidade do produto</string>
+    <string name="apply">Aplicar</string>
 </resources>

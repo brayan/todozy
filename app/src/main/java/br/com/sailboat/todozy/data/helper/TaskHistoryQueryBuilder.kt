@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.data.helper
 
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.*
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
 import java.util.*
 
@@ -31,9 +32,9 @@ class TaskHistoryQueryBuilder {
             query.append(" AND Task.name LIKE ? ")
         }
 
-        if (filter.status === TaskStatusSelectableItem.TASKS_DONE) {
+        if (filter.status === TaskStatus.DONE) {
             query.append(" AND TaskHistory.status = 1")
-        } else if (filter.status === TaskStatusSelectableItem.TASKS_NOT_DONE) {
+        } else if (filter.status === TaskStatus.NOT_DONE) {
             query.append(" AND TaskHistory.status = 0")
         }
 

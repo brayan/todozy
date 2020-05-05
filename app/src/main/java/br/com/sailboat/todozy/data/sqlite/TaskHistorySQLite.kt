@@ -86,6 +86,7 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         query.bindWhereToday()
         query.bindWhereEnabled()
         query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
         return getTaskHistoryList(query.toString(), filter)
@@ -99,6 +100,7 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         query.bindWhereYesterday()
         query.bindWhereEnabled()
         query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
         return getTaskHistoryList(query.toString(), filter)
@@ -112,6 +114,7 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         query.bindWherePreviousDays()
         query.bindWhereEnabled()
         query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
         return getTaskHistoryList(query.toString(), filter)

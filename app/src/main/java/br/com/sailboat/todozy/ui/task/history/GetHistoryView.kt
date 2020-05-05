@@ -11,6 +11,7 @@ import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.domain.tasks.GetTaskHistory
+import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.mapper.mapToTaskHistoryView
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.SubheadView

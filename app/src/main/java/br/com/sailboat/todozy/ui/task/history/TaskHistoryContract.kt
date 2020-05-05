@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.ui.task.history
 
-import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPContract
 import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
@@ -19,7 +18,7 @@ interface TaskHistoryContract {
         fun showClearAllHistoryDialog()
         fun showDeleteItemDialog(position: Int)
         fun startInsertTaskActivity(id: Long)
-        fun showFilterDialog(filter: TaskHistoryFilter)
+        fun showFilterDialog(dateRangeType: DateFilterTaskHistorySelectableItem, status: TaskStatusSelectableItem)
         fun showStatusFilterDialog(status: TaskStatusSelectableItem)
         fun setEmptySubtitle()
         fun setDateRangeSubtitle(initialDate: Calendar, finalDate: Calendar)
@@ -31,6 +30,8 @@ interface TaskHistoryContract {
         fun getTaskId(): Long
         fun hideHistory()
         fun showHistory()
+        fun showEmptyView()
+        fun hideEmptyView()
     }
 
     interface Presenter : BaseMVPContract.Presenter {
@@ -54,12 +55,13 @@ interface TaskHistoryContract {
         fun onClickYesClearAllHistoryDialog()
         fun onClickYesDeleteHistory()
         fun onClickMarkTaskAsDone(position: Int)
-        fun onClickMarkTaskAsNot(position: Int)
+        fun onClickMarkTaskAsNotDone(position: Int)
         fun onClickHistory(position: Int)
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
         fun checkIfTaskDesabled(position: Int): Boolean
         fun onSubmitSearch(search: String)
+        fun onClickDateRange(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem)
     }
 
 

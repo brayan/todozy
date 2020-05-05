@@ -3,22 +3,21 @@ package br.com.sailboat.todozy.ui.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.ui.base.BaseDialogFragment
+import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
+import kotlinx.android.synthetic.main.dlg_filter_task_history.view.*
 
 class TaskHistoryFilterDialog : BaseDialogFragment() {
 
-
-    private var filter: TaskHistoryFilter? = null
-
-    private var tvDate: TextView? = null
-    private var tvStatus: TextView? = null
-
+    var status: TaskStatusSelectableItem? = null
+    var date: DateFilterTaskHistorySelectableItem? = null
     private var callback: Callback? = null
+    private lateinit var customView: View
 
     interface Callback {
         fun onClickFilterDate()
@@ -26,57 +25,49 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
     }
 
     companion object {
-        fun show(manager: FragmentManager, filter: TaskHistoryFilter, callback: Callback) {
+
+        fun show(manager: FragmentManager, date: DateFilterTaskHistorySelectableItem,
+                 status: TaskStatusSelectableItem, callback: Callback) {
+
             val dialog = TaskHistoryFilterDialog()
             dialog.callback = callback
-            dialog.setFilter(filter)
+            dialog.status = status
+            dialog.date = date
             dialog.show(manager, TaskHistoryFilterDialog::class.java.name)
         }
+
     }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = View.inflate(activity, R.layout.dlg_filter_task_history, null)
-        initViews(view)
+        customView = View.inflate(activity, R.layout.dlg_filter_task_history, null)
+        initViews()
         updateViews()
-
-        return construirDialog(view)
+        return buildDialog()
     }
 
-    private fun initViews(view: View) {
-        tvDate = view.findViewById(R.id.dlg_filter_task_history__tv__date)
-        tvStatus = view.findViewById(R.id.dlg_filter_task_history__tv__status)
-
-        view.findViewById<View>(R.id.dlg_filter_task_history__ll__date).setOnClickListener {
-            callback!!.onClickFilterDate()
+    private fun initViews() = with(customView) {
+        tvDate.setOnClickListener {
+            callback?.onClickFilterDate()
             dialog?.dismiss()
         }
 
-        view.findViewById<View>(R.id.dlg_filter_task_history__ll__status).setOnClickListener {
-            callback!!.onClickFilterStatus()
+        tvStatus.setOnClickListener {
+            callback?.onClickFilterStatus()
             dialog?.dismiss()
         }
     }
 
-    private fun updateViews() {
-        tvDate!!.text = filter?.date?.name
-        tvStatus!!.text = filter?.status?.name
+    private fun updateViews() = with(customView) {
+        date?.run { tvDate.setText(getName()) }
+        status?.run { tvStatus.setText(getName()) }
     }
 
-    private fun construirDialog(view: View): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        builder.setView(view)
+    private fun buildDialog() = activity?.run {
+        val builder = AlertDialog.Builder(this)
+        builder.setView(customView)
+        builder.create().apply { setView(customView) }
 
-        return builder.create()
-    }
-
-    fun getFilter(): TaskHistoryFilter? {
-        return filter
-    }
-
-    fun setFilter(filter: TaskHistoryFilter) {
-        this.filter = filter
-    }
-
+    } ?: throw Exception("Context should not be null")
 
 }

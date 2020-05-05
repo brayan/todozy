@@ -150,4 +150,5 @@
     <string name="product_added">Product added!</string>
     <string name="exception_product_name">You must enter a product name</string>
     <string name="exception_product_quantity">You must enter the quantity</string>
+    <string name="apply">Apply</string>
 </resources>

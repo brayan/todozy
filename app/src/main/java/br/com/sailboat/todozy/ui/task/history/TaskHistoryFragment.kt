@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.ui.base.mpv.BaseMVPFragment
 import br.com.sailboat.todozy.ui.dialog.DateRangeSelectorDialog
@@ -17,6 +16,7 @@ import br.com.sailboat.todozy.ui.dialog.selectable.*
 import br.com.sailboat.todozy.ui.helper.*
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
+import kotlinx.android.synthetic.main.ept_view.*
 import kotlinx.android.synthetic.main.frg_task_history.*
 import kotlinx.android.synthetic.main.task_metrics.*
 import kotlinx.android.synthetic.main.toolbar_scroll.*
@@ -57,14 +57,14 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
 
     override fun initViews() {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         toolbar.setTitle(R.string.history)
 
         recycler.run {
             adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
                 override fun onClickMarkTaskAsDone(position: Int) = presenter.onClickMarkTaskAsDone(position)
-                override fun onClickMarkTaskAsNot(position: Int) = presenter.onClickMarkTaskAsNot(position)
+                override fun onClickMarkTaskAsNotDone(position: Int) = presenter.onClickMarkTaskAsNotDone(position)
                 override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
@@ -73,14 +73,16 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
             })
             layoutManager = LinearLayoutManager(activity)
         }
+
+        tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
     }
 
     override fun onSubmitSearch(search: String) {
         presenter.onSubmitSearch(search)
     }
 
-    override fun showFilterDialog(filter: TaskHistoryFilter) {
-        TaskHistoryFilterDialog.show(fragmentManager!!, filter, object : TaskHistoryFilterDialog.Callback {
+    override fun showFilterDialog(dateRangeType: DateFilterTaskHistorySelectableItem, status: TaskStatusSelectableItem) {
+        TaskHistoryFilterDialog.show(fragmentManager!!, dateRangeType, status, object : TaskHistoryFilterDialog.Callback {
             override fun onClickFilterDate() {
                 presenter.onClickFilterDate()
             }
@@ -131,6 +133,14 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
 
     override fun showHistory() {
         recycler.visible()
+    }
+
+    override fun showEmptyView() {
+        ept_view.visible()
+    }
+
+    override fun hideEmptyView() {
+        ept_view.gone()
     }
 
     override fun showDialogClearHistory() {
@@ -210,33 +220,34 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     }
 
     private fun onClickFilterDate(item: SelectableItem) {
+        presenter.onClickDateRange(item as DateFilterTaskHistorySelectableItem)
 
-        when (item as DateFilterTaskHistorySelectableItem) {
-            DateFilterTaskHistorySelectableItem.NO_FILTER -> {
-                presenter.onClickFilterNoFilter()
-                return
-            }
-            DateFilterTaskHistorySelectableItem.TODAY -> {
-                presenter.onClickFilterToday()
-                return
-            }
-            DateFilterTaskHistorySelectableItem.YESTERDAY -> {
-                presenter.onClickFilterYesterday()
-                return
-            }
-            DateFilterTaskHistorySelectableItem.LAST_7_DAYS -> {
-                presenter.onClickFilterLastSevenDays()
-                return
-            }
-            DateFilterTaskHistorySelectableItem.LAST_30_DAYS -> {
-                presenter.onClickFilterLastThirtyDays()
-                return
-            }
-            DateFilterTaskHistorySelectableItem.DATE_RANGE -> {
-                presenter.onClickFilterDateRange()
-                return
-            }
-        }
+//        when (item as DateFilterTaskHistorySelectableItem) {
+//            DateFilterTaskHistorySelectableItem.NO_FILTER -> {
+//                presenter.onClickFilterNoFilter()
+//                return
+//            }
+//            DateFilterTaskHistorySelectableItem.TODAY -> {
+//                presenter.onClickFilterToday()
+//                return
+//            }
+//            DateFilterTaskHistorySelectableItem.YESTERDAY -> {
+//                presenter.onClickFilterYesterday()
+//                return
+//            }
+//            DateFilterTaskHistorySelectableItem.LAST_7_DAYS -> {
+//                presenter.onClickFilterLastSevenDays()
+//                return
+//            }
+//            DateFilterTaskHistorySelectableItem.LAST_30_DAYS -> {
+//                presenter.onClickFilterLastThirtyDays()
+//                return
+//            }
+//            DateFilterTaskHistorySelectableItem.DATE_RANGE -> {
+//                presenter.onClickFilterDateRange()
+//                return
+//            }
+//        }
     }
 
     private fun onClickClearHistory(item: SelectableItem) {
