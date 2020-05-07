@@ -7,4 +7,4 @@ data class TaskHistoryData(var id: Long = EntityHelper.NO_ID,
                            var taskName: String?,
                            var status: Int = 0,
                            var insertingDate: String?,
-                           var enabled: Boolean = false)
+                           var enabled: Boolean = true)

@@ -68,7 +68,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
                 override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
-                override fun checkIfTaskDesabled(position: Int) = presenter.checkIfTaskDesabled(position)
+                override fun checkIfTaskDisabled(position: Int) = presenter.checkIfTaskDesabled(position)
                 override val history: List<ItemView> = presenter.getHistoryViewList()
             })
             layoutManager = LinearLayoutManager(activity)
@@ -210,7 +210,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     override fun showDeleteItemDialog(position: Int) {
         DialogHelper().showDeleteDialog(fragmentManager!!, activity!!, object: TwoOptionsDialog.PositiveCallback {
             override fun onClickPositiveOption() {
-                presenter.onClickYesDeleteHistory()
+                presenter.onClickYesDeleteHistory(position)
             }
         })
     }

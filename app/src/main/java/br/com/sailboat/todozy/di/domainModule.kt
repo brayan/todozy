@@ -2,6 +2,8 @@ package br.com.sailboat.todozy.di
 
 import br.com.sailboat.todozy.domain.alarm.*
 import br.com.sailboat.todozy.domain.history.AddHistory
+import br.com.sailboat.todozy.domain.history.DeleteHistory
+import br.com.sailboat.todozy.domain.history.UpdateHistory
 import br.com.sailboat.todozy.domain.tasks.*
 import br.com.sailboat.todozy.ui.task.details.GetTaskDetailsView
 import org.koin.dsl.module
@@ -20,5 +22,7 @@ val domainModule = module {
     factory { UpdateOldAlarm(get()) }
     factory { SetNextValidAlarm(get()) }
     factory { AddHistory(get()) }
+    factory { UpdateHistory(get()) }
+    factory { DeleteHistory(get()) }
     factory { SaveTask(get()) }
 }

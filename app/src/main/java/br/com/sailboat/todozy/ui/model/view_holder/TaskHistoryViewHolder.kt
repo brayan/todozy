@@ -23,7 +23,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     init {
         itemView.setOnClickListener { callback.onClickHistory(adapterPosition) }
-        itemView.setOnLongClickListener { callback.checkIfTaskDesabled(adapterPosition) }
+        itemView.setOnLongClickListener { callback.checkIfTaskDisabled(adapterPosition) }
         itemView.vh_task_history__tv__delete.setOnClickListener { callback.onClickDelete(adapterPosition) }
     }
 
@@ -33,7 +33,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         fun onClickHistory(position: Int)
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
-        fun checkIfTaskDesabled(position: Int): Boolean
+        fun checkIfTaskDisabled(position: Int): Boolean
     }
 
 

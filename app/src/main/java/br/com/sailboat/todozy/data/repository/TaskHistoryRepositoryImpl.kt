@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.data.repository
 
 import br.com.sailboat.todozy.data.DatabaseOpenHelper
+import br.com.sailboat.todozy.data.mapper.mapToTaskHistoryData
 import br.com.sailboat.todozy.data.mapper.mapToTaskHistoryList
 import br.com.sailboat.todozy.data.model.TaskHistoryData
 import br.com.sailboat.todozy.data.sqlite.TaskHistorySQLite
@@ -28,6 +29,14 @@ class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryReposi
 
     override suspend fun insert(task: Task, status: TaskStatus) {
         taskHistorySQLite.save(task.id, status.id)
+    }
+
+    override suspend fun update(taskHistory: TaskHistory) {
+        taskHistorySQLite.update(taskHistory.mapToTaskHistoryData())
+    }
+
+    override suspend fun delete(taskHistory: TaskHistory) {
+        taskHistorySQLite.delete(taskHistory.id)
     }
 
     override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {

@@ -16,7 +16,7 @@ val uiModule = module {
     factory<TaskListContract.Presenter> { TaskListPresenter(get(), get(), get(), get()) }
     factory<InsertTaskContract.Presenter> { InsertTaskPresenter(get(), get()) }
     factory<TaskDetailsContract.Presenter> { TaskDetailsPresenter(get(), get(), get()) }
-    factory<TaskHistoryContract.Presenter> { TaskHistoryPresenter(get(), get()) }
+    factory<TaskHistoryContract.Presenter> { TaskHistoryPresenter(get(), get(), get(), get()) }
 
     factory { GetTasksView(get(), get()) }
     factory { GetHistoryView(get(), get()) }

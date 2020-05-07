@@ -4,19 +4,27 @@ import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.helper.clearTime
 import br.com.sailboat.todozy.domain.helper.setFinalTimeToCalendar
+import br.com.sailboat.todozy.domain.history.DeleteHistory
+import br.com.sailboat.todozy.domain.history.UpdateHistory
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.tasks.GetTaskMetrics
 import br.com.sailboat.todozy.ui.base.mpv.BasePresenter
 import br.com.sailboat.todozy.ui.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.ui.dialog.selectable.TaskStatusSelectableItem
+import br.com.sailboat.todozy.ui.mapper.mapToTaskHistory
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
+import br.com.sailboat.todozy.ui.model.TaskStatusView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskHistoryPresenter(
         private val getTaskMetrics: GetTaskMetrics,
-        private val getHistoryView: GetHistoryView) :
+        private val getHistoryView: GetHistoryView,
+        private val updateHistory: UpdateHistory,
+        private val deleteHistory: DeleteHistory) :
         BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private var taskId = EntityHelper.NO_ID
@@ -111,25 +119,30 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickMarkTaskAsDone(position: Int) {
-        updateHistoryStatus(position, TaskStatus.DONE)
+        updateHistoryStatus(position, TaskStatusView.DONE)
     }
 
     override fun onClickMarkTaskAsNotDone(position: Int) {
-        updateHistoryStatus(position, TaskStatus.NOT_DONE)
+        updateHistoryStatus(position, TaskStatusView.NOT_DONE)
     }
 
-    fun onClickYesDeleteHistory(position: Int) {
+    override fun onClickYesDeleteHistory(position: Int) = launchAsync {
         try {
-//            val taskHistory = getHistory()[position] as TaskHistoryView
             clearHistorySelectedPosition()
-            // TaskHistorySQLite.newInstance(getContext()).delete(taskHistory.getId())
 
-//            getHistory().removeAt(position)
+            val taskHistory = history[position] as TaskHistoryView
+
+            history.removeAt(position)
             view?.removeHistoryItem(position)
+
+            deleteHistory(taskHistory.mapToTaskHistory())
+
+            delay(1000)
 
             loadHistoryTasks()
         } catch (e: Exception) {
             view?.log(e)
+            updateContentViews()
         }
 
     }
@@ -236,10 +249,6 @@ class TaskHistoryPresenter(
         view?.showClearAllHistoryDialog()
     }
 
-    override fun onClickYesDeleteHistory() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private fun loadHistoryTasks() = launchAsync {
         try {
             taskMetrics = getTaskMetrics(filter)
@@ -260,10 +269,10 @@ class TaskHistoryPresenter(
         updateSubtitle()
         view?.updateAllItems()
         updateHistoryVisibility()
-        updateMetrics()
+        updateMetricsView()
     }
 
-    private fun updateMetrics() {
+    private fun updateMetricsView() {
         val metrics = taskMetrics
 
         if (metrics != null) {
@@ -308,23 +317,25 @@ class TaskHistoryPresenter(
     }
 
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatus) {
-//        try {
-//            clearHistorySelectedPosition()
-//
-//            val history = getHistory()[position] as TaskHistory
-//            history.setStatus(status)
-//
-//            view?.updateRecyclerItemChanged(position)
-//
-//            TaskHistorySQLite.newInstance(getContext()).update(history)
-//
-//            loadHistoryTasks()
-//
-//        } catch (e: Exception) {
-//            printLogAndShowDialog(e)
-//        }
+    private fun updateHistoryStatus(position: Int, status: TaskStatusView) = launchAsync {
+        try {
+            clearHistorySelectedPosition()
 
+            val historyView = history[position] as TaskHistoryView
+            historyView.status = status
+
+            view?.updateHistoryItem(position)
+
+            updateHistory(historyView.mapToTaskHistory())
+
+            taskMetrics = getTaskMetrics(filter)
+
+            updateMetricsView()
+
+        } catch (e: Exception) {
+            view?.log(e)
+            updateContentViews()
+        }
     }
 
     private fun hasHistorySelected(): Boolean {

@@ -53,7 +53,7 @@ interface TaskHistoryContract {
         fun onClickFilterStatusItem(item: TaskStatusSelectableItem)
         fun onClickYesClearHistoryKeepAmountDialog()
         fun onClickYesClearAllHistoryDialog()
-        fun onClickYesDeleteHistory()
+        fun onClickYesDeleteHistory(position: Int)
         fun onClickMarkTaskAsDone(position: Int)
         fun onClickMarkTaskAsNotDone(position: Int)
         fun onClickHistory(position: Int)
