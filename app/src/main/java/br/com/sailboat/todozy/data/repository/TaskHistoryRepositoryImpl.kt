@@ -39,6 +39,10 @@ class TaskHistoryRepositoryImpl(database: DatabaseOpenHelper): TaskHistoryReposi
         taskHistorySQLite.delete(taskHistory.id)
     }
 
+    override suspend fun deleteAll() {
+        taskHistorySQLite.deleteAllHistory()
+    }
+
     override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
         return taskHistorySQLite.getTotalOfNotDoneTasks(filter)
     }

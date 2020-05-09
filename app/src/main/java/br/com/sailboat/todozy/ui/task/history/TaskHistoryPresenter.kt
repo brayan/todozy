@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.domain.filter.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.helper.EntityHelper
 import br.com.sailboat.todozy.domain.helper.clearTime
 import br.com.sailboat.todozy.domain.helper.setFinalTimeToCalendar
+import br.com.sailboat.todozy.domain.history.DeleteAllHistory
 import br.com.sailboat.todozy.domain.history.DeleteHistory
 import br.com.sailboat.todozy.domain.history.UpdateHistory
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -17,14 +18,14 @@ import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.model.TaskHistoryView
 import br.com.sailboat.todozy.ui.model.TaskStatusView
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskHistoryPresenter(
         private val getTaskMetrics: GetTaskMetrics,
         private val getHistoryView: GetHistoryView,
         private val updateHistory: UpdateHistory,
-        private val deleteHistory: DeleteHistory) :
+        private val deleteHistory: DeleteHistory,
+        private val deleteAllHistory: DeleteAllHistory) :
         BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private var taskId = EntityHelper.NO_ID
@@ -75,7 +76,7 @@ class TaskHistoryPresenter(
         view?.showDeleteItemDialog(position)
     }
 
-    override fun checkIfTaskDesabled(position: Int): Boolean {
+    override fun checkIfTaskDisabled(position: Int): Boolean {
         try {
             val history = history[position] as? TaskHistoryView
             // val task = getTask(history.tas)
@@ -144,11 +145,6 @@ class TaskHistoryPresenter(
             view?.log(e)
             updateContentViews()
         }
-
-    }
-
-    override fun onClickMenuClearHistory() {
-        view?.showDialogClearHistory()
     }
 
     override fun onClickMenuFilter() {
@@ -164,14 +160,15 @@ class TaskHistoryPresenter(
         view?.scrollToTop()
     }
 
-    override fun onClickYesClearHistoryKeepAmountDialog() {
-        setAllHistoryAsDisabled()
-        loadHistoryTasks()
-    }
-
-    override fun onClickYesClearAllHistoryDialog() {
-        deleteAllHistory()
-        loadHistoryTasks()
+    override fun onClickYesClearAllHistory() = launchAsync {
+        try {
+            clearHistorySelectedPosition()
+            deleteAllHistory()
+            loadHistoryTasks()
+        } catch (e: Exception) {
+            view?.log(e)
+            updateContentViews()
+        }
     }
 
     override fun onClickFilterNoFilter() {
@@ -241,12 +238,8 @@ class TaskHistoryPresenter(
         // view?.showDateRangeSelectorDialog(filter.initialDate, filter.finalDate)
     }
 
-    override fun onClickClearHistoryKeepAmount() {
-        view?.showClearHistoryKeepAmountDialog()
-    }
-
-    override fun onClickAllHistory() {
-        view?.showClearAllHistoryDialog()
+    override fun onClickCleanAllHistory() {
+        view?.showConfirmationClearAllHistory()
     }
 
     private fun loadHistoryTasks() = launchAsync {
@@ -344,24 +337,6 @@ class TaskHistoryPresenter(
 
     private fun clearHistorySelectedPosition() {
         selectedItemPosition = -1
-    }
-
-    private fun setAllHistoryAsDisabled() {
-//        try {
-//            TaskHistorySQLite.newInstance(getContext()).setAllHistoryDisabled()
-//        } catch (e: Exception) {
-//            printLogAndShowDialog(e)
-//        }
-
-    }
-
-    private fun deleteAllHistory() {
-//        try {
-//            TaskHistorySQLite.newInstance(getContext()).deleteAllHistory()
-//        } catch (e: Exception) {
-//            printLogAndShowDialog(e)
-//        }
-
     }
 
     override fun getHistoryViewList(): List<ItemView> {

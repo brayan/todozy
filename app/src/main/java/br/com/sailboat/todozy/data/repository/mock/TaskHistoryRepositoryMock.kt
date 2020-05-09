@@ -58,4 +58,6 @@ class TaskHistoryRepositoryMock : TaskHistoryRepository {
 
     override suspend fun delete(taskHistory: TaskHistory) {}
 
+    override suspend fun deleteAll() {}
+
 }

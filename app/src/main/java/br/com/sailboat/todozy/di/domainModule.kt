@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.di
 
 import br.com.sailboat.todozy.domain.alarm.*
 import br.com.sailboat.todozy.domain.history.AddHistory
+import br.com.sailboat.todozy.domain.history.DeleteAllHistory
 import br.com.sailboat.todozy.domain.history.DeleteHistory
 import br.com.sailboat.todozy.domain.history.UpdateHistory
 import br.com.sailboat.todozy.domain.tasks.*
@@ -24,5 +25,6 @@ val domainModule = module {
     factory { AddHistory(get()) }
     factory { UpdateHistory(get()) }
     factory { DeleteHistory(get()) }
+    factory { DeleteAllHistory(get()) }
     factory { SaveTask(get()) }
 }

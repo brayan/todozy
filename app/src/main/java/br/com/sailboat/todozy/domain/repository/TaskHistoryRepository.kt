@@ -15,4 +15,5 @@ interface TaskHistoryRepository {
     suspend fun insert(task: Task, status: TaskStatus)
     suspend fun update(taskHistory: TaskHistory)
     suspend fun delete(taskHistory: TaskHistory)
+    suspend fun deleteAll()
 }

@@ -72,12 +72,6 @@ class TaskHistorySQLite(database: DatabaseOpenHelper) : BaseSQLite(database) {
         delete(compileStatement(delete))
     }
 
-    fun setAllHistoryDisabled() {
-        val update = "UPDATE TaskHistory SET enabled = 0 WHERE enabled = 1"
-        val stmt = compileStatement(update)
-        update(stmt)
-    }
-
     fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()

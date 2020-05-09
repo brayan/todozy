@@ -9,13 +9,11 @@ import java.util.*
 interface TaskHistoryContract {
 
     interface View : BaseMVPContract.View {
-        fun showDialogClearHistory()
         fun setDoneTasks(doneTasks: String)
         fun setNotDoneTasks(notDoneTasks: String)
         fun showDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar)
         fun showDateFilterDialog(selectedFilter: DateFilterTaskHistorySelectableItem)
-        fun showClearHistoryKeepAmountDialog()
-        fun showClearAllHistoryDialog()
+        fun showConfirmationClearAllHistory()
         fun showDeleteItemDialog(position: Int)
         fun startInsertTaskActivity(id: Long)
         fun showFilterDialog(dateRangeType: DateFilterTaskHistorySelectableItem, status: TaskStatusSelectableItem)
@@ -39,9 +37,7 @@ interface TaskHistoryContract {
         fun onClickFilterDate()
         fun onClickFilterStatus()
         fun onClickMenuFilter()
-        fun onClickMenuClearHistory()
-        fun onClickClearHistoryKeepAmount()
-        fun onClickAllHistory()
+        fun onClickCleanAllHistory()
         fun onClickFilterNoFilter()
         fun onClickFilterToday()
         fun onClickFilterYesterday()
@@ -51,15 +47,14 @@ interface TaskHistoryContract {
         fun onClickOkDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar)
         // TODO: REPLACE SelectableItem
         fun onClickFilterStatusItem(item: TaskStatusSelectableItem)
-        fun onClickYesClearHistoryKeepAmountDialog()
-        fun onClickYesClearAllHistoryDialog()
+        fun onClickYesClearAllHistory()
         fun onClickYesDeleteHistory(position: Int)
         fun onClickMarkTaskAsDone(position: Int)
         fun onClickMarkTaskAsNotDone(position: Int)
         fun onClickHistory(position: Int)
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
-        fun checkIfTaskDesabled(position: Int): Boolean
+        fun checkIfTaskDisabled(position: Int): Boolean
         fun onSubmitSearch(search: String)
         fun onClickDateRange(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem)
     }

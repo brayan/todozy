@@ -49,7 +49,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_filter -> presenter.onClickMenuFilter()
-            R.id.menu_clear_history -> presenter.onClickMenuClearHistory()
+            R.id.menu_clear_history -> presenter.onClickCleanAllHistory()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -68,7 +68,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
                 override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
-                override fun checkIfTaskDisabled(position: Int) = presenter.checkIfTaskDesabled(position)
+                override fun checkIfTaskDisabled(position: Int) = presenter.checkIfTaskDisabled(position)
                 override val history: List<ItemView> = presenter.getHistoryViewList()
             })
             layoutManager = LinearLayoutManager(activity)
@@ -143,14 +143,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
         ept_view.gone()
     }
 
-    override fun showDialogClearHistory() {
-        SelectItemDialog.show(fragmentManager!!, getString(R.string.clear_history), ClearTaskHistorySelectableItem.getItems(), null, object : SelectItemDialog.Callback {
-            override fun onClickItem(item: SelectableItem) {
-                onClickClearHistory(item)
-            }
-        })
-    }
-
     override fun setDoneTasks(doneTasks: String) {
         tvMetricsDone.text = doneTasks
     }
@@ -183,25 +175,13 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
         })
     }
 
-    override fun showClearHistoryKeepAmountDialog() {
-        val dialog = TwoOptionsDialog()
-        dialog.message = getString(R.string.msg_ask_clear_history_keep)
-        dialog.positiveMsg = R.string.clear
-        dialog.positiveCallback = object: TwoOptionsDialog.PositiveCallback {
-            override fun onClickPositiveOption() {
-                presenter.onClickYesClearHistoryKeepAmountDialog()
-            }
-        }
-        dialog.show(fragmentManager!!, "CLEAR_HISTORY")
-    }
-
-    override fun showClearAllHistoryDialog() {
+    override fun showConfirmationClearAllHistory() {
         val dialog = TwoOptionsDialog()
         dialog.message = getString(R.string.msg_ask_clear_all_history)
         dialog.positiveMsg = R.string.clear
         dialog.positiveCallback = object: TwoOptionsDialog.PositiveCallback {
             override fun onClickPositiveOption() {
-                presenter.onClickYesClearAllHistoryDialog()
+                presenter.onClickYesClearAllHistory()
             }
         }
         dialog.show(fragmentManager!!, "CLEAR_HISTORY")
@@ -221,62 +201,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
 
     private fun onClickFilterDate(item: SelectableItem) {
         presenter.onClickDateRange(item as DateFilterTaskHistorySelectableItem)
-
-//        when (item as DateFilterTaskHistorySelectableItem) {
-//            DateFilterTaskHistorySelectableItem.NO_FILTER -> {
-//                presenter.onClickFilterNoFilter()
-//                return
-//            }
-//            DateFilterTaskHistorySelectableItem.TODAY -> {
-//                presenter.onClickFilterToday()
-//                return
-//            }
-//            DateFilterTaskHistorySelectableItem.YESTERDAY -> {
-//                presenter.onClickFilterYesterday()
-//                return
-//            }
-//            DateFilterTaskHistorySelectableItem.LAST_7_DAYS -> {
-//                presenter.onClickFilterLastSevenDays()
-//                return
-//            }
-//            DateFilterTaskHistorySelectableItem.LAST_30_DAYS -> {
-//                presenter.onClickFilterLastThirtyDays()
-//                return
-//            }
-//            DateFilterTaskHistorySelectableItem.DATE_RANGE -> {
-//                presenter.onClickFilterDateRange()
-//                return
-//            }
-//        }
     }
 
-    private fun onClickClearHistory(item: SelectableItem) {
-        when (item as ClearTaskHistorySelectableItem) {
-            ClearTaskHistorySelectableItem.CLEAR_HISTORY_KEEP_AMOUNT -> {
-                presenter.onClickClearHistoryKeepAmount()
-                return
-            }
-            ClearTaskHistorySelectableItem.CLEAR_ALL_HISTORY -> {
-                presenter.onClickAllHistory()
-                return
-            }
-        }
-    }
-
-    private fun onClickFilterStatus(item: SelectableItem) {
-        when (item as TaskStatusSelectableItem) {
-            TaskStatusSelectableItem.NO_FILTER -> {
-                presenter.onClickClearHistoryKeepAmount()
-                return
-            }
-            TaskStatusSelectableItem.TASKS_DONE -> {
-                presenter.onClickAllHistory()
-                return
-            }
-            TaskStatusSelectableItem.TASKS_NOT_DONE -> {
-                presenter.onClickAllHistory()
-                return
-            }
-        }
-    }
 }
