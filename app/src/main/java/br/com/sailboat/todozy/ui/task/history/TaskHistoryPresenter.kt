@@ -76,33 +76,14 @@ class TaskHistoryPresenter(
         view?.showDeleteItemDialog(position)
     }
 
-    override fun checkIfTaskDisabled(position: Int): Boolean {
-        try {
-            val history = history[position] as? TaskHistoryView
-            // val task = getTask(history.tas)
-
-            // TODO: IMPLEMENT ENABLE/DISABLE LOGIC
-            //            if (!task.isEnabled()) {
-            //                view?.startInsertTaskActivity(task.getId());
-            //                return true;
-            //            }
-
-            return false
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
-        }
-
-    }
-
     override fun onSubmitSearch(search: String) {
         filter.text = search
         loadHistoryTasks()
     }
 
-    override fun onClickDateRange(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem) {
-        if (dateRangeTypeSelected === dateRangeType) {
+    override fun onClickFilterDate(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem) {
+        if (dateRangeTypeSelected === dateRangeType &&
+                dateRangeTypeSelected !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
             return
         }
 
@@ -116,7 +97,6 @@ class TaskHistoryPresenter(
             DateFilterTaskHistorySelectableItem.LAST_30_DAYS -> onClickFilterLastThirtyDays()
             DateFilterTaskHistorySelectableItem.DATE_RANGE -> onClickFilterDateRange()
         }
-
     }
 
     override fun onClickMarkTaskAsDone(position: Int) {
@@ -235,7 +215,10 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickFilterDateRange() {
-        // view?.showDateRangeSelectorDialog(filter.initialDate, filter.finalDate)
+        val initial = filter.initialDate ?: Calendar.getInstance()
+        val final = filter.finalDate ?: Calendar.getInstance()
+
+         view?.showDateRangeSelectorDialog(initial, final)
     }
 
     override fun onClickCleanAllHistory() {
@@ -286,10 +269,10 @@ class TaskHistoryPresenter(
             return
         }
 
-        if (dateRangeType !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
-//            view?.setSubtitle(getString(filter.date.getName()).toUpperCase())
-        } else {
+        if (dateRangeType === DateFilterTaskHistorySelectableItem.DATE_RANGE) {
             view?.setDateRangeSubtitle(initialDate!!, finalDate!!)
+        } else {
+            view?.setDateFilterSubtitle(dateRangeType)
         }
 
     }
@@ -298,7 +281,6 @@ class TaskHistoryPresenter(
         if (isTasksEmpty()) {
             view?.hideHistory()
             view?.showEmptyView()
-//            view?.expandToolbar()
         } else {
             view?.showHistory()
             view?.hideEmptyView()

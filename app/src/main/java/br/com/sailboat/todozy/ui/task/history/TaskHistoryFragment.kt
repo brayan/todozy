@@ -16,6 +16,7 @@ import br.com.sailboat.todozy.ui.dialog.selectable.*
 import br.com.sailboat.todozy.ui.helper.*
 import br.com.sailboat.todozy.ui.model.ItemView
 import br.com.sailboat.todozy.ui.task.insert.InsertTaskActivity
+import kotlinx.android.synthetic.main.appbar_task_history.*
 import kotlinx.android.synthetic.main.ept_view.*
 import kotlinx.android.synthetic.main.frg_task_history.*
 import kotlinx.android.synthetic.main.task_metrics.*
@@ -68,7 +69,6 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
                 override fun onClickHistory(position: Int) = presenter.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = presenter.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = presenter.onClickDelete(position)
-                override fun checkIfTaskDisabled(position: Int) = presenter.checkIfTaskDisabled(position)
                 override val history: List<ItemView> = presenter.getHistoryViewList()
             })
             layoutManager = LinearLayoutManager(activity)
@@ -137,10 +137,15 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
 
     override fun showEmptyView() {
         ept_view.visible()
+        appbar.setExpanded(true)
     }
 
     override fun hideEmptyView() {
         ept_view.gone()
+    }
+
+    override fun setDateFilterSubtitle(dateRangeType: DateFilterTaskHistorySelectableItem) {
+        toolbar.subtitle = getString(dateRangeType.getName()).toUpperCase(Locale.getDefault())
     }
 
     override fun setDoneTasks(doneTasks: String) {
@@ -152,7 +157,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     }
 
     override fun showDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
-        DateRangeSelectorDialog.show(fragmentManager!!, initialDate, finalDate, object: DateRangeSelectorDialog.Callback {
+        DateRangeSelectorDialog.show(childFragmentManager, initialDate, finalDate, object: DateRangeSelectorDialog.Callback {
             override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
                 presenter.onClickOkDateRangeSelectorDialog(initialDate, finalDate)
             }
@@ -160,7 +165,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     }
 
     override fun showStatusFilterDialog(status: TaskStatusSelectableItem) {
-        SelectItemDialog.show(fragmentManager!!, getString(R.string.filter_status), TaskStatusSelectableItem.getItems(), status, object : SelectItemDialog.Callback {
+        SelectItemDialog.show(childFragmentManager, getString(R.string.filter_status), TaskStatusSelectableItem.getItems(), status, object : SelectItemDialog.Callback {
             override fun onClickItem(item: SelectableItem) {
                 presenter.onClickFilterStatusItem(item as TaskStatusSelectableItem)
             }
@@ -168,7 +173,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     }
 
     override fun showDateFilterDialog(selectedFilter: DateFilterTaskHistorySelectableItem) {
-        SelectItemDialog.show(fragmentManager!!, getString(R.string.filter), DateFilterTaskHistorySelectableItem.getItems(), selectedFilter, object : SelectItemDialog.Callback {
+        SelectItemDialog.show(childFragmentManager, getString(R.string.filter), DateFilterTaskHistorySelectableItem.getItems(), selectedFilter, object : SelectItemDialog.Callback {
             override fun onClickItem(item: SelectableItem) {
                 onClickFilterDate(item)
             }
@@ -184,11 +189,11 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
                 presenter.onClickYesClearAllHistory()
             }
         }
-        dialog.show(fragmentManager!!, "CLEAR_HISTORY")
+        dialog.show(childFragmentManager, "CLEAR_HISTORY")
     }
 
     override fun showDeleteItemDialog(position: Int) {
-        DialogHelper().showDeleteDialog(fragmentManager!!, activity!!, object: TwoOptionsDialog.PositiveCallback {
+        DialogHelper().showDeleteDialog(childFragmentManager, activity!!, object: TwoOptionsDialog.PositiveCallback {
             override fun onClickPositiveOption() {
                 presenter.onClickYesDeleteHistory(position)
             }
@@ -200,7 +205,7 @@ class TaskHistoryFragment : BaseMVPFragment<TaskHistoryContract.Presenter>(), Ta
     }
 
     private fun onClickFilterDate(item: SelectableItem) {
-        presenter.onClickDateRange(item as DateFilterTaskHistorySelectableItem)
+        presenter.onClickFilterDate(item as DateFilterTaskHistorySelectableItem)
     }
 
 }

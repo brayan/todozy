@@ -30,6 +30,7 @@ interface TaskHistoryContract {
         fun showHistory()
         fun showEmptyView()
         fun hideEmptyView()
+        fun setDateFilterSubtitle(dateRangeType: DateFilterTaskHistorySelectableItem)
     }
 
     interface Presenter : BaseMVPContract.Presenter {
@@ -54,9 +55,8 @@ interface TaskHistoryContract {
         fun onClickHistory(position: Int)
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
-        fun checkIfTaskDisabled(position: Int): Boolean
         fun onSubmitSearch(search: String)
-        fun onClickDateRange(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem)
+        fun onClickFilterDate(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem)
     }
 
 
