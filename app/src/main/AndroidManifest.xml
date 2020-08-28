@@ -18,18 +18,18 @@
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
         <uses-library android:name="android.test.runner" android:required="false" />
 
-        <receiver android:name=".ui.receivers.BootReceiver" >
+        <receiver android:name=".core.platform.receivers.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".ui.receivers.AlarmReceiver" />
+        <receiver android:name=".core.platform.receivers.AlarmReceiver" />
 
-        <receiver android:name=".ui.receivers.AlarmUpdateReceiver" />
+        <receiver android:name=".core.platform.receivers.AlarmUpdateReceiver" />
 
         <activity
-            android:name=".ui.LauncherActivity"
+            android:name=".features.LauncherActivity"
             android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,18 +37,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.task.list.TaskListActivity"
+        <activity android:name=".features.tasks.presentation.list.TaskListActivity"
             android:launchMode="singleTop" />
 
-        <activity android:name=".ui.task.details.TaskDetailsActivity"/>
+        <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity"/>
 
-        <activity android:name=".ui.task.history.TaskHistoryActivity"/>
+        <activity android:name=".features.tasks.presentation.history.TaskHistoryActivity"/>
 
-        <activity android:name=".ui.task.insert.InsertTaskActivity"/>
+        <activity android:name=".features.tasks.presentation.form.InsertTaskActivity"/>
 
-        <activity android:name=".ui.settings.SettingsActivity"/>
+        <activity android:name=".features.settings.presentation.SettingsActivity"/>
 
-        <activity android:name=".ui.about.AboutActivity"/>
+        <activity android:name=".features.about.presentation.AboutActivity"/>
 
     </application>
 
