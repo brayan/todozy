@@ -17,7 +17,7 @@ val domainModule = module {
     factory { GetTaskDetailsView(get(), get()) }
     factory { GetTaskMetrics(get()) }
     factory { DisableTask(get(), get()) }
-    factory { MarkTask(get(), get(), get(), get(), get(), get()) }
+    factory { CompleteTask(get(), get(), get(), get(), get()) }
     factory { DeleteAlarm(get()) }
     factory { GetNextAlarm() }
     factory { UpdateOldAlarm(get()) }

@@ -6,8 +6,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 class GetNextAlarm {
 
     operator fun invoke(alarm: Alarm): Alarm {
-        alarm.dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays)
-        return alarm
+        return alarm.apply { dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays) }
     }
 
 }

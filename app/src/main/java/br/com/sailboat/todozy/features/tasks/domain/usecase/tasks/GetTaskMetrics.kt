@@ -28,13 +28,8 @@ class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
         if (history.isNotEmpty()) {
 
             for (h in history) {
-                if (h.status == TaskStatus.DONE) {
-                    consecutiveDone++
-                } else {
-                    break
-                }
+                if (h.status == TaskStatus.DONE) consecutiveDone++ else break
             }
-
         }
 
         return consecutiveDone
