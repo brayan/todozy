@@ -55,7 +55,6 @@ class SaveTaskTest {
 
     @Test(expected = CheckTaskFields.TaskFieldsException::class)
     fun `should throw TaskFieldsException when task alarm is before now`() = runBlocking {
-
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
                 dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
                 repeatType = RepeatType.NOT_REPEAT

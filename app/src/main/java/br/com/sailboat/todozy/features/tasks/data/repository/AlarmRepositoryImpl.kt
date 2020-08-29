@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
 import android.content.Context
+import br.com.sailboat.todozy.core.extensions.incrementToNextValidDate
 import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSourceSQLite
@@ -38,6 +39,10 @@ class AlarmRepositoryImpl(database: DatabaseOpenHelper, context: Context) : Alar
 
     override suspend fun setAlarm(alarm: Alarm, task: Task) {
         alarmManager.setNextValidAlarm(task, alarm)
+    }
+
+    override suspend fun getNextValidAlarm(alarm: Alarm): Alarm {
+        return alarm.apply { dateTime.incrementToNextValidDate(repeatType, customDays) }
     }
 
 }

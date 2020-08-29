@@ -1,12 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.core.extensions.incrementToNextValidDate
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
+import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 
-class GetNextAlarm {
+class GetNextAlarm(private val alarmRepository: AlarmRepository) {
 
-    operator fun invoke(alarm: Alarm): Alarm {
-        return alarm.apply { dateTime.incrementToNextValidDate(alarm.repeatType, alarm.customDays) }
-    }
+    suspend operator fun invoke(alarm: Alarm) = alarmRepository.getNextValidAlarm(alarm)
 
 }

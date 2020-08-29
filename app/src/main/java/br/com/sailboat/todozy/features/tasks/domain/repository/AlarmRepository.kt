@@ -9,4 +9,5 @@ interface AlarmRepository {
     suspend fun save(alarm: Alarm, task: Task)
     suspend fun update(alarm: Alarm, task: Task)
     suspend fun setAlarm(alarm: Alarm, task: Task)
+    suspend fun getNextValidAlarm(alarm: Alarm): Alarm
 }

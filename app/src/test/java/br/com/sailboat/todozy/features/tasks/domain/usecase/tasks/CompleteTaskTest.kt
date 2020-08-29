@@ -78,6 +78,7 @@ class CompleteTaskTest {
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
         coEvery { getTask(45) } returns task
+        coEvery { getNextAlarm(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
 
@@ -96,6 +97,7 @@ class CompleteTaskTest {
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
         coEvery { getTask(45) } returns task
+        coEvery { getNextAlarm(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
 
