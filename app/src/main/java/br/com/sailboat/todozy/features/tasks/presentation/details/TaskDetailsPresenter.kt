@@ -82,7 +82,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         }
     }
 
-    private fun loadDetails() = runBlocking {
+    private fun loadDetails() = launchAsync {
         try {
             val taskId = viewModel.taskId
 
@@ -100,7 +100,6 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
             view?.log(e)
             view?.closeWithResultNotOk()
         }
-
     }
 
     private fun updateContentViews() {

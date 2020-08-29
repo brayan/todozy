@@ -1,16 +1,14 @@
-package br.com.sailboat.todozy.data.sqlite
+package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import androidx.test.platform.app.InstrumentationRegistry
-import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.core.exceptions.EntityNotFoundException
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskLocalDataSourceSQLite
+import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-
-class TaskSQLiteTest {
+class TaskLocalDataSourceSQLiteTest {
 
     private lateinit var taskSQLite: TaskLocalDataSourceSQLite
 
@@ -28,8 +26,9 @@ class TaskSQLiteTest {
 
     @Test
     @Throws(EntityNotFoundException::class)
-    fun shouldThrowEntityNotFoundExceptionWhenSearchingByTask() = runBlocking {
-        taskSQLite.getTask(12)
+    fun shouldThrowEntityNotFoundExceptionWhenSearchingByTask() {
+        runBlocking {
+            taskSQLite.getTask(12)
+        }
     }
-
 }

@@ -22,17 +22,7 @@ class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
         }
 
         val history = taskHistoryRepository.getTaskHistory(filter.taskId)
-
-        var consecutiveDone = 0
-
-        if (history.isNotEmpty()) {
-
-            for (h in history) {
-                if (h.status == TaskStatus.DONE) consecutiveDone++ else break
-            }
-        }
-
-        return consecutiveDone
+        return history.count { it.status == TaskStatus.DONE }
     }
 
 }

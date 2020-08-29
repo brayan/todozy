@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.tasks
 
+import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
@@ -45,7 +46,7 @@ class GetTaskMetricsTest {
     }
 
     @Test
-    fun `should get task history from previous days from repository`() = runBlocking {
+    fun `should get task metrics from repository`() = runBlocking {
         coEvery { repository.getTaskHistory(any()) } returns history
         coEvery { repository.getTotalOfDoneTasks(any()) } returns 10
         coEvery { repository.getTotalOfNotDoneTasks(any()) } returns 5
@@ -58,6 +59,22 @@ class GetTaskMetricsTest {
 
         confirmVerified(repository)
         assertEquals(TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 2), result)
+    }
+
+    @Test
+    fun `should return consecutiveDone 0 from repository when taskId has NO_ID`() = runBlocking {
+        coEvery { repository.getTaskHistory(any()) } returns history
+        coEvery { repository.getTotalOfDoneTasks(any()) } returns 10
+        coEvery { repository.getTotalOfNotDoneTasks(any()) } returns 5
+
+        val result = getTaskMetrics(TaskHistoryFilter(taskId = Entity.NO_ID))
+
+        coVerify(exactly = 0) { repository.getTaskHistory(any()) }
+        coVerify { repository.getTotalOfDoneTasks(any()) }
+        coVerify { repository.getTotalOfNotDoneTasks(any()) }
+
+        confirmVerified(repository)
+        assertEquals(TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 0), result)
     }
 
 }

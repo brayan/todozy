@@ -7,11 +7,12 @@ import br.com.sailboat.todozy.core.presentation.model.*
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 
 class GetTaskDetailsView(private val context: Context, private val getTask: GetTask) {
 
-    suspend operator fun invoke(taskId: Long): List<ItemView> = runBlocking {
+    suspend operator fun invoke(taskId: Long): List<ItemView> = coroutineScope {
         val itemViews = mutableListOf<ItemView>()
 
         val task = getTask(taskId)
