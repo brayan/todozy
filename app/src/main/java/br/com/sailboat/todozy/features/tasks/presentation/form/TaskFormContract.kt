@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPContract
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import java.util.*
 
-interface InsertTaskContract {
+interface TaskFormContract {
 
     interface View : BaseMVPContract.View {
         fun showAlarmDatePickerDialog(alarm: Calendar)

@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.core.platform.PreferencesHelper
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.AboutHelper
 import br.com.sailboat.todozy.core.presentation.helper.RequestCode
-import br.com.sailboat.todozy.features.about.presentation.AboutActivity
+import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import kotlinx.android.synthetic.main.frg_settings.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
@@ -34,7 +34,9 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
     }
 
     private fun initAbout() {
-        frg_settings__tv__about.setOnClickListener { AboutActivity.start(activity!!, AboutHelper(activity!!).getInfo()) }
+        frg_settings__tv__about.setOnClickListener {
+            activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
+        }
     }
 
     private fun initToneVibrate() {

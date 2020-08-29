@@ -6,13 +6,13 @@ import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.MarkTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CompleteTask
 import kotlinx.coroutines.delay
 
 class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
                         private val getAlarm: GetAlarm,
                         private val getTaskMetrics: GetTaskMetrics,
-                        private val markTask: MarkTask)
+                        private val completeTask: CompleteTask)
     : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
 
     private val tasksView = mutableListOf<ItemView>()
@@ -83,7 +83,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
 
             val taskId = (tasksView[position] as TaskItemView).taskId
 
-            markTask(taskId, status)
+            completeTask(taskId, status)
 
             tasksView.removeAt(position)
             view?.removeTaskFromList(position)

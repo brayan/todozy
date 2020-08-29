@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.core.di
 
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
-import br.com.sailboat.todozy.features.tasks.presentation.form.InsertTaskContract
-import br.com.sailboat.todozy.features.tasks.presentation.form.InsertTaskPresenter
+import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
+import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.history.*
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
 import br.com.sailboat.todozy.features.tasks.presentation.list.TaskListContract
@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val uiModule = module {
     factory<TaskListContract.Presenter> { TaskListPresenter(get(), get(), get(), get()) }
-    factory<InsertTaskContract.Presenter> { InsertTaskPresenter(get(), get()) }
+    factory<TaskFormContract.Presenter> { TaskFormPresenter(get(), get()) }
     factory<TaskDetailsContract.Presenter> { TaskDetailsPresenter(get(), get(), get(), get(), get()) }
     factory<TaskHistoryContract.Presenter> { TaskHistoryPresenter(get(), get(), get(), get(), get()) }
 

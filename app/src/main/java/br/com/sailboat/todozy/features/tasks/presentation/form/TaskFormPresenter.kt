@@ -16,11 +16,11 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.SaveTask
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
-class InsertTaskPresenter(private val getTask: GetTask,
-                          private val saveTask: SaveTask) :
-        BasePresenter<InsertTaskContract.View>(), InsertTaskContract.Presenter {
+class TaskFormPresenter(private val getTask: GetTask,
+                        private val saveTask: SaveTask) :
+        BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 
-    private val viewModel by lazy { InsertTaskViewModel() }
+    private val viewModel by lazy { TaskFormViewModel() }
 
     override fun onStart() {
         extractTaskId()

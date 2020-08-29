@@ -7,6 +7,12 @@ import br.com.sailboat.todozy.core.presentation.base.BaseActivity
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import java.util.*
 
+fun Context.startAboutActivity(itemViews: ArrayList<ItemView>) {
+    val starter = Intent(this, AboutActivity::class.java)
+    starter.putExtra("RECYCLER_ITEMS", itemViews)
+    startActivity(starter)
+}
+
 class AboutActivity : BaseActivity() {
 
     companion object {

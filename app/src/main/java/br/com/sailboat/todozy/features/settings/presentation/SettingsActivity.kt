@@ -5,15 +5,11 @@ import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.core.presentation.base.BaseActivity
 import br.com.sailboat.todozy.core.presentation.helper.RequestCode
 
+fun Fragment.startSettingsActivity() {
+    val intent = Intent(activity, SettingsActivity::class.java)
+    startActivityForResult(intent, RequestCode.SETTINGS.ordinal)
+}
+
 class SettingsActivity : BaseActivity() {
-
-    companion object {
-        fun start(fromFragment: Fragment) {
-            val intent = Intent(fromFragment.activity, SettingsActivity::class.java)
-            fromFragment.startActivityForResult(intent, RequestCode.SETTINGS.ordinal)
-        }
-    }
-
     override fun newFragmentInstance() = SettingsFragment()
-
 }

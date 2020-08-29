@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import java.util.*
 
-class InsertTaskViewModel {
+class TaskFormViewModel {
 
     var taskId = Entity.NO_ID
     var name = ""

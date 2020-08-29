@@ -20,7 +20,8 @@ import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.ItemView
-import br.com.sailboat.todozy.features.tasks.presentation.form.InsertTaskActivity
+import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormActivity
+import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import kotlinx.android.synthetic.main.appbar_task_history.*
 import kotlinx.android.synthetic.main.ept_view.*
 import kotlinx.android.synthetic.main.frg_task_history.*
@@ -208,7 +209,7 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun startInsertTaskActivity(id: Long) {
-        InsertTaskActivity.startToEdit(this, id)
+        startTaskFormActivity(id)
     }
 
     private fun onClickFilterDate(item: SelectableItem) {

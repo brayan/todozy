@@ -5,15 +5,12 @@ import android.content.Intent
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.BaseActivity
 
+
+fun Context.startTaskListActivity() {
+    val intent = Intent(this, TaskListActivity::class.java)
+    startActivity(intent)
+}
+
 class TaskListActivity : BaseActivity() {
-
-    companion object {
-        fun start(context: Context) = with(context) {
-            val intent = Intent(this, TaskListActivity::class.java)
-            startActivity(intent)
-            "Start TaskListActivity".logDebug()
-        }
-    }
-
     override fun newFragmentInstance() = TaskListFragment()
 }

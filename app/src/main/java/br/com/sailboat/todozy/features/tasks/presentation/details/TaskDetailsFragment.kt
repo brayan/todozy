@@ -12,8 +12,10 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.features.tasks.presentation.form.InsertTaskActivity
+import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormActivity
+import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.TaskHistoryActivity
+import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import kotlinx.android.synthetic.main.appbar_task_details.*
 import kotlinx.android.synthetic.main.fab.*
 import kotlinx.android.synthetic.main.recycler.*
@@ -72,7 +74,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun startInsertTaskActivity(taskId: Long) {
-        InsertTaskActivity.startToEdit(this, taskId)
+        startTaskFormActivity(taskId)
     }
 
     override fun showMetrics() {
@@ -84,7 +86,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun startTaskHistoryActivity(taskId: Long) {
-        TaskHistoryActivity.start(activity!!)
+        activity?.startTaskHistoryActivity()
     }
 
     override fun setFire(fire: String) {

@@ -24,16 +24,16 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
-class InsertTaskFragment : BaseMVPFragment<InsertTaskContract.Presenter>(), InsertTaskContract.View, View.OnClickListener {
+class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskFormContract.View, View.OnClickListener {
 
-    override val presenter: InsertTaskContract.Presenter by inject()
+    override val presenter: TaskFormContract.Presenter by inject()
     override val layoutId = R.layout.frg_insert_task
     val progressDialog by lazy { ProgressDialog() }
 
     companion object {
-        fun newInstance() = InsertTaskFragment()
+        fun newInstance() = TaskFormFragment()
 
-        fun newInstance(taskId: Long): InsertTaskFragment = with(InsertTaskFragment()) {
+        fun newInstance(taskId: Long): TaskFormFragment = with(TaskFormFragment()) {
             val bundle = Bundle()
             bundle.putTaskId(taskId)
             arguments = bundle
