@@ -2,10 +2,10 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.core.presentation.base.BaseActivity
-import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.core.presentation.helper.getBundle
+import br.com.sailboat.todozy.core.presentation.helper.getTaskId
+import br.com.sailboat.todozy.core.presentation.helper.hasTaskId
 
 fun Context.startTaskHistoryActivity() {
     val intent = Intent(this, TaskHistoryActivity::class.java)

@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.features
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import br.com.sailboat.todozy.features.tasks.presentation.list.TaskListActivity
 import br.com.sailboat.todozy.features.tasks.presentation.list.startTaskListActivity
 
 class LauncherActivity : AppCompatActivity() {

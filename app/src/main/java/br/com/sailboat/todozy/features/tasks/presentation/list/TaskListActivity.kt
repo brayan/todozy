@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.features.tasks.presentation.list
 
 import android.content.Context
 import android.content.Intent
-import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.BaseActivity
 
 

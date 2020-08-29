@@ -13,14 +13,10 @@ import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.features.settings.presentation.SettingsActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
-import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsActivity
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
-import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
-import br.com.sailboat.todozy.features.tasks.presentation.history.TaskHistoryActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import kotlinx.android.synthetic.main.ept_view.*
 import kotlinx.android.synthetic.main.frg_task_list.*

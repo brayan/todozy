@@ -1,6 +1,8 @@
 package br.com.sailboat.todozy.core.di
 
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.*
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory

@@ -5,4 +5,4 @@ import br.com.sailboat.todozy.core.base.Entity
 data class Task(override var id: Long = NO_ID,
                 val name: String,
                 var notes: String?,
-                var alarm: Alarm? = null): Entity()
+                var alarm: Alarm? = null) : Entity()

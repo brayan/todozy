@@ -12,9 +12,7 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
-import br.com.sailboat.todozy.features.tasks.presentation.history.TaskHistoryActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import kotlinx.android.synthetic.main.appbar_task_details.*
 import kotlinx.android.synthetic.main.fab.*

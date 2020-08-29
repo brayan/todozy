@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
 
 class GetTaskDetailsView(private val context: Context, private val getTask: GetTask) {
 

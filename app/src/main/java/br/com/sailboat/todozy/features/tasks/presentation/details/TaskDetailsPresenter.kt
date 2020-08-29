@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.DisableTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
-import kotlinx.coroutines.runBlocking
 
 class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
                            private val getTaskMetrics: GetTaskMetrics,

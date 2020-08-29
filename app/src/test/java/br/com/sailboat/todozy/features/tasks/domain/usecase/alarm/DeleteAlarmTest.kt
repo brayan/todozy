@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.features.tasks.domain.model.*
+import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
+import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
-import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
