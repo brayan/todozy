@@ -38,7 +38,7 @@ class GetTaskDetailsView(private val context: Context, private val getTask: GetT
 
         val alarmView = AlarmView(dateTime = alarm.dateTime,
                 customDays = alarm.customDays,
-                repeatType = RepeatTypeView.getFromRepeatType(alarm.repeatType)!!)
+                repeatType = RepeatTypeView.getFromRepeatType(alarm.repeatType))
         itemViews.add(alarmView)
 
     }

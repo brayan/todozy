@@ -29,6 +29,7 @@ class TaskFormPresenter(private val getTask: GetTask,
             startEditingTask()
         } else {
             updateViews()
+            view?.setFocusOnInputTaskName()
         }
     }
 
@@ -57,7 +58,7 @@ class TaskFormPresenter(private val getTask: GetTask,
         try {
             view?.hideKeyboard()
             extractInfoFromViews()
-            saveRecords()
+            checkFieldsAndSaveTask()
 
         } catch (e: RequiredFieldNotFilledException) {
             view?.showSimpleMessage(e.message!!)
@@ -106,26 +107,26 @@ class TaskFormPresenter(private val getTask: GetTask,
         view?.showAlarmDatePickerDialog(viewModel.alarm!!)
     }
 
-    override fun onSelectRepeatAlarmCustom(selectedDays: String) {
+    override fun onSelectRepeatAlarmCustom(days: String) {
         viewModel.selectedDays = null
 
-        if (selectedDays.length == 1) {
+        if (days.length == 1) {
 
-            if (!selectedDays.contains(viewModel.alarm?.get(Calendar.DAY_OF_WEEK).toString())) {
-                viewModel.alarm?.incrementToNextValidDate(RepeatType.CUSTOM, selectedDays)
+            if (!days.contains(viewModel.alarm?.get(Calendar.DAY_OF_WEEK).toString())) {
+                viewModel.alarm?.incrementToNextValidDate(RepeatType.CUSTOM, days)
             }
 
             viewModel.repeatAlarmType = RepeatType.WEEK
-        } else if (selectedDays.length == 7) {
+        } else if (days.length == 7) {
             viewModel.repeatAlarmType = RepeatType.DAY
         } else {
 
-            if (!selectedDays.contains(viewModel.alarm?.get(Calendar.DAY_OF_WEEK).toString())) {
-                viewModel.alarm?.incrementToNextValidDate(RepeatType.CUSTOM, selectedDays)
+            if (!days.contains(viewModel.alarm?.get(Calendar.DAY_OF_WEEK).toString())) {
+                viewModel.alarm?.incrementToNextValidDate(RepeatType.CUSTOM, days)
             }
 
             viewModel.repeatAlarmType = RepeatType.CUSTOM
-            viewModel.selectedDays = selectedDays
+            viewModel.selectedDays = days
         }
 
         updateViews()
@@ -165,12 +166,8 @@ class TaskFormPresenter(private val getTask: GetTask,
         updateAlarmViews()
     }
 
-    private fun updateTitle() {
-        if (hasTaskToEdit()) {
-            view?.showEditTaskTitle()
-        } else {
-            view?.showNewTaskTitle()
-        }
+    private fun updateTitle() = view?.run {
+        if (hasTaskToEdit()) showEditTaskTitle() else showNewTaskTitle()
     }
 
     private fun updateAlarmViews() {
@@ -199,11 +196,11 @@ class TaskFormPresenter(private val getTask: GetTask,
         if (viewModel.repeatAlarmType == RepeatType.CUSTOM) {
             view?.setCustomRepeatType(viewModel.selectedDays)
         } else {
-            view?.setRepeatType(viewModel.repeatAlarmType!!)
+            view?.setRepeatType(viewModel.repeatAlarmType)
         }
     }
 
-    private fun saveRecords() = runBlocking {
+    private fun checkFieldsAndSaveTask() = runBlocking {
         try {
             val task = getTaskFromViews()
             val conditions = CheckTaskFields().invoke(task)
@@ -212,7 +209,6 @@ class TaskFormPresenter(private val getTask: GetTask,
                     TASK_NAME_NOT_FILLED -> view?.showErrorTaskNameCantBeBlank()
                     ALARM_NOT_VALID -> view?.showErrorAlarmNotValid()
                 }
-
                 return@runBlocking
             }
 
@@ -227,10 +223,9 @@ class TaskFormPresenter(private val getTask: GetTask,
 
     }
 
-
     private fun getTaskFromViews(): Task {
         val alarm: Alarm? = viewModel.alarm?.run {
-            Alarm(dateTime = this, repeatType = viewModel.repeatAlarmType!!)
+            Alarm(dateTime = this, repeatType = viewModel.repeatAlarmType, customDays = viewModel.selectedDays)
         }
 
         return Task(id = viewModel.taskId,

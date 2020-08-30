@@ -52,7 +52,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
 
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity!!.onBackPressed() }
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     }
 
     override fun setDoneTasks(amount: String) {
@@ -64,7 +64,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun showDialogDeleteTask() {
-        DialogHelper().showDeleteDialog(fragmentManager!!, activity!!, object : TwoOptionsDialog.PositiveCallback {
+        DialogHelper().showDeleteDialog(childFragmentManager, activity!!, object : TwoOptionsDialog.PositiveCallback {
             override fun onClickPositiveOption() {
                 presenter.onClickDeleteTask()
             }
@@ -76,11 +76,11 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun showMetrics() {
-        appbar_task_details__fl__metrics.setVisibility(View.VISIBLE)
+        appbar_task_details__fl__metrics.visible()
     }
 
     override fun hideMetrics() {
-        appbar_task_details__fl__metrics.setVisibility(View.GONE)
+        appbar_task_details__fl__metrics.gone()
     }
 
     override fun startTaskHistoryActivity(taskId: Long) {
@@ -125,16 +125,11 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_delete -> {
-                presenter.onClickMenuDelete()
-                return true
-            }
-            R.id.menu_history -> {
-                presenter.onClickMenuHistory()
-                return true
-            }
+            R.id.menu_delete -> presenter.onClickMenuDelete()
+            R.id.menu_history -> presenter.onClickMenuHistory()
             else -> return super.onOptionsItemSelected(item)
         }
+        return true
     }
 
 }

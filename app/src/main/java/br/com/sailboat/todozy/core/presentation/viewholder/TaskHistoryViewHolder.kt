@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.text.TextUtils
-import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import br.com.sailboat.todozy.BR
@@ -20,7 +19,6 @@ import java.util.*
 
 class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         BaseViewHolderDataBinding<TaskHistoryView>(inflate(parent, R.layout.vh_task_history)) {
-
 
     init {
         itemView.setOnClickListener { callback.onClickHistory(adapterPosition) }
@@ -46,11 +44,11 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     private fun setStatus(history: TaskHistoryView) = with(itemView) {
         if (isTaskDone(history)) {
-            ivStatus.setImageResource(R.drawable.ic_thumb_up_white_24dp)
+            ivStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
             ivStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
 
         } else {
-            ivStatus.setImageResource(R.drawable.ic_thumb_down_white_24dp)
+            ivStatus.setImageResource(R.drawable.ic_vect_thumb_down_white_24dp)
             ivStatus.setBackgroundResource(R.drawable.shape_circle_not_done)
         }
     }
@@ -62,9 +60,8 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             tvShortDateTime.text = getShortDateTime(calendar)
         } catch (e: ParseException) {
             e.printStackTrace()
-            tvShortDateTime.visibility = View.GONE
+            tvShortDateTime.gone()
         }
-
     }
 
     private fun getFullDateTime(insertingDate: Calendar): String {
@@ -92,9 +89,9 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     private fun setOptions(history: TaskHistoryView) = with(itemView) {
         if (callback.isShowingOptions(adapterPosition)) {
-            tvShortDateTime.visibility = View.GONE
-            tvLongDateTime.visibility = View.VISIBLE
-            llTaskHistoryActions.visibility = View.VISIBLE
+            tvShortDateTime.gone()
+            tvLongDateTime.visible()
+            llTaskHistoryActions.visible()
             tvTaskName.maxLines = Integer.MAX_VALUE
             tvTaskName.ellipsize = null
             (itemView as CardView).cardElevation = 6f
@@ -106,9 +103,9 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             }
 
         } else {
-            tvShortDateTime.visibility = View.VISIBLE
-            tvLongDateTime.visibility = View.GONE
-            llTaskHistoryActions.visibility = View.GONE
+            tvShortDateTime.visible()
+            tvLongDateTime.gone()
+            llTaskHistoryActions.gone()
             tvTaskName.maxLines = 3
             tvTaskName.ellipsize = TextUtils.TruncateAt.END
             (itemView as CardView).cardElevation = 0f
@@ -118,13 +115,13 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     private fun initViewMarkAsNotDone() = with(itemView) {
         tvMarkAsDone.gone()
         tvMarkAsNotDone.visible()
-        tvMarkAsNotDone.setOnClickListener { callback.onClickMarkTaskAsNotDone(getAdapterPosition()) }
+        tvMarkAsNotDone.setOnClickListener { callback.onClickMarkTaskAsNotDone(adapterPosition) }
     }
 
     private fun initViewMarkAsDone() = with(itemView) {
         tvMarkAsNotDone.gone()
         tvMarkAsDone.visible()
-        tvMarkAsDone.setOnClickListener { callback.onClickMarkTaskAsDone(getAdapterPosition()) }
+        tvMarkAsDone.setOnClickListener { callback.onClickMarkTaskAsDone(adapterPosition) }
     }
 
 

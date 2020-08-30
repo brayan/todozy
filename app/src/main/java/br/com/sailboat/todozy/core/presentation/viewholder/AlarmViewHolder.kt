@@ -13,8 +13,8 @@ class AlarmViewHolder(parent: ViewGroup) :
 
     override fun bind(item: AlarmView) = with(itemView) {
         try {
-            alarm__tv__date.text = item.dateTime.getFullDateName(itemView.context)
-            alarm__tv__time.text = item.dateTime.formatTimeWithAndroidFormat(itemView.context)
+            tvAlarmDate.text = item.dateTime.getFullDateName(itemView.context)
+            tvAlarmTime.text = item.dateTime.formatTimeWithAndroidFormat(itemView.context)
 
             updateAlarmRepeatType(item)
         } catch (e: Exception) {
@@ -25,15 +25,15 @@ class AlarmViewHolder(parent: ViewGroup) :
     private fun updateAlarmRepeatType(alarm: AlarmView) = with(itemView) {
 
         if (alarm.repeatType != RepeatTypeView.NOT_REPEAT) {
-            alarm__tv__repeat.visible()
+            tvAlarmRepeat.visible()
 
             if (alarm.repeatType == RepeatTypeView.CUSTOM) {
-                alarm__tv__repeat.text = WeekDaysHelper().getCustomRepeat(itemView.context, alarm.customDays!!)
+                tvAlarmRepeat.text = WeekDaysHelper().getCustomRepeat(itemView.context, alarm.customDays!!)
             } else {
-                alarm__tv__repeat.setText(alarm.repeatType.description)
+                tvAlarmRepeat.setText(alarm.repeatType.description)
             }
         } else {
-            alarm__tv__repeat.gone()
+            tvAlarmRepeat.gone()
         }
     }
 

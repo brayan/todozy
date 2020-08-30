@@ -3,8 +3,8 @@ package br.com.sailboat.todozy.features.settings.presentation
 import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
+import android.net.Uri
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.platform.PreferencesHelper
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.AboutHelper
 import br.com.sailboat.todozy.core.presentation.helper.RequestCode
@@ -21,7 +21,7 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
     override fun initViews() {
         toolbar.setTitle(R.string.settings)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity!!.onBackPressed() }
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         initToneViews()
         initAbout()
@@ -29,49 +29,57 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
         initToneVibrate()
     }
 
-    override fun setCurrentTone(tone: String) {
-        frg_settings__tv__current_tone.text = tone
+    override fun setCurrentToneAlarm(tone: Uri) {
+        val ringtone = RingtoneManager.getRingtone(activity, tone)
+        tvSettingsCurrentTone.text = ringtone.getTitle(activity)
+    }
+
+    override fun setCurrentToneAlarmNone() {
+        tvSettingsCurrentTone.setText(R.string.none)
+    }
+
+    override fun showAlarmChooser(alarmSound: Uri?) {
+        val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.notification_tone))
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarmSound)
+
+        this@SettingsFragment.startActivityForResult(intent, RequestCode.REQUEST_SETTING_TONE.ordinal)
+    }
+
+    override fun setVibrateAlarm(shouldVibrate: Boolean) {
+        cbSettingsVibrate.isChecked = shouldVibrate
     }
 
     private fun initAbout() {
-        frg_settings__tv__about.setOnClickListener {
+        tvSettingsAbout.setOnClickListener {
             activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
         }
     }
 
     private fun initToneVibrate() {
-        frg_settings__frame__vibrate.setOnClickListener { frg_settings__cb__vibrate!!.performClick() }
+        flSettingsVibrate.setOnClickListener { cbSettingsVibrate.performClick() }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 RequestCode.REQUEST_SETTING_TONE.ordinal -> {
-                    //presenter.onResultOkRingtonePicker(data)
+                    val uri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    uri?.run { presenter.onSelectAlarmTone(uri) }
                 }
             }
         }
-
-
     }
 
-    private fun initCheckBoxVibrate() {
-        //frg_settings__cb__vibrate.isChecked = PreferencesHelper.isVibrationSettingAllowed(getActivity())
-        //frg_settings__cb__vibrate.setOnCheckedChangeListener { buttonView, isChecked -> PreferencesHelper.setCurrentVibrateSetting(isChecked, getActivity()) }
-    }
-
-    private fun initToneViews() {
-        frg_settings__ll__tone.setOnClickListener {
-            val uri = PreferencesHelper(activity!!).getCurrentNotificationSound()
-
-            val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.notification_tone))
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, uri)
-
-            this@SettingsFragment.startActivityForResult(intent, RequestCode.REQUEST_SETTING_TONE.ordinal)
+    private fun initCheckBoxVibrate() = activity?.run {
+        cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
+            presenter.onClickVibrateAlarm(isChecked)
         }
+    }
+
+    private fun initToneViews() = activity?.run {
+        llSettingsTone.setOnClickListener { presenter.onClickAlarmTone() }
     }
 
 }

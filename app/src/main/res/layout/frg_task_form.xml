@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarTaskForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarTaskForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:textSize="@dimen/text_size_large"
+            app:popupTheme="@style/Theme.AppCompat.Light"
+            app:subtitleTextAppearance="@style/ToolbarSubtitle"
+            app:title="Title"
+            app:titleTextAppearance="@style/ToolbarTitle"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="2dp">
+
+                <TextView
+                    style="@style/TextViewLabel"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/label_task" />
+
+                <EditText
+                    android:id="@+id/etTaskFormName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/what_you_want_to_do"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="250"
+                    android:minHeight="48dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="24dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/md_blue_grey_500"
+                    android:textColorHint="@color/md_blue_grey_200"
+                    android:textSize="@dimen/text_size_medium" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/md_blue_300">
+
+                        <RelativeLayout
+                            android:id="@+id/rlTaskFormAddAlarm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/diamond_left"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                app:srcCompat="@drawable/ic_diamond_white_24dp"
+                                app:tint="@color/md_white_1000" />
+
+                            <ImageView
+                                android:id="@+id/diamond_right"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                app:srcCompat="@drawable/ic_diamond_white_24dp"
+                                app:tint="@color/md_white_1000" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_toLeftOf="@id/diamond_right"
+                                android:layout_toRightOf="@id/diamond_left"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="center"
+                                android:text="@string/add_alarm"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_xsmall" />
+
+                        </RelativeLayout>
+
+                    </FrameLayout>
+
+                    <include layout="@layout/alarm_details" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="100dp"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="2dp">
+
+                <TextView
+                    style="@style/TextViewLabel"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/label_notes" />
+
+                <EditText
+                    android:id="@+id/etTaskFormNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/what_are_details_task"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="400"
+                    android:minHeight="48dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="24dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/md_blue_grey_500"
+                    android:textColorHint="@color/md_blue_grey_200"
+                    android:textSize="@dimen/text_size_medium" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

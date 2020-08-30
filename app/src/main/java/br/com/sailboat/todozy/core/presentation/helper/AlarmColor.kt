@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.core.extensions.isToday
 import br.com.sailboat.todozy.core.extensions.isTomorrow
+import br.com.sailboat.todozy.core.extensions.log
 import java.util.*
 
 class AlarmColor {
@@ -26,7 +27,7 @@ class AlarmColor {
             } else ContextCompat.getColor(context, R.color.md_blue_500)
 
         } catch (e: Exception) {
-            //LogHelper.logException(e)
+            e.log()
             return ContextCompat.getColor(context, R.color.md_blue_500)
         }
 

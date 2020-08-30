@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/alarm__ll__options"
+    android:id="@+id/llAlarmOptions"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/alarm__tv__date"
+        android:id="@+id/tvAlarmDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -23,7 +23,7 @@
 
 
     <TextView
-        android:id="@+id/alarm__tv__time"
+        android:id="@+id/tvAlarmTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -35,7 +35,7 @@
         tools:text="15:30"/>
 
     <TextView
-        android:id="@+id/alarm__tv__repeat"
+        android:id="@+id/tvAlarmRepeat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"

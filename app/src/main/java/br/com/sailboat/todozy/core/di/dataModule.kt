@@ -1,6 +1,10 @@
 package br.com.sailboat.todozy.core.di
 
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
+import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSource
+import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSourceImpl
+import br.com.sailboat.todozy.features.settings.data.repository.SettingsRepositoryImpl
+import br.com.sailboat.todozy.features.settings.domain.respository.SettingsRepository
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.*
 import br.com.sailboat.todozy.features.tasks.data.repository.AlarmRepositoryImpl
 import br.com.sailboat.todozy.features.tasks.data.repository.TaskHistoryRepositoryImpl
@@ -17,5 +21,7 @@ val dataModule = module {
     single<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
     single<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
     single<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
+    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+    single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
     single { DatabaseOpenHelper(get()) }
 }

@@ -30,6 +30,7 @@ interface TaskFormContract {
         fun showErrorTaskNameCantBeBlank()
         fun setScreenToHideKeyboard()
         fun setCustomRepeatType(custom: String?)
+        fun setFocusOnInputTaskName()
     }
 
     interface Presenter : BaseMVPContract.Presenter {

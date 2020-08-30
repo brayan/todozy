@@ -10,13 +10,17 @@ import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.extensions.safe
-import br.com.sailboat.todozy.core.platform.PreferencesHelper
 import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
+import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSetting
+import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -24,10 +28,18 @@ import org.koin.core.inject
 class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
     val getTasks: GetTasks by inject()
+    val getAlarmSoundSetting: GetAlarmSoundSetting by inject()
+    val getAlarmVibrateSetting: GetAlarmVibrateSetting by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
-        val builder = buildNotification(context, intent)
-        throwNotification(context, builder)
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val builder = buildNotification(context, intent)
+                throwNotification(context, builder)
+            } catch (e: Exception) {
+                e.log()
+            }
+        }
     }
 
     private fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
@@ -35,20 +47,20 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         notifyMgr.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
     }
 
-    private fun buildNotification(context: Context, intent: Intent): NotificationCompat.Builder {
+    private suspend fun buildNotification(context: Context, intent: Intent): NotificationCompat.Builder {
         val resultIntent = Intent(context, LauncherActivity::class.java)
         val resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(context)
-        builder.setSmallIcon(R.drawable.notification_icon)
+        builder.setSmallIcon(R.drawable.ic_vec_notification_icon)
         builder.setCategory(NotificationCompat.CATEGORY_ALARM)
         builder.priority = NotificationCompat.PRIORITY_HIGH
         builder.setContentIntent(resultPendingIntent)
         builder.setAutoCancel(true)
         builder.color = ContextCompat.getColor(context, R.color.md_blue_500)
         initContentTextAndTitle(context, intent, builder)
-        initVibrate(context, builder)
-        initSound(context, builder)
+        initVibrate(builder)
+        getAlarmSoundSetting()?.run { builder.setSound(this) }
 
         return builder
     }
@@ -92,16 +104,12 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         builder.setContentText(context.getString(R.string.touch_to_check))
     }
 
-    private fun initVibrate(context: Context, builder: NotificationCompat.Builder) {
-        if (PreferencesHelper(context).isVibrationSettingAllowed()) {
+    private suspend fun initVibrate(builder: NotificationCompat.Builder) {
+        if (getAlarmVibrateSetting()) {
             builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
         } else {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS)
         }
-    }
-
-    private fun initSound(context: Context, builder: NotificationCompat.Builder) {
-        builder.setSound(PreferencesHelper(context).getCurrentNotificationSound())
     }
 
 //    private fun createNotificationChannel() {

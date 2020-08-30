@@ -22,12 +22,11 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
     override fun onStart() {
         view?.checkAndPerformFirstTimeConfigurations()
         view?.setAlarmUpdateTasks()
-        loadTasks()
-        updateMetrics()
     }
 
-    override fun onRestart() {
-        updateViews()
+    override fun postStart() {
+        loadTasks()
+        updateMetrics()
     }
 
     override fun getTaskViewList() = tasksView
@@ -57,7 +56,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
 
     override fun submitTextForSearch(text: String) {
         filter.text = text
-        loadTasks() // handle the previous launched async operations?
+        loadTasks()
     }
 
     private fun loadTasks() {

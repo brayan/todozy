@@ -135,14 +135,16 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
             layoutManager = LinearLayoutManager(activity)
         }
 
-        val itemTouchHelper = ItemTouchHelper(SwipeTaskLeftRight(activity!!, object : SwipeTaskLeftRight.Callback {
-            override fun onSwipeLeft(position: Int) = presenter.onSwipeTaskLeft(position)
-            override fun onSwipeRight(position: Int) = presenter.onSwipeTaskRight(position)
-        }))
+        activity?.run {
+            val itemTouchHelper = ItemTouchHelper(SwipeTaskLeftRight(this, object : SwipeTaskLeftRight.Callback {
+                override fun onSwipeLeft(position: Int) = presenter.onSwipeTaskLeft(position)
+                override fun onSwipeRight(position: Int) = presenter.onSwipeTaskRight(position)
+            }))
+
+            itemTouchHelper.attachToRecyclerView(recycler)
+        }
 
         recycler.hideFabWhenScrolling(fab)
-
-        itemTouchHelper.attachToRecyclerView(recycler)
     }
 
 }

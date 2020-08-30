@@ -21,12 +21,12 @@ class FirstTimeConfigurationsHelper {
     }
 
     private fun initNotificationVibrate(editor: SharedPreferences.Editor) {
-        editor.putBoolean(PreferencesHelper.ALLOW_VIBRATION, true)
+//        editor.putBoolean(PreferencesHelper.ALLOW_VIBRATION, true)
     }
 
     private fun initNotificationSound(editor: SharedPreferences.Editor) {
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        editor.putString(PreferencesHelper.CURRENT_SOUND, uri.toString())
+//        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+//        editor.putString(PreferencesHelper.CURRENT_SOUND, uri.toString())
     }
 
 }

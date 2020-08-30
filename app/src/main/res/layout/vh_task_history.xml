@@ -36,7 +36,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/shape_circle_done_task"
                     android:padding="8dp"
-                    app:srcCompat="@drawable/ic_thumb_up_white_24dp" />
+                    app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp" />
 
                 <TextView
                     android:id="@+id/tvShortDateTime"

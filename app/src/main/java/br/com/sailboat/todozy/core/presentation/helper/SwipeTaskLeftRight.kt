@@ -1,19 +1,22 @@
 package br.com.sailboat.todozy.core.presentation.helper
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.DisplayMetrics
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
+import kotlin.math.roundToInt
+
 
 class SwipeTaskLeftRight(private val context: Context, private val callback: Callback) :
         ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     private var paint = Paint()
-    private var paint2 = Paint()
 
     interface Callback {
         fun onSwipeLeft(position: Int)
@@ -24,8 +27,7 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                              viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
                              actionState: Int, isCurrentlyActive: Boolean) {
 
-        paint2.color = ContextCompat.getColor(context, android.R.color.black)
-        paint2.textSize = 48f
+        var icon: Bitmap
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
@@ -45,6 +47,13 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                         rightValue,
                         itemView.bottom.toFloat(), paint)
 
+                icon = getBitmapFromVectorDrawable(R.drawable.ic_vec_thumb_up_white_24dp)
+
+                canvas.drawBitmap(icon,
+                        itemView.left.toFloat() + convertDpToPx(16),
+                        itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
+                        paint)
+
             } else {
                 paint.color = ContextCompat.getColor(context, R.color.md_red_200)
 
@@ -59,6 +68,14 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                         itemView.top.toFloat(),
                         itemView.right.toFloat(),
                         itemView.bottom.toFloat(), paint)
+
+                icon = getBitmapFromVectorDrawable(R.drawable.ic_vect_thumb_down_white_24dp)
+
+                canvas.drawBitmap(icon,
+                        itemView.right.toFloat() - convertDpToPx(16) - icon.width,
+                        itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
+                        paint)
+
             }
 
             super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -104,6 +121,21 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
 
     private fun shouldAllowSwipe(viewHolder: RecyclerView.ViewHolder): Boolean {
         return viewHolder is TaskViewHolder
+    }
+
+    private fun convertDpToPx(dp: Int): Int {
+        return (dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+    }
+
+    private fun getBitmapFromVectorDrawable(drawableId: Int): Bitmap {
+        var drawable = ContextCompat.getDrawable(context, drawableId)
+        val bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth,
+                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
     }
 
 }
