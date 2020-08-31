@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.model.ItemView
+import kotlinx.android.synthetic.main.frg_about.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -15,10 +16,6 @@ class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.
 
     override val presenter: AboutContract.Presenter by inject()
     override val layoutId = R.layout.frg_about
-
-    private var toolbar: Toolbar? = null
-    private var recycler: RecyclerView? = null
-
 
     companion object {
         fun newInstance(itemViews: ArrayList<ItemView>): AboutFragment {
@@ -37,24 +34,26 @@ class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.
     }
 
     override fun updateList() {
-        recycler!!.adapter!!.notifyDataSetChanged()
+        recycler.adapter?.notifyDataSetChanged()
+    }
+
+    override fun extractAboutInfo(): List<ItemView> {
+        return arguments?.getSerializable("RECYCLER_ITEMS") as List<ItemView>
     }
 
     override fun getAbout() = presenter.getAbout()
 
     private fun initToolbar() {
-        toolbar = getView()!!.findViewById(R.id.toolbar)
-        val appCompatActivity = getActivity() as AppCompatActivity?
-        appCompatActivity?.setSupportActionBar(toolbar)
-        appCompatActivity?.getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
-        toolbar!!.setNavigationOnClickListener { getActivity()!!.onBackPressed() }
-        toolbar!!.setTitle(R.string.about)
+        val appCompatActivity = activity as AppCompatActivity
+        appCompatActivity.setSupportActionBar(toolbar)
+        appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbar.setTitle(R.string.about)
     }
 
     private fun initRecyclerView() {
-        recycler = getView()!!.findViewById(R.id.recycler)
-        recycler!!.layoutManager = LinearLayoutManager(getActivity())
-        recycler!!.adapter = AboutAdapter(this)
+        recycler.layoutManager = LinearLayoutManager(activity)
+        recycler.adapter = AboutAdapter(this)
     }
 
 }

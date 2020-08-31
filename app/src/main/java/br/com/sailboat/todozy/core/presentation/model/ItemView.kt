@@ -1,5 +1,7 @@
 package br.com.sailboat.todozy.core.presentation.model
 
-interface ItemView {
+import java.io.Serializable
+
+interface ItemView : Serializable {
     val viewType: Int
 }

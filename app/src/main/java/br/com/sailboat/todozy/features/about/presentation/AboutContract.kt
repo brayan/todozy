@@ -7,6 +7,7 @@ interface AboutContract {
 
     interface View : BaseMVPContract.View {
         fun updateList()
+        fun extractAboutInfo(): List<ItemView>
     }
 
     interface Presenter : BaseMVPContract.Presenter {

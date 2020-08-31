@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.about.presentation
 
+import br.com.sailboat.todozy.core.extensions.safe
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 
 class AboutPresenter : BasePresenter<AboutContract.View>(), AboutContract.Presenter {
@@ -9,9 +10,10 @@ class AboutPresenter : BasePresenter<AboutContract.View>(), AboutContract.Presen
 
 
     override fun onStart() {
-//        val itemViews = arguments.getSerializable("RECYCLER_ITEMS") as List<ItemView>?
-//        viewModel.itemViews.clear()
-//        viewModel.itemViews.addAll(itemViews!!)
+        val itemViews = view?.extractAboutInfo()
+
+        viewModel.itemViews.clear()
+        viewModel.itemViews.addAll(itemViews.safe())
     }
 
     override fun postStart() {

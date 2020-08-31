@@ -15,16 +15,8 @@ fun Context.startAboutActivity(itemViews: ArrayList<ItemView>) {
 
 class AboutActivity : BaseActivity() {
 
-    companion object {
-        fun start(context: Context, itemViews: ArrayList<ItemView>) {
-            val starter = Intent(context, AboutActivity::class.java)
-            starter.putExtra("RECYCLER_ITEMS", itemViews)
-            context.startActivity(starter)
-        }
-    }
-
     override fun newFragmentInstance(): Fragment {
-        val extras = intent!!.getSerializableExtra("RECYCLER_ITEMS") as ArrayList<ItemView>
+        val extras = intent.getSerializableExtra("RECYCLER_ITEMS") as ArrayList<ItemView>
         return AboutFragment.newInstance(extras)
     }
 
