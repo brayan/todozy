@@ -39,7 +39,7 @@ class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(data
         return null
     }
 
-    fun deleteByTask(taskId: Long) {
+    override fun deleteByTask(taskId: Long) {
         val sql = " DELETE FROM Alarm WHERE Alarm.fkTaskId = ?"
         val statement = compileStatement(sql)
         statement.bindLong(1, taskId)
@@ -55,7 +55,7 @@ class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(data
         delete(statement)
     }
 
-    fun save(alarm: AlarmData) {
+    override fun save(alarmData: AlarmData) {
         val sb = StringBuilder()
 
         sb.append(" INSERT INTO Alarm ")
@@ -63,18 +63,18 @@ class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(data
         sb.append(" VALUES (?, ?, ?, ?, ?); ")
 
         val statement = compileStatement(sb.toString())
-        statement.bindLong(1, alarm.taskId)
-        statement.bindLong(2, alarm.repeatType.toLong())
-        statement.bindString(3, alarm.nextAlarmDate ?: "")
+        statement.bindLong(1, alarmData.taskId)
+        statement.bindLong(2, alarmData.repeatType.toLong())
+        statement.bindString(3, alarmData.nextAlarmDate ?: "")
         statement.bindString(4, Calendar.getInstance().toDateTimeString())
-        statement.bindString(5, alarm.days ?: "")
+        statement.bindString(5, alarmData.days ?: "")
 
         val id = insert(statement)
 
-        alarm.id = id
+        alarmData.id = id
     }
 
-    fun update(alarm: AlarmData) {
+    override fun update(alarmData: AlarmData) {
         val sql = StringBuilder()
         sql.append(" UPDATE Alarm SET ")
         sql.append(" repeatType = ?, ")
@@ -83,10 +83,10 @@ class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(data
         sql.append(" WHERE id = ? ")
 
         val statement = compileStatement(sql.toString())
-        statement.bindLong(1, alarm.repeatType.toLong())
-        statement.bindString(2, alarm.nextAlarmDate ?: "")
-        statement.bindString(3, alarm.days ?: "")
-        statement.bindLong(4, alarm.id)
+        statement.bindLong(1, alarmData.repeatType.toLong())
+        statement.bindString(2, alarmData.nextAlarmDate ?: "")
+        statement.bindString(3, alarmData.days ?: "")
+        statement.bindLong(4, alarmData.id)
 
         update(statement)
     }

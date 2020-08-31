@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy
 
 import android.app.Application
-import br.com.sailboat.todozy.core.di.appComponent
+import br.com.sailboat.todozy.di.appComponent
 import br.com.sailboat.todozy.core.platform.CrashlyticsReportingTree
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

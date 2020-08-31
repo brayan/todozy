@@ -5,6 +5,8 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.SaveAlarm
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -16,12 +18,14 @@ import java.util.*
 class SaveTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
+    private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
+    private val saveAlarm: SaveAlarm = mockk(relaxed = true)
 
     private lateinit var saveTask: SaveTask
 
     @Before
     fun setUp() {
-        saveTask = SaveTask(repository)
+        saveTask = SaveTask(repository, deleteAlarm, saveAlarm)
     }
 
     @Test
@@ -61,6 +65,48 @@ class SaveTaskTest {
         ))
 
         saveTask(task)
+    }
+
+    @Test
+    fun `should delete alarm when update task`() = runBlocking {
+        val alarm = Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT
+        )
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
+
+        saveTask(task)
+
+        coVerify { deleteAlarm(45) }
+        confirmVerified(deleteAlarm)
+    }
+
+    @Test
+    fun `should save alarm when inserting task`() = runBlocking {
+        val alarm = Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT
+        )
+        val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes", alarm = alarm)
+
+        saveTask(task)
+
+        coVerify { saveAlarm(alarm, task.id) }
+        confirmVerified(saveAlarm)
+    }
+
+    @Test
+    fun `should save alarm when updating task`() = runBlocking {
+        val alarm = Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT
+        )
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
+
+        saveTask(task)
+
+        coVerify { saveAlarm(alarm, task.id) }
+        confirmVerified(saveAlarm)
     }
 
 }

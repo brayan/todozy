@@ -8,6 +8,7 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CheckTaskFields
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CheckTaskFields.Condition.ALARM_NOT_VALID
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
@@ -17,7 +18,8 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskFormPresenter(private val getTask: GetTask,
-                        private val saveTask: SaveTask) :
+                        private val saveTask: SaveTask,
+                        private val getNextAlarm: GetNextAlarm) :
         BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 
     private val viewModel by lazy { TaskFormViewModel() }
@@ -113,6 +115,7 @@ class TaskFormPresenter(private val getTask: GetTask,
         if (days.length == 1) {
 
             if (!days.contains(viewModel.alarm?.get(Calendar.DAY_OF_WEEK).toString())) {
+                // TODO: ADD GET NEXT ALARM USECASE
                 viewModel.alarm?.incrementToNextValidDate(RepeatType.CUSTOM, days)
             }
 

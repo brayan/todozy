@@ -1,5 +1,6 @@
-package br.com.sailboat.todozy.core.di
+package br.com.sailboat.todozy.di
 
+import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSource
 import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSourceImpl
@@ -12,6 +13,7 @@ import br.com.sailboat.todozy.features.tasks.data.repository.TaskRepositoryImpl
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -24,4 +26,5 @@ val dataModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
     single { DatabaseOpenHelper(get()) }
+    single { AlarmManagerHelper(androidContext()) }
 }

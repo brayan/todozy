@@ -1,48 +1,46 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import android.content.Context
-import br.com.sailboat.todozy.core.extensions.incrementToNextValidDate
+import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
-import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSourceSQLite
+import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarm
 import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarmData
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
+import java.util.*
 
-class AlarmRepositoryImpl(database: DatabaseOpenHelper, context: Context) : AlarmRepository {
-
-    private val alarmSQLite by lazy { AlarmLocalDataSourceSQLite(database) }
-    private val alarmManager by lazy { AlarmManagerHelper(context) }
+class AlarmRepositoryImpl(private val alarmLocalDataSource: AlarmLocalDataSource,
+                          private val alarmManager: AlarmManagerHelper) : AlarmRepository {
 
     override suspend fun getAlarmByTaskId(taskId: Long): Alarm? {
-        return alarmSQLite.getAlarmByTask(taskId)?.mapToAlarm()
+        "${javaClass.simpleName}.getAlarmByTaskId($taskId)".logDebug()
+        return alarmLocalDataSource.getAlarmByTask(taskId)?.mapToAlarm()
     }
 
-    override suspend fun deleteAlarmByTask(task: Task) {
-        alarmSQLite.deleteByTask(task.id)
-        alarmManager.cancelAlarm(task)
+    override suspend fun deleteAlarmByTask(taskId: Long) {
+        "${javaClass.simpleName}.deleteAlarmByTask($taskId)".logDebug()
+        alarmLocalDataSource.deleteByTask(taskId)
     }
 
-    override suspend fun update(alarm: Alarm, task: Task) {
-        alarmSQLite.update(alarm.mapToAlarmData(task.id))
-        alarmManager.cancelAlarm(task)
-        alarmManager.setNextValidAlarm(task, alarm)
+    override suspend fun save(alarm: Alarm, taskId: Long) {
+        "${javaClass.simpleName}.save($alarm , $taskId)".logDebug()
+        alarmLocalDataSource.save(alarm.mapToAlarmData(taskId))
     }
 
-    override suspend fun save(alarm: Alarm, task: Task) {
-        alarmSQLite.save(alarm.mapToAlarmData(task.id))
-        alarmManager.cancelAlarm(task)
-        alarmManager.setNextValidAlarm(task, alarm)
+    override suspend fun scheduleAlarm(alarm: Alarm, taskId: Long) {
+        "${javaClass.simpleName}.scheduleAlarm($alarm , $taskId)".logDebug()
+        alarmManager.scheduleAlarm(alarm.dateTime, taskId)
     }
 
-    override suspend fun setAlarm(alarm: Alarm, task: Task) {
-        alarmManager.setNextValidAlarm(task, alarm)
+    override suspend fun scheduleAlarmUpdates(calendar: Calendar) {
+        "${javaClass.simpleName}.scheduleAlarmUpdates($calendar)".logDebug()
+        alarmManager.scheduleAlarmUpdates(calendar)
     }
 
-    override suspend fun getNextValidAlarm(alarm: Alarm): Alarm {
-        return alarm.apply { dateTime.incrementToNextValidDate(repeatType, customDays) }
+    override suspend fun cancelAlarmSchedule(taskId: Long) {
+        "${javaClass.simpleName}.cancelAlarmSchedule($taskId)".logDebug()
+        alarmManager.cancelAlarm(taskId)
     }
 
 }

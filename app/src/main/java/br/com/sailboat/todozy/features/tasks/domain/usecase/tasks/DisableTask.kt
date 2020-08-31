@@ -9,7 +9,7 @@ class DisableTask(private val taskRepository: TaskRepository,
 
     suspend operator fun invoke(task: Task) {
         taskRepository.disableTask(task)
-        deleteAlarm(task)
+        deleteAlarm(task.id)
     }
 
 }

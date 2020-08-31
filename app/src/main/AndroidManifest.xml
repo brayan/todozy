@@ -30,7 +30,7 @@
 
         <receiver android:name=".core.platform.receivers.AlarmReceiver" />
 
-        <receiver android:name=".core.platform.receivers.AlarmUpdateReceiver" />
+        <receiver android:name=".core.platform.receivers.ScheduleAlarmsReceiver" />
 
         <activity
             android:name=".features.LauncherActivity"

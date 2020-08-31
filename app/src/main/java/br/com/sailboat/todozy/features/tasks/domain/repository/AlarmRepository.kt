@@ -2,12 +2,13 @@ package br.com.sailboat.todozy.features.tasks.domain.repository
 
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import java.util.*
 
 interface AlarmRepository {
     suspend fun getAlarmByTaskId(taskId: Long): Alarm?
-    suspend fun deleteAlarmByTask(task: Task)
-    suspend fun save(alarm: Alarm, task: Task)
-    suspend fun update(alarm: Alarm, task: Task)
-    suspend fun setAlarm(alarm: Alarm, task: Task)
-    suspend fun getNextValidAlarm(alarm: Alarm): Alarm
+    suspend fun deleteAlarmByTask(taskId: Long)
+    suspend fun save(alarm: Alarm, taskId: Long)
+    suspend fun scheduleAlarm(alarm: Alarm, taskId: Long)
+    suspend fun scheduleAlarmUpdates(calendar: Calendar)
+    suspend fun cancelAlarmSchedule(taskId: Long)
 }

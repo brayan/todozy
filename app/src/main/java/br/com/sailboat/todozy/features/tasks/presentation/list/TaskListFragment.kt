@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
 import br.com.sailboat.todozy.core.extensions.logDebug
-import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
@@ -76,10 +75,6 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun removeTaskFromList(position: Int) {
         recycler.adapter?.notifyItemRemoved(position)
-    }
-
-    override fun setAlarmUpdateTasks() {
-        activity?.run { AlarmManagerHelper(this).setAlarmUpdateTasks() }
     }
 
     override fun setMainTitle() = toolbar.setTitle(R.string.app_name)

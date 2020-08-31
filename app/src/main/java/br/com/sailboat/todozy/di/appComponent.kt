@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.di
+package br.com.sailboat.todozy.di
 
 import org.koin.core.module.Module
 

@@ -1,12 +1,10 @@
-package br.com.sailboat.todozy.core.di
+package br.com.sailboat.todozy.di
 
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmSoundSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmVibrateSetting
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.*
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
@@ -21,15 +19,20 @@ val domainModule = module {
     factory { GetTaskMetrics(get()) }
     factory { DisableTask(get(), get()) }
     factory { CompleteTask(get(), get(), get(), get(), get()) }
-    factory { DeleteAlarm(get()) }
-    factory { GetNextAlarm(get()) }
+    factory { DeleteAlarm(get(), get()) }
+    factory { GetNextAlarm() }
     factory { AddHistory(get()) }
     factory { UpdateHistory(get()) }
     factory { DeleteHistory(get()) }
     factory { DeleteAllHistory(get()) }
-    factory { SaveTask(get()) }
+    factory { SaveTask(get(), get(), get()) }
     factory { SetAlarmSoundSetting(get()) }
     factory { GetAlarmSoundSetting(get()) }
     factory { SetAlarmVibrateSetting(get()) }
     factory { GetAlarmVibrateSetting(get()) }
+    factory { ScheduleAlarm(get()) }
+    factory { ScheduleAllAlarms(get(), get(), get()) }
+    factory { ScheduleAlarmUpdates(get()) }
+    factory { CancelAlarmSchedule(get()) }
+    factory { SaveAlarm(get(), get(), get()) }
 }

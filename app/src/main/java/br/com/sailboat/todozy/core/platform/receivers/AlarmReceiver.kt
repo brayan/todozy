@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.log
+import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.extensions.safe
 import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
@@ -17,6 +18,7 @@ import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSe
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,11 +29,17 @@ import org.koin.core.inject
 
 class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
+    val getTask: GetTask by inject()
     val getTasks: GetTasks by inject()
     val getAlarmSoundSetting: GetAlarmSoundSetting by inject()
     val getAlarmVibrateSetting: GetAlarmVibrateSetting by inject()
 
+    companion object {
+        const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
+        "${javaClass.simpleName}.onReceive()".logDebug()
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val builder = buildNotification(context, intent)
@@ -65,8 +73,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         return builder
     }
 
-    // TODO: REMOVE runBlocking
-    private fun initContentTextAndTitle(context: Context, intent: Intent, builder: NotificationCompat.Builder) = runBlocking {
+    private suspend fun initContentTextAndTitle(context: Context, intent: Intent, builder: NotificationCompat.Builder) {
         try {
             val tasks = getTasks(TaskFilter(TaskCategory.BEFORE_NOW))
 
@@ -81,21 +88,16 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             builder.setContentTitle(context.getString(R.string.new_task))
             builder.setContentText(context.getString(R.string.touch_to_check))
         }
-
     }
 
-    private fun initContentFromIntent(intent: Intent, builder: NotificationCompat.Builder) {
+    private suspend fun initContentFromIntent(intent: Intent, builder: NotificationCompat.Builder) {
+        val taskId = intent.getLongExtra(EXTRA_TASK_ID, -1)
 
-        if (intent.hasExtra("EXTRA_TASK")) {
-            val task = intent.getSerializableExtra("EXTRA_TASK") as Task
-            builder.setContentTitle(task.name)
+        val task = getTask(taskId)
+        builder.setContentTitle(task.name)
 
-            if (task.notes?.isNotEmpty().safe()) {
-                builder.setContentText(task.notes)
-            }
-
-        } else {
-            builder.setContentTitle(intent.getStringExtra("NOME_TAREFA"))
+        if (task.notes?.isNotEmpty().safe()) {
+            builder.setContentText(task.notes)
         }
     }
 

@@ -14,6 +14,7 @@ class GetTasks(private val taskRepository: TaskRepository) {
             TaskCategory.TODAY -> getTodayTasks(filter)
             TaskCategory.TOMORROW -> getTomorrowTasks(filter)
             TaskCategory.NEXT_DAYS -> getNextDaysTasks(filter)
+            TaskCategory.WITH_ALARMS -> getTasksWithAlarms()
         }
     }
 

@@ -37,7 +37,7 @@ class DisableTaskTest {
     fun `should call deleteAlarm when disable task`() = runBlocking {
         disableTask(task)
 
-        coVerify { deleteAlarm(task) }
+        coVerify { deleteAlarm(task.id) }
         confirmVerified(deleteAlarm)
     }
 

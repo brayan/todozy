@@ -13,7 +13,6 @@ interface TaskListContract {
         fun hideMetrics()
         fun hideTasks()
         fun removeTaskFromList(position: Int)
-        fun setAlarmUpdateTasks()
         fun setEmptyTitle()
         fun setMainTitle()
         fun showEmptyView()
