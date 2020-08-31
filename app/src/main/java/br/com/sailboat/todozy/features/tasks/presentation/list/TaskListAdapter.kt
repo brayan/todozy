@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
 class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callback : TaskViewHolder.Callback {
-        val taskViewList: List<ItemView>
+        val tasksView: List<ItemView>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
@@ -22,7 +22,7 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = callback.taskViewList[position]
+        val item = callback.tasksView[position]
 
         when (item.viewType) {
             ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskItemView)
@@ -31,8 +31,8 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
         }
     }
 
-    override fun getItemCount() = callback.taskViewList.size
+    override fun getItemCount() = callback.tasksView.size
 
-    override fun getItemViewType(position: Int) = callback.taskViewList[position].viewType
+    override fun getItemViewType(position: Int) = callback.tasksView[position].viewType
 
 }

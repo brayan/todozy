@@ -28,7 +28,7 @@ interface TaskListContract {
     }
 
     interface Presenter : BaseMVPContract.Presenter {
-        fun getTaskViewList(): List<ItemView>
+        val tasksView: List<ItemView>
         fun getTextForSearch(): String
         fun onClickMenuSettings()
         fun onClickMenuTaskHistory()

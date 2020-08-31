@@ -129,7 +129,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     private fun initRecyclerView() {
         recycler.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
-                override val taskViewList = presenter.getTaskViewList()
+                override val tasksView = presenter.tasksView
                 override fun onClickTask(position: Int) = presenter.onClickTask(position)
             })
             layoutManager = LinearLayoutManager(activity)

@@ -9,15 +9,16 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CompleteTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
 import kotlinx.coroutines.delay
 
-class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
+class TaskListPresenter(private val getTasksView: GetTasksView,
                         private val getAlarm: GetAlarm,
                         private val getTaskMetrics: GetTaskMetrics,
                         private val completeTask: CompleteTask)
     : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
 
-    private val tasksView = mutableListOf<ItemView>()
     private var taskMetrics: TaskMetrics? = null
     private var filter = TaskFilter(TaskCategory.TODAY)
+
+    override val tasksView = mutableListOf<ItemView>()
 
     override fun onStart() {
         view?.checkAndPerformFirstTimeConfigurations()
@@ -28,8 +29,6 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
         loadTasks()
         updateMetrics()
     }
-
-    override fun getTaskViewList() = tasksView
 
     override fun getTextForSearch() = filter.text
 
@@ -63,7 +62,7 @@ class TaskListPresenter(private val getTasksViewUseCase: GetTasksView,
         launchAsync {
             try {
                 view?.showProgress()
-                val tasks = getTasksViewUseCase(filter)
+                val tasks = getTasksView(filter)
                 tasksView.clear()
                 tasksView.addAll(tasks)
                 updateViews()
