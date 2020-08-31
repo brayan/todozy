@@ -7,10 +7,7 @@ import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmVibrateSe
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.*
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
 import org.koin.dsl.module

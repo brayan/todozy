@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.features.tasks.domain.usecase.tasks
+package br.com.sailboat.todozy.features.tasks.domain.usecase.history
 
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryCategory

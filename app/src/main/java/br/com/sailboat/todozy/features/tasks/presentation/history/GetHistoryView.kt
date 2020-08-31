@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistoryView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.GetTaskHistory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
