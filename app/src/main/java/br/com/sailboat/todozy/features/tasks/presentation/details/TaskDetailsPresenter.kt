@@ -4,10 +4,11 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
+import kotlinx.coroutines.withContext
 
 class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
                            private val getTaskMetrics: GetTaskMetrics,
@@ -85,11 +86,15 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         try {
             val taskId = viewModel.taskId
 
-            val taskDetails = getTaskDetailsView(taskId)
+            val taskDetails = withContext(contextProvider.io) {
+                getTaskDetailsView(taskId)
+            }
 
-            viewModel.taskMetrics = getTaskMetrics(TaskHistoryFilter(taskId = taskId))
+            viewModel.taskMetrics = withContext(contextProvider.io) {
+                getTaskMetrics(TaskHistoryFilter(taskId = taskId))
+            }
 
-            viewModel.alarm = getAlarm(taskId)
+            viewModel.alarm = withContext(contextProvider.io) { getAlarm(taskId) }
 
             viewModel.details.clear()
             viewModel.details.addAll(taskDetails)

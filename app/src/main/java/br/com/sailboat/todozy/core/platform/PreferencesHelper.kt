@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.core.platform
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 
 class PreferencesHelper(private val context: Context) {
 

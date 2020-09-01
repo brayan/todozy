@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.repository
 
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import java.util.*
 
 interface AlarmRepository {

@@ -12,7 +12,6 @@ import br.com.sailboat.todozy.core.extensions.hideKeyboard
 import br.com.sailboat.todozy.core.extensions.setActivityToHideKeyboard
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateSelectorDialog
-import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.RepeatAlarmSelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDialog

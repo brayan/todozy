@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDat
 import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarm
 import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarmData
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import java.util.*
 

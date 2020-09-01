@@ -14,7 +14,7 @@ import br.com.sailboat.todozy.core.presentation.model.ViewResult
 abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), BaseMVPContract.View {
 
     abstract val presenter: P
-    var progress = ProgressDialog()
+    private var progress = ProgressDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

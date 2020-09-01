@@ -8,12 +8,12 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.ALARM_NOT_VALID
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import kotlinx.coroutines.runBlocking
 import java.util.*
 

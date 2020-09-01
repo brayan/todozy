@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.core.presentation.helper
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.media.RingtoneManager
 import br.com.sailboat.todozy.core.platform.PreferencesHelper
 
 class FirstTimeConfigurationsHelper {
