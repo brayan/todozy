@@ -5,9 +5,9 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.DisableTask
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 
 class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
                            private val getTaskMetrics: GetTaskMetrics,

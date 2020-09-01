@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeView
 import br.com.sailboat.todozy.core.presentation.model.*
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
 import kotlinx.coroutines.coroutineScope
 
 class GetTaskDetailsView(private val context: Context, private val getTask: GetTask) {

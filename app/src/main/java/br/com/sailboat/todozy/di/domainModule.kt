@@ -4,9 +4,9 @@ import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSett
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmSoundSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmVibrateSetting
+import br.com.sailboat.todozy.features.tasks.domain.usecase.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.*
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
 import org.koin.dsl.module
 

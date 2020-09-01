@@ -1,7 +1,8 @@
-package br.com.sailboat.todozy.features.tasks.domain.usecase.tasks
+package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

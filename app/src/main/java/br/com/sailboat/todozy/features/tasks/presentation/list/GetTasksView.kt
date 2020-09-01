@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.features.tasks.domain.usecase.tasks
+package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.core.extensions.safe

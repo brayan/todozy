@@ -15,15 +15,13 @@ import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTask
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
 
 class ScheduleAllAlarms(private val getTasks: GetTasks,
                         private val getNextAlarm: GetNextAlarm,

@@ -5,9 +5,8 @@ import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAlarmUpdates
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.CompleteTask
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import kotlinx.coroutines.delay
 
 class TaskListPresenter(private val getTasksView: GetTasksView,

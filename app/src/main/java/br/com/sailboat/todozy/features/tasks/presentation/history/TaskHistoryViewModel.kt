@@ -18,7 +18,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import kotlinx.coroutines.launch
 import java.util.*
 

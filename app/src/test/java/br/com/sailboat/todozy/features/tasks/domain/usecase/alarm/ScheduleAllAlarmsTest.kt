@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
 import br.com.sailboat.todozy.features.tasks.domain.model.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.tasks.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
