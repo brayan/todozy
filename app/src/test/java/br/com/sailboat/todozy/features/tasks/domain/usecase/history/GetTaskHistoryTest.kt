@@ -51,7 +51,7 @@ class GetTaskHistoryTest {
         coVerify(exactly = 0) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(history, result)
+        assertEquals(result, history)
     }
 
     @Test
@@ -65,7 +65,7 @@ class GetTaskHistoryTest {
         coVerify(exactly = 0) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(history, result)
+        assertEquals(result, history)
     }
 
     @Test
@@ -79,7 +79,7 @@ class GetTaskHistoryTest {
         coVerify(exactly = 1) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(history, result)
+        assertEquals(result, history)
     }
 
 }

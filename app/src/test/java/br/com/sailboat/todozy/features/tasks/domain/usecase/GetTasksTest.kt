@@ -42,7 +42,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(tasks, result)
+        assertEquals(result, tasks)
     }
 
     @Test
@@ -57,7 +57,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(tasks, result)
+        assertEquals(result, tasks)
     }
 
     @Test
@@ -72,7 +72,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(tasks, result)
+        assertEquals(result, tasks)
     }
 
     @Test
@@ -87,7 +87,7 @@ class GetTasksTest {
         coVerify(exactly = 1) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(tasks, result)
+        assertEquals(result, tasks)
     }
 
     @Test
@@ -102,7 +102,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 1) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(tasks, result)
+        assertEquals(result, tasks)
     }
 
 }

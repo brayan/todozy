@@ -32,7 +32,7 @@ class GetTaskTest {
 
         coVerify { repository.getTask(45) }
         confirmVerified(repository)
-        assertEquals(task, result)
+        assertEquals(result, task)
     }
 
 }

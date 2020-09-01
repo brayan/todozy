@@ -25,7 +25,7 @@ class CheckTaskFieldsTest {
 
         val result = checkTaskFields(task)
 
-        assertEquals(listOf(CheckTaskFields.Condition.TASK_NAME_NOT_FILLED), result)
+        assertEquals(result, listOf(CheckTaskFields.Condition.TASK_NAME_NOT_FILLED))
     }
 
     @Test
@@ -38,7 +38,7 @@ class CheckTaskFieldsTest {
 
         val result = checkTaskFields(task)
 
-        assertEquals(listOf(CheckTaskFields.Condition.ALARM_NOT_VALID), result)
+        assertEquals(result, listOf(CheckTaskFields.Condition.ALARM_NOT_VALID))
     }
 
     @Test
@@ -51,9 +51,9 @@ class CheckTaskFieldsTest {
 
         val result = checkTaskFields(task)
 
-        assertEquals(listOf(
+        assertEquals(result, listOf(
                 CheckTaskFields.Condition.TASK_NAME_NOT_FILLED,
-                CheckTaskFields.Condition.ALARM_NOT_VALID), result)
+                CheckTaskFields.Condition.ALARM_NOT_VALID))
     }
 
 }
