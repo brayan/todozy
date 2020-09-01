@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
 import br.com.sailboat.todozy.core.presentation.model.ViewType
-import br.com.sailboat.todozy.core.presentation.viewholder.SubheaderViewHolder
+import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskHistoryViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -17,7 +17,7 @@ class TaskHistoryAdapter(private val callback: Callback) : RecyclerView.Adapter<
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         ViewType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, callback)
-        ViewType.SUBHEADER.ordinal -> SubheaderViewHolder(parent)
+        ViewType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
         else -> throw RuntimeException("ViewHolder not found")
     }
 
@@ -26,7 +26,7 @@ class TaskHistoryAdapter(private val callback: Callback) : RecyclerView.Adapter<
 
         when (item.viewType) {
             ViewType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryView)
-            ViewType.SUBHEADER.ordinal -> (holder as SubheaderViewHolder).bind(item as SubheadView)
+            ViewType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
             else -> throw RuntimeException("ViewHolder not found")
         }
     }

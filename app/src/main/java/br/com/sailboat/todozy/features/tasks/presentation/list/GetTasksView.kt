@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
-import android.content.Context
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
@@ -12,8 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-class GetTasksView(private val context: Context,
-                   private val getTasks: GetTasks) {
+class GetTasksView(private val getTasks: GetTasks) {
 
     private val taskCategories = mapOf(
             TaskCategory.BEFORE_TODAY to R.string.previous_days,
@@ -35,7 +33,7 @@ class GetTasksView(private val context: Context,
         val tasksView = mutableListOf<ItemView>()
 
         if (tasks.isNotEmpty()) {
-            tasksView.add(SubheadView(context.getString(subhead)))
+            tasksView.add(SubheadView(subhead))
             tasksView.addAll(tasks.mapToTaskItemView())
         }
 

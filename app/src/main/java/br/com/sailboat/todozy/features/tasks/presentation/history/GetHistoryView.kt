@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
-import android.content.Context
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
@@ -12,8 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-class GetHistoryView(private val context: Context,
-                     private val getTasksHistory: GetTaskHistory) {
+class GetHistoryView(private val getTasksHistory: GetTaskHistory) {
 
     private val historyCategories = mapOf(
             TaskHistoryCategory.TODAY to R.string.today,
@@ -34,7 +32,7 @@ class GetHistoryView(private val context: Context,
         val historyView = mutableListOf<ItemView>()
 
         if (history.isNotEmpty()) {
-            historyView.add(SubheadView(context.getString(subhead)))
+            historyView.add(SubheadView(subhead))
             historyView.addAll(history.mapToTaskHistoryView())
         }
 

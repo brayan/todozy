@@ -23,8 +23,8 @@ val uiModule = module {
     factory<SettingsContract.Presenter> { SettingsPresenter(get(), get(), get(), get()) }
     factory<AboutContract.Presenter> { AboutPresenter() }
 
-    factory { GetTasksView(get(), get()) }
-    factory { GetHistoryView(get(), get()) }
+    factory { GetTasksView(get()) }
+    factory { GetHistoryView(get()) }
     factory { GetShortDateView(get()) }
     factory { GetDateFilterNameView(get()) }
 
