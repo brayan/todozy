@@ -8,10 +8,11 @@ import kotlinx.coroutines.*
 abstract class BasePresenter<V : BaseMVPContract.View> : BaseMVPContract.Presenter {
 
     private var firstSession = true
-    private val asyncJobs: MutableList<Job> = mutableListOf()
 
     var contextProvider = CoroutineContextProvider()
     var view: V? = null
+
+    val scope = CoroutineScope(Job() + contextProvider.main)
 
     override fun attachView(view: BaseMVPContract.View) {
         this.view = view as? V
@@ -29,29 +30,17 @@ abstract class BasePresenter<V : BaseMVPContract.View> : BaseMVPContract.Present
 
     override fun destroy() {
         this.view = null
-        cancelAllAsync()
+        scope.cancel()
     }
 
-    fun launchAsync(block: suspend CoroutineScope.() -> Unit) {
-        val job: Job = GlobalScope.launch(contextProvider.main) {
+    fun launchMain(block: suspend CoroutineScope.() -> Unit) {
+        scope.launch(contextProvider.main) {
             supervisorScope { block() }
         }
-        asyncJobs.add(job)
-        job.invokeOnCompletion { asyncJobs.remove(job) }
     }
 
     override open fun onResult(result: ViewResult) {
         onStart()
-    }
-
-    private fun cancelAllAsync() {
-        val asyncJobsSize = asyncJobs.size
-
-        if (asyncJobsSize > 0) {
-            for (i in asyncJobsSize - 1 downTo 0) {
-                asyncJobs[i].cancel()
-            }
-        }
     }
 
 

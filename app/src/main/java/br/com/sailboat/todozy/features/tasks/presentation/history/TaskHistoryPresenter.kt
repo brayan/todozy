@@ -107,7 +107,7 @@ class TaskHistoryPresenter(
         updateHistoryStatus(position, TaskStatusView.NOT_DONE)
     }
 
-    override fun onClickYesDeleteHistory(position: Int) = launchAsync {
+    override fun onClickYesDeleteHistory(position: Int) = launchMain {
         try {
             clearHistorySelectedPosition()
 
@@ -140,7 +140,7 @@ class TaskHistoryPresenter(
         view?.scrollToTop()
     }
 
-    override fun onClickYesClearAllHistory() = launchAsync {
+    override fun onClickYesClearAllHistory() = launchMain {
         try {
             clearHistorySelectedPosition()
             deleteAllHistory()
@@ -225,7 +225,7 @@ class TaskHistoryPresenter(
         view?.showConfirmationClearAllHistory()
     }
 
-    private fun loadHistoryTasks() = launchAsync {
+    private fun loadHistoryTasks() = launchMain {
         try {
             taskMetrics = getTaskMetrics(filter)
 
@@ -292,7 +292,7 @@ class TaskHistoryPresenter(
     }
 
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatusView) = launchAsync {
+    private fun updateHistoryStatus(position: Int, status: TaskStatusView) = launchMain {
         try {
             clearHistorySelectedPosition()
 

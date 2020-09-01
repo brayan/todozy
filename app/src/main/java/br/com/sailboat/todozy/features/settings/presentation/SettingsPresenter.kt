@@ -17,7 +17,7 @@ class SettingsPresenter(private val getAlarmSoundSetting: GetAlarmSoundSetting,
     private var shouldVibrate = false
 
     override fun onStart() {
-        launchAsync {
+        launchMain {
             alarmSound = getAlarmSoundSetting()
             alarmSound?.run { view?.setCurrentToneAlarm(this) } ?: view?.setCurrentToneAlarmNone()
 
@@ -27,7 +27,7 @@ class SettingsPresenter(private val getAlarmSoundSetting: GetAlarmSoundSetting,
     }
 
     override fun onSelectAlarmTone(alarmTone: Uri) {
-        launchAsync {
+        launchMain {
             setAlarmSoundSetting(alarmTone)
             view?.setCurrentToneAlarm(alarmTone)
         }
@@ -38,7 +38,7 @@ class SettingsPresenter(private val getAlarmSoundSetting: GetAlarmSoundSetting,
     }
 
     override fun onClickVibrateAlarm(vibrate: Boolean) {
-        launchAsync {
+        launchMain {
             shouldVibrate = vibrate
             setAlarmVibrateSetting(shouldVibrate)
             view?.setVibrateAlarm(shouldVibrate)

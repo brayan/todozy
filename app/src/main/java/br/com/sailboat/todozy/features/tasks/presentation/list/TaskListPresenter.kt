@@ -4,10 +4,11 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 class TaskListPresenter(private val getTasksView: GetTasksView,
                         private val getAlarm: GetAlarm,
@@ -59,10 +60,10 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
     }
 
     private fun loadTasks() {
-        launchAsync {
+        launchMain {
             try {
                 view?.showProgress()
-                val tasks = getTasksView(filter)
+                val tasks = withContext(contextProvider.io) { getTasksView(filter.text) }
                 tasksView.clear()
                 tasksView.addAll(tasks)
                 updateViews()
@@ -74,7 +75,7 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
         }
     }
 
-    private fun onTaskSwiped(position: Int, status: TaskStatus) = launchAsync {
+    private fun onTaskSwiped(position: Int, status: TaskStatus) = launchMain {
         try {
             taskMetrics = null
             updateMetrics()

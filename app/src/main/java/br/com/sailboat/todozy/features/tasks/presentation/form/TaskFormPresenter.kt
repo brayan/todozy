@@ -135,7 +135,7 @@ class TaskFormPresenter(private val getTask: GetTask,
         updateViews()
     }
 
-    private fun startEditingTask() = launchAsync {
+    private fun startEditingTask() = launchMain {
         try {
             view?.showProgress()
             val taskId = viewModel.taskId

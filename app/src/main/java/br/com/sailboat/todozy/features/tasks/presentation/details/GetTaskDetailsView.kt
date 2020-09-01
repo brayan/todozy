@@ -11,7 +11,7 @@ import kotlinx.coroutines.coroutineScope
 
 class GetTaskDetailsView(private val context: Context, private val getTask: GetTask) {
 
-    suspend operator fun invoke(taskId: Long): List<ItemView> = coroutineScope {
+    suspend operator fun invoke(taskId: Long): List<ItemView> {
         val itemViews = mutableListOf<ItemView>()
 
         val task = getTask(taskId)
@@ -20,7 +20,7 @@ class GetTaskDetailsView(private val context: Context, private val getTask: GetT
         task.alarm?.run { addAlarm(context, this, itemViews) }
         task.notes?.takeIf { it.isNotBlank() }?.run { addNotes(context, itemViews, this) }
 
-        itemViews
+        return itemViews
     }
 
     private fun addTitle(itemViews: MutableList<ItemView>, task: Task) {

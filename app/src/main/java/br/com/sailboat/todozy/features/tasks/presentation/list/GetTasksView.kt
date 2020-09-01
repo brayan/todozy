@@ -19,10 +19,10 @@ class GetTasksView(private val getTasks: GetTasks) {
             TaskCategory.TOMORROW to R.string.tomorrow,
             TaskCategory.NEXT_DAYS to R.string.next_days)
 
-    suspend operator fun invoke(filter: TaskFilter) = coroutineScope {
+    suspend operator fun invoke(search: String) = coroutineScope {
         taskCategories.map { taskType ->
             async {
-                filter.category = taskType.key
+                val filter = TaskFilter(taskType.key).apply { text = search }
                 getTasksView(filter, taskType.value)
             }
         }.awaitAll().flatten()

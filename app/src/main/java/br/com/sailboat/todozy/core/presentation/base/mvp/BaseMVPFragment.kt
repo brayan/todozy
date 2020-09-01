@@ -68,11 +68,13 @@ abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), 
     }
 
     override fun showProgress() {
-        progress.show(childFragmentManager, "PROGRESS")
+        if (progress.isAdded.not()) {
+            progress.show(childFragmentManager, "PROGRESS")
+        }
     }
 
     override fun hideProgress() {
-        progress.dismiss()
+        progress.dismissAllowingStateLoss()
     }
 
 }

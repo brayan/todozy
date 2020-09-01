@@ -36,7 +36,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         view?.showDialogDeleteTask()
     }
 
-    override fun onClickDeleteTask() = launchAsync {
+    override fun onClickDeleteTask() = launchMain {
         try {
             view?.showProgress()
             val taskId = viewModel.taskId
@@ -81,7 +81,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         }
     }
 
-    private fun loadDetails() = launchAsync {
+    private fun loadDetails() = launchMain {
         try {
             val taskId = viewModel.taskId
 
