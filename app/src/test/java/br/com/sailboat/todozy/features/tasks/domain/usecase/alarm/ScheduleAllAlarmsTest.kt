@@ -66,4 +66,18 @@ class ScheduleAllAlarmsTest {
         confirmVerified(scheduleAlarm)
     }
 
+    @Test
+    fun `should no schedule alarm when alarm is before now`() = runBlocking {
+        val dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) }
+        val alarm = Alarm(dateTime = dateTime, repeatType = RepeatType.NOT_REPEAT)
+        val task = Task(id = 45, name = "Task 1", notes = "Some notes", alarm = alarm)
+
+        coEvery { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
+
+        scheduleAllAlarms()
+
+        coVerify(exactly = 0) { scheduleAlarm(alarm, 45) }
+        confirmVerified(scheduleAlarm)
+    }
+
 }

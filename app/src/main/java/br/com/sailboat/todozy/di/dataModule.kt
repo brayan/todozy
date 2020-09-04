@@ -26,5 +26,5 @@ val dataModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
     single { DatabaseOpenHelper(get()) }
-    single { AlarmManagerHelper(androidContext()) }
+    single { AlarmManagerHelper(get()) }
 }

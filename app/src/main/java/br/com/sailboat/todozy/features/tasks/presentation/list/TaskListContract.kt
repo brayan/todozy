@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 interface TaskListContract {
 
     interface View : BaseMVPContract.View {
-        fun checkAndPerformFirstTimeConfigurations()
         fun closeNotifications()
         fun hideEmptyView()
         fun hideMetrics()
@@ -24,6 +23,7 @@ interface TaskListContract {
         fun showTaskDetails(taskId: Long)
         fun showTaskHistory()
         fun updateTasks()
+        fun navigateToAbout()
     }
 
     interface Presenter : BaseMVPContract.Presenter {
@@ -31,6 +31,7 @@ interface TaskListContract {
         fun getTextForSearch(): String
         fun onClickMenuSettings()
         fun onClickMenuTaskHistory()
+        fun onClickMenuAbout()
         fun onClickNewTask()
         fun onClickTask(position: Int)
         fun onSwipeTaskLeft(position: Int)

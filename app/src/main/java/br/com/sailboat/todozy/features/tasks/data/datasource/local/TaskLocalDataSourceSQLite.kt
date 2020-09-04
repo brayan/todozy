@@ -136,7 +136,7 @@ class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(datab
         val sb = StringBuilder()
         sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
         sb.append(" Task.notes as taskNotes ")
-        sb.append(" INNER JOIN Alarm ")
+        sb.append(" FROM Task INNER JOIN Alarm ")
         sb.append(" ON (Task.id = Alarm.fkTaskId) ")
         sb.append(" WHERE Task.enabled = 1 ")
 
@@ -173,7 +173,6 @@ class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(datab
     private fun bindDefaultWhere(sb: StringBuilder) {
         sb.append(" WHERE 1=1 ")
     }
-
 
     private fun bindWhereTodayTasks(sb: StringBuilder) {
         sb.append(" AND ")

@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
+import br.com.sailboat.todozy.core.extensions.safe
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
@@ -7,11 +8,13 @@ import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarms
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class TaskListPresenter(private val getTasksView: GetTasksView,
                         private val getAlarm: GetAlarm,
+                        private val scheduleAllAlarms: ScheduleAllAlarms,
                         private val getTaskMetrics: GetTaskMetrics,
                         private val completeTask: CompleteTask)
     : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
@@ -20,11 +23,6 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
     private var filter = TaskFilter(TaskCategory.TODAY)
 
     override val tasksView = mutableListOf<ItemView>()
-
-    override fun onStart() {
-        view?.checkAndPerformFirstTimeConfigurations()
-        // TODO: SCHEDULE ALARM UPDATE THE FIRST TIME EXECUTING THE APP
-    }
 
     override fun postStart() {
         loadTasks()
@@ -39,6 +37,10 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
 
     override fun onClickMenuTaskHistory() {
         view?.showTaskHistory()
+    }
+
+    override fun onClickMenuAbout() {
+        view?.navigateToAbout()
     }
 
     override fun onClickNewTask() {
@@ -69,6 +71,7 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
                 updateViews()
             } catch (e: Exception) {
                 view?.log(e)
+                // TODO: HANDLE ERROR
             } finally {
                 view?.hideProgress()
             }

@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.features.about.presentation.AboutContract
 import br.com.sailboat.todozy.features.about.presentation.AboutPresenter
 import br.com.sailboat.todozy.features.settings.presentation.SettingsContract
 import br.com.sailboat.todozy.features.settings.presentation.SettingsPresenter
+import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
@@ -16,7 +17,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    factory<TaskListContract.Presenter> { TaskListPresenter(get(), get(), get(), get()) }
+    factory<TaskListContract.Presenter> { TaskListPresenter(get(), get(), get(), get(), get()) }
     factory<TaskFormContract.Presenter> { TaskFormPresenter(get(), get(), get()) }
     factory<TaskDetailsContract.Presenter> { TaskDetailsPresenter(get(), get(), get(), get(), get()) }
     factory<TaskHistoryContract.Presenter> { TaskHistoryPresenter(get(), get(), get(), get(), get()) }
@@ -24,6 +25,7 @@ val uiModule = module {
     factory<AboutContract.Presenter> { AboutPresenter() }
 
     factory { GetTasksView(get()) }
+    factory { GetTaskDetailsView(get(), get()) }
     factory { GetHistoryView(get()) }
     factory { GetShortDateView(get()) }
     factory { GetDateFilterNameView(get()) }

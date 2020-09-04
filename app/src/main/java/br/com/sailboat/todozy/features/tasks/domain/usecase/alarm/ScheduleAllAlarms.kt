@@ -15,10 +15,14 @@ class ScheduleAllAlarms(private val getTasks: GetTasks,
         tasksWithAlarms.forEach { task ->
             task.alarm?.let {
                 var alarm = it
-                if (alarm.dateTime.isBeforeNow()) {
+
+                if (alarm.dateTime.isBeforeNow() && alarm.isAlarmRepeating()) {
                     alarm = getNextAlarm(alarm)
                 }
-                scheduleAlarm(alarm, task.id)
+
+                if (alarm.dateTime.isBeforeNow().not()) {
+                    scheduleAlarm(alarm, task.id)
+                }
             }
         }
     }

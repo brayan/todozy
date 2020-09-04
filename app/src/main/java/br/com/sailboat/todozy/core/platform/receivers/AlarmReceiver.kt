@@ -1,10 +1,15 @@
 package br.com.sailboat.todozy.core.platform.receivers
 
+import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
@@ -32,10 +37,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     val getAlarmSoundSetting: GetAlarmSoundSetting by inject()
     val getAlarmVibrateSetting: GetAlarmVibrateSetting by inject()
 
-    companion object {
-        const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
         "${javaClass.simpleName}.onReceive()".logDebug()
         GlobalScope.launch(Dispatchers.Main) {
@@ -48,25 +49,32 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
-        val notifyMgr = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notifyMgr.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
+    private suspend fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.makeNotificationChannel(context)
+        }
+        notificationManager.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
     }
 
     private suspend fun buildNotification(context: Context, intent: Intent): NotificationCompat.Builder {
         val resultIntent = Intent(context, LauncherActivity::class.java)
         val resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = NotificationCompat.Builder(context)
-        builder.setSmallIcon(R.drawable.ic_vec_notification_icon)
-        builder.setCategory(NotificationCompat.CATEGORY_ALARM)
-        builder.priority = NotificationCompat.PRIORITY_HIGH
-        builder.setContentIntent(resultPendingIntent)
-        builder.setAutoCancel(true)
-        builder.color = ContextCompat.getColor(context, R.color.md_blue_500)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
+                .setSmallIcon(R.drawable.ic_vec_notification_icon)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setContentIntent(resultPendingIntent)
+                .setAutoCancel(true)
+                .apply { priority = NotificationCompat.PRIORITY_HIGH }
+                .apply { color = ContextCompat.getColor(context, R.color.md_blue_500) }
+
         initContentTextAndTitle(context, intent, builder)
-        initVibrate(builder)
-        getAlarmSoundSetting()?.run { builder.setSound(this) }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            initVibrate(builder)
+            getAlarmSoundSetting()?.run { builder.setSound(this) }
+        }
 
         return builder
     }
@@ -112,21 +120,24 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-//    private fun createNotificationChannel() {
-//        // Create the NotificationChannel, but only on API 26+ because
-//        // the NotificationChannel class is new and not in the support library
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val name = getString(R.string.channel_name)
-//            val descriptionText = getString(R.string.channel_description)
-//            val importance = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-//                description = descriptionText
-//            }
-//            // Register the channel with the system
-//            val notificationManager: NotificationManager =
-//                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun NotificationManager.makeNotificationChannel(context: Context) {
+        createNotificationChannel(
+                NotificationChannel(
+                        CHANNEL_ID_ALARM,
+                        context.getString(R.string.notification_title_task_alarms),
+                        NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                    enableLights(true)
+                    enableVibration(true)
+                }
+        )
+    }
+
+    companion object {
+        const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
+        const val CHANNEL_ID_ALARM = "CHANNEL_ID_ALARM"
+    }
 
 }

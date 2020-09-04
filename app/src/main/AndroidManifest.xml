@@ -25,6 +25,8 @@
         <receiver android:name=".core.platform.receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 
@@ -43,7 +45,7 @@
 
         <activity
             android:name=".features.tasks.presentation.list.TaskListActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" />
 
         <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity" />
 

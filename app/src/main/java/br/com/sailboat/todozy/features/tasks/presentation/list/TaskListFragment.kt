@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
+import android.os.Build
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,6 +13,8 @@ import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.features.about.presentation.AboutActivity
+import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
@@ -29,6 +32,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
+        initMenusVisibility(menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -36,6 +40,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         when (item.itemId) {
             R.id.menu_fragments_history -> presenter.onClickMenuTaskHistory()
             R.id.menu_fragments_settings -> presenter.onClickMenuSettings()
+            R.id.menu_fragments_about -> presenter.onClickMenuAbout()
             else -> super.onOptionsItemSelected(item)
         }
         return true
@@ -57,10 +62,6 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     override fun onSubmitSearch(search: String) {
         presenter.submitTextForSearch(search)
         "onSubmitSearch: $search".logDebug()
-    }
-
-    override fun checkAndPerformFirstTimeConfigurations() {
-        activity?.run { FirstTimeConfigurationsHelper().checkAndPerformFirstTimeConfigurations(this) }
     }
 
     override fun closeNotifications() {
@@ -121,6 +122,10 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         recycler.adapter?.notifyDataSetChanged()
     }
 
+    override fun navigateToAbout() {
+        activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
+    }
+
     private fun initRecyclerView() {
         recycler.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
@@ -140,6 +145,19 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         }
 
         recycler.hideFabWhenScrolling(fab)
+    }
+
+    private fun initMenusVisibility(menu: Menu) {
+        val settings = menu.findItem(R.id.menu_fragments_settings)
+        val about = menu.findItem(R.id.menu_fragments_about)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            settings.isVisible = true
+            about.isVisible = false
+        } else {
+            settings.isVisible = false
+            about.isVisible = true
+        }
     }
 
 }

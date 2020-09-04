@@ -149,4 +149,5 @@
     <string name="exception_product_name">É necessário inserir o nome do produto</string>
     <string name="exception_product_quantity">É necessário inserir a quantidade do produto</string>
     <string name="apply">Aplicar</string>
+    <string name="notification_title_task_alarms">Alarmes das tarefas</string>
 </resources>
