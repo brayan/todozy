@@ -13,7 +13,6 @@ import br.com.sailboat.todozy.features.tasks.data.repository.TaskRepositoryImpl
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {

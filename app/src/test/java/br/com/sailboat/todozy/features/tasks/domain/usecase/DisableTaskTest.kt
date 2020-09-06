@@ -3,7 +3,6 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
 import io.mockk.coVerify
 import io.mockk.confirmVerified

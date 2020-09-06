@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

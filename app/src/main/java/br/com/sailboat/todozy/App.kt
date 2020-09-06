@@ -1,9 +1,6 @@
 package br.com.sailboat.todozy
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import br.com.sailboat.todozy.core.platform.CrashlyticsReportingTree
 import br.com.sailboat.todozy.di.appComponent
 import org.koin.android.ext.koin.androidContext

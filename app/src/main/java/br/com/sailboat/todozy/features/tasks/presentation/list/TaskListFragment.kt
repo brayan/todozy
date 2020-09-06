@@ -13,7 +13,6 @@ import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.features.about.presentation.AboutActivity
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics

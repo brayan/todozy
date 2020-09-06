@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
-import br.com.sailboat.todozy.core.extensions.safe
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView

@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
