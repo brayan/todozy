@@ -49,6 +49,8 @@ fun Calendar.isBeforeYesterday() = before(getInitialCalendarForYesterday())
 
 fun Calendar.isBeforeNow() = before(Calendar.getInstance())
 
+fun Calendar.isAfterNow() = after(Calendar.getInstance())
+
 fun getInitialAlarm(): Calendar {
     val currentTime = Calendar.getInstance()
 
