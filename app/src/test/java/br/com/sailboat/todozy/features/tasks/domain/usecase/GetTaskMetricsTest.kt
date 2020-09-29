@@ -58,7 +58,7 @@ class GetTaskMetricsTest {
         coVerify { repository.getTotalOfNotDoneTasks(any()) }
 
         confirmVerified(repository)
-        assertEquals(result, TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 2))
+        assertEquals(TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 2), result)
     }
 
     @Test
@@ -74,7 +74,7 @@ class GetTaskMetricsTest {
         coVerify { repository.getTotalOfNotDoneTasks(any()) }
 
         confirmVerified(repository)
-        assertEquals(result, TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 0))
+        assertEquals(TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 0), result)
     }
 
 }

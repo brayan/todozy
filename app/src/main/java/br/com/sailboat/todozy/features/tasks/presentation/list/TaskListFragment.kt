@@ -96,9 +96,9 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
 
         if (taskMetrics.consecutiveDone == 0) {
-            tvMetricsFire.gone()
+            task_metrics__ll__fire.gone()
         } else {
-            tvMetricsFire.visible()
+            task_metrics__ll__fire.visible()
         }
 
         appbar.setExpanded(true, true)
