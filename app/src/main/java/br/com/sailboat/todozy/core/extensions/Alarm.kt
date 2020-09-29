@@ -3,6 +3,7 @@ package br.com.sailboat.todozy.core.extensions
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import java.util.*
 
+// TODO: REMOVE THIS EXTENSIONS AFTER REFACTORING
 fun Calendar.incrementToNextValidDate(repeatType: RepeatType, days: String?) {
     do {
         incrementToNext(this, repeatType, days)
