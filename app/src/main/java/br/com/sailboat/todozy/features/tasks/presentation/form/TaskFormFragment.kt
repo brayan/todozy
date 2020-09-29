@@ -6,10 +6,12 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.extensions.hideKeyboard
 import br.com.sailboat.todozy.core.extensions.setActivityToHideKeyboard
+import br.com.sailboat.todozy.core.extensions.showKeyboard
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.TimeSelectorDialog
@@ -165,8 +167,7 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
 
     override fun setFocusOnInputTaskName() {
         etTaskFormName.requestFocus()
-        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.showSoftInput(etTaskFormName, InputMethodManager.SHOW_IMPLICIT)
+        activity?.showKeyboard(etTaskFormName)
     }
 
     override fun showErrorTaskNameCantBeBlank() {
