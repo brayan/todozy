@@ -30,9 +30,9 @@ class TaskViewHolder(parent: ViewGroup, callback: Callback) :
 
     private fun bindTaskAlarm(alarm: Calendar?) {
         try {
+            updateVisibilityOfAlarmViews(alarm)
             alarm?.run {
                 updateAlarmText(this)
-                updateVisibilityOfAlarmViews(this)
                 updateAlarmColor(this)
             }
         } catch (e: Exception) {
