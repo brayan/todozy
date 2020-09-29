@@ -84,6 +84,12 @@ class TaskHistoryFragment : BaseFragment() {
         tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
     }
 
+    override fun onResume() {
+        super.onResume()
+        initObservers()
+        viewModel.start()
+    }
+
     override fun onSubmitSearch(search: String) {
         viewModel.onSubmitSearch(search)
     }
@@ -213,6 +219,12 @@ class TaskHistoryFragment : BaseFragment() {
 
     private fun onClickFilterDate(item: SelectableItem) {
         viewModel.onClickFilterDate(item as DateFilterTaskHistorySelectableItem)
+    }
+
+    private fun initObservers() {
+        viewModel.refreshHistory.observe(viewLifecycleOwner, EventObserver {
+            recycler.adapter?.notifyDataSetChanged()
+        })
     }
 
 }

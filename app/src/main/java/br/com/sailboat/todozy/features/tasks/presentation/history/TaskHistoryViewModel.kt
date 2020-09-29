@@ -51,6 +51,10 @@ class TaskHistoryViewModel(
     val updateHistoryItem = MutableLiveData<Event<Int>>()
     val scrollTo = MutableLiveData<Event<Int>>()
 
+    fun start() {
+        loadHistoryTasks()
+    }
+
     fun onClickMenuFilter() {
         showFilter.value = Event(Unit)
     }
