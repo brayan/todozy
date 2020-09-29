@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.os.Build
 import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
 import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import java.util.*
@@ -20,7 +21,14 @@ class AlarmManagerHelper(private val context: Context) {
         val pending = PendingIntent.getBroadcast(context, taskId.toInt(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, dateTime.timeInMillis, pending)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, dateTime.timeInMillis, pending)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, dateTime.timeInMillis, pending)
+        } else {
+            alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(dateTime.timeInMillis, null), pending)
+        }
+
     }
 
     fun cancelAlarm(taskId: Long) {
@@ -30,6 +38,8 @@ class AlarmManagerHelper(private val context: Context) {
         val alarmIntent = PendingIntent.getBroadcast(context, taskId.toInt(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
         alarmIntent.cancel()
+
+        alarmManager.cancel(alarmIntent)
     }
 
     fun scheduleAlarmUpdates(calendar: Calendar) {

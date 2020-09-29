@@ -8,8 +8,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarms
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class TaskListPresenter(private val getTasksView: GetTasksView,
                         private val getAlarm: GetAlarm,
@@ -20,11 +19,13 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
 
     private var taskMetrics: TaskMetrics? = null
     private var filter = TaskFilter(TaskCategory.TODAY)
+    private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
     override val tasksView = mutableListOf<ItemView>()
 
     override fun postStart() {
         loadTasks()
+        scheduleAlarms()
         updateMetrics()
     }
 
@@ -77,7 +78,15 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
         }
     }
 
-    private fun onTaskSwiped(position: Int, status: TaskStatus) = launchMain {
+    private fun scheduleAlarms() = launchMain {
+        try {
+            withContext(contextProvider.io) { scheduleAllAlarms() }
+        } catch (e: Exception) {
+            view?.log(e)
+        }
+    }
+
+    private fun onTaskSwiped(position: Int, status: TaskStatus) = launchSwipeTask {
         try {
             taskMetrics = null
             updateMetrics()
@@ -100,9 +109,11 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
 
             delay(4000)
 
-            loadTasks()
-            taskMetrics = null
-            updateMetrics()
+            if (swipeTaskAsyncJobs.size == 1) {
+                loadTasks()
+                taskMetrics = null
+                updateMetrics()
+            }
 
         } catch (e: Exception) {
             view?.showErrorOnSwipeTask()
@@ -136,6 +147,14 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
             setMainTitle()
             hideMetrics()
         }
+    }
+
+    private fun launchSwipeTask(block: suspend CoroutineScope.() -> Unit) {
+        val job: Job = scope.launch(contextProvider.main) {
+            supervisorScope { block() }
+        }
+        swipeTaskAsyncJobs.add(job)
+        job.invokeOnCompletion { swipeTaskAsyncJobs.remove(job) }
     }
 
 }
