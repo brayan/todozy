@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
 
-    suspend operator fun invoke(filter: TaskHistoryFilter) = runBlocking {
+    suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
         val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter) }
         val notDone = async { taskHistoryRepository.getTotalOfNotDoneTasks(filter) }
         val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }

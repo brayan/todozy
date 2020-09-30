@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
@@ -161,14 +162,6 @@ class TaskHistoryFragment : BaseFragment() {
         toolbar.subtitle = getString(dateRangeType.getName()).toUpperCase(Locale.getDefault())
     }
 
-    fun setDoneTasks(doneTasks: String) {
-        tvMetricsDone.text = doneTasks
-    }
-
-    fun setNotDoneTasks(notDoneTasks: String) {
-        tvMetricsNotDone!!.text = notDoneTasks
-    }
-
     fun showDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
         DateRangeSelectorDialog.show(childFragmentManager, initialDate, finalDate, object : DateRangeSelectorDialog.Callback {
             override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
@@ -224,6 +217,11 @@ class TaskHistoryFragment : BaseFragment() {
     private fun initObservers() {
         viewModel.refreshHistory.observe(viewLifecycleOwner, EventObserver {
             recycler.adapter?.notifyDataSetChanged()
+        })
+
+        viewModel.taskMetrics.observe(viewLifecycleOwner,  { taskMetrics ->
+            tvMetricsDone.text = taskMetrics.doneTasks.toString()
+            tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
         })
     }
 

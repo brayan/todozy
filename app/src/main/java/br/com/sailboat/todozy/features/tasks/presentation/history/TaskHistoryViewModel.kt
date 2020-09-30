@@ -19,7 +19,9 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class TaskHistoryViewModel(
@@ -36,7 +38,6 @@ class TaskHistoryViewModel(
     val history = mutableListOf<ItemView>()
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
-    private var taskMetrics: TaskMetrics? = null
     private var dateRangeType = DateFilterTaskHistorySelectableItem.NO_FILTER
     private var statusSelectableItem = TaskStatusSelectableItem.NO_FILTER
 
@@ -48,6 +49,7 @@ class TaskHistoryViewModel(
     val subtitle = MutableLiveData<String>()
     val doneTasks = MutableLiveData<Int>()
     val notDoneTasks = MutableLiveData<Int>()
+    val taskMetrics = MutableLiveData<TaskMetrics>()
     val updateHistoryItem = MutableLiveData<Event<Int>>()
     val scrollTo = MutableLiveData<Event<Int>>()
 
@@ -209,9 +211,9 @@ class TaskHistoryViewModel(
 
     private fun loadHistoryTasks() = viewModelScope.launch {
         try {
-            taskMetrics = getTaskMetrics(filter)
+            taskMetrics.value = withContext(Dispatchers.IO) { getTaskMetrics(filter) }
 
-            val historyView = getHistoryView(filter)
+            val historyView = withContext(Dispatchers.IO) { getHistoryView(filter) }
             history.clear()
             history.addAll(historyView)
 
@@ -226,6 +228,11 @@ class TaskHistoryViewModel(
     private fun updateContentViews() {
         refreshHistory()
         updateSubtitle()
+        updateTaskMetrics()
+    }
+
+    private fun updateTaskMetrics() {
+
     }
 
     private fun updateSubtitle() {
@@ -263,9 +270,7 @@ class TaskHistoryViewModel(
 
             updateHistoryItem(position)
             updateHistory(historyView.mapToTaskHistory())
-            taskMetrics = getTaskMetrics(filter)
-
-            updateMetricsView()
+            taskMetrics.value = getTaskMetrics(filter)
 
         } catch (e: Exception) {
             logError(e)
@@ -275,11 +280,6 @@ class TaskHistoryViewModel(
 
     private fun clearHistorySelectedPosition() {
         selectedItemPosition = -1
-    }
-
-    private fun updateMetricsView() {
-        doneTasks.value = taskMetrics?.doneTasks.safe()
-        notDoneTasks.value = taskMetrics?.notDoneTasks.safe()
     }
 
     private fun updateHistoryItem(position: Int) {
