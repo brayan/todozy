@@ -20,6 +20,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHis
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -43,6 +44,7 @@ class TaskHistoryViewModel(
 
     val logError = MutableLiveData<Event<Exception>>()
     val refreshHistory = MutableLiveData<Event<Unit>>()
+    val removeHistoryItem = MutableLiveData<Event<Int>>()
     val showFilter = MutableLiveData<Event<Unit>>()
     val showConfirmationClearAllHistory = MutableLiveData<Event<Unit>>()
     val showConfirmationDelete = MutableLiveData<Event<Int>>()
@@ -205,8 +207,24 @@ class TaskHistoryViewModel(
         TODO("Not yet implemented")
     }
 
-    fun onClickYesDeleteHistory(position: Int) {
-        TODO("Not yet implemented")
+    fun onClickYesDeleteHistory(position: Int) = viewModelScope.launch {
+        try {
+            clearHistorySelectedPosition()
+
+            val taskHistory = history[position] as TaskHistoryView
+
+            history.removeAt(position)
+            removeHistoryItem.postValue(Event(position))
+
+            deleteHistory(taskHistory.mapToTaskHistory())
+
+            delay(1000)
+
+            loadHistoryTasks()
+        } catch (e: Exception) {
+            logError(e)
+            updateContentViews()
+        }
     }
 
     private fun loadHistoryTasks() = viewModelScope.launch {

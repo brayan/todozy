@@ -10,6 +10,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.GetTaskHisto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 
 class GetHistoryView(private val getTasksHistory: GetTaskHistory) {
 
@@ -22,7 +23,7 @@ class GetHistoryView(private val getTasksHistory: GetTaskHistory) {
         historyCategories.map { category ->
             async {
                 filter.category = category.key
-                getTaskHistoryView(filter, category.value)
+                getTaskHistoryView(filter.copyFilter(), category.value)
             }
         }.awaitAll().flatten()
     }
@@ -38,5 +39,11 @@ class GetHistoryView(private val getTasksHistory: GetTaskHistory) {
 
         return historyView
     }
+
+    private fun TaskHistoryFilter.copyFilter() = TaskHistoryFilter(initialDate = initialDate,
+            finalDate = finalDate,
+            status = status,
+            category = category,
+            taskId = taskId).apply { text = this@copyFilter.text }
 
 }

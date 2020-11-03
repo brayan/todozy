@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
 
 class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
 
@@ -29,9 +28,9 @@ class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
         var cont = 0
 
         history.forEach {
-           if (it.status == TaskStatus.NOT_DONE) {
-               return cont
-           }
+            if (it.status == TaskStatus.NOT_DONE) {
+                return cont
+            }
             cont++
         }
 

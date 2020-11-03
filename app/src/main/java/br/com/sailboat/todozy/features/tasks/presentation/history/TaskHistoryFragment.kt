@@ -50,6 +50,11 @@ class TaskHistoryFragment : BaseFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_history_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -65,24 +70,9 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        toolbar.setTitle(R.string.history)
-
-        recycler.run {
-            adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
-                override fun onClickMarkTaskAsDone(position: Int) = viewModel.onClickMarkTaskAsDone(position)
-                override fun onClickMarkTaskAsNotDone(position: Int) = viewModel.onClickMarkTaskAsNotDone(position)
-                override fun onClickHistory(position: Int) = viewModel.onClickHistory(position)
-                override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
-                override fun onClickDelete(position: Int) = viewModel.onClickDelete(position)
-                override val history: List<ItemView> = viewModel.history
-            })
-            layoutManager = LinearLayoutManager(activity)
-        }
-
-        tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
+        initToolbar()
+        initRecyclerView()
+        initEmptyState()
     }
 
     override fun onResume() {
@@ -198,12 +188,14 @@ class TaskHistoryFragment : BaseFragment() {
         dialog.show(childFragmentManager, "CLEAR_HISTORY")
     }
 
-    fun showDeleteItemDialog(position: Int) {
-        DialogHelper().showDeleteDialog(childFragmentManager, activity!!, object : TwoOptionsDialog.PositiveCallback {
-            override fun onClickPositiveOption() {
-                viewModel.onClickYesDeleteHistory(position)
-            }
-        })
+    private fun showDeleteItemDialog(position: Int) {
+        activity?.run {
+            DialogHelper().showDeleteDialog(childFragmentManager, this, object : TwoOptionsDialog.PositiveCallback {
+                override fun onClickPositiveOption() {
+                    viewModel.onClickYesDeleteHistory(position)
+                }
+            })
+        }
     }
 
     fun startInsertTaskActivity(id: Long) {
@@ -223,6 +215,44 @@ class TaskHistoryFragment : BaseFragment() {
             tvMetricsDone.text = taskMetrics.doneTasks.toString()
             tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
         })
+
+        viewModel.updateHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
+            recycler.adapter?.notifyItemChanged(position)
+        })
+
+        viewModel.showConfirmationDelete.observe(viewLifecycleOwner,  EventObserver { position ->
+            showDeleteItemDialog(position)
+        })
+
+        viewModel.removeHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
+            recycler.adapter?.notifyItemRemoved(position)
+        })
+
+    }
+
+    private fun initEmptyState() {
+        tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
+    }
+
+    private fun initRecyclerView() {
+        recycler.run {
+            adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
+                override fun onClickMarkTaskAsDone(position: Int) = viewModel.onClickMarkTaskAsDone(position)
+                override fun onClickMarkTaskAsNotDone(position: Int) = viewModel.onClickMarkTaskAsNotDone(position)
+                override fun onClickHistory(position: Int) = viewModel.onClickHistory(position)
+                override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
+                override fun onClickDelete(position: Int) = viewModel.onClickDelete(position)
+                override val history: List<ItemView> = viewModel.history
+            })
+            layoutManager = LinearLayoutManager(activity)
+        }
+    }
+
+    private fun initToolbar() {
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbar.setTitle(R.string.history)
     }
 
 }
