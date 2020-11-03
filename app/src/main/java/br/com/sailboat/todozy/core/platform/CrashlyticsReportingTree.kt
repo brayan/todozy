@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.core.platform
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class CrashlyticsReportingTree : Timber.Tree() {
@@ -13,7 +13,7 @@ class CrashlyticsReportingTree : Timber.Tree() {
 
         t?.apply {
             if (priority == Log.ERROR || priority == Log.WARN) {
-                Crashlytics.logException(t)
+                FirebaseCrashlytics.getInstance().recordException(t)
             }
         }
     }
