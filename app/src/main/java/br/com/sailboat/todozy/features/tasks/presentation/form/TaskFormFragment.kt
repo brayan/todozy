@@ -1,12 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.presentation.form
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.extensions.hideKeyboard
@@ -20,17 +17,16 @@ import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDial
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
-import kotlinx.android.synthetic.main.alarm_details.*
-import kotlinx.android.synthetic.main.frg_task_form.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
-
-class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskFormContract.View {
+class TaskFormFragment :
+        BaseMVPFragment<FrgTaskFormBinding, TaskFormContract.Presenter>(R.layout.frg_task_form),
+        TaskFormContract.View {
 
     override val presenter: TaskFormContract.Presenter by inject()
-    override val layoutId = R.layout.frg_task_form
 
     companion object {
         fun newInstance() = TaskFormFragment()
@@ -44,7 +40,9 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
 
     }
 
-    override fun initViews() {
+    override fun bindLayout(view: View) = FrgTaskFormBinding.bind(view)
+
+    override fun initViews() = with(binding) {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbarTaskForm)
         toolbarTaskForm.setNavigationIcon(R.drawable.ic_close_white_24dp)
         toolbarTaskForm.setNavigationOnClickListener { activity?.onBackPressed() }
@@ -69,9 +67,9 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
         return arguments?.getTaskId() ?: Entity.NO_ID
     }
 
-    override fun showNewTaskTitle() = toolbarTaskForm.setTitle(R.string.new_task)
+    override fun showNewTaskTitle() = binding.toolbarTaskForm.setTitle(R.string.new_task)
 
-    override fun showEditTaskTitle() = toolbarTaskForm.setTitle(R.string.edit_task)
+    override fun showEditTaskTitle() = binding.toolbarTaskForm.setTitle(R.string.edit_task)
 
     override fun showAlarmDatePickerDialog(alarm: Calendar) {
         DateSelectorDialog.show(childFragmentManager, alarm, object : DateSelectorDialog.Callback {

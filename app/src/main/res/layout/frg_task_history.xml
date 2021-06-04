@@ -6,9 +6,13 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <include layout="@layout/ept_view"/>
+    <include
+        android:id="@+id/ept_view"
+        layout="@layout/ept_view"/>
 
-    <include layout="@layout/appbar_task_history" />
+    <include
+        android:id="@+id/appbar_task_history"
+        layout="@layout/appbar_task_history" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

@@ -7,17 +7,21 @@
     android:layout_height="wrap_content"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <include layout="@layout/toolbar_scroll"/>
+    <include
+        android:id="@+id/toolbar_scroll"
+        layout="@layout/toolbar_scroll"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="16dp"
         app:layout_scrollFlags="scroll|enterAlways">
 
-        <include layout="@layout/task_metrics"/>
+        <include
+            android:id="@+id/task_metrics"
+            layout="@layout/task_metrics"/>
 
     </FrameLayout>
 

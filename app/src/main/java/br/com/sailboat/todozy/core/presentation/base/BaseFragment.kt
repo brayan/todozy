@@ -9,26 +9,35 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.logDebug
 import java.util.*
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<VB : ViewBinding>(layoutId: Int) : Fragment(layoutId) {
 
-    protected abstract val layoutId: Int
     private var searchViewOpen = false
     private var search = ""
+
+    private var _binding: ViewBinding? = null
+
+    abstract fun bindLayout(view: View): VB
+
+    @Suppress("UNCHECKED_CAST")
+    protected val binding: VB
+        get() = _binding as VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         "${javaClass.simpleName}.onCreate".logDebug()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        "${javaClass.simpleName}.onCreateView".logDebug()
-        return inflater.inflate(layoutId, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         "${javaClass.simpleName}.onViewCreated".logDebug()
+        _binding = bindLayout(view)
         initViews()
+    }
+
+    override fun onDestroyView() {
+        "${javaClass.simpleName}.onDestroyView".logDebug()
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

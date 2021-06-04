@@ -1,11 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
@@ -21,23 +18,16 @@ import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.ItemView
+import br.com.sailboat.todozy.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
-import kotlinx.android.synthetic.main.appbar_task_history.*
-import kotlinx.android.synthetic.main.ept_view.*
-import kotlinx.android.synthetic.main.frg_task_history.*
-import kotlinx.android.synthetic.main.task_metrics.*
-import kotlinx.android.synthetic.main.toolbar_scroll.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class TaskHistoryFragment : BaseFragment() {
+class TaskHistoryFragment : BaseFragment<FrgTaskHistoryBinding>(R.layout.frg_task_history) {
 
-    //    override val presenter: TaskHistoryContract.Presenter by inject()
-    override val layoutId = R.layout.frg_task_history
+    val viewModel: TaskHistoryViewModel by viewModel()
 
-    val viewModel: TaskHistoryViewModel by viewModel() // or sharedViewModel?
-
-    private val linearLayoutManager by lazy { recycler.layoutManager as LinearLayoutManager }
+    private val linearLayoutManager by lazy { binding.recycler.layoutManager as LinearLayoutManager }
 
     companion object {
         fun newInstance() = TaskHistoryFragment()
@@ -49,6 +39,8 @@ class TaskHistoryFragment : BaseFragment() {
             return this
         }
     }
+
+    override fun bindLayout(view: View) = FrgTaskHistoryBinding.bind(view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,23 +90,23 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun setEmptySubtitle() {
-        toolbar.subtitle = ""
+        binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = ""
     }
 
     fun setDateRangeSubtitle(initialDate: Calendar, finalDate: Calendar) {
         activity?.run {
             val initial = initialDate.toShortDateView(this)
             val final = finalDate.toShortDateView(this)
-            toolbar.subtitle = "$initial - $final"
+            binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = "$initial - $final"
         }
     }
 
     fun updateHistoryItem(position: Int) {
-        recycler.adapter?.notifyItemChanged(position)
+        binding.recycler.adapter?.notifyItemChanged(position)
     }
 
     fun updateAllItems() {
-        recycler.adapter?.notifyDataSetChanged()
+        binding.recycler.adapter?.notifyDataSetChanged()
     }
 
     fun scrollTo(position: Int) {
@@ -122,7 +114,7 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun removeHistoryItem(position: Int) {
-        recycler.adapter?.notifyItemRemoved(position)
+        binding.recycler.adapter?.notifyItemRemoved(position)
     }
 
     fun scrollToTop() = linearLayoutManager.scrollToTop()
@@ -132,23 +124,24 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun hideHistory() {
-        recycler.gone()
+        binding.recycler.gone()
     }
 
     fun showHistory() {
-        recycler.visible()
+        binding.recycler.visible()
     }
 
     fun showEmptyView() {
-        ept_view.visible()
-        appbar.setExpanded(true)
+        binding.eptView.root.visible()
+        binding.appbarTaskHistory.root.setExpanded(true)
     }
 
     fun hideEmptyView() {
-        ept_view.gone()
+        binding.eptView.root.gone()
     }
 
     fun setDateFilterSubtitle(dateRangeType: DateFilterTaskHistorySelectableItem) {
+        val toolbar = binding.appbarTaskHistory.toolbarScroll.toolbar
         toolbar.subtitle = getString(dateRangeType.getName()).toUpperCase(Locale.getDefault())
     }
 
@@ -208,16 +201,17 @@ class TaskHistoryFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.refreshHistory.observe(viewLifecycleOwner, EventObserver {
-            recycler.adapter?.notifyDataSetChanged()
+            binding.recycler.adapter?.notifyDataSetChanged()
         })
 
         viewModel.taskMetrics.observe(viewLifecycleOwner,  { taskMetrics ->
-            tvMetricsDone.text = taskMetrics.doneTasks.toString()
-            tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
+            val metricsView = binding.appbarTaskHistory.taskMetrics
+            metricsView.tvMetricsDone.text = taskMetrics.doneTasks.toString()
+            metricsView.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
         })
 
         viewModel.updateHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
-            recycler.adapter?.notifyItemChanged(position)
+            binding.recycler.adapter?.notifyItemChanged(position)
         })
 
         viewModel.showConfirmationDelete.observe(viewLifecycleOwner,  EventObserver { position ->
@@ -225,17 +219,17 @@ class TaskHistoryFragment : BaseFragment() {
         })
 
         viewModel.removeHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
-            recycler.adapter?.notifyItemRemoved(position)
+            binding.recycler.adapter?.notifyItemRemoved(position)
         })
 
     }
 
     private fun initEmptyState() {
-        tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
+        binding.eptView.tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
     }
 
     private fun initRecyclerView() {
-        recycler.run {
+        binding.recycler.run {
             adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
                 override fun onClickMarkTaskAsDone(position: Int) = viewModel.onClickMarkTaskAsDone(position)
                 override fun onClickMarkTaskAsNotDone(position: Int) = viewModel.onClickMarkTaskAsNotDone(position)
@@ -248,7 +242,7 @@ class TaskHistoryFragment : BaseFragment() {
         }
     }
 
-    private fun initToolbar() {
+    private fun initToolbar() = with(binding.appbarTaskHistory.toolbarScroll) {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }

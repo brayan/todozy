@@ -21,9 +21,12 @@ import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActi
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import org.koin.android.ext.android.inject
 
-class TaskListFragment : BaseMVPFragment<FrgTaskListBinding, TaskListContract.Presenter>(), TaskListContract.View {
+class TaskListFragment : BaseMVPFragment<FrgTaskListBinding, TaskListContract.Presenter>(R.layout.frg_task_list),
+        TaskListContract.View {
 
     override val presenter: TaskListContract.Presenter by inject()
+
+    override fun bindLayout(view: View) = FrgTaskListBinding.bind(view)
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
@@ -153,10 +156,6 @@ class TaskListFragment : BaseMVPFragment<FrgTaskListBinding, TaskListContract.Pr
             settings.isVisible = false
             about.isVisible = true
         }
-    }
-
-    override fun getBindingInflater(inflater: LayoutInflater, container: ViewGroup?, b: Boolean): FrgTaskListBinding {
-        return FrgTaskListBinding.inflate(inflater, container, b)
     }
 
 }
