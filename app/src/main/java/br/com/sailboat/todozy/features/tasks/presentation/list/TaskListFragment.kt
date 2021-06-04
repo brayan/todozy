@@ -1,9 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
 import android.os.Build
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.os.Bundle
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,21 +12,18 @@ import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
-import kotlinx.android.synthetic.main.ept_view.*
-import kotlinx.android.synthetic.main.frg_task_list.*
-import kotlinx.android.synthetic.main.task_metrics.*
 import org.koin.android.ext.android.inject
 
-class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskListContract.View {
+class TaskListFragment : BaseMVPFragment<FrgTaskListBinding, TaskListContract.Presenter>(), TaskListContract.View {
 
     override val presenter: TaskListContract.Presenter by inject()
-    override val layoutId = R.layout.frg_task_list
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
@@ -45,13 +41,13 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         return true
     }
 
-    override fun initViews() {
+    override fun initViews() = with(binding) {
         setMainTitle()
 
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
 
-        tvEmptyViewMessagePrimary.setText(R.string.no_tasks)
-        tvEmptyViewMessageSecondary.setText(R.string.ept_click_to_add)
+        eptView.tvEmptyViewMessagePrimary.setText(R.string.no_tasks)
+        eptView.tvEmptyViewMessageSecondary.setText(R.string.ept_click_to_add)
 
         initRecyclerView()
 
@@ -67,49 +63,49 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         activity?.apply { NotificationHelper().closeNotifications(this) }
     }
 
-    override fun hideEmptyView() = ept_view.gone()
+    override fun hideEmptyView() = binding.eptView.root.gone()
 
-    override fun hideMetrics() = appbar_task_list__fl__metrics.gone()
+    override fun hideMetrics() = binding.appbarTaskListFlMetrics.gone()
 
-    override fun hideTasks() = recycler.gone()
+    override fun hideTasks() = binding.recycler.gone()
 
     override fun removeTaskFromList(position: Int) {
-        recycler.adapter?.notifyItemRemoved(position)
+        binding.recycler.adapter?.notifyItemRemoved(position)
     }
 
-    override fun setMainTitle() = toolbar.setTitle(R.string.app_name)
+    override fun setMainTitle() = binding.toolbar.setTitle(R.string.app_name)
 
     override fun setEmptyTitle() {
-        toolbar.title = ""
+        binding.toolbar.title = ""
     }
 
-    override fun showEmptyView() = ept_view.visible()
+    override fun showEmptyView() = binding.eptView.root.visible()
 
     override fun showErrorOnSwipeTask() {
         // TODO: IMPROVE THIS
         Toast.makeText(activity, getString(R.string.msg_error), Toast.LENGTH_LONG).show()
     }
 
-    override fun showMetrics(taskMetrics: TaskMetrics) {
-        tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
-        tvMetricsDone.text = taskMetrics.doneTasks.toString()
-        tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
+    override fun showMetrics(taskMetricsModel: TaskMetrics) = with(binding) {
+        taskMetrics.tvMetricsFire.text = taskMetricsModel.consecutiveDone.toString()
+        taskMetrics.tvMetricsDone.text = taskMetricsModel.doneTasks.toString()
+        taskMetrics.tvMetricsNotDone.text = taskMetricsModel.notDoneTasks.toString()
 
-        if (taskMetrics.consecutiveDone == 0) {
-            task_metrics__ll__fire.gone()
+        if (taskMetricsModel.consecutiveDone == 0) {
+            taskMetrics.taskMetricsLlFire.gone()
         } else {
-            task_metrics__ll__fire.visible()
+            taskMetrics.taskMetricsLlFire.visible()
         }
 
         appbar.setExpanded(true, true)
-        appbar_task_list__fl__metrics.visible()
+        appbarTaskListFlMetrics.visible()
     }
 
     override fun showNewTask() = startTaskFormActivity()
 
     override fun showSettings() = startSettingsActivity()
 
-    override fun showTasks() = recycler.visible()
+    override fun showTasks() = binding.recycler.visible()
 
     override fun showTaskDetails(taskId: Long) = startTaskDetailsActivity(taskId)
 
@@ -118,14 +114,14 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     }
 
     override fun updateTasks() {
-        recycler.adapter?.notifyDataSetChanged()
+        binding.recycler.adapter?.notifyDataSetChanged()
     }
 
     override fun navigateToAbout() {
         activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView() = with(binding) {
         recycler.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
                 override val tasksView = presenter.tasksView
@@ -157,6 +153,10 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
             settings.isVisible = false
             about.isVisible = true
         }
+    }
+
+    override fun getBindingInflater(inflater: LayoutInflater, container: ViewGroup?, b: Boolean): FrgTaskListBinding {
+        return FrgTaskListBinding.inflate(inflater, container, b)
     }
 
 }

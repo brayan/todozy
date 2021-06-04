@@ -9,11 +9,16 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.logDebug
 import java.util.*
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseViewBindingFragment<VB : ViewBinding> : Fragment() {
 
-    protected abstract val layoutId: Int
     private var searchViewOpen = false
     private var search = ""
+
+    private var _binding: ViewBinding? = null
+
+    @Suppress("UNCHECKED_CAST")
+    protected val binding: VB
+        get() = _binding as VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +27,20 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         "${javaClass.simpleName}.onCreateView".logDebug()
-        return inflater.inflate(layoutId, container, false)
+        _binding = getBindingInflater(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         "${javaClass.simpleName}.onViewCreated".logDebug()
         initViews()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        "${javaClass.simpleName}.onDestroyView".logDebug()
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -38,7 +50,7 @@ abstract class BaseFragment : Fragment() {
 
     private fun initSearchViewMenu(menu: Menu) {
         menu.findItem(R.id.menu_search)?.run {
-            "${this@BaseFragment.javaClass.simpleName}.initSearchViewMenu".logDebug()
+            "${this@BaseViewBindingFragment.javaClass.simpleName}.initSearchViewMenu".logDebug()
             val searchView = this.actionView as SearchView
             initListenerSearchView(searchView)
             updateSearchView(searchView, this)
@@ -89,6 +101,8 @@ abstract class BaseFragment : Fragment() {
             searchView.requestFocusFromTouch()
         }
     }
+
+    abstract fun getBindingInflater(inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean): VB
 
     protected open fun initViews() {}
 

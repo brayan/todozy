@@ -5,13 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import br.com.sailboat.todozy.core.extensions.hideKeyboard
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
+import br.com.sailboat.todozy.core.presentation.base.BaseViewBindingFragment
 import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.model.ViewResult
 
-abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), BaseMVPContract.View {
+abstract class BaseMVPFragment<VB : ViewBinding, P : BaseMVPContract.Presenter> : BaseViewBindingFragment<VB>(), BaseMVPContract.View {
 
     abstract val presenter: P
     private var progress = ProgressDialog()

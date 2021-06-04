@@ -16,7 +16,7 @@ interface TaskListContract {
         fun setMainTitle()
         fun showEmptyView()
         fun showErrorOnSwipeTask()
-        fun showMetrics(taskMetrics: TaskMetrics)
+        fun showMetrics(taskMetricsModel: TaskMetrics)
         fun showNewTask()
         fun showSettings()
         fun showTasks()
