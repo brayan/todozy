@@ -10,18 +10,12 @@ import java.util.*
 
 abstract class BaseFragment : Fragment() {
 
-    protected abstract val layoutId: Int
     private var searchViewOpen = false
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         "${javaClass.simpleName}.onCreate".logDebug()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        "${javaClass.simpleName}.onCreateView".logDebug()
-        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

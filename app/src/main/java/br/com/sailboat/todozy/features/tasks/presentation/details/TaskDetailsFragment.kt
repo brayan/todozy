@@ -1,9 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
@@ -11,19 +9,16 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
+import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
-import kotlinx.android.synthetic.main.appbar_task_details.*
-import kotlinx.android.synthetic.main.fab.*
-import kotlinx.android.synthetic.main.recycler.*
-import kotlinx.android.synthetic.main.task_metrics.*
 import org.koin.android.ext.android.inject
 
 
 class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), TaskDetailsContract.View {
 
     override val presenter: TaskDetailsContract.Presenter by inject()
-    override val layoutId = R.layout.frg_task_details
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -34,40 +29,53 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
         }
     }
 
+    private lateinit var binding: FrgTaskDetailsBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FrgTaskDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_details, menu)
     }
 
     override fun initViews() {
-        fab.setImageResource(R.drawable.ic_edit_white_24dp)
-        fab.setOnClickListener { presenter.onClickEditTask() }
+        binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
+        binding.fab.root.setOnClickListener { presenter.onClickEditTask() }
 
-        recycler.run {
+        binding.recycler.recycler.run {
             adapter = TaskDetailsAdapter(object : TaskDetailsAdapter.Callback {
                 override val details = presenter.details
             })
             layoutManager = LinearLayoutManager(activity)
         }
 
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.appbarTaskDetails.toolbar)
+        binding.appbarTaskDetails.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        binding.appbarTaskDetails.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     }
 
     override fun setDoneTasks(amount: String) {
-        tvMetricsDone.text = amount
+        binding.appbarTaskDetails.taskMetrics.tvMetricsDone.text = amount
     }
 
     override fun setNotDoneTasks(amount: String) {
-        tvMetricsNotDone.text = amount
+        binding.appbarTaskDetails.taskMetrics.tvMetricsNotDone.text = amount
     }
 
     override fun showDialogDeleteTask() {
-        DialogHelper().showDeleteDialog(childFragmentManager, activity!!, object : TwoOptionsDialog.PositiveCallback {
-            override fun onClickPositiveOption() {
-                presenter.onClickDeleteTask()
-            }
-        })
+        activity?.run {
+            DialogHelper().showDeleteDialog(childFragmentManager, this, object : TwoOptionsDialog.PositiveCallback {
+                override fun onClickPositiveOption() {
+                    presenter.onClickDeleteTask()
+                }
+            })
+        }
     }
 
     override fun startInsertTaskActivity(taskId: Long) {
@@ -75,11 +83,11 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun showMetrics() {
-        appbar_task_details__fl__metrics.visible()
+        binding.appbarTaskDetails.root.visible()
     }
 
     override fun hideMetrics() {
-        appbar_task_details__fl__metrics.gone()
+        binding.appbarTaskDetails.root.gone()
     }
 
     override fun startTaskHistoryActivity(taskId: Long) {
@@ -87,19 +95,19 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun setFire(fire: String) {
-        tvMetricsFire.text = fire
+        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.text = fire
     }
 
     override fun showFire() {
-        task_metrics__ll__fire.visible()
+        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.visible()
     }
 
     override fun hideFire() {
-        task_metrics__ll__fire.gone()
+        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.gone()
     }
 
     override fun updateDetails() {
-        recycler.adapter?.notifyDataSetChanged()
+        binding.recycler.recycler.adapter?.notifyDataSetChanged()
     }
 
     override fun showErrorOnDeleteTask() {
@@ -107,11 +115,11 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
     }
 
     override fun setTaskDetailsTitle() {
-        toolbar.setTitle(R.string.task_details)
+        binding.appbarTaskDetails.toolbar.setTitle(R.string.task_details)
     }
 
     override fun setEmptyTitle() {
-        toolbar.title = ""
+        binding.appbarTaskDetails.toolbar.title = ""
     }
 
     override fun closeWithResultNotOk() {

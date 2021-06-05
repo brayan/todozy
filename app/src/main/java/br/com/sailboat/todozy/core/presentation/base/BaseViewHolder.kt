@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
-abstract class BaseViewHolder<in T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class BaseViewHolder<in T, VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root) {
 
     val context: Context by lazy { itemView.context }
 
     abstract fun bind(item: T)
 
     companion object {
-        fun inflate(parent: ViewGroup, layoutId: Int): View {
-            return LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-        }
+        fun getInflater(parent: ViewGroup): LayoutInflater = LayoutInflater.from(parent.context)
     }
 
 }

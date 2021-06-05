@@ -1,142 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <variable
-            name="history"
-            type="br.com.sailboat.todozy.core.presentation.model.TaskHistoryView" />
-    </data>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardElevation="0dp">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardElevation="0dp">
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="64dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:minHeight="64dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/ivStatus"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_circle_done_task"
-                    android:padding="8dp"
-                    app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp" />
-
-                <TextView
-                    android:id="@+id/tvShortDateTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="16dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="#9E9E9E"
-                    android:textSize="@dimen/text_size_xxsmall"
-                    android:textStyle="bold"
-                    tools:text="11/10/2018" />
-
-                <TextView
-                    android:id="@+id/tvTaskName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="72dp"
-                    android:layout_toLeftOf="@id/tvShortDateTime"
-                    android:maxLines="3"
-                    android:paddingTop="10dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="18dp"
-                    android:textColor="@color/md_blue_grey_700"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="@{history.taskName}"
-                    tools:text="Work 2 sprints on Todozy" />
-
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/ivStatus"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_circle_done_task"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp" />
 
             <TextView
-                android:id="@+id/tvLongDateTime"
+                android:id="@+id/tvShortDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#9E9E9E"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold"
+                tools:text="11/10/2018" />
+
+            <TextView
+                android:id="@+id/tvTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:textSize="@dimen/text_size_xsmall"
-                tools:text="Date/time" />
+                android:layout_toLeftOf="@id/tvShortDateTime"
+                android:maxLines="3"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="18dp"
+                android:text="@{history.taskName}"
+                android:textColor="@color/md_blue_grey_700"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Work 2 sprints on Todozy" />
 
-            <LinearLayout
-                android:id="@+id/llTaskHistoryActions"
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvLongDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:textSize="@dimen/text_size_xsmall"
+            tools:text="Date/time" />
+
+        <LinearLayout
+            android:id="@+id/llTaskHistoryActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="64dp">
+
+            <TextView
+                android:id="@+id/tvMarkAsDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingTop="16dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="16dp"
+                android:text="@string/mark_as_done"
+                android:textAllCaps="true"
+                android:textColor="@color/md_blue_500"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tvMarkAsNotDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingTop="16dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="16dp"
+                android:text="@string/mark_as_not_done"
+                android:textAllCaps="true"
+                android:textColor="@color/md_blue_500"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="64dp">
+                android:layout_gravity="right"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingTop="16dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="16dp"
+                android:text="@string/delete"
+                android:textAllCaps="true"
+                android:textColor="@color/md_red_300"
+                android:textSize="@dimen/text_size_xxsmall"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvMarkAsDone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="16dp"
-                    android:text="@string/mark_as_done"
-                    android:textAllCaps="true"
-                    android:textColor="@color/md_blue_500"
-                    android:textSize="@dimen/text_size_xxsmall"
-                    android:textStyle="bold" />
-
-
-                <TextView
-                    android:id="@+id/tvMarkAsNotDone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="16dp"
-                    android:text="@string/mark_as_not_done"
-                    android:textAllCaps="true"
-                    android:textColor="@color/md_blue_500"
-                    android:textSize="@dimen/text_size_xxsmall"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDelete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="16dp"
-                    android:text="@string/delete"
-                    android:textAllCaps="true"
-                    android:textColor="@color/md_red_300"
-                    android:textSize="@dimen/text_size_xxsmall"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-</layout>
+</androidx.cardview.widget.CardView>

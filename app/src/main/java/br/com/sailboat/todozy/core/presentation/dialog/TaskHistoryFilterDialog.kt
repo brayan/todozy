@@ -2,21 +2,24 @@ package br.com.sailboat.todozy.core.presentation.dialog
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
-import kotlinx.android.synthetic.main.dlg_filter_task_history.view.*
+import br.com.sailboat.todozy.databinding.DlgFilterTaskHistoryBinding
+import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
 
 class TaskHistoryFilterDialog : BaseDialogFragment() {
 
     var status: TaskStatusSelectableItem? = null
     var date: DateFilterTaskHistorySelectableItem? = null
     private var callback: Callback? = null
-    private lateinit var customView: View
+    private lateinit var binding: DlgFilterTaskHistoryBinding
 
     interface Callback {
         fun onClickFilterDate()
@@ -37,15 +40,22 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
 
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DlgFilterTaskHistoryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        customView = View.inflate(activity, R.layout.dlg_filter_task_history, null)
         initViews()
         updateViews()
         return buildDialog()
     }
 
-    private fun initViews() = with(customView) {
+    private fun initViews() = with(binding) {
         tvDate.setOnClickListener {
             callback?.onClickFilterDate()
             dialog?.dismiss()
@@ -57,15 +67,15 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
         }
     }
 
-    private fun updateViews() = with(customView) {
+    private fun updateViews() = with(binding) {
         date?.run { tvDate.setText(getName()) }
         status?.run { tvStatus.setText(getName()) }
     }
 
     private fun buildDialog() = activity?.run {
         val builder = AlertDialog.Builder(this)
-        builder.setView(customView)
-        builder.create().apply { setView(customView) }
+        builder.setView(binding.root)
+        builder.create().apply { setView(binding.root) }
 
     } ?: throw Exception("Context should not be null")
 

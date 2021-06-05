@@ -22,7 +22,7 @@
             app:popupTheme="@style/Theme.AppCompat.Light"
             app:subtitleTextAppearance="@style/ToolbarSubtitle"
             app:title="Title"
-            app:titleTextAppearance="@style/ToolbarTitle"/>
+            app:titleTextAppearance="@style/ToolbarTitle" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -134,7 +134,9 @@
 
                     </FrameLayout>
 
-                    <include layout="@layout/alarm_details" />
+                    <include
+                        android:id="@+id/alarm_details"
+                        layout="@layout/alarm_details" />
 
                 </LinearLayout>
 

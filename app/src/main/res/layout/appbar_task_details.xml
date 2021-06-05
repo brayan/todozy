@@ -24,7 +24,9 @@
             android:layout_marginTop="10dp"
             android:visibility="gone">
 
-            <include layout="@layout/task_metrics"/>
+            <include
+                android:id="@+id/task_metrics"
+                layout="@layout/task_metrics"/>
 
         </FrameLayout>
 

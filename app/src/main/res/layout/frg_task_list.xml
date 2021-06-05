@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <include layout="@layout/ept_view"/>
+    <include
+        android:id="@+id/ept_view"
+        layout="@layout/ept_view"/>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -40,7 +42,9 @@
                 android:visibility="gone"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <include layout="@layout/task_metrics"/>
+                <include
+                    android:id="@+id/task_metrics"
+                    layout="@layout/task_metrics"/>
 
             </FrameLayout>
 
