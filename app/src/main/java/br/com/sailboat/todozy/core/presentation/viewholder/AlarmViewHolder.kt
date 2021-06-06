@@ -1,17 +1,18 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.AlarmView
-import kotlinx.android.synthetic.main.alarm_details.view.*
+import br.com.sailboat.todozy.databinding.AlarmDetailsBinding
 
 class AlarmViewHolder(parent: ViewGroup) :
-        BaseViewHolder<AlarmView>(inflate(parent, R.layout.alarm_details)) {
+    BaseViewHolder<AlarmView, AlarmDetailsBinding>(
+        AlarmDetailsBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
-    override fun bind(item: AlarmView) = with(itemView) {
+    override fun bind(item: AlarmView) = with(binding) {
         try {
             tvAlarmDate.text = item.dateTime.getFullDateName(itemView.context)
             tvAlarmTime.text = item.dateTime.formatTimeWithAndroidFormat(itemView.context)
@@ -22,13 +23,14 @@ class AlarmViewHolder(parent: ViewGroup) :
         }
     }
 
-    private fun updateAlarmRepeatType(alarm: AlarmView) = with(itemView) {
+    private fun updateAlarmRepeatType(alarm: AlarmView) = with(binding) {
 
         if (alarm.repeatType != RepeatTypeView.NOT_REPEAT) {
             tvAlarmRepeat.visible()
 
             if (alarm.repeatType == RepeatTypeView.CUSTOM) {
-                tvAlarmRepeat.text = WeekDaysHelper().getCustomRepeat(itemView.context, alarm.customDays!!)
+                tvAlarmRepeat.text =
+                    WeekDaysHelper().getCustomRepeat(itemView.context, alarm.customDays!!)
             } else {
                 tvAlarmRepeat.setText(alarm.repeatType.description)
             }

@@ -1,16 +1,17 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
-import kotlinx.android.synthetic.main.vh_subheader.view.*
+import br.com.sailboat.todozy.databinding.VhSubheaderBinding
 
 class SubheadViewHolder(parent: ViewGroup) :
-        BaseViewHolder<SubheadView>(inflate(parent, R.layout.vh_subheader)) {
+    BaseViewHolder<SubheadView, VhSubheaderBinding>(
+        VhSubheaderBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
-    override fun bind(item: SubheadView) = with(itemView) {
-        vh_subheader__tv__name.text = context.getText(item.subheadRes)
+    override fun bind(item: SubheadView) = with(binding) {
+        vhSubheaderTvName.text = context.getText(item.subheadRes)
     }
 
 }

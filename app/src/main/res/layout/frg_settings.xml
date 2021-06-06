@@ -7,7 +7,9 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar"/>
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/appbar"/>
 
     <TextView
         style="@style/TextViewLabel"

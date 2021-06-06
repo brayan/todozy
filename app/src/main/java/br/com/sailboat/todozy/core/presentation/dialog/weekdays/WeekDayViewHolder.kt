@@ -5,26 +5,36 @@ import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.model.DayView
-import kotlinx.android.synthetic.main.vh_week_day.view.*
+import br.com.sailboat.todozy.databinding.VhWeekDayBinding
 
 class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
-        BaseViewHolder<DayView>(inflate(parent, R.layout.vh_week_day)) {
-
+    BaseViewHolder<DayView, VhWeekDayBinding>(
+        VhWeekDayBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
     init {
-        itemView.setOnClickListener { callback.onClickDay(adapterPosition) }
+        binding.root.setOnClickListener { callback.onClickDay(adapterPosition) }
     }
 
-
-    override fun bind(item: DayView) = with(itemView) {
-        vh_week_day__tv__name.text = item.name
+    override fun bind(item: DayView) = with(binding) {
+        vhWeekDayTvName.text = item.name
 
         if (callback.isDaySelected(item.id)) {
-            vh_week_day__tv__name.setBackgroundResource(R.drawable.shape_circle_blue)
-            vh_week_day__tv__name.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
+            vhWeekDayTvName.setBackgroundResource(R.drawable.shape_circle_blue)
+            vhWeekDayTvName.setTextColor(
+                ContextCompat.getColor(
+                    itemView.context,
+                    android.R.color.white
+                )
+            )
         } else {
-            vh_week_day__tv__name.setBackgroundResource(R.drawable.shape_circle)
-            vh_week_day__tv__name.setTextColor(ContextCompat.getColor(itemView.context, R.color.md_blue_grey_500))
+            vhWeekDayTvName.setBackgroundResource(R.drawable.shape_circle)
+            vhWeekDayTvName.setTextColor(
+                ContextCompat.getColor(
+                    itemView.context,
+                    R.color.md_blue_grey_500
+                )
+            )
         }
 
     }

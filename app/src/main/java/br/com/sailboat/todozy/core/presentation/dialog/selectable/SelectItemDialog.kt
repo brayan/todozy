@@ -2,12 +2,18 @@ package br.com.sailboat.todozy.core.presentation.dialog.selectable
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.core.presentation.helper.gone
+import br.com.sailboat.todozy.core.presentation.helper.visible
+import br.com.sailboat.todozy.databinding.DlgReyclerBinding
+import br.com.sailboat.todozy.databinding.DlgWeekDaysSelectorBinding
 
 class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), SelectableItemAdapter.Callback {
 
@@ -16,6 +22,17 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), S
 
     interface Callback {
         fun onClickItem(item: SelectableItem)
+    }
+
+    private lateinit var binding: DlgReyclerBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DlgReyclerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 
@@ -31,12 +48,11 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), S
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = View.inflate(activity, R.layout.dlg_reycler, null)
-        view.recycler.layoutManager = LinearLayoutManager(activity)
-        view.recycler.adapter = SelectableItemAdapter(this)
-        updateViews(view)
+        binding.recycler.layoutManager = LinearLayoutManager(activity)
+        binding.recycler.adapter = SelectableItemAdapter(this)
+        updateViews()
 
-        return buildDialog(view)
+        return buildDialog()
     }
 
     override fun onClickItem(position: Int) {
@@ -44,20 +60,20 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), S
         dismiss()
     }
 
-    private fun updateViews(view: View) {
+    private fun updateViews() = with(binding) {
         if (title?.isNotEmpty() == true) {
-            view.dlg_recycler__tv__title.text = title
-            view.dlg_recycler__tv__title.visibility = View.VISIBLE
+            dlgRecyclerTvTitle.text = title
+            dlgRecyclerTvTitle.visible()
         } else {
-            view.dlg_recycler__tv__title.visibility = View.GONE
+            dlgRecyclerTvTitle.gone()
         }
 
-        view.recycler.adapter?.notifyDataSetChanged()
+        recycler.adapter?.notifyDataSetChanged()
     }
 
-    private fun buildDialog(view: View): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        builder.setView(view)
+    private fun buildDialog(): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
 
         return builder.create()
     }

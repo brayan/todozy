@@ -4,24 +4,37 @@ import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.helper.AboutHelper
 import br.com.sailboat.todozy.core.presentation.helper.RequestCode
+import br.com.sailboat.todozy.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
-import kotlinx.android.synthetic.main.frg_settings.*
-import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.ext.android.inject
 
 class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), SettingsContract.View {
 
     override val presenter: SettingsContract.Presenter by inject()
-    override val layoutId = R.layout.frg_settings
 
-    override fun initViews() {
-        toolbar.setTitle(R.string.settings)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    private lateinit var binding: FrgSettingsBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FrgSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun initViews() = with(binding) {
+        appbar.toolbar.setTitle(R.string.settings)
+        appbar.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        appbar.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         initToneViews()
         initAbout()
@@ -31,11 +44,11 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
 
     override fun setCurrentToneAlarm(tone: Uri) {
         val ringtone = RingtoneManager.getRingtone(activity, tone)
-        tvSettingsCurrentTone.text = ringtone.getTitle(activity)
+        binding.tvSettingsCurrentTone.text = ringtone.getTitle(activity)
     }
 
     override fun setCurrentToneAlarmNone() {
-        tvSettingsCurrentTone.setText(R.string.none)
+        binding.tvSettingsCurrentTone.setText(R.string.none)
     }
 
     override fun showAlarmChooser(alarmSound: Uri?) {
@@ -44,20 +57,23 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.notification_tone))
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarmSound)
 
-        this@SettingsFragment.startActivityForResult(intent, RequestCode.REQUEST_SETTING_TONE.ordinal)
+        this@SettingsFragment.startActivityForResult(
+            intent,
+            RequestCode.REQUEST_SETTING_TONE.ordinal
+        )
     }
 
     override fun setVibrateAlarm(shouldVibrate: Boolean) {
-        cbSettingsVibrate.isChecked = shouldVibrate
+        binding.cbSettingsVibrate.isChecked = shouldVibrate
     }
 
     private fun initAbout() {
-        tvSettingsAbout.setOnClickListener {
+        binding.tvSettingsAbout.setOnClickListener {
             activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
         }
     }
 
-    private fun initToneVibrate() {
+    private fun initToneVibrate() = with(binding) {
         flSettingsVibrate.setOnClickListener { cbSettingsVibrate.performClick() }
     }
 
@@ -65,7 +81,8 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 RequestCode.REQUEST_SETTING_TONE.ordinal -> {
-                    val uri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    val uri =
+                        data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
                     uri?.run { presenter.onSelectAlarmTone(uri) }
                 }
             }
@@ -73,13 +90,13 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
     }
 
     private fun initCheckBoxVibrate() = activity?.run {
-        cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
             presenter.onClickVibrateAlarm(isChecked)
         }
     }
 
     private fun initToneViews() = activity?.run {
-        llSettingsTone.setOnClickListener { presenter.onClickAlarmTone() }
+        binding.llSettingsTone.setOnClickListener { presenter.onClickAlarmTone() }
     }
 
 }

@@ -2,26 +2,37 @@ package br.com.sailboat.todozy.core.presentation.dialog.weekdays
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.model.DayView
-import kotlinx.android.synthetic.main.dlg_week_days_selector.view.*
+import br.com.sailboat.todozy.databinding.DlgWeekDaysSelectorBinding
 import java.util.*
 
-class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragment(), WeekDaysSelectorAdapter.Callback {
+class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
+    WeekDaysSelectorAdapter.Callback {
 
     private var selectedDays: String? = null
     private val hashSelectedDays = mutableMapOf<Int, DayView>()
     private var loadedDays = mutableListOf<DayView>()
     override val days = loadedDays
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: DlgWeekDaysSelectorBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DlgWeekDaysSelectorBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     interface Callback {
         fun onClickOk(selectedDays: String)
@@ -42,14 +53,13 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = View.inflate(activity, R.layout.dlg_week_days_selector, null)
-        initViews(view)
-        return buildDialog(view)
+        initViews()
+        return buildDialog()
     }
 
-    private fun buildDialog(view: View): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        builder.setView(view)
+    private fun buildDialog(): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
         builder.setPositiveButton(android.R.string.ok) { _, _ -> callback.onClickOk(getSelectedDays()) }
 
         builder.setNegativeButton(R.string.cancel, null)
@@ -57,10 +67,10 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
         return builder.create()
     }
 
-    private fun initViews(view: View) {
-        view.recycler.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
-        view.recycler.adapter = WeekDaysSelectorAdapter(this)
-        this.recyclerView = view.recycler
+    private fun initViews() = with(binding) {
+        recycler.layoutManager =
+            GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
+        recycler.adapter = WeekDaysSelectorAdapter(this@WeekDaysSelectorDialog)
     }
 
     private fun initDays() {
@@ -110,7 +120,7 @@ class WeekDaysSelectorDialog(private val callback: Callback) : BaseDialogFragmen
             hashSelectedDays[day.id] = day
         }
 
-        recyclerView.adapter?.notifyItemChanged(position)
+        binding.recycler.adapter?.notifyItemChanged(position)
 
     }
 
