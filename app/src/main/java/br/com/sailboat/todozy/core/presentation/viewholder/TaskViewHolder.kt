@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.isAfterTomorrow
 import br.com.sailboat.todozy.core.extensions.isBeforeToday
 import br.com.sailboat.todozy.core.extensions.isCurrentYear
@@ -9,22 +8,24 @@ import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
-import kotlinx.android.synthetic.main.task.view.*
+import br.com.sailboat.todozy.databinding.VhTaskBinding
 import java.util.*
 
 class TaskViewHolder(parent: ViewGroup, callback: Callback) :
-        BaseViewHolder<TaskItemView>(inflate(parent, R.layout.vh_task)) {
+    BaseViewHolder<TaskItemView, VhTaskBinding>(
+        VhTaskBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
     init {
-        itemView.setOnClickListener { callback.onClickTask(adapterPosition) }
+        binding.root.setOnClickListener { callback.onClickTask(bindingAdapterPosition) }
     }
 
     interface Callback {
         fun onClickTask(position: Int)
     }
 
-    override fun bind(item: TaskItemView) = with(itemView) {
-        vh_task__tv__name.text = item.taskName
+    override fun bind(item: TaskItemView) = with(binding) {
+        task.vhTaskTvName.text = item.taskName
         bindTaskAlarm(item.alarm)
     }
 
@@ -40,38 +41,38 @@ class TaskViewHolder(parent: ViewGroup, callback: Callback) :
         }
     }
 
-    private fun updateAlarmText(alarm: Calendar) = with(itemView) {
+    private fun updateAlarmText(alarm: Calendar) = with(binding) {
 
         if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
 
-            if (alarm.isCurrentYear()) {
-                vh_task__tv__date.text = alarm.getMonthAndDayShort(itemView.context)
+            task.vhTaskTvDate.text = if (alarm.isCurrentYear()) {
+                alarm.getMonthAndDayShort(context)
             } else {
-                vh_task__tv__date.text = alarm.toShortDateView(itemView.context)
+                alarm.toShortDateView(context)
             }
 
         } else {
-            vh_task__tv__time.text = alarm.formatTimeWithAndroidFormat(itemView.context)
+            task.vhTaskTvTime.text = alarm.formatTimeWithAndroidFormat(context)
         }
     }
 
-    private fun updateAlarmColor(alarm: Calendar) = with(itemView) {
-        vh_task__tv__date.setTextColor(AlarmColor().getAlarmColor(itemView.context, alarm))
-        vh_task__tv__time.setTextColor(AlarmColor().getAlarmColor(itemView.context, alarm))
+    private fun updateAlarmColor(alarm: Calendar) = with(binding) {
+        task.vhTaskTvDate.setTextColor(AlarmColor().getAlarmColor(context, alarm))
+        task.vhTaskTvTime.setTextColor(AlarmColor().getAlarmColor(context, alarm))
     }
 
-    private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(itemView) {
+    private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(binding) {
         if (alarm == null) {
-            vh_task__tv__date.gone()
-            vh_task__tv__time.gone()
+            task.vhTaskTvDate.gone()
+            task.vhTaskTvTime.gone()
 
         } else if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
-            vh_task__tv__time.gone()
-            vh_task__tv__date.visible()
+            task.vhTaskTvTime.gone()
+            task.vhTaskTvDate.visible()
 
         } else {
-            vh_task__tv__time.visible()
-            vh_task__tv__date.gone()
+            task.vhTaskTvTime.visible()
+            task.vhTaskTvDate.gone()
         }
     }
 

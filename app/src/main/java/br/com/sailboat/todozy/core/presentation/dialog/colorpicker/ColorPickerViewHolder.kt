@@ -2,28 +2,29 @@ package br.com.sailboat.todozy.core.presentation.dialog.colorpicker
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.gone
 import br.com.sailboat.todozy.core.presentation.helper.visible
-import kotlinx.android.synthetic.main.vh_color_picker.view.*
+import br.com.sailboat.todozy.databinding.VhColorPickerBinding
 
 class ColorPickerViewHolder(parent: ViewGroup, private val callback: Callback) :
-        BaseViewHolder<MaterialColor>(inflate(parent, R.layout.vh_color_picker)) {
+    BaseViewHolder<MaterialColor, VhColorPickerBinding>(
+        VhColorPickerBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
     init {
-        itemView.view_holder_color_picker__frame.setOnClickListener {
-            callback.onClickColor(adapterPosition)
+        binding.viewHolderColorPickerFrame.setOnClickListener {
+            callback.onClickColor(bindingAdapterPosition)
         }
     }
 
-    override fun bind(item: MaterialColor) = with(itemView) {
-        view_holder_color_picker__img__color.setColorFilter(getTextColor(item.ordinal))
+    override fun bind(item: MaterialColor) = with(binding) {
+        viewHolderColorPickerImgColor.setColorFilter(getTextColor(item.ordinal))
 
         if (callback.currentColor == item) {
-            view_holder_color_picker__img__check.visible()
+            viewHolderColorPickerImgCheck.visible()
         } else {
-            view_holder_color_picker__img__check.gone()
+            viewHolderColorPickerImgCheck.gone()
         }
 
     }

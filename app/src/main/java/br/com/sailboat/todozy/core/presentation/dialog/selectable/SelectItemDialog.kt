@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dlg_reycler.view.*
 
 class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(), SelectableItemAdapter.Callback {
 

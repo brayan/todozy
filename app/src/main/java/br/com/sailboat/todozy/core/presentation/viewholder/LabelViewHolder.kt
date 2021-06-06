@@ -1,16 +1,17 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.model.LabelItemView
-import kotlinx.android.synthetic.main.vh_label.view.*
+import br.com.sailboat.todozy.databinding.VhLabelBinding
 
 class LabelViewHolder(parent: ViewGroup) :
-        BaseViewHolder<LabelItemView>(inflate(parent, R.layout.vh_label)) {
+    BaseViewHolder<LabelItemView, VhLabelBinding>(
+        VhLabelBinding.inflate(getInflater(parent), parent, false)
+    ) {
 
-    override fun bind(item: LabelItemView) = with(itemView) {
-        vh_label__tv__label.text = item.label
+    override fun bind(item: LabelItemView) = with(binding) {
+        vhLabelTvLabel.text = item.label
     }
 
 }
