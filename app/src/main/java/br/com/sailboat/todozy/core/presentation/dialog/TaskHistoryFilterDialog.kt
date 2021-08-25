@@ -3,16 +3,13 @@ package br.com.sailboat.todozy.core.presentation.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.databinding.DlgFilterTaskHistoryBinding
-import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
 
 class TaskHistoryFilterDialog : BaseDialogFragment() {
 
@@ -26,28 +23,13 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
         fun onClickFilterStatus()
     }
 
-    companion object {
-
-        fun show(manager: FragmentManager, date: DateFilterTaskHistorySelectableItem,
-                 status: TaskStatusSelectableItem, callback: Callback) {
-
-            val dialog = TaskHistoryFilterDialog()
-            dialog.callback = callback
-            dialog.status = status
-            dialog.date = date
-            dialog.show(manager, TaskHistoryFilterDialog::class.java.name)
-        }
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = DlgFilterTaskHistoryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ) = DlgFilterTaskHistoryBinding.inflate(inflater, container, false).apply {
+        binding = this
+    }.root
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         initViews()
@@ -79,4 +61,16 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
 
     } ?: throw Exception("Context should not be null")
 
+    companion object {
+        fun show(
+            manager: FragmentManager, date: DateFilterTaskHistorySelectableItem,
+            status: TaskStatusSelectableItem, callback: Callback
+        ) {
+            val dialog = TaskHistoryFilterDialog()
+            dialog.callback = callback
+            dialog.status = status
+            dialog.date = date
+            dialog.show(manager, TaskHistoryFilterDialog::class.java.name)
+        }
+    }
 }

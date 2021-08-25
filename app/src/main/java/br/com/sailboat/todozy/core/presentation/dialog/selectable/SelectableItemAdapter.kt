@@ -1,10 +1,13 @@
 package br.com.sailboat.todozy.core.presentation.dialog.selectable
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 
-class SelectableItemAdapter(private val callback: Callback) : RecyclerView.Adapter<SelectableItemViewHolder>() {
-
+class SelectableItemAdapter(private val callback: Callback) :
+    ListAdapter<SelectableItem, SelectableItemViewHolder>(
+        SelectableItemDiffUtilCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectableItemViewHolder {
         return SelectableItemViewHolder(parent, callback)
@@ -19,6 +22,18 @@ class SelectableItemAdapter(private val callback: Callback) : RecyclerView.Adapt
 
     interface Callback : SelectableItemViewHolder.Callback {
         val selectableItems: List<SelectableItem>
+    }
+
+    private class SelectableItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableItem>() {
+        override fun areItemsTheSame(
+            oldItem: SelectableItem,
+            newItem: SelectableItem,
+        ) = oldItem.getName() == newItem.getName()
+
+        override fun areContentsTheSame(
+            oldItem: SelectableItem,
+            newItem: SelectableItem,
+        ) = oldItem.getName() == newItem.getName()
     }
 
 }
