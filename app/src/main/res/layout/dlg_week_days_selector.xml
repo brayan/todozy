@@ -23,4 +23,16 @@
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"/>
 
+    <Button
+        android:id="@+id/bt_week_days_selector_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"/>
+
+    <Button
+        android:id="@+id/bt_week_days_selector_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel"/>
+
 </LinearLayout>
