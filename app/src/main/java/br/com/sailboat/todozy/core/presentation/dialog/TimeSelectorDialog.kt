@@ -5,32 +5,16 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.core.extensions.orZero
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import java.util.*
 
-class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
+class TimeSelectorDialog(private val callback: Callback) : DialogFragment(),
     TimePickerDialog.OnTimeSetListener {
 
-
-    var calendar: Calendar? = null
-
-    companion object {
-        fun show(fragmentManager: FragmentManager, callback: Callback) {
-            show(fragmentManager, null, callback)
-        }
-
-        fun show(fragmentManager: FragmentManager, currentTime: Calendar?, callback: Callback) {
-            val dialog = TimeSelectorDialog(callback)
-            dialog.calendar = currentTime
-            dialog.show(fragmentManager, TimeSelectorDialog::class.java.name)
-        }
-    }
+    private lateinit var calendar: Calendar
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        initTime()
-
         return TimePickerDialog(
             activity,
             this,
@@ -46,23 +30,27 @@ class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
         }
     }
 
-    private fun initTime() {
-        if (calendar == null) {
-            this.calendar = Calendar.getInstance()
-        }
-    }
-
     private fun getMinute(): Int {
-        return calendar?.get(Calendar.MINUTE).orZero()
+        return calendar.get(Calendar.MINUTE)
     }
 
     private fun getHour(): Int {
-        return calendar?.get(Calendar.HOUR_OF_DAY).orZero()
+        return calendar.get(Calendar.HOUR_OF_DAY)
     }
-
 
     interface Callback {
         fun onTimeSet(hourOfDay: Int, minute: Int)
     }
 
+    companion object {
+        fun show(fragmentManager: FragmentManager, callback: Callback) {
+            show(fragmentManager, Calendar.getInstance(), callback)
+        }
+
+        fun show(fragmentManager: FragmentManager, calendar: Calendar, callback: Callback) {
+            val dialog = TimeSelectorDialog(callback)
+            dialog.calendar = calendar
+            dialog.show(fragmentManager, TimeSelectorDialog::class.java.name)
+        }
+    }
 }

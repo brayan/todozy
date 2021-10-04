@@ -7,25 +7,8 @@ import androidx.fragment.app.DialogFragment
 
 abstract class BaseDialogFragment : DialogFragment() {
 
-    private var firstSession = true
     var message: String? = null
     var title: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (firstSession) {
-            onResumeFirstSession()
-            firstSession = false
-        } else {
-            onResumeAfterRestart()
-        }
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alert = AlertDialog.Builder(requireContext())
@@ -38,13 +21,6 @@ abstract class BaseDialogFragment : DialogFragment() {
 
     protected open fun bindButtons(alert: AlertDialog.Builder) {}
 
-    override fun onDestroyView() {
-        if (dialog != null && retainInstance) {
-            dialog!!.setDismissMessage(null)
-        }
-        super.onDestroyView()
-    }
-
     protected open fun bindMessage(alert: AlertDialog.Builder) {
         if (message?.isNotEmpty() == true) {
             alert.setMessage(message)
@@ -56,10 +32,4 @@ abstract class BaseDialogFragment : DialogFragment() {
             alert.setTitle(title)
         }
     }
-
-    protected open fun onResumeFirstSession() {}
-
-    protected open fun onResumeAfterRestart() {}
-
-
 }

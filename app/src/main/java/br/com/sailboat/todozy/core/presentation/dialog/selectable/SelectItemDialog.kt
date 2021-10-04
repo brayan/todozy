@@ -1,44 +1,45 @@
 package br.com.sailboat.todozy.core.presentation.dialog.selectable
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.helper.gone
 import br.com.sailboat.todozy.core.presentation.helper.visible
 import br.com.sailboat.todozy.databinding.DlgReyclerBinding
 
-class SelectItemDialog(private val callback: Callback) : DialogFragment(),
+class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
     SelectableItemAdapter.Callback {
 
     override lateinit var selectableItems: List<SelectableItem>
     override var selectedItem: SelectableItem? = null
 
     private lateinit var binding: DlgReyclerBinding
-    var title: String? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = DlgReyclerBinding.inflate(inflater, container, false).apply {
-        binding = this
-    }.root
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        binding = DlgReyclerBinding.inflate(LayoutInflater.from(requireContext()))
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recycler.layoutManager = LinearLayoutManager(context)
+        binding.recycler.layoutManager = LinearLayoutManager(activity)
         binding.recycler.adapter = SelectableItemAdapter(this).apply {
             submitList(selectableItems)
         }
         updateViews()
+
+        return buildDialog()
     }
 
     override fun onClickItem(position: Int) {
         callback.onClickItem(selectableItems[position])
         dismiss()
+    }
+
+    private fun buildDialog(): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
+        return builder.create()
     }
 
     private fun updateViews() = with(binding) {

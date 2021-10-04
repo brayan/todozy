@@ -8,8 +8,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import java.util.*
 
-private const val TAG = "DATE_SELECTOR"
-
 class DateSelectorDialog(private val callback: Callback) : DialogFragment(),
     DatePickerDialog.OnDateSetListener {
 
@@ -42,14 +40,14 @@ class DateSelectorDialog(private val callback: Callback) : DialogFragment(),
     }
 
     companion object {
-        fun show(manager: FragmentManager, callback: Callback) {
-            show(manager, Calendar.getInstance(), callback)
+        fun show(fragmentManager: FragmentManager, callback: Callback) {
+            show(fragmentManager, Calendar.getInstance(), callback)
         }
 
-        fun show(manager: FragmentManager, calendar: Calendar, callback: Callback) {
+        fun show(fragmentManager: FragmentManager, calendar: Calendar, callback: Callback) {
             val dialog = DateSelectorDialog(callback)
             dialog.calendar = calendar
-            dialog.show(manager, TAG)
+            dialog.show(fragmentManager, DateSelectorDialog::class.java.name)
         }
     }
 }

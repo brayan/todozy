@@ -25,18 +25,6 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
 
     private lateinit var binding: DlgWeekDaysSelectorBinding
 
-    interface Callback {
-        fun onClickOk(selectedDays: String)
-    }
-
-    companion object {
-        fun show(manager: FragmentManager, selectedDays: String?, callback: Callback) {
-            val dialog = WeekDaysSelectorDialog(callback)
-            dialog.selectedDays = selectedDays.orEmpty()
-            dialog.show(manager, WeekDaysSelectorDialog::class.java.name)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDays()
@@ -44,9 +32,7 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        DlgWeekDaysSelectorBinding.inflate(LayoutInflater.from(requireContext())).apply {
-            binding = this
-        }.root
+        binding = DlgWeekDaysSelectorBinding.inflate(LayoutInflater.from(requireContext()))
         initViews()
         return buildDialog()
     }
@@ -129,5 +115,17 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
         Calendar.FRIDAY -> DayView(id, getString(R.string.friday))
         Calendar.SATURDAY -> DayView(id, getString(R.string.saturday))
         else -> null
+    }
+
+    interface Callback {
+        fun onClickOk(selectedDays: String)
+    }
+
+    companion object {
+        fun show(manager: FragmentManager, selectedDays: String?, callback: Callback) {
+            val dialog = WeekDaysSelectorDialog(callback)
+            dialog.selectedDays = selectedDays.orEmpty()
+            dialog.show(manager, WeekDaysSelectorDialog::class.java.name)
+        }
     }
 }

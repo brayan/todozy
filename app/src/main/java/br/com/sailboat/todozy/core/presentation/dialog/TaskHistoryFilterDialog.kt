@@ -3,15 +3,14 @@ package br.com.sailboat.todozy.core.presentation.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.databinding.DlgFilterTaskHistoryBinding
 
-class TaskHistoryFilterDialog : BaseDialogFragment() {
+class TaskHistoryFilterDialog : DialogFragment() {
 
     var status: TaskStatusSelectableItem? = null
     var date: DateFilterTaskHistorySelectableItem? = null
@@ -23,15 +22,8 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
         fun onClickFilterStatus()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = DlgFilterTaskHistoryBinding.inflate(inflater, container, false).apply {
-        binding = this
-    }.root
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        binding = DlgFilterTaskHistoryBinding.inflate(LayoutInflater.from(requireContext()))
         initViews()
         updateViews()
         return buildDialog()
@@ -54,12 +46,11 @@ class TaskHistoryFilterDialog : BaseDialogFragment() {
         status?.run { tvStatus.setText(getName()) }
     }
 
-    private fun buildDialog() = activity?.run {
-        val builder = AlertDialog.Builder(this)
-        builder.setView(binding.root)
-        builder.create().apply { setView(binding.root) }
-
-    } ?: throw Exception("Context should not be null")
+    private fun buildDialog() =
+        AlertDialog.Builder(requireContext()).run {
+            setView(binding.root)
+            create()
+        }
 
     companion object {
         fun show(

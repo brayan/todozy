@@ -4,13 +4,15 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.databinding.DlgProgressBinding
 
 class ProgressDialog : BaseDialogFragment() {
+
+    private lateinit var binding: DlgProgressBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,18 +20,18 @@ class ProgressDialog : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = View.inflate(activity, R.layout.dlg_progress, null)
-        return buildDialog(view)
+        binding = DlgProgressBinding.inflate(LayoutInflater.from(requireContext()))
+        return buildDialog()
     }
 
-    private fun buildDialog(view: View): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        builder.setView(view)
+    private fun buildDialog(): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
 
         val dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
         return dialog
     }

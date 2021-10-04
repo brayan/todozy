@@ -5,10 +5,11 @@ import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 
 class TwoOptionsDialog : BaseDialogFragment() {
 
+    private var positiveAndNegativeCallback: PositiveNegativeCallback? = null
+
     var positiveMsg: Int = android.R.string.ok
     var negativeMsg: Int = android.R.string.cancel
     var positiveCallback: PositiveCallback? = null
-    var positiveAndNegativeCallback: PositiveNegativeCallback? = null
 
     override fun bindButtons(alert: AlertDialog.Builder) {
         checkAndBindPositiveCallbacks(alert)

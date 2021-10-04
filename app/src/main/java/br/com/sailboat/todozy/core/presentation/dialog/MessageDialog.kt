@@ -6,18 +6,16 @@ import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 
 class MessageDialog : BaseDialogFragment() {
 
+    override fun bindButtons(alert: AlertDialog.Builder) {
+        alert.setPositiveButton(android.R.string.ok, null)
+    }
+
     companion object {
         fun showMessage(manager: FragmentManager, message: String, title: String?) {
             val dialog = MessageDialog()
             dialog.message = message
             dialog.title = title
-            dialog.show(manager, MessageDialog::class.java.simpleName)
+            dialog.show(manager, MessageDialog::class.java.name)
         }
     }
-
-
-    override fun bindButtons(alert: AlertDialog.Builder) {
-        alert.setPositiveButton(android.R.string.ok, null)
-    }
-
 }

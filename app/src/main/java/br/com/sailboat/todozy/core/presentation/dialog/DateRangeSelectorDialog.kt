@@ -23,9 +23,7 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
     private var callback: Callback? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        DlgDateRangeSelectorBinding.inflate(LayoutInflater.from(requireContext())).apply {
-            binding = this
-        }.root
+        binding = DlgDateRangeSelectorBinding.inflate(LayoutInflater.from(requireContext()))
 
         initViews()
         updateViews()
