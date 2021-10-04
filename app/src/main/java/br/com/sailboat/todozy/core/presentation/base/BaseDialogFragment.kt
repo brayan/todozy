@@ -28,7 +28,7 @@ abstract class BaseDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val alert = AlertDialog.Builder(activity!!)
+        val alert = AlertDialog.Builder(requireContext())
         bindMessage(alert)
         bindTitle(alert)
         bindButtons(alert)

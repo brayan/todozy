@@ -12,9 +12,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.core.extensions.isTrue
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.extensions.logDebug
-import br.com.sailboat.todozy.core.extensions.safe
+import br.com.sailboat.todozy.core.extensions.orFalse
 import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSetting
@@ -101,7 +102,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         val task = getTask(taskId)
         builder.setContentTitle(task.name)
 
-        if (task.notes?.isNotEmpty().safe()) {
+        if (task.notes?.isNotEmpty().isTrue()) {
             builder.setContentText(task.notes)
         }
     }

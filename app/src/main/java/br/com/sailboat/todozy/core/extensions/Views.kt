@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-fun LinearLayoutManager.scrollPostionToMiddleScreen(ctx: Context, position: Int) {
+fun LinearLayoutManager.scrollPositionToMiddleScreen(ctx: Context, position: Int) {
     val wm = ctx.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val display = wm.defaultDisplay
 

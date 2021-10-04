@@ -1,15 +1,11 @@
 package br.com.sailboat.todozy.core.extensions
 
-fun String?.safe() = this ?: ""
+import java.util.*
 
-fun Int?.safe() = this ?: 0
-
-fun Long?.safe() = this ?: 0
-
-fun Double?.safe() = this ?: 0.0
-
-fun Boolean?.safe() = this ?: false
-
-fun <T> List<T>?.safe() = this ?: emptyList()
-
-fun <T> T?.isNull() = (this == null)
+fun Int?.orZero() = this ?: 0
+fun Long?.orZero() = this ?: 0
+fun Double?.orZero() = this ?: 0.0
+fun Boolean?.orFalse() = this ?: false
+fun Boolean?.isFalse() = this == false
+fun Boolean?.isTrue() = this == true
+fun Calendar?.orNewCalendar() = this ?: Calendar.getInstance()

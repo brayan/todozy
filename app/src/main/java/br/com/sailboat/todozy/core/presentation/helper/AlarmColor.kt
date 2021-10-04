@@ -11,15 +11,15 @@ class AlarmColor {
     fun getAlarmColor(context: Context, alarm: Calendar?): Int {
         try {
 
-            if (alarm?.isBeforeNow().safe()) {
+            if (alarm?.isBeforeNow().isTrue()) {
                 return ContextCompat.getColor(context, R.color.triggered_alarm_color)
             }
 
-            if (alarm?.isToday().safe()) {
+            if (alarm?.isToday().isTrue()) {
                 return ContextCompat.getColor(context, R.color.md_teal_300)
             }
 
-            return if (alarm?.isTomorrow().safe()) {
+            return if (alarm?.isTomorrow().isTrue()) {
                 ContextCompat.getColor(context, R.color.md_blue_300)
             } else ContextCompat.getColor(context, R.color.md_blue_500)
 

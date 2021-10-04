@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.extensions.clearTime
-import br.com.sailboat.todozy.core.extensions.safe
 import br.com.sailboat.todozy.core.extensions.setFinalTimeToCalendar
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
@@ -26,13 +25,13 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class TaskHistoryViewModel(
-        private val getTaskMetrics: GetTaskMetrics,
-        private val getHistoryView: GetHistoryView,
-        private val getShortDateView: GetShortDateView,
-        private val getDateFilterNameView: GetDateFilterNameView,
-        private val updateHistory: UpdateHistory,
-        private val deleteHistory: DeleteHistory,
-        private val deleteAllHistory: DeleteAllHistory
+    private val getTaskMetrics: GetTaskMetrics,
+    private val getHistoryView: GetHistoryView,
+    private val getShortDateView: GetShortDateView,
+    private val getDateFilterNameView: GetDateFilterNameView,
+    private val updateHistory: UpdateHistory,
+    private val deleteHistory: DeleteHistory,
+    private val deleteAllHistory: DeleteAllHistory
 ) : BaseViewModel() {
 
     private var taskId = Entity.NO_ID
@@ -115,7 +114,8 @@ class TaskHistoryViewModel(
 
     fun onClickFilterDate(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem) {
         if (dateRangeTypeSelected === dateRangeType &&
-                dateRangeTypeSelected !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
+            dateRangeTypeSelected !== DateFilterTaskHistorySelectableItem.DATE_RANGE
+        ) {
             return
         }
 
@@ -271,8 +271,8 @@ class TaskHistoryViewModel(
     }
 
     private fun setDateRangeSubtitle() = with(filter) {
-        val initial = initialDate?.run { getShortDateView(this) }.safe()
-        val final = finalDate?.run { getShortDateView(this) }.safe()
+        val initial = initialDate?.run { getShortDateView(this) }.orEmpty()
+        val final = finalDate?.run { getShortDateView(this) }.orEmpty()
         subtitle.value = "$initial - $final"
     }
 

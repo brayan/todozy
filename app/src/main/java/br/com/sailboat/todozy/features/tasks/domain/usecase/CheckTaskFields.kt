@@ -1,7 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.core.extensions.isBeforeNow
-import br.com.sailboat.todozy.core.extensions.safe
+import br.com.sailboat.todozy.core.extensions.isTrue
+import br.com.sailboat.todozy.core.extensions.orFalse
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 
 class CheckTaskFields {
@@ -20,7 +21,7 @@ class CheckTaskFields {
             conditions.add(Condition.TASK_NAME_NOT_FILLED)
         }
 
-        if (task.alarm?.dateTime?.isBeforeNow().safe()) {
+        if (task.alarm?.dateTime?.isBeforeNow().isTrue()) {
             conditions.add(Condition.ALARM_NOT_VALID)
         }
 

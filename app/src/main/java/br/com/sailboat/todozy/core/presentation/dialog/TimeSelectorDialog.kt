@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
 import androidx.fragment.app.FragmentManager
+import br.com.sailboat.todozy.core.extensions.orZero
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import java.util.*
 
-class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
+    TimePickerDialog.OnTimeSetListener {
 
 
     var calendar: Calendar? = null
@@ -29,8 +31,13 @@ class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         initTime()
 
-        return TimePickerDialog(activity, this, getHour(), getMinute(),
-                DateFormat.is24HourFormat(activity))
+        return TimePickerDialog(
+            activity,
+            this,
+            getHour(),
+            getMinute(),
+            DateFormat.is24HourFormat(activity),
+        )
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
@@ -46,11 +53,11 @@ class TimeSelectorDialog(private val callback: Callback) : BaseDialogFragment(),
     }
 
     private fun getMinute(): Int {
-        return calendar!!.get(Calendar.MINUTE)
+        return calendar?.get(Calendar.MINUTE).orZero()
     }
 
     private fun getHour(): Int {
-        return calendar!!.get(Calendar.HOUR_OF_DAY)
+        return calendar?.get(Calendar.HOUR_OF_DAY).orZero()
     }
 
 

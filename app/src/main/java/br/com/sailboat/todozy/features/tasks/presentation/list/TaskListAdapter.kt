@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.core.presentation.model.ViewType
+import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
 
@@ -18,7 +19,7 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         ViewType.TASK.ordinal -> TaskViewHolder(parent, callback)
         ViewType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
-        else -> throw RuntimeException("ViewHolder not found")
+        else -> EmptyViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -27,7 +28,6 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
         when (item.viewType) {
             ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskItemView)
             ViewType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
-            else -> throw RuntimeException("ViewHolder not found")
         }
     }
 

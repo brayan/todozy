@@ -1,5 +1,7 @@
 package br.com.sailboat.todozy.core.presentation.dialog.weekdays
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,31 +43,28 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
         initSelectedDays()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = DlgWeekDaysSelectorBinding.inflate(inflater, container, false).apply {
-        binding = this
-    }.root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        DlgWeekDaysSelectorBinding.inflate(LayoutInflater.from(requireContext())).apply {
+            binding = this
+        }.root
         initViews()
+        return buildDialog()
     }
 
     private fun initViews() = with(binding) {
         recycler.layoutManager =
             GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
         recycler.adapter = WeekDaysSelectorAdapter(this@WeekDaysSelectorDialog)
+    }
 
-        btWeekDaysSelectorOk.setOnClickListener {
-            callback.onClickOk(getSelectedDays())
-            dismiss()
-        }
+    private fun buildDialog(): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
+        builder.setPositiveButton(android.R.string.ok) { _, _ -> callback.onClickOk(getSelectedDays()) }
 
-        btWeekDaysSelectorCancel.setOnClickListener {
-            dismiss()
-        }
+        builder.setNegativeButton(R.string.cancel, null)
+
+        return builder.create()
     }
 
     private fun initDays() {

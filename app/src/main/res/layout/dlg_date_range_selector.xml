@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dlg_date_range_selector__tv__title"
+        android:id="@+id/tv_date_range_selector_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
@@ -19,7 +19,7 @@
         tools:background="@color/md_blue_500" />
 
     <LinearLayout
-        android:id="@+id/dlg_date_range_selector__ll__initial"
+        android:id="@+id/ll_date_range_selector_initial_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
@@ -35,7 +35,7 @@
             android:text="@string/initial_date" />
 
         <TextView
-            android:id="@+id/dlg_date_range_selector__tv__initial"
+            android:id="@+id/tv_date_range_selector_initial_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"
@@ -45,7 +45,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/dlg_date_range_selector__ll__final"
+        android:id="@+id/ll_date_range_selector_final_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
@@ -61,7 +61,7 @@
             android:text="@string/final_date" />
 
         <TextView
-            android:id="@+id/dlg_date_range_selector__tv__final"
+            android:id="@+id/tv_date_range_selector_final_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"

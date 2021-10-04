@@ -3,11 +3,10 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.extensions.scrollPostionToMiddleScreen
+import br.com.sailboat.todozy.core.extensions.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.core.extensions.scrollToTop
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateRangeSelectorDialog
@@ -120,7 +119,7 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun scrollTo(position: Int) {
-        activity?.run { linearLayoutManager.scrollPostionToMiddleScreen(this, position) }
+        activity?.run { linearLayoutManager.scrollPositionToMiddleScreen(this, position) }
     }
 
     fun removeHistoryItem(position: Int) {

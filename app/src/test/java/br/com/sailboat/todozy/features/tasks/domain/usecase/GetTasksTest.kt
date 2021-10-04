@@ -20,8 +20,8 @@ class GetTasksTest {
     private lateinit var getTasks: GetTasks
 
     private val tasks = listOf(
-            Task(id = 45, name = "Task 1", notes = "Some notes"),
-            Task(id = 58, name = "Task 2", notes = "Some notes")
+        Task(id = 45, name = "Task 1", notes = "Some notes"),
+        Task(id = 58, name = "Task 2", notes = "Some notes")
     )
 
     @Before
@@ -60,19 +60,20 @@ class GetTasksTest {
     }
 
     @Test
-    fun `should get tasks from repository with alarms for today or without any alarm`() = runBlocking {
-        coEvery { repository.getTodayTasks(any()) } returns tasks
+    fun `should get tasks from repository with alarms for today or without any alarm`() =
+        runBlocking {
+            coEvery { repository.getTodayTasks(any()) } returns tasks
 
-        val result = getTasks(TaskFilter(TaskCategory.TODAY))
+            val result = getTasks(TaskFilter(TaskCategory.TODAY))
 
-        coVerify(exactly = 0) { repository.getBeforeNowTasks() }
-        coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }
-        coVerify(exactly = 1) { repository.getTodayTasks(any()) }
-        coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
-        coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
-        confirmVerified(repository)
-        assertEquals(result, tasks)
-    }
+            coVerify(exactly = 0) { repository.getBeforeNowTasks() }
+            coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }
+            coVerify(exactly = 1) { repository.getTodayTasks(any()) }
+            coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
+            coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
+            confirmVerified(repository)
+            assertEquals(result, tasks)
+        }
 
     @Test
     fun `should get tasks from repository with alarms for tomorrow`() = runBlocking {
