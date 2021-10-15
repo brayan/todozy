@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
 import br.com.sailboat.todozy.features.tasks.domain.model.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -13,7 +13,7 @@ import java.util.*
 
 class ScheduleAllAlarmsTest {
 
-    private val getTasks: GetTasks = mockk(relaxed = true)
+    private val getTasksUseCase: GetTasksUseCase = mockk(relaxed = true)
     private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
     private val scheduleAlarm: ScheduleAlarm = mockk(relaxed = true)
 
@@ -21,17 +21,21 @@ class ScheduleAllAlarmsTest {
 
     @Before
     fun setUp() {
-        scheduleAllAlarms = ScheduleAllAlarms(getTasks, getNextAlarm, scheduleAlarm)
+        scheduleAllAlarms = ScheduleAllAlarms(
+            getTasksUseCase = getTasksUseCase,
+            getNextAlarm = getNextAlarm,
+            scheduleAlarm = scheduleAlarm,
+        )
     }
 
     @Test
     fun `should get tasks with alarms`() = runBlocking {
-        coEvery { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) } returns emptyList()
+        coEvery { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) } returns emptyList()
 
         scheduleAllAlarms()
 
-        coVerify { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) }
-        confirmVerified(getTasks)
+        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        confirmVerified(getTasksUseCase)
     }
 
     @Test
@@ -40,13 +44,13 @@ class ScheduleAllAlarmsTest {
         val alarm = Alarm(dateTime = dateTime, repeatType = RepeatType.WEEK)
         val task = Task(id = 45, name = "Task 1", notes = "Some notes", alarm = alarm)
 
-        coEvery { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
+        coEvery { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
 
         scheduleAllAlarms()
 
-        coVerify { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
         coVerify { getNextAlarm(alarm) }
-        confirmVerified(getTasks)
+        confirmVerified(getTasksUseCase)
         confirmVerified(getNextAlarm)
     }
 
@@ -56,13 +60,13 @@ class ScheduleAllAlarmsTest {
         val alarm = Alarm(dateTime = dateTime, repeatType = RepeatType.WEEK)
         val task = Task(id = 45, name = "Task 1", notes = "Some notes", alarm = alarm)
 
-        coEvery { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
+        coEvery { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
 
         scheduleAllAlarms()
 
-        coVerify { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
         coVerify { scheduleAlarm(alarm, 45) }
-        confirmVerified(getTasks)
+        confirmVerified(getTasksUseCase)
         confirmVerified(scheduleAlarm)
     }
 
@@ -72,7 +76,7 @@ class ScheduleAllAlarmsTest {
         val alarm = Alarm(dateTime = dateTime, repeatType = RepeatType.NOT_REPEAT)
         val task = Task(id = 45, name = "Task 1", notes = "Some notes", alarm = alarm)
 
-        coEvery { getTasks(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
+        coEvery { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) } returns listOf(task)
 
         scheduleAllAlarms()
 

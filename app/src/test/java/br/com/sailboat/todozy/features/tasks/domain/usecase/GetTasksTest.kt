@@ -9,25 +9,18 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class GetTasksTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
-
-    private lateinit var getTasks: GetTasks
+    private val getTasks = GetTasks(repository)
 
     private val tasks = listOf(
         Task(id = 45, name = "Task 1", notes = "Some notes"),
         Task(id = 58, name = "Task 2", notes = "Some notes")
     )
-
-    @Before
-    fun setUp() {
-        getTasks = GetTasks(repository)
-    }
 
     @Test
     fun `should get tasks from repository with alarms triggered before now`() = runBlocking {

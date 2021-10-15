@@ -22,7 +22,7 @@ import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSe
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ import org.koin.core.component.inject
 class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
     val getTaskUseCase: GetTaskUseCase by inject()
-    val getTasks: GetTasks by inject()
+    val getTasksUseCase: GetTasksUseCase by inject()
     val getAlarmSoundSetting: GetAlarmSoundSetting by inject()
     val getAlarmVibrateSetting: GetAlarmVibrateSetting by inject()
 
@@ -80,7 +80,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
     private suspend fun initContentTextAndTitle(context: Context, intent: Intent, builder: NotificationCompat.Builder) {
         try {
-            val tasks = getTasks(TaskFilter(TaskCategory.BEFORE_NOW))
+            val tasks = getTasksUseCase(TaskFilter(TaskCategory.BEFORE_NOW))
 
             if (tasks.size <= 1) {
                 initContentFromIntent(intent, builder)

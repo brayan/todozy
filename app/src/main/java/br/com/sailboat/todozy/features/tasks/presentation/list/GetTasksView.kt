@@ -6,12 +6,12 @@ import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasks
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-class GetTasksView(private val getTasks: GetTasks) {
+class GetTasksView(private val getTasksUseCase: GetTasksUseCase) {
 
     private val taskCategories = mapOf(
             TaskCategory.BEFORE_TODAY to R.string.previous_days,
@@ -29,7 +29,7 @@ class GetTasksView(private val getTasks: GetTasks) {
     }
 
     private suspend fun getTasksView(filter: TaskFilter, subhead: Int): List<ItemView> {
-        val tasks = getTasks(filter)
+        val tasks = getTasksUseCase(filter)
         val tasksView = mutableListOf<ItemView>()
 
         if (tasks.isNotEmpty()) {
