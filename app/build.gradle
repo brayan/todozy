@@ -44,7 +44,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
     androidResources {
         additionalParameters '--no-version-vectors'
@@ -57,23 +57,24 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
     implementation 'io.insert-koin:koin-android:3.0.2'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.core:core-ktx:1.6.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation "com.google.firebase:firebase-core:19.0.1"
+    implementation "com.google.firebase:firebase-core:19.0.2"
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.0"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.5.10"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.5.21"
 
     androidTestImplementation "io.mockk:mockk-android:1.9.3"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
