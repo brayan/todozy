@@ -4,14 +4,16 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
 
-class CompleteTask(private val getTask: GetTask,
-                   private val getNextAlarm: GetNextAlarm,
-                   private val saveTask: SaveTask,
-                   private val disableTask: DisableTask,
-                   private val addHistory: AddHistory) {
+class CompleteTask(
+    private val getTaskUseCase: GetTaskUseCase,
+    private val getNextAlarm: GetNextAlarm,
+    private val saveTask: SaveTask,
+    private val disableTask: DisableTask,
+    private val addHistory: AddHistory,
+) {
 
     suspend operator fun invoke(taskId: Long, status: TaskStatus) {
-        val task = getTask(taskId)
+        val task = getTaskUseCase(taskId)
 
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
 

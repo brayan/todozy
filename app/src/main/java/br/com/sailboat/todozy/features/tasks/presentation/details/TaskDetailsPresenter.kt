@@ -5,17 +5,18 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTask
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import kotlinx.coroutines.withContext
 
-class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
-                           private val getTaskMetrics: GetTaskMetrics,
-                           private val getAlarm: GetAlarm,
-                           private val getTask: GetTask,
-                           private val disableTask: DisableTask) :
-        BasePresenter<TaskDetailsContract.View>(), TaskDetailsContract.Presenter {
+class TaskDetailsPresenter(
+    private val getTaskDetailsView: GetTaskDetailsView,
+    private val getTaskMetrics: GetTaskMetrics,
+    private val getAlarm: GetAlarm,
+    private val getTaskUseCase: GetTaskUseCase,
+    private val disableTask: DisableTask,
+) : BasePresenter<TaskDetailsContract.View>(), TaskDetailsContract.Presenter {
 
     private val viewModel = TaskDetailsViewModel()
     override val details = viewModel.details
@@ -41,7 +42,7 @@ class TaskDetailsPresenter(private val getTaskDetailsView: GetTaskDetailsView,
         try {
             view?.showProgress()
             val taskId = viewModel.taskId
-            val task = getTask(taskId)
+            val task = getTaskUseCase(taskId)
             disableTask(task)
 
             view?.hideProgress()

@@ -11,16 +11,17 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.ALARM_NOT_VALID
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTask
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
-class TaskFormPresenter(private val getTask: GetTask,
-                        private val saveTask: SaveTask,
-                        private val getNextAlarm: GetNextAlarm) :
-        BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
+class TaskFormPresenter(
+    private val getTaskUseCase: GetTaskUseCase,
+    private val saveTask: SaveTask,
+    private val getNextAlarm: GetNextAlarm
+) : BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 
     private val viewModel by lazy { TaskFormViewModel() }
 
@@ -140,7 +141,7 @@ class TaskFormPresenter(private val getTask: GetTask,
             view?.showProgress()
             val taskId = viewModel.taskId
 
-            val task = getTask(taskId)
+            val task = getTaskUseCase(taskId)
             viewModel.name = task.name
             viewModel.notes = task.notes ?: ""
 
@@ -228,13 +229,19 @@ class TaskFormPresenter(private val getTask: GetTask,
 
     private fun getTaskFromViews(): Task {
         val alarm: Alarm? = viewModel.alarm?.run {
-            Alarm(dateTime = this, repeatType = viewModel.repeatAlarmType, customDays = viewModel.selectedDays)
+            Alarm(
+                dateTime = this,
+                repeatType = viewModel.repeatAlarmType,
+                customDays = viewModel.selectedDays
+            )
         }
 
-        return Task(id = viewModel.taskId,
-                name = viewModel.name,
-                notes = viewModel.notes,
-                alarm = alarm)
+        return Task(
+            id = viewModel.taskId,
+            name = viewModel.name,
+            notes = viewModel.notes,
+            alarm = alarm
+        )
     }
 
     private fun extractInfoFromViews() {

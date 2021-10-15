@@ -17,7 +17,7 @@ import java.util.*
 
 class CompleteTaskTest {
 
-    private val getTask: GetTask = mockk(relaxed = true)
+    private val getTaskUseCase: GetTaskUseCase = mockk(relaxed = true)
     private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
     private val saveTask: SaveTask = mockk(relaxed = true)
     private val disableTask: DisableTask = mockk(relaxed = true)
@@ -27,30 +27,40 @@ class CompleteTaskTest {
 
     @Before
     fun setUp() {
-        completeTask = CompleteTask(getTask, getNextAlarm, saveTask, disableTask, addHistory)
+        completeTask = CompleteTask(
+            getTaskUseCase = getTaskUseCase,
+            getNextAlarm = getNextAlarm,
+            saveTask = saveTask,
+            disableTask = disableTask,
+            addHistory = addHistory,
+        )
     }
 
     @Test
     fun `should get task from id`() = runBlocking {
-        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
+        val task = Task(
+            id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
                 dateTime = Calendar.getInstance(),
                 repeatType = RepeatType.NOT_REPEAT
-        ))
-        coEvery { getTask(45) } returns task
+            )
+        )
+        coEvery { getTaskUseCase(45) } returns task
 
         completeTask(45, TaskStatus.DONE)
 
-        coVerify { getTask(45) }
-        confirmVerified(getTask)
+        coVerify { getTaskUseCase(45) }
+        confirmVerified(getTaskUseCase)
     }
 
     @Test
     fun `should disable task when alarm is non-repetitive`() = runBlocking {
-        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
+        val task = Task(
+            id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
                 dateTime = Calendar.getInstance(),
                 repeatType = RepeatType.NOT_REPEAT
-        ))
-        coEvery { getTask(45) } returns task
+            )
+        )
+        coEvery { getTaskUseCase(45) } returns task
 
         completeTask(45, TaskStatus.DONE)
 
@@ -61,7 +71,7 @@ class CompleteTaskTest {
     @Test
     fun `should disable task when alarm is null`() = runBlocking {
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = null)
-        coEvery { getTask(any()) } returns task
+        coEvery { getTaskUseCase(any()) } returns task
 
         completeTask(45, TaskStatus.DONE)
 
@@ -73,11 +83,11 @@ class CompleteTaskTest {
     fun `should get next alarm and save task when alarm is repetitive`() = runBlocking {
         val dateTime = Calendar.getInstance()
         val alarm = Alarm(
-                dateTime = dateTime,
-                repeatType = RepeatType.DAY
+            dateTime = dateTime,
+            repeatType = RepeatType.DAY
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
-        coEvery { getTask(45) } returns task
+        coEvery { getTaskUseCase(45) } returns task
         coEvery { getNextAlarm(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
@@ -92,11 +102,11 @@ class CompleteTaskTest {
     fun `should add history after complete task`() = runBlocking {
         val dateTime = Calendar.getInstance()
         val alarm = Alarm(
-                dateTime = dateTime,
-                repeatType = RepeatType.DAY
+            dateTime = dateTime,
+            repeatType = RepeatType.DAY
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
-        coEvery { getTask(45) } returns task
+        coEvery { getTaskUseCase(45) } returns task
         coEvery { getNextAlarm(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
