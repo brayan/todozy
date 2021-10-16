@@ -7,9 +7,9 @@ class SaveAlarm(
     private val alarmRepository: AlarmRepository,
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
     private val scheduleAlarm: ScheduleAlarm,
-) {
+) : SaveAlarmUseCase {
 
-    suspend operator fun invoke(alarm: Alarm, taskId: Long) {
+    override suspend operator fun invoke(alarm: Alarm, taskId: Long) {
         alarmRepository.save(alarm, taskId)
         cancelAlarmScheduleUseCase(taskId)
         scheduleAlarm(alarm, taskId)
