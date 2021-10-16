@@ -6,13 +6,13 @@ import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 class SaveAlarm(
     private val alarmRepository: AlarmRepository,
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
-    private val scheduleAlarm: ScheduleAlarm,
+    private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
 ) : SaveAlarmUseCase {
 
     override suspend operator fun invoke(alarm: Alarm, taskId: Long) {
         alarmRepository.save(alarm, taskId)
         cancelAlarmScheduleUseCase(taskId)
-        scheduleAlarm(alarm, taskId)
+        scheduleAlarmUseCase(alarm, taskId)
     }
 
 }

@@ -14,12 +14,12 @@ class SaveAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase = mockk(relaxed = true)
-    private val scheduleAlarm: ScheduleAlarm = mockk(relaxed = true)
+    private val scheduleAlarmUseCase: ScheduleAlarmUseCase = mockk(relaxed = true)
 
     private val saveAlarm = SaveAlarm(
         alarmRepository = repository,
         cancelAlarmScheduleUseCase = cancelAlarmScheduleUseCase,
-        scheduleAlarm = scheduleAlarm,
+        scheduleAlarmUseCase = scheduleAlarmUseCase,
     )
 
     private val taskId = 45L
@@ -45,8 +45,8 @@ class SaveAlarmTest {
     fun `should schedule alarm when saving`() = runBlocking {
         saveAlarm(alarm, taskId)
 
-        coVerify { scheduleAlarm(alarm, taskId) }
-        confirmVerified(scheduleAlarm)
+        coVerify { scheduleAlarmUseCase(alarm, taskId) }
+        confirmVerified(scheduleAlarmUseCase)
     }
 
 }

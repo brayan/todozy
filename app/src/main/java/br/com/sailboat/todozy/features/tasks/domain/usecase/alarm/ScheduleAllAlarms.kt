@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 class ScheduleAllAlarms(
     private val getTasksUseCase: GetTasksUseCase,
     private val getNextAlarmUseCase: GetNextAlarmUseCase,
-    private val scheduleAlarm: ScheduleAlarm,
+    private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
 ) {
 
     suspend operator fun invoke() {
@@ -24,7 +24,7 @@ class ScheduleAllAlarms(
                 }
 
                 if (alarm.dateTime.isAfterNow()) {
-                    scheduleAlarm(alarm, task.id)
+                    scheduleAlarmUseCase(alarm, task.id)
                 }
             }
         }
