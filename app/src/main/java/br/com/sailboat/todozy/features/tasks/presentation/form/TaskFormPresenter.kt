@@ -12,14 +12,14 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.ALARM_NOT_VALID
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskFormPresenter(
     private val getTaskUseCase: GetTaskUseCase,
-    private val saveTask: SaveTask,
+    private val saveTaskUseCase: SaveTaskUseCase,
     private val getNextAlarm: GetNextAlarm
 ) : BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 
@@ -216,7 +216,7 @@ class TaskFormPresenter(
                 return@runBlocking
             }
 
-            saveTask(task)
+            saveTaskUseCase(task)
             view?.closeWithResultOk()
 
         } catch (e: Exception) {

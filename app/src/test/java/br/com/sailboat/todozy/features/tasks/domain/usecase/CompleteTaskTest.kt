@@ -19,7 +19,7 @@ class CompleteTaskTest {
 
     private val getTaskUseCase: GetTaskUseCase = mockk(relaxed = true)
     private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
-    private val saveTask: SaveTask = mockk(relaxed = true)
+    private val saveTaskUseCase: SaveTaskUseCase = mockk(relaxed = true)
     private val disableTask: DisableTask = mockk(relaxed = true)
     private val addHistory: AddHistory = mockk(relaxed = true)
 
@@ -30,7 +30,7 @@ class CompleteTaskTest {
         completeTask = CompleteTask(
             getTaskUseCase = getTaskUseCase,
             getNextAlarm = getNextAlarm,
-            saveTask = saveTask,
+            saveTaskUseCase = saveTaskUseCase,
             disableTask = disableTask,
             addHistory = addHistory,
         )
@@ -93,8 +93,8 @@ class CompleteTaskTest {
         completeTask(45, TaskStatus.DONE)
 
         coVerify { getNextAlarm(alarm) }
-        coVerify { saveTask(task) }
-        confirmVerified(saveTask)
+        coVerify { saveTaskUseCase(task) }
+        confirmVerified(saveTaskUseCase)
         confirmVerified(getNextAlarm)
     }
 

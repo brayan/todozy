@@ -6,11 +6,13 @@ import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.SaveAlarm
 
-class SaveTask(private val taskRepository: TaskRepository,
-               private val deleteAlarm: DeleteAlarm,
-               private val saveAlarm: SaveAlarm) {
+class SaveTask(
+    private val taskRepository: TaskRepository,
+    private val deleteAlarm: DeleteAlarm,
+    private val saveAlarm: SaveAlarm,
+) : SaveTaskUseCase {
 
-    suspend operator fun invoke(task: Task) {
+    override suspend operator fun invoke(task: Task) {
         val conditions = CheckTaskFields().invoke(task)
 
         if (conditions.isNotEmpty()) {

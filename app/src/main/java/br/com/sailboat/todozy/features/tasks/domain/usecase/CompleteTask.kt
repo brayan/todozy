@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
 class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,
     private val getNextAlarm: GetNextAlarm,
-    private val saveTask: SaveTask,
+    private val saveTaskUseCase: SaveTaskUseCase,
     private val disableTask: DisableTask,
     private val addHistory: AddHistory,
 ) {
@@ -18,7 +18,7 @@ class CompleteTask(
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
 
             task.alarm = getNextAlarm(this)
-            saveTask(task)
+            saveTaskUseCase(task)
 
         } ?: disableTask(task)
 

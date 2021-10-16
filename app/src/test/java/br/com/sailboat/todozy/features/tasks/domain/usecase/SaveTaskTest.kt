@@ -21,12 +21,11 @@ class SaveTaskTest {
     private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
     private val saveAlarm: SaveAlarm = mockk(relaxed = true)
 
-    private lateinit var saveTask: SaveTask
-
-    @Before
-    fun setUp() {
-        saveTask = SaveTask(repository, deleteAlarm, saveAlarm)
-    }
+    private val saveTask = SaveTask(
+        taskRepository = repository,
+        deleteAlarm = deleteAlarm,
+        saveAlarm = saveAlarm,
+    )
 
     @Test
     fun `should insert task in the repository when task has no id`() = runBlocking {
