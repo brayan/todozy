@@ -13,7 +13,7 @@ val domainModule = module {
     factory<GetTasksUseCase> { GetTasks(get()) }
     factory { GetTaskHistory(get()) }
     factory { GetTaskMetrics(get()) }
-    factory { DisableTask(get(), get()) }
+    factory<DisableTaskUseCase> { DisableTask(get(), get()) }
     factory<CompleteTaskUseCase> { CompleteTask(get(), get(), get(), get(), get()) }
     factory { DeleteAlarm(get(), get()) }
     factory { GetNextAlarm() }

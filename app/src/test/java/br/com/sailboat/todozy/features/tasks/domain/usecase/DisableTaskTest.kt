@@ -8,7 +8,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class DisableTaskTest {
@@ -16,14 +15,9 @@ class DisableTaskTest {
     private val repository: TaskRepository = mockk(relaxed = true)
     private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
 
-    private lateinit var disableTask: DisableTask
+    private val disableTask = DisableTask(repository, deleteAlarm)
 
     private val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes")
-
-    @Before
-    fun setUp() {
-        disableTask = DisableTask(repository, deleteAlarm)
-    }
 
     @Test
     fun `should disable task from repository`() = runBlocking {

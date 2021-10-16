@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
@@ -15,7 +15,7 @@ class TaskDetailsPresenter(
     private val getTaskMetrics: GetTaskMetrics,
     private val getAlarm: GetAlarm,
     private val getTaskUseCase: GetTaskUseCase,
-    private val disableTask: DisableTask,
+    private val disableTaskUseCase: DisableTaskUseCase,
 ) : BasePresenter<TaskDetailsContract.View>(), TaskDetailsContract.Presenter {
 
     private val viewModel = TaskDetailsViewModel()
@@ -43,7 +43,7 @@ class TaskDetailsPresenter(
             view?.showProgress()
             val taskId = viewModel.taskId
             val task = getTaskUseCase(taskId)
-            disableTask(task)
+            disableTaskUseCase(task)
 
             view?.hideProgress()
             view?.closeWithResultOk()

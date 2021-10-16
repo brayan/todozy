@@ -8,7 +8,7 @@ class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,
     private val getNextAlarm: GetNextAlarm,
     private val saveTaskUseCase: SaveTaskUseCase,
-    private val disableTask: DisableTask,
+    private val disableTaskUseCase: DisableTaskUseCase,
     private val addHistory: AddHistory,
 ) : CompleteTaskUseCase {
 
@@ -20,7 +20,7 @@ class CompleteTask(
             task.alarm = getNextAlarm(this)
             saveTaskUseCase(task)
 
-        } ?: disableTask(task)
+        } ?: disableTaskUseCase(task)
 
         addHistory(task, status)
     }
