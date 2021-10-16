@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCas
 import kotlinx.coroutines.withContext
 
 class TaskDetailsPresenter(
-    private val getTaskDetailsView: GetTaskDetailsView,
+    private val getTaskDetailsViewUseCase: GetTaskDetailsViewUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
     private val getTaskUseCase: GetTaskUseCase,
@@ -88,7 +88,7 @@ class TaskDetailsPresenter(
             val taskId = viewModel.taskId
 
             val taskDetails = withContext(contextProvider.io) {
-                getTaskDetailsView(taskId)
+                getTaskDetailsViewUseCase(taskId)
             }
 
             viewModel.taskMetrics = withContext(contextProvider.io) {

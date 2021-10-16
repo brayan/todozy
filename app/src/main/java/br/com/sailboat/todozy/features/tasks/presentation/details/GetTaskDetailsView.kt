@@ -8,12 +8,13 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 
+// TODO: Add unit tests
 class GetTaskDetailsView(
     private val context: Context,
     private val getTaskUseCase: GetTaskUseCase,
-) {
+) : GetTaskDetailsViewUseCase {
 
-    suspend operator fun invoke(taskId: Long): List<ItemView> {
+    override suspend operator fun invoke(taskId: Long): List<ItemView> {
         val itemViews = mutableListOf<ItemView>()
 
         val task = getTaskUseCase(taskId)

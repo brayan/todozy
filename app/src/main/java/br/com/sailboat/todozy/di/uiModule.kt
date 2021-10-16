@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.features.about.presentation.AboutPresenter
 import br.com.sailboat.todozy.features.settings.presentation.SettingsContract
 import br.com.sailboat.todozy.features.settings.presentation.SettingsPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
+import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
@@ -33,7 +34,7 @@ val uiModule = module {
     factory<AboutContract.Presenter> { AboutPresenter() }
 
     factory { GetTasksView(get()) }
-    factory { GetTaskDetailsView(get(), get()) }
+    factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get()) }
     factory { GetHistoryView(get()) }
     factory { GetShortDateView(get()) }
     factory { GetDateFilterNameView(get()) }
