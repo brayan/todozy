@@ -10,7 +10,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -18,7 +17,7 @@ class GetTaskHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 
-    private lateinit var getTaskHistory: GetTaskHistory
+    private val getTaskHistory = GetTaskHistory(repository)
 
     private val history = listOf(
             TaskHistory(
@@ -33,11 +32,6 @@ class GetTaskHistoryTest {
                     status = TaskStatus.NOT_DONE,
                     insertingDate = "2020-08-29-13-27-39")
     )
-
-    @Before
-    fun setUp() {
-        getTaskHistory = GetTaskHistory(repository)
-    }
 
     @Test
     fun `should get task history from previous days from repository`() = runBlocking {
