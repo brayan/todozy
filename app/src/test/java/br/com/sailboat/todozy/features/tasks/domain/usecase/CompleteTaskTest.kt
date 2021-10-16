@@ -11,7 +11,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -23,18 +22,13 @@ class CompleteTaskTest {
     private val disableTask: DisableTask = mockk(relaxed = true)
     private val addHistory: AddHistory = mockk(relaxed = true)
 
-    private lateinit var completeTask: CompleteTask
-
-    @Before
-    fun setUp() {
-        completeTask = CompleteTask(
-            getTaskUseCase = getTaskUseCase,
-            getNextAlarm = getNextAlarm,
-            saveTaskUseCase = saveTaskUseCase,
-            disableTask = disableTask,
-            addHistory = addHistory,
-        )
-    }
+    private val completeTask = CompleteTask(
+        getTaskUseCase = getTaskUseCase,
+        getNextAlarm = getNextAlarm,
+        saveTaskUseCase = saveTaskUseCase,
+        disableTask = disableTask,
+        addHistory = addHistory,
+    )
 
     @Test
     fun `should get task from id`() = runBlocking {

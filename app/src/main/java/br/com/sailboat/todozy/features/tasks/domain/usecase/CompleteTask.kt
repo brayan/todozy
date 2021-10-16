@@ -10,9 +10,9 @@ class CompleteTask(
     private val saveTaskUseCase: SaveTaskUseCase,
     private val disableTask: DisableTask,
     private val addHistory: AddHistory,
-) {
+) : CompleteTaskUseCase {
 
-    suspend operator fun invoke(taskId: Long, status: TaskStatus) {
+    override suspend operator fun invoke(taskId: Long, status: TaskStatus) {
         val task = getTaskUseCase(taskId)
 
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {

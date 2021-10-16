@@ -4,18 +4,19 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTask
+import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarms
 import kotlinx.coroutines.*
 
-class TaskListPresenter(private val getTasksView: GetTasksView,
-                        private val getAlarm: GetAlarm,
-                        private val scheduleAllAlarms: ScheduleAllAlarms,
-                        private val getTaskMetrics: GetTaskMetrics,
-                        private val completeTask: CompleteTask)
-    : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
+class TaskListPresenter(
+    private val getTasksView: GetTasksView,
+    private val getAlarm: GetAlarm,
+    private val scheduleAllAlarms: ScheduleAllAlarms,
+    private val getTaskMetrics: GetTaskMetrics,
+    private val completeTaskUseCase: CompleteTaskUseCase,
+) : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
 
     private var taskMetrics: TaskMetrics? = null
     private var filter = TaskFilter(TaskCategory.TODAY)
@@ -93,7 +94,7 @@ class TaskListPresenter(private val getTasksView: GetTasksView,
 
             val taskId = (tasksView[position] as TaskItemView).taskId
 
-            completeTask(taskId, status)
+            completeTaskUseCase(taskId, status)
 
             tasksView.removeAt(position)
             view?.removeTaskFromList(position)
