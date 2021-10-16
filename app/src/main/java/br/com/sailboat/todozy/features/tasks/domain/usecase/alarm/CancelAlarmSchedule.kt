@@ -2,8 +2,12 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 
-class CancelAlarmSchedule(private val alarmRepository: AlarmRepository) {
+class CancelAlarmSchedule(
+    private val alarmRepository: AlarmRepository,
+) : CancelAlarmScheduleUseCase {
 
-    suspend operator fun invoke(taskId: Long) = alarmRepository.cancelAlarmSchedule(taskId)
+    override suspend operator fun invoke(taskId: Long) {
+        alarmRepository.cancelAlarmSchedule(taskId)
+    }
 
 }

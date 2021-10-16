@@ -5,19 +5,13 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class CancelAlarmScheduleTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
 
-    private lateinit var cancelAlarmSchedule: CancelAlarmSchedule
-
-    @Before
-    fun setUp() {
-        cancelAlarmSchedule = CancelAlarmSchedule(repository)
-    }
+    private val cancelAlarmSchedule = CancelAlarmSchedule(repository)
 
     @Test
     fun `should cancel alarm from repository`() = runBlocking {

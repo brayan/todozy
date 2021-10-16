@@ -7,25 +7,23 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
 class SaveAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
-    private val cancelAlarmSchedule: CancelAlarmSchedule = mockk(relaxed = true)
+    private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase = mockk(relaxed = true)
     private val scheduleAlarm: ScheduleAlarm = mockk(relaxed = true)
 
-    private lateinit var saveAlarm: SaveAlarm
+    private val saveAlarm = SaveAlarm(
+        alarmRepository = repository,
+        cancelAlarmScheduleUseCase = cancelAlarmScheduleUseCase,
+        scheduleAlarm = scheduleAlarm,
+    )
 
     private val taskId = 45L
     private val alarm = Alarm(dateTime = Calendar.getInstance(), repeatType = RepeatType.WEEK)
-
-    @Before
-    fun setUp() {
-        saveAlarm = SaveAlarm(repository, cancelAlarmSchedule, scheduleAlarm)
-    }
 
     @Test
     fun `should save alarm on repository`() = runBlocking {
@@ -39,8 +37,8 @@ class SaveAlarmTest {
     fun `should cancel current alarm schedule when saving`() = runBlocking {
         saveAlarm(alarm, taskId)
 
-        coVerify { cancelAlarmSchedule(taskId) }
-        confirmVerified(cancelAlarmSchedule)
+        coVerify { cancelAlarmScheduleUseCase(taskId) }
+        confirmVerified(cancelAlarmScheduleUseCase)
     }
 
     @Test

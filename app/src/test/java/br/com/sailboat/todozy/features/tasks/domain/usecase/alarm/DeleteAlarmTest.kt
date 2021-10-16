@@ -5,20 +5,17 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class DeleteAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
-    private val cancelAlarmSchedule: CancelAlarmSchedule = mockk(relaxed = true)
+    private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase = mockk(relaxed = true)
 
-    private lateinit var deleteAlarm: DeleteAlarm
-
-    @Before
-    fun setUp() {
-        deleteAlarm = DeleteAlarm(repository, cancelAlarmSchedule)
-    }
+    private val deleteAlarm = DeleteAlarm(
+        alarmRepository = repository,
+        cancelAlarmScheduleUseCase = cancelAlarmScheduleUseCase,
+    )
 
     @Test
     fun `should delete alarm from repository`() = runBlocking {
@@ -32,8 +29,8 @@ class DeleteAlarmTest {
     fun `should cancel alarm from cancelAlarmSchedule`() = runBlocking {
         deleteAlarm(45)
 
-        coVerify { cancelAlarmSchedule(45) }
-        confirmVerified(cancelAlarmSchedule)
+        coVerify { cancelAlarmScheduleUseCase(45) }
+        confirmVerified(cancelAlarmScheduleUseCase)
     }
 
 }
