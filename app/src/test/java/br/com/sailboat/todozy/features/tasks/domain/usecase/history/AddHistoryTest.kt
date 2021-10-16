@@ -9,7 +9,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -17,12 +16,7 @@ class AddHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 
-    private lateinit var addHistory: AddHistory
-
-    @Before
-    fun setUp() {
-        addHistory = AddHistory(repository)
-    }
+    private val addHistory = AddHistory(repository)
 
     @Test
     fun `should insert history in the repository`() = runBlocking {

@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -20,14 +20,14 @@ class CompleteTaskTest {
     private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
     private val saveTaskUseCase: SaveTaskUseCase = mockk(relaxed = true)
     private val disableTaskUseCase: DisableTaskUseCase = mockk(relaxed = true)
-    private val addHistory: AddHistory = mockk(relaxed = true)
+    private val addHistoryUseCase: AddHistoryUseCase = mockk(relaxed = true)
 
     private val completeTask = CompleteTask(
         getTaskUseCase = getTaskUseCase,
         getNextAlarm = getNextAlarm,
         saveTaskUseCase = saveTaskUseCase,
         disableTaskUseCase = disableTaskUseCase,
-        addHistory = addHistory,
+        addHistoryUseCase = addHistoryUseCase,
     )
 
     @Test
@@ -105,8 +105,8 @@ class CompleteTaskTest {
 
         completeTask(45, TaskStatus.DONE)
 
-        coVerify { addHistory(task, TaskStatus.DONE) }
-        confirmVerified(addHistory)
+        coVerify { addHistoryUseCase(task, TaskStatus.DONE) }
+        confirmVerified(addHistoryUseCase)
     }
 
 }

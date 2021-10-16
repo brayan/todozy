@@ -2,14 +2,14 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
 
 class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,
     private val getNextAlarm: GetNextAlarm,
     private val saveTaskUseCase: SaveTaskUseCase,
     private val disableTaskUseCase: DisableTaskUseCase,
-    private val addHistory: AddHistory,
+    private val addHistoryUseCase: AddHistoryUseCase,
 ) : CompleteTaskUseCase {
 
     override suspend operator fun invoke(taskId: Long, status: TaskStatus) {
@@ -22,7 +22,7 @@ class CompleteTask(
 
         } ?: disableTaskUseCase(task)
 
-        addHistory(task, status)
+        addHistoryUseCase(task, status)
     }
 
 }
