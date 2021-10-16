@@ -20,7 +20,7 @@ val domainModule = module {
     factory<AddHistoryUseCase> { AddHistory(get()) }
     factory { UpdateHistory(get()) }
     factory { DeleteHistory(get()) }
-    factory { DeleteAllHistory(get()) }
+    factory<DeleteAllHistoryUseCase> { DeleteAllHistory(get()) }
     factory<SaveTaskUseCase> { SaveTask(get(), get(), get(), get()) }
     factory { SetAlarmSoundSetting(get()) }
     factory { GetAlarmSoundSetting(get()) }

@@ -15,7 +15,7 @@ import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +31,7 @@ class TaskHistoryViewModel(
     private val getDateFilterNameView: GetDateFilterNameView,
     private val updateHistory: UpdateHistory,
     private val deleteHistory: DeleteHistory,
-    private val deleteAllHistory: DeleteAllHistory
+    private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase
 ) : BaseViewModel() {
 
     private var taskId = Entity.NO_ID
