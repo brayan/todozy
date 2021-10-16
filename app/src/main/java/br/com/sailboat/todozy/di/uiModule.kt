@@ -18,8 +18,16 @@ import org.koin.dsl.module
 
 val uiModule = module {
     factory<TaskListContract.Presenter> { TaskListPresenter(get(), get(), get(), get(), get()) }
-    factory<TaskFormContract.Presenter> { TaskFormPresenter(get(), get(), get()) }
-    factory<TaskDetailsContract.Presenter> { TaskDetailsPresenter(get(), get(), get(), get(), get()) }
+    factory<TaskFormContract.Presenter> { TaskFormPresenter(get(), get(), get(), get()) }
+    factory<TaskDetailsContract.Presenter> {
+        TaskDetailsPresenter(
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     factory<TaskHistoryContract.Presenter> { TaskHistoryPresenter(get(), get(), get(), get(), get()) }
     factory<SettingsContract.Presenter> { SettingsPresenter(get(), get(), get(), get()) }
     factory<AboutContract.Presenter> { AboutPresenter() }

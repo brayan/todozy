@@ -8,9 +8,9 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields
-import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.ALARM_NOT_VALID
-import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFields.Condition.TASK_NAME_NOT_FILLED
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions.ALARM_NOT_VALID
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions.TASK_NAME_NOT_FILLED
+import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
@@ -20,7 +20,8 @@ import java.util.*
 class TaskFormPresenter(
     private val getTaskUseCase: GetTaskUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,
-    private val getNextAlarm: GetNextAlarm
+    private val getNextAlarm: GetNextAlarm,
+    private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 
     private val viewModel by lazy { TaskFormViewModel() }
@@ -207,7 +208,7 @@ class TaskFormPresenter(
     private fun checkFieldsAndSaveTask() = runBlocking {
         try {
             val task = getTaskFromViews()
-            val conditions = CheckTaskFields().invoke(task)
+            val conditions = checkTaskFieldsUseCase(task)
             conditions.forEach {
                 when (it) {
                     TASK_NAME_NOT_FILLED -> view?.showErrorTaskNameCantBeBlank()

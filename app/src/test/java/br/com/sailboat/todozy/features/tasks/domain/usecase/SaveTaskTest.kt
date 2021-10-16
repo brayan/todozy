@@ -11,7 +11,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -20,11 +19,13 @@ class SaveTaskTest {
     private val repository: TaskRepository = mockk(relaxed = true)
     private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
     private val saveAlarm: SaveAlarm = mockk(relaxed = true)
+    private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase = mockk(relaxed = true)
 
     private val saveTask = SaveTask(
         taskRepository = repository,
         deleteAlarm = deleteAlarm,
         saveAlarm = saveAlarm,
+        checkTaskFieldsUseCase = checkTaskFieldsUseCase,
     )
 
     @Test
@@ -49,28 +50,20 @@ class SaveTaskTest {
         confirmVerified(repository)
     }
 
-    @Test(expected = CheckTaskFields.TaskFieldsException::class)
-    fun `should throw TaskFieldsException when task name is empty`() = runBlocking {
-        val task = Task(id = 45, name = "", notes = "Some notes")
+    @Test
+    fun `should check task fields when save task is called`() = runBlocking {
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes")
 
         saveTask(task)
-    }
 
-    @Test(expected = CheckTaskFields.TaskFieldsException::class)
-    fun `should throw TaskFieldsException when task alarm is before now`() = runBlocking {
-        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = Alarm(
-                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                repeatType = RepeatType.NOT_REPEAT
-        ))
-
-        saveTask(task)
+        coVerify(exactly = 1) { checkTaskFieldsUseCase(task) }
     }
 
     @Test
     fun `should delete alarm when update task`() = runBlocking {
         val alarm = Alarm(
-                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
-                repeatType = RepeatType.NOT_REPEAT
+            dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+            repeatType = RepeatType.NOT_REPEAT
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
 

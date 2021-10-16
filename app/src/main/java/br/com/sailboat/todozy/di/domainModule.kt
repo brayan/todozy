@@ -7,6 +7,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
 import org.koin.dsl.module
 
 val domainModule = module {
+    factory<CheckTaskFieldsUseCase> { CheckTaskFields() }
     factory { GetAlarm(get()) }
     factory<GetTaskUseCase> { GetTask(get()) }
     factory<GetTasksUseCase> { GetTasks(get()) }
@@ -20,7 +21,7 @@ val domainModule = module {
     factory { UpdateHistory(get()) }
     factory { DeleteHistory(get()) }
     factory { DeleteAllHistory(get()) }
-    factory<SaveTaskUseCase> { SaveTask(get(), get(), get()) }
+    factory<SaveTaskUseCase> { SaveTask(get(), get(), get(), get()) }
     factory { SetAlarmSoundSetting(get()) }
     factory { GetAlarmSoundSetting(get()) }
     factory { SetAlarmVibrateSetting(get()) }

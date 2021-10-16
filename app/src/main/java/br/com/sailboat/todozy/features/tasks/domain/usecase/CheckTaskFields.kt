@@ -2,27 +2,20 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.core.extensions.isTrue
-import br.com.sailboat.todozy.core.extensions.orFalse
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions
 
-class CheckTaskFields {
+class CheckTaskFields : CheckTaskFieldsUseCase {
 
-    enum class Condition {
-        TASK_NAME_NOT_FILLED,
-        ALARM_NOT_VALID
-    }
-
-    class TaskFieldsException(val conditions: List<Condition>) : Exception()
-
-    operator fun invoke(task: Task): List<Condition> {
-        val conditions = mutableListOf<Condition>()
+    override operator fun invoke(task: Task): List<TaskFieldsConditions> {
+        val conditions = mutableListOf<TaskFieldsConditions>()
 
         if (task.name.isBlank()) {
-            conditions.add(Condition.TASK_NAME_NOT_FILLED)
+            conditions.add(TaskFieldsConditions.TASK_NAME_NOT_FILLED)
         }
 
         if (task.alarm?.dateTime?.isBeforeNow().isTrue()) {
-            conditions.add(Condition.ALARM_NOT_VALID)
+            conditions.add(TaskFieldsConditions.ALARM_NOT_VALID)
         }
 
         return conditions

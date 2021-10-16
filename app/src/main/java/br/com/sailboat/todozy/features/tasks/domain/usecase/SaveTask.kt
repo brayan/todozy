@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.core.base.Entity
+import br.com.sailboat.todozy.features.tasks.domain.TaskFieldsException
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
@@ -10,13 +11,14 @@ class SaveTask(
     private val taskRepository: TaskRepository,
     private val deleteAlarm: DeleteAlarm,
     private val saveAlarm: SaveAlarm,
+    private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : SaveTaskUseCase {
 
     override suspend operator fun invoke(task: Task) {
-        val conditions = CheckTaskFields().invoke(task)
+        val conditions = checkTaskFieldsUseCase(task)
 
         if (conditions.isNotEmpty()) {
-            throw CheckTaskFields.TaskFieldsException(conditions)
+            throw TaskFieldsException(conditions)
         }
 
         if (task.id == Entity.NO_ID) {
