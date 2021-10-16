@@ -6,13 +6,13 @@ import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarms
 import kotlinx.coroutines.*
 
 class TaskListPresenter(
     private val getTasksView: GetTasksView,
-    private val getAlarm: GetAlarm,
+    private val getAlarmUseCase: GetAlarmUseCase,
     private val scheduleAllAlarms: ScheduleAllAlarms,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
@@ -99,7 +99,7 @@ class TaskListPresenter(
             tasksView.removeAt(position)
             view?.removeTaskFromList(position)
 
-            val alarm = getAlarm(taskId)
+            val alarm = getAlarmUseCase(taskId)
 
             alarm?.run {
                 if (RepeatType.isAlarmRepeating(alarm)) {

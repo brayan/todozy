@@ -8,7 +8,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
@@ -17,12 +16,7 @@ class GetAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
 
-    private lateinit var getAlarm: GetAlarm
-
-    @Before
-    fun setUp() {
-        getAlarm = GetAlarm(repository)
-    }
+    private val getAlarm = GetAlarm(repository)
 
     @Test
     fun `should get alarm from repository`() = runBlocking {

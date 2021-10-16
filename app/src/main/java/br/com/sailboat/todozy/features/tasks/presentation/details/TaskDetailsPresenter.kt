@@ -7,13 +7,13 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
 import kotlinx.coroutines.withContext
 
 class TaskDetailsPresenter(
     private val getTaskDetailsView: GetTaskDetailsView,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
-    private val getAlarm: GetAlarm,
+    private val getAlarmUseCase: GetAlarmUseCase,
     private val getTaskUseCase: GetTaskUseCase,
     private val disableTaskUseCase: DisableTaskUseCase,
 ) : BasePresenter<TaskDetailsContract.View>(), TaskDetailsContract.Presenter {
@@ -95,7 +95,7 @@ class TaskDetailsPresenter(
                 getTaskMetricsUseCase(TaskHistoryFilter(taskId = taskId))
             }
 
-            viewModel.alarm = withContext(contextProvider.io) { getAlarm(taskId) }
+            viewModel.alarm = withContext(contextProvider.io) { getAlarmUseCase(taskId) }
 
             viewModel.details.clear()
             viewModel.details.addAll(taskDetails)

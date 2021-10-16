@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
     factory<CheckTaskFieldsUseCase> { CheckTaskFields() }
-    factory { GetAlarm(get()) }
+    factory<GetAlarmUseCase> { GetAlarm(get()) }
     factory<GetTaskUseCase> { GetTask(get()) }
     factory<GetTasksUseCase> { GetTasks(get()) }
     factory<GetTaskHistoryUseCase> { GetTaskHistory(get()) }
