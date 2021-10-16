@@ -3,9 +3,11 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase.history
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 
-class DeleteHistory(private val taskHistoryRepository: TaskHistoryRepository) {
+class DeleteHistory(
+    private val taskHistoryRepository: TaskHistoryRepository,
+) : DeleteHistoryUseCase {
 
-    suspend operator fun invoke(taskHistory: TaskHistory) {
+    override suspend operator fun invoke(taskHistory: TaskHistory) {
         taskHistoryRepository.delete(taskHistory)
     }
 

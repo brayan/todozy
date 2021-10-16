@@ -16,7 +16,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,7 +30,7 @@ class TaskHistoryViewModel(
     private val getShortDateView: GetShortDateView,
     private val getDateFilterNameView: GetDateFilterNameView,
     private val updateHistory: UpdateHistory,
-    private val deleteHistory: DeleteHistory,
+    private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase
 ) : BaseViewModel() {
 
@@ -216,7 +216,7 @@ class TaskHistoryViewModel(
             history.removeAt(position)
             removeHistoryItem.postValue(Event(position))
 
-            deleteHistory(taskHistory.mapToTaskHistory())
+            deleteHistoryUseCase(taskHistory.mapToTaskHistory())
 
             delay(1000)
 

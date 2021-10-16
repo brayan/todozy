@@ -15,7 +15,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
 import kotlinx.coroutines.delay
 import java.util.*
@@ -24,7 +24,7 @@ class TaskHistoryPresenter(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getHistoryView: GetHistoryView,
     private val updateHistory: UpdateHistory,
-    private val deleteHistory: DeleteHistory,
+    private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
 ) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
@@ -116,7 +116,7 @@ class TaskHistoryPresenter(
             history.removeAt(position)
             view?.removeHistoryItem(position)
 
-            deleteHistory(taskHistory.mapToTaskHistory())
+            deleteHistoryUseCase(taskHistory.mapToTaskHistory())
 
             delay(1000)
 
