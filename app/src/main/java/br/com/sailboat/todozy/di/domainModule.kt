@@ -15,7 +15,7 @@ val domainModule = module {
     factory<GetTaskMetricsUseCase> { GetTaskMetrics(get()) }
     factory<DisableTaskUseCase> { DisableTask(get(), get()) }
     factory<CompleteTaskUseCase> { CompleteTask(get(), get(), get(), get(), get()) }
-    factory { DeleteAlarm(get(), get()) }
+    factory<DeleteAlarmUseCase> { DeleteAlarm(get(), get()) }
     factory { GetNextAlarm() }
     factory<AddHistoryUseCase> { AddHistory(get()) }
     factory<UpdateHistoryUseCase> { UpdateHistory(get()) }

@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarmUseCase
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -13,9 +13,9 @@ import org.junit.Test
 class DisableTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
-    private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
+    private val deleteAlarmUseCase: DeleteAlarmUseCase = mockk(relaxed = true)
 
-    private val disableTask = DisableTask(repository, deleteAlarm)
+    private val disableTask = DisableTask(repository, deleteAlarmUseCase)
 
     private val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes")
 
@@ -31,8 +31,8 @@ class DisableTaskTest {
     fun `should call deleteAlarm when disable task`() = runBlocking {
         disableTask(task)
 
-        coVerify { deleteAlarm(task.id) }
-        confirmVerified(deleteAlarm)
+        coVerify { deleteAlarmUseCase(task.id) }
+        confirmVerified(deleteAlarmUseCase)
     }
 
 }

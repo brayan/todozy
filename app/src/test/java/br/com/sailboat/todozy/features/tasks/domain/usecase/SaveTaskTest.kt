@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.SaveAlarm
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -17,13 +17,13 @@ import java.util.*
 class SaveTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
-    private val deleteAlarm: DeleteAlarm = mockk(relaxed = true)
+    private val deleteAlarmUseCase: DeleteAlarmUseCase = mockk(relaxed = true)
     private val saveAlarm: SaveAlarm = mockk(relaxed = true)
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase = mockk(relaxed = true)
 
     private val saveTask = SaveTask(
         taskRepository = repository,
-        deleteAlarm = deleteAlarm,
+        deleteAlarmUseCase = deleteAlarmUseCase,
         saveAlarm = saveAlarm,
         checkTaskFieldsUseCase = checkTaskFieldsUseCase,
     )
@@ -69,8 +69,8 @@ class SaveTaskTest {
 
         saveTask(task)
 
-        coVerify { deleteAlarm(45) }
-        confirmVerified(deleteAlarm)
+        coVerify { deleteAlarmUseCase(45) }
+        confirmVerified(deleteAlarmUseCase)
     }
 
     @Test

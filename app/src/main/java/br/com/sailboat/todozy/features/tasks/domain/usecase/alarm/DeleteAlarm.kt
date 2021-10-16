@@ -5,9 +5,9 @@ import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 class DeleteAlarm(
     private val alarmRepository: AlarmRepository,
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
-) {
+) : DeleteAlarmUseCase {
 
-    suspend operator fun invoke(taskId: Long) {
+    override suspend operator fun invoke(taskId: Long) {
         alarmRepository.deleteAlarmByTask(taskId)
         cancelAlarmScheduleUseCase(taskId)
     }

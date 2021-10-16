@@ -4,12 +4,12 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.features.tasks.domain.TaskFieldsException
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.SaveAlarm
 
 class SaveTask(
     private val taskRepository: TaskRepository,
-    private val deleteAlarm: DeleteAlarm,
+    private val deleteAlarmUseCase: DeleteAlarmUseCase,
     private val saveAlarm: SaveAlarm,
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : SaveTaskUseCase {
@@ -25,7 +25,7 @@ class SaveTask(
             taskRepository.insert(task)
         } else {
             taskRepository.update(task)
-            deleteAlarm(task.id)
+            deleteAlarmUseCase(task.id)
         }
 
         task.alarm?.run { saveAlarm(this, task.id) }
