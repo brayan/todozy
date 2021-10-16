@@ -17,7 +17,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
+import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ class TaskHistoryViewModel(
     private val getHistoryView: GetHistoryView,
     private val getShortDateView: GetShortDateView,
     private val getDateFilterNameView: GetDateFilterNameView,
-    private val updateHistory: UpdateHistory,
+    private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase
 ) : BaseViewModel() {
@@ -287,7 +287,7 @@ class TaskHistoryViewModel(
             historyView.status = status
 
             updateHistoryItem(position)
-            updateHistory(historyView.mapToTaskHistory())
+            updateHistoryUseCase(historyView.mapToTaskHistory())
             taskMetrics.value = getTaskMetricsUseCase(filter)
 
         } catch (e: Exception) {

@@ -7,19 +7,13 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class UpdateHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 
-    private lateinit var updateHistory: UpdateHistory
-
-    @Before
-    fun setUp() {
-        updateHistory = UpdateHistory(repository)
-    }
+    private val updateHistory = UpdateHistory(repository)
 
     @Test
     fun `should delete history from repository`() = runBlocking {
