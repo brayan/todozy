@@ -11,14 +11,13 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class GetTaskMetricsTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
-    private lateinit var getTaskMetrics: GetTaskMetrics
+    private val getTaskMetrics = GetTaskMetrics(repository)
 
     private val history = listOf(
             TaskHistory(
@@ -39,11 +38,6 @@ class GetTaskMetricsTest {
                     status = TaskStatus.NOT_DONE,
                     insertingDate = "2020-08-29-13-27-39")
     )
-
-    @Before
-    fun setUp() {
-        getTaskMetrics = GetTaskMetrics(repository)
-    }
 
     @Test
     fun `should get task metrics from repository`() = runBlocking {

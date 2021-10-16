@@ -13,7 +13,7 @@ import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
@@ -21,12 +21,12 @@ import kotlinx.coroutines.delay
 import java.util.*
 
 class TaskHistoryPresenter(
-        private val getTaskMetrics: GetTaskMetrics,
-        private val getHistoryView: GetHistoryView,
-        private val updateHistory: UpdateHistory,
-        private val deleteHistory: DeleteHistory,
-        private val deleteAllHistory: DeleteAllHistory) :
-        BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
+    private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
+    private val getHistoryView: GetHistoryView,
+    private val updateHistory: UpdateHistory,
+    private val deleteHistory: DeleteHistory,
+    private val deleteAllHistory: DeleteAllHistory,
+) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private var taskId = Entity.NO_ID
     private val history = mutableListOf<ItemView>()
@@ -227,7 +227,7 @@ class TaskHistoryPresenter(
 
     private fun loadHistoryTasks() = launchMain {
         try {
-            taskMetrics = getTaskMetrics(filter)
+            taskMetrics = getTaskMetricsUseCase(filter)
 
             val historyView = getHistoryView(filter)
             history.clear()
@@ -303,7 +303,7 @@ class TaskHistoryPresenter(
 
             updateHistory(historyView.mapToTaskHistory())
 
-            taskMetrics = getTaskMetrics(filter)
+            taskMetrics = getTaskMetricsUseCase(filter)
 
             updateMetricsView()
 

@@ -8,9 +8,11 @@ import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryReposi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-class GetTaskMetrics(private val taskHistoryRepository: TaskHistoryRepository) {
+class GetTaskMetrics(
+    private val taskHistoryRepository: TaskHistoryRepository
+) : GetTaskMetricsUseCase {
 
-    suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
+    override suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
         val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter) }
         val notDone = async { taskHistoryRepository.getTotalOfNotDoneTasks(filter) }
         val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }

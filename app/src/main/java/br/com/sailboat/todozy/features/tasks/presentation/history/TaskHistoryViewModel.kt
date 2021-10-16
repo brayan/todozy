@@ -14,7 +14,7 @@ import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistory
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistory
@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class TaskHistoryViewModel(
-    private val getTaskMetrics: GetTaskMetrics,
+    private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getHistoryView: GetHistoryView,
     private val getShortDateView: GetShortDateView,
     private val getDateFilterNameView: GetDateFilterNameView,
@@ -229,7 +229,7 @@ class TaskHistoryViewModel(
 
     private fun loadHistoryTasks() = viewModelScope.launch {
         try {
-            taskMetrics.value = withContext(Dispatchers.IO) { getTaskMetrics(filter) }
+            taskMetrics.value = withContext(Dispatchers.IO) { getTaskMetricsUseCase(filter) }
 
             val historyView = withContext(Dispatchers.IO) { getHistoryView(filter) }
             history.clear()
@@ -288,7 +288,7 @@ class TaskHistoryViewModel(
 
             updateHistoryItem(position)
             updateHistory(historyView.mapToTaskHistory())
-            taskMetrics.value = getTaskMetrics(filter)
+            taskMetrics.value = getTaskMetricsUseCase(filter)
 
         } catch (e: Exception) {
             logError(e)
