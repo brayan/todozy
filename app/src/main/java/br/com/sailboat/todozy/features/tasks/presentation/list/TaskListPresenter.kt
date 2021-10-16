@@ -7,13 +7,13 @@ import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarms
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import kotlinx.coroutines.*
 
 class TaskListPresenter(
     private val getTasksView: GetTasksView,
     private val getAlarmUseCase: GetAlarmUseCase,
-    private val scheduleAllAlarms: ScheduleAllAlarms,
+    private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
 ) : BasePresenter<TaskListContract.View>(), TaskListContract.Presenter {
@@ -81,7 +81,7 @@ class TaskListPresenter(
 
     private fun scheduleAlarms() = launchMain {
         try {
-            withContext(contextProvider.io) { scheduleAllAlarms() }
+            withContext(contextProvider.io) { scheduleAllAlarmsUseCase() }
         } catch (e: Exception) {
             view?.log(e)
         }

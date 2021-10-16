@@ -7,7 +7,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -17,16 +16,11 @@ class ScheduleAllAlarmsTest {
     private val getNextAlarmUseCase: GetNextAlarmUseCase = mockk(relaxed = true)
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase = mockk(relaxed = true)
 
-    private lateinit var scheduleAllAlarms: ScheduleAllAlarms
-
-    @Before
-    fun setUp() {
-        scheduleAllAlarms = ScheduleAllAlarms(
-            getTasksUseCase = getTasksUseCase,
-            getNextAlarmUseCase = getNextAlarmUseCase,
-            scheduleAlarmUseCase = scheduleAlarmUseCase,
-        )
-    }
+    private val scheduleAllAlarms = ScheduleAllAlarms(
+        getTasksUseCase = getTasksUseCase,
+        getNextAlarmUseCase = getNextAlarmUseCase,
+        scheduleAlarmUseCase = scheduleAlarmUseCase,
+    )
 
     @Test
     fun `should get tasks with alarms`() = runBlocking {

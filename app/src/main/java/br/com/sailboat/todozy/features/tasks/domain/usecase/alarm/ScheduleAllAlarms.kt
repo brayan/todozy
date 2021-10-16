@@ -10,9 +10,9 @@ class ScheduleAllAlarms(
     private val getTasksUseCase: GetTasksUseCase,
     private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
-) {
+) : ScheduleAllAlarmsUseCase {
 
-    suspend operator fun invoke() {
+    override suspend operator fun invoke() {
         val tasksWithAlarms = getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS))
 
         tasksWithAlarms.forEach { task ->
