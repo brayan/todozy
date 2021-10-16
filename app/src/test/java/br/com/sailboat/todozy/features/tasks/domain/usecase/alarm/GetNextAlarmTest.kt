@@ -3,19 +3,13 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
 
 class GetNextAlarmTest {
 
-    private lateinit var getNextAlarm: GetNextAlarm
-
-    @Before
-    fun setUp() {
-        getNextAlarm = GetNextAlarm()
-    }
+    private val getNextAlarm = GetNextAlarm()
 
     @Test
     fun `should get next valid alarm when repeatType is SECOND`() = runBlocking {

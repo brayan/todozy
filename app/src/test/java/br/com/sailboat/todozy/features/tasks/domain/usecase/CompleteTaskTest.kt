@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,14 +17,14 @@ import java.util.*
 class CompleteTaskTest {
 
     private val getTaskUseCase: GetTaskUseCase = mockk(relaxed = true)
-    private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
+    private val getNextAlarmUseCase: GetNextAlarmUseCase = mockk(relaxed = true)
     private val saveTaskUseCase: SaveTaskUseCase = mockk(relaxed = true)
     private val disableTaskUseCase: DisableTaskUseCase = mockk(relaxed = true)
     private val addHistoryUseCase: AddHistoryUseCase = mockk(relaxed = true)
 
     private val completeTask = CompleteTask(
         getTaskUseCase = getTaskUseCase,
-        getNextAlarm = getNextAlarm,
+        getNextAlarmUseCase = getNextAlarmUseCase,
         saveTaskUseCase = saveTaskUseCase,
         disableTaskUseCase = disableTaskUseCase,
         addHistoryUseCase = addHistoryUseCase,
@@ -82,14 +82,14 @@ class CompleteTaskTest {
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
         coEvery { getTaskUseCase(45) } returns task
-        coEvery { getNextAlarm(any()) } returns alarm
+        coEvery { getNextAlarmUseCase(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
 
-        coVerify { getNextAlarm(alarm) }
+        coVerify { getNextAlarmUseCase(alarm) }
         coVerify { saveTaskUseCase(task) }
         confirmVerified(saveTaskUseCase)
-        confirmVerified(getNextAlarm)
+        confirmVerified(getNextAlarmUseCase)
     }
 
     @Test
@@ -101,7 +101,7 @@ class CompleteTaskTest {
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
         coEvery { getTaskUseCase(45) } returns task
-        coEvery { getNextAlarm(any()) } returns alarm
+        coEvery { getNextAlarmUseCase(any()) } returns alarm
 
         completeTask(45, TaskStatus.DONE)
 

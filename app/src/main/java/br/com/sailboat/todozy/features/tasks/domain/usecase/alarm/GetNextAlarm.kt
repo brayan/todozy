@@ -5,9 +5,9 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import java.util.*
 
-class GetNextAlarm {
+class GetNextAlarm : GetNextAlarmUseCase {
 
-    operator fun invoke(alarm: Alarm): Alarm {
+    override operator fun invoke(alarm: Alarm): Alarm {
         do {
             incrementToNext(alarm.dateTime, alarm.repeatType, alarm.customDays)
         } while (alarm.dateTime.isBeforeNow())

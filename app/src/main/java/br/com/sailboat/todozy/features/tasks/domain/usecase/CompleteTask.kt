@@ -1,12 +1,12 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
 
 class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,
-    private val getNextAlarm: GetNextAlarm,
+    private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,
     private val disableTaskUseCase: DisableTaskUseCase,
     private val addHistoryUseCase: AddHistoryUseCase,
@@ -17,7 +17,7 @@ class CompleteTask(
 
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
 
-            task.alarm = getNextAlarm(this)
+            task.alarm = getNextAlarmUseCase(this)
             saveTaskUseCase(task)
 
         } ?: disableTaskUseCase(task)

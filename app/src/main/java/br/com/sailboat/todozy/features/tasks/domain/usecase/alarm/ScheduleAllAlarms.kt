@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 
 class ScheduleAllAlarms(
     private val getTasksUseCase: GetTasksUseCase,
-    private val getNextAlarm: GetNextAlarm,
+    private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val scheduleAlarm: ScheduleAlarm,
 ) {
 
@@ -20,7 +20,7 @@ class ScheduleAllAlarms(
                 var alarm = it
 
                 if (alarm.dateTime.isBeforeNow() && alarm.isAlarmRepeating()) {
-                    alarm = getNextAlarm(alarm)
+                    alarm = getNextAlarmUseCase(alarm)
                 }
 
                 if (alarm.dateTime.isAfterNow()) {

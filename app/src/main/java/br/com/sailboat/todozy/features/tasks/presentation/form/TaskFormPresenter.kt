@@ -13,14 +13,14 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions.T
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTaskUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarm
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarmUseCase
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class TaskFormPresenter(
     private val getTaskUseCase: GetTaskUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,
-    private val getNextAlarm: GetNextAlarm,
+    private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 

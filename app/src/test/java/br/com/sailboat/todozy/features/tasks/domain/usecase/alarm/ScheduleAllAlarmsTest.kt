@@ -14,7 +14,7 @@ import java.util.*
 class ScheduleAllAlarmsTest {
 
     private val getTasksUseCase: GetTasksUseCase = mockk(relaxed = true)
-    private val getNextAlarm: GetNextAlarm = mockk(relaxed = true)
+    private val getNextAlarmUseCase: GetNextAlarmUseCase = mockk(relaxed = true)
     private val scheduleAlarm: ScheduleAlarm = mockk(relaxed = true)
 
     private lateinit var scheduleAllAlarms: ScheduleAllAlarms
@@ -23,7 +23,7 @@ class ScheduleAllAlarmsTest {
     fun setUp() {
         scheduleAllAlarms = ScheduleAllAlarms(
             getTasksUseCase = getTasksUseCase,
-            getNextAlarm = getNextAlarm,
+            getNextAlarmUseCase = getNextAlarmUseCase,
             scheduleAlarm = scheduleAlarm,
         )
     }
@@ -49,9 +49,9 @@ class ScheduleAllAlarmsTest {
         scheduleAllAlarms()
 
         coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
-        coVerify { getNextAlarm(alarm) }
+        coVerify { getNextAlarmUseCase(alarm) }
         confirmVerified(getTasksUseCase)
-        confirmVerified(getNextAlarm)
+        confirmVerified(getNextAlarmUseCase)
     }
 
     @Test
