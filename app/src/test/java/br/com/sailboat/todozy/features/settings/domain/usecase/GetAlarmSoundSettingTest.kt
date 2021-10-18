@@ -5,19 +5,13 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class GetAlarmSoundSettingTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
 
-    private lateinit var getAlarmSoundSetting: GetAlarmSoundSetting
-
-    @Before
-    fun setUp() {
-        getAlarmSoundSetting = GetAlarmSoundSetting(repository)
-    }
+    private val getAlarmSoundSetting = GetAlarmSoundSetting(repository)
 
     @Test
     fun `should get alarm sound setting from repository`() = runBlocking {

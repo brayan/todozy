@@ -2,23 +2,24 @@ package br.com.sailboat.todozy.features.settings.presentation
 
 import android.net.Uri
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSetting
+import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmSoundSetting
 import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmVibrateSetting
 
-class SettingsPresenter(private val getAlarmSoundSetting: GetAlarmSoundSetting,
-                        private val setAlarmSoundSetting: SetAlarmSoundSetting,
-                        private val getAlarmVibrateSetting: GetAlarmVibrateSetting,
-                        private val setAlarmVibrateSetting: SetAlarmVibrateSetting) :
-        BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
+class SettingsPresenter(
+    private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase,
+    private val setAlarmSoundSetting: SetAlarmSoundSetting,
+    private val getAlarmVibrateSetting: GetAlarmVibrateSetting,
+    private val setAlarmVibrateSetting: SetAlarmVibrateSetting
+) : BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
 
     private var alarmSound: Uri? = null
     private var shouldVibrate = false
 
     override fun onStart() {
         launchMain {
-            alarmSound = getAlarmSoundSetting()
+            alarmSound = getAlarmSoundSettingUseCase()
             alarmSound?.run { view?.setCurrentToneAlarm(this) } ?: view?.setCurrentToneAlarmNone()
 
             shouldVibrate = getAlarmVibrateSetting()
