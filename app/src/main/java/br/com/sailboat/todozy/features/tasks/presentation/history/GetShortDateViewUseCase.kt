@@ -5,10 +5,6 @@ import br.com.sailboat.todozy.core.presentation.helper.toShortDateView
 import java.util.*
 
 // TODO: Repalce this use case by a service
-class GetShortDateView(
-    private val context: Context,
-) : GetShortDateViewUseCase {
-
-    override operator fun invoke(calendar: Calendar) = calendar.toShortDateView(context)
-
+interface GetShortDateViewUseCase {
+    operator fun invoke(calendar: Calendar): String
 }

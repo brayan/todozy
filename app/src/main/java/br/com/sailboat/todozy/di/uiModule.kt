@@ -37,7 +37,7 @@ val uiModule = module {
     factory<GetTasksViewUseCase> { GetTasksView(get()) }
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get()) }
     factory<GetHistoryViewUseCase> { GetHistoryView(get()) }
-    factory { GetShortDateView(get()) }
+    factory<GetShortDateViewUseCase> { GetShortDateView(get()) }
     factory { GetDateFilterNameView(get()) }
 
     viewModel { TaskHistoryViewModel(get(), get(), get(), get(), get(), get(), get()) }

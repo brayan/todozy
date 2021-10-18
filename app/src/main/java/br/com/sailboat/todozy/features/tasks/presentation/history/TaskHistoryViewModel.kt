@@ -27,7 +27,7 @@ import java.util.*
 class TaskHistoryViewModel(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getHistoryViewUseCase: GetHistoryViewUseCase,
-    private val getShortDateView: GetShortDateView,
+    private val getShortDateViewUseCase: GetShortDateViewUseCase,
     private val getDateFilterNameView: GetDateFilterNameView,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
@@ -271,8 +271,8 @@ class TaskHistoryViewModel(
     }
 
     private fun setDateRangeSubtitle() = with(filter) {
-        val initial = initialDate?.run { getShortDateView(this) }.orEmpty()
-        val final = finalDate?.run { getShortDateView(this) }.orEmpty()
+        val initial = initialDate?.run { getShortDateViewUseCase(this) }.orEmpty()
+        val final = finalDate?.run { getShortDateViewUseCase(this) }.orEmpty()
         subtitle.value = "$initial - $final"
     }
 
