@@ -26,7 +26,7 @@ import java.util.*
 
 class TaskHistoryViewModel(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
-    private val getHistoryView: GetHistoryView,
+    private val getHistoryViewUseCase: GetHistoryViewUseCase,
     private val getShortDateView: GetShortDateView,
     private val getDateFilterNameView: GetDateFilterNameView,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
@@ -231,7 +231,7 @@ class TaskHistoryViewModel(
         try {
             taskMetrics.value = withContext(Dispatchers.IO) { getTaskMetricsUseCase(filter) }
 
-            val historyView = withContext(Dispatchers.IO) { getHistoryView(filter) }
+            val historyView = withContext(Dispatchers.IO) { getHistoryViewUseCase(filter) }
             history.clear()
             history.addAll(historyView)
 

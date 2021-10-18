@@ -11,9 +11,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
+// TODO: Add unit tests
 class GetHistoryView(
     private val getTasksHistoryUseCase: GetTaskHistoryUseCase,
-) {
+) : GetHistoryViewUseCase {
 
     private val historyCategories = mapOf(
         TaskHistoryCategory.TODAY to R.string.today,
@@ -21,7 +22,7 @@ class GetHistoryView(
         TaskHistoryCategory.PREVIOUS_DAYS to R.string.previous_days,
     )
 
-    suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
+    override suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
         historyCategories.map { category ->
             async {
                 filter.category = category.key

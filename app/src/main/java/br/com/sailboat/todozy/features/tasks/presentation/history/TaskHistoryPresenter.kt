@@ -22,7 +22,7 @@ import java.util.*
 
 class TaskHistoryPresenter(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
-    private val getHistoryView: GetHistoryView,
+    private val getHistoryViewUseCase: GetHistoryViewUseCase,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
@@ -229,7 +229,7 @@ class TaskHistoryPresenter(
         try {
             taskMetrics = getTaskMetricsUseCase(filter)
 
-            val historyView = getHistoryView(filter)
+            val historyView = getHistoryViewUseCase(filter)
             history.clear()
             history.addAll(historyView)
 
