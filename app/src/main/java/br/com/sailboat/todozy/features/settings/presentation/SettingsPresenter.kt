@@ -8,7 +8,7 @@ class SettingsPresenter(
     private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase,
     private val setAlarmSoundSettingUseCase: SetAlarmSoundSettingUseCase,
     private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase,
-    private val setAlarmVibrateSetting: SetAlarmVibrateSetting
+    private val setAlarmVibrateSettingUseCase: SetAlarmVibrateSettingUseCase
 ) : BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
 
     private var alarmSound: Uri? = null
@@ -38,7 +38,7 @@ class SettingsPresenter(
     override fun onClickVibrateAlarm(vibrate: Boolean) {
         launchMain {
             shouldVibrate = vibrate
-            setAlarmVibrateSetting(shouldVibrate)
+            setAlarmVibrateSettingUseCase(shouldVibrate)
             view?.setVibrateAlarm(shouldVibrate)
         }
     }
