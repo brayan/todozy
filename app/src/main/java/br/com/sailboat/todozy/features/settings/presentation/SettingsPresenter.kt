@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.features.settings.domain.usecase.*
 
 class SettingsPresenter(
     private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase,
-    private val setAlarmSoundSetting: SetAlarmSoundSetting,
+    private val setAlarmSoundSettingUseCase: SetAlarmSoundSettingUseCase,
     private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase,
     private val setAlarmVibrateSetting: SetAlarmVibrateSetting
 ) : BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
@@ -26,7 +26,7 @@ class SettingsPresenter(
 
     override fun onSelectAlarmTone(alarmTone: Uri) {
         launchMain {
-            setAlarmSoundSetting(alarmTone)
+            setAlarmSoundSettingUseCase(alarmTone)
             view?.setCurrentToneAlarm(alarmTone)
         }
     }
