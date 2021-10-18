@@ -15,12 +15,10 @@ class CheckAndSetUpInitialSettingsTest {
     private val repository: SettingsRepository = mockk(relaxed = true)
     private val scheduleAlarmUpdates: ScheduleAlarmUpdates = mockk(relaxed = true)
 
-    private lateinit var checkAndSetUpInitialSettings: CheckAndSetUpInitialSettings
-
-    @Before
-    fun setUp() {
-        checkAndSetUpInitialSettings = CheckAndSetUpInitialSettings(repository, scheduleAlarmUpdates)
-    }
+    private val checkAndSetUpInitialSettings = CheckAndSetUpInitialSettings(
+        repository = repository,
+        scheduleAlarmUpdates = scheduleAlarmUpdates,
+    )
 
     @Test
     fun `should check if it is the first time that the app is launching from repository`() = runBlocking {

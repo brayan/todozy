@@ -31,5 +31,5 @@ val domainModule = module {
     factory { ScheduleAlarmUpdates(get()) }
     factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
     factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
-    factory { CheckAndSetUpInitialSettings(get(), get()) }
+    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get(), get()) }
 }
