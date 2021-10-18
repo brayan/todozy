@@ -12,6 +12,7 @@ import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
 import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.history.*
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
+import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.TaskListContract
 import br.com.sailboat.todozy.features.tasks.presentation.list.TaskListPresenter
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -33,7 +34,7 @@ val uiModule = module {
     factory<SettingsContract.Presenter> { SettingsPresenter(get(), get(), get(), get()) }
     factory<AboutContract.Presenter> { AboutPresenter() }
 
-    factory { GetTasksView(get()) }
+    factory<GetTasksViewUseCase> { GetTasksView(get()) }
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get()) }
     factory { GetHistoryView(get()) }
     factory { GetShortDateView(get()) }

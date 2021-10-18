@@ -11,15 +11,19 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-class GetTasksView(private val getTasksUseCase: GetTasksUseCase) {
+// TODO: Add unit tests
+class GetTasksView(
+    private val getTasksUseCase: GetTasksUseCase,
+) : GetTasksViewUseCase {
 
     private val taskCategories = mapOf(
-            TaskCategory.BEFORE_TODAY to R.string.previous_days,
-            TaskCategory.TODAY to R.string.today,
-            TaskCategory.TOMORROW to R.string.tomorrow,
-            TaskCategory.NEXT_DAYS to R.string.next_days)
+        TaskCategory.BEFORE_TODAY to R.string.previous_days,
+        TaskCategory.TODAY to R.string.today,
+        TaskCategory.TOMORROW to R.string.tomorrow,
+        TaskCategory.NEXT_DAYS to R.string.next_days
+    )
 
-    suspend operator fun invoke(search: String) = coroutineScope {
+    override suspend operator fun invoke(search: String) = coroutineScope {
         taskCategories.map { taskType ->
             async {
                 val filter = TaskFilter(taskType.key).apply { text = search }

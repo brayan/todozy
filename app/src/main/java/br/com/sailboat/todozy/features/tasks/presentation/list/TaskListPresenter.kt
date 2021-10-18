@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAla
 import kotlinx.coroutines.*
 
 class TaskListPresenter(
-    private val getTasksView: GetTasksView,
+    private val getTasksViewUseCase: GetTasksViewUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
@@ -66,7 +66,7 @@ class TaskListPresenter(
         launchMain {
             try {
                 view?.showProgress()
-                val tasks = withContext(contextProvider.io) { getTasksView(filter.text) }
+                val tasks = withContext(contextProvider.io) { getTasksViewUseCase(filter.text) }
                 tasksView.clear()
                 tasksView.addAll(tasks)
                 updateViews()
