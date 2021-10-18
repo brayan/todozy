@@ -18,7 +18,7 @@ import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
+import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     val getTaskUseCase: GetTaskUseCase by inject()
     val getTasksUseCase: GetTasksUseCase by inject()
     val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
-    val getAlarmVibrateSetting: GetAlarmVibrateSetting by inject()
+    val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         "${javaClass.simpleName}.onReceive()".logDebug()
@@ -112,7 +112,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private suspend fun initVibrate(builder: NotificationCompat.Builder) {
-        if (getAlarmVibrateSetting()) {
+        if (getAlarmVibrateSettingUseCase()) {
             builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
         } else {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS)

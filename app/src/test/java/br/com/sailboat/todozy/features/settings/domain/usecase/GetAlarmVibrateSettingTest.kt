@@ -12,12 +12,7 @@ class GetAlarmVibrateSettingTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
 
-    private lateinit var getAlarmVibrateSetting: GetAlarmVibrateSetting
-
-    @Before
-    fun setUp() {
-        getAlarmVibrateSetting = GetAlarmVibrateSetting(repository)
-    }
+    private val getAlarmVibrateSetting = GetAlarmVibrateSetting(repository)
 
     @Test
     fun `should get alarm vibrate setting from repository`() = runBlocking {

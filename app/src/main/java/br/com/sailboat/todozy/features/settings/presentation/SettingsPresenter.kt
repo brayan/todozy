@@ -2,15 +2,12 @@ package br.com.sailboat.todozy.features.settings.presentation
 
 import android.net.Uri
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSetting
-import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmSoundSetting
-import br.com.sailboat.todozy.features.settings.domain.usecase.SetAlarmVibrateSetting
+import br.com.sailboat.todozy.features.settings.domain.usecase.*
 
 class SettingsPresenter(
     private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase,
     private val setAlarmSoundSetting: SetAlarmSoundSetting,
-    private val getAlarmVibrateSetting: GetAlarmVibrateSetting,
+    private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase,
     private val setAlarmVibrateSetting: SetAlarmVibrateSetting
 ) : BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
 
@@ -22,7 +19,7 @@ class SettingsPresenter(
             alarmSound = getAlarmSoundSettingUseCase()
             alarmSound?.run { view?.setCurrentToneAlarm(this) } ?: view?.setCurrentToneAlarmNone()
 
-            shouldVibrate = getAlarmVibrateSetting()
+            shouldVibrate = getAlarmVibrateSettingUseCase()
             view?.setVibrateAlarm(shouldVibrate)
         }
     }
