@@ -28,7 +28,7 @@ class TaskHistoryViewModel(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getHistoryViewUseCase: GetHistoryViewUseCase,
     private val getShortDateViewUseCase: GetShortDateViewUseCase,
-    private val getDateFilterNameView: GetDateFilterNameView,
+    private val getDateFilterNameViewUseCase: GetDateFilterNameViewUseCase,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase
@@ -267,7 +267,7 @@ class TaskHistoryViewModel(
     }
 
     private fun setDateFilterSubtitle() {
-        subtitle.value = getDateFilterNameView(dateRangeType)
+        subtitle.value = getDateFilterNameViewUseCase(dateRangeType)
     }
 
     private fun setDateRangeSubtitle() = with(filter) {

@@ -3,8 +3,12 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 import android.content.Context
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 
-class GetDateFilterNameView(private val context: Context) {
+// TODO: Add unit tests
+// TODO: Repalce this use case by a service
+class GetDateFilterNameView(private val context: Context) : GetDateFilterNameViewUseCase {
 
-    operator fun invoke(dateRangeType: DateFilterTaskHistorySelectableItem) = context.getString(dateRangeType.getName())
+    override operator fun invoke(dateRangeType: DateFilterTaskHistorySelectableItem): String {
+        return context.getString(dateRangeType.getName())
+    }
 
 }
