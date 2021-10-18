@@ -1,23 +1,22 @@
 package br.com.sailboat.todozy.features.settings.domain.usecase
 
 import br.com.sailboat.todozy.features.settings.domain.respository.SettingsRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAlarmUpdates
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAlarmUpdatesUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class CheckAndSetUpInitialSettingsTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
-    private val scheduleAlarmUpdates: ScheduleAlarmUpdates = mockk(relaxed = true)
+    private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase = mockk(relaxed = true)
 
     private val checkAndSetUpInitialSettings = CheckAndSetUpInitialSettings(
         repository = repository,
-        scheduleAlarmUpdates = scheduleAlarmUpdates,
+        scheduleAlarmUpdatesUseCase = scheduleAlarmUpdatesUseCase,
     )
 
     @Test
@@ -62,8 +61,8 @@ class CheckAndSetUpInitialSettingsTest {
 
         checkAndSetUpInitialSettings()
 
-        coVerify { scheduleAlarmUpdates() }
-        confirmVerified(scheduleAlarmUpdates)
+        coVerify { scheduleAlarmUpdatesUseCase() }
+        confirmVerified(scheduleAlarmUpdatesUseCase)
     }
 
     @Test
@@ -76,9 +75,9 @@ class CheckAndSetUpInitialSettingsTest {
         coVerify(exactly = 0) { repository.setFirstTimeLaunchingApp(false) }
         coVerify(exactly = 0) { repository.setAlarmVibrate(true) }
         coVerify(exactly = 0) { repository.setDefaultAlarmTone() }
-        coVerify(exactly = 0) { scheduleAlarmUpdates() }
+        coVerify(exactly = 0) { scheduleAlarmUpdatesUseCase() }
         confirmVerified(repository)
-        confirmVerified(scheduleAlarmUpdates)
+        confirmVerified(scheduleAlarmUpdatesUseCase)
     }
 
 }

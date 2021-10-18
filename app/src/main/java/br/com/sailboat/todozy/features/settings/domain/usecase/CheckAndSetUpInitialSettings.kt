@@ -1,11 +1,11 @@
 package br.com.sailboat.todozy.features.settings.domain.usecase
 
 import br.com.sailboat.todozy.features.settings.domain.respository.SettingsRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAlarmUpdates
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAlarmUpdatesUseCase
 
 class CheckAndSetUpInitialSettings(
     private val repository: SettingsRepository,
-    private val scheduleAlarmUpdates: ScheduleAlarmUpdates,
+    private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase,
 ) : CheckAndSetUpInitialSettingsUseCase {
 
     override suspend operator fun invoke() = with(repository) {
@@ -16,7 +16,7 @@ class CheckAndSetUpInitialSettings(
         setFirstTimeLaunchingApp(false)
         setAlarmVibrate(true)
         setDefaultAlarmTone()
-        scheduleAlarmUpdates()
+        scheduleAlarmUpdatesUseCase()
     }
 
 }

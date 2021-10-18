@@ -28,7 +28,7 @@ val domainModule = module {
     factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSetting(get()) }
     factory<ScheduleAlarmUseCase> { ScheduleAlarm(get()) }
     factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarms(get(), get(), get()) }
-    factory { ScheduleAlarmUpdates(get()) }
+    factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdates(get()) }
     factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
     factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
     factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get(), get()) }

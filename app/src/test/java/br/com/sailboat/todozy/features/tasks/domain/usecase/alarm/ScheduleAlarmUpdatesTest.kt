@@ -5,7 +5,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -13,13 +12,7 @@ class ScheduleAlarmUpdatesTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
 
-    private lateinit var scheduleAlarmUpdates: ScheduleAlarmUpdates
-
-    @Before
-    fun setUp() {
-        scheduleAlarmUpdates = ScheduleAlarmUpdates(repository)
-    }
-
+    private val scheduleAlarmUpdates = ScheduleAlarmUpdates(repository)
     @Test
     fun `should schedule alarm updates to the first hour of tomorrow on repository`() = runBlocking {
         val calendar = Calendar.getInstance().apply {
