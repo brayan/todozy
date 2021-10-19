@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.extensions.clearTime
 import br.com.sailboat.todozy.core.extensions.setFinalTimeToCalendar
+import br.com.sailboat.todozy.core.presentation.base.BaseViewModel
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.Event
@@ -18,6 +19,8 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
+import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
+import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,14 +28,17 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class TaskHistoryViewModel(
+
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getHistoryViewUseCase: GetHistoryViewUseCase,
     private val getShortDateViewUseCase: GetShortDateViewUseCase,
     private val getDateFilterNameViewUseCase: GetDateFilterNameViewUseCase,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
-    private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase
-) : BaseViewModel() {
+    private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
+) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
+
+    override val viewState = TaskListViewState()
 
     private var taskId = Entity.NO_ID
     val history = mutableListOf<ItemView>()
@@ -41,29 +47,29 @@ class TaskHistoryViewModel(
     private var dateRangeType = DateFilterTaskHistorySelectableItem.NO_FILTER
     private var statusSelectableItem = TaskStatusSelectableItem.NO_FILTER
 
-    val logError = MutableLiveData<Event<Exception>>()
-    val refreshHistory = MutableLiveData<Event<Unit>>()
-    val removeHistoryItem = MutableLiveData<Event<Int>>()
-    val showFilter = MutableLiveData<Event<Unit>>()
-    val showConfirmationClearAllHistory = MutableLiveData<Event<Unit>>()
-    val showConfirmationDelete = MutableLiveData<Event<Int>>()
+    val logError = Event<Exception>()
+    val refreshHistory = Event<Unit>()
+    val removeHistoryItem = Event<Int>()
+    val showFilter = Event<Unit>()
+    val showConfirmationClearAllHistory = Event<Unit>()
+    val showConfirmationDelete = Event<Int>()
     val subtitle = MutableLiveData<String>()
     val doneTasks = MutableLiveData<Int>()
     val notDoneTasks = MutableLiveData<Int>()
     val taskMetrics = MutableLiveData<TaskMetrics>()
-    val updateHistoryItem = MutableLiveData<Event<Int>>()
-    val scrollTo = MutableLiveData<Event<Int>>()
+    val updateHistoryItem = Event<Int>()
+    val scrollTo = Event<Int>()
 
     fun start() {
         loadHistoryTasks()
     }
 
     fun onClickMenuFilter() {
-        showFilter.value = Event(Unit)
+        showFilter.value = Unit
     }
 
     fun onClickCleanAllHistory() {
-        showConfirmationClearAllHistory.value = Event(Unit)
+        showConfirmationClearAllHistory.value = Unit
     }
 
     fun onClickMarkTaskAsDone(position: Int) {
@@ -100,7 +106,7 @@ class TaskHistoryViewModel(
     }
 
     fun onClickDelete(position: Int) {
-        showConfirmationDelete.value = Event(position)
+        showConfirmationDelete.value = position
     }
 
     fun onSubmitSearch(search: String) {
@@ -214,7 +220,7 @@ class TaskHistoryViewModel(
             val taskHistory = history[position] as TaskHistoryView
 
             history.removeAt(position)
-            removeHistoryItem.postValue(Event(position))
+            removeHistoryItem.postValue(position)
 
             deleteHistoryUseCase(taskHistory.mapToTaskHistory())
 
@@ -276,8 +282,8 @@ class TaskHistoryViewModel(
         subtitle.value = "$initial - $final"
     }
 
-    private fun logError(e: Exception) = logError.apply { value = Event(e) }
-    private fun refreshHistory() = refreshHistory.apply { value = Event(Unit) }
+    private fun logError(e: Exception) = logError.apply { value = e }
+    private fun refreshHistory() = refreshHistory.apply { value = Unit }
 
     private fun updateHistoryStatus(position: Int, status: TaskStatusView) = viewModelScope.launch {
         try {
@@ -301,15 +307,19 @@ class TaskHistoryViewModel(
     }
 
     private fun updateHistoryItem(position: Int) {
-        updateHistoryItem.value = Event(position)
+        updateHistoryItem.value = position
     }
 
     private fun scrollTo(position: Int) {
-        scrollTo.value = Event(position)
+        scrollTo.value = position
     }
 
     private fun hasHistorySelected(): Boolean {
         return selectedItemPosition != -1
+    }
+
+    override fun dispatchViewAction(viewAction: TaskListViewAction) {
+        TODO("Not yet implemented")
     }
 
 }

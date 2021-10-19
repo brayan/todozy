@@ -1,28 +1,41 @@
 package br.com.sailboat.todozy.core.presentation.helper
 
+import androidx.annotation.AnyThread
+import androidx.annotation.MainThread
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import java.util.concurrent.atomic.AtomicBoolean
 
-open class Event<out T>(private val content: T) {
+open class Event<T> : MutableLiveData<T>() {
 
-    var hasBeenHandled = false
-        private set // Allow external read but not write
+    private val hasBeenHandled: AtomicBoolean = AtomicBoolean(false)
 
-    fun getContentIfNotHandled(): T? {
-        return if (hasBeenHandled) {
-            null
-        } else {
-            hasBeenHandled = true
-            content
-        }
+    @MainThread
+    override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
+        super.observe(
+            owner,
+            Observer<T> {
+                if (hasBeenHandled.compareAndSet(true, false)) {
+                    observer.onChanged(it)
+                }
+            }
+        )
     }
 
-    fun peekContent(): T = content
-}
+    @MainThread
+    override fun setValue(value: T?) {
+        hasBeenHandled.set(true)
+        super.setValue(value)
+    }
 
-class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Observer<Event<T>> {
-    override fun onChanged(event: Event<T>?) {
-        event?.getContentIfNotHandled()?.let { value ->
-            onEventUnhandledContent(value)
-        }
+    @MainThread
+    fun call() {
+        value = value
+    }
+
+    @AnyThread
+    fun postCall() {
+        postValue(value)
     }
 }

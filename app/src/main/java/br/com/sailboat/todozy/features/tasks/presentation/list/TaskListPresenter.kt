@@ -32,18 +32,6 @@ class TaskListPresenter(
 
     override fun getTextForSearch() = filter.text
 
-    override fun onClickMenuSettings() {
-        view?.showSettings()
-    }
-
-    override fun onClickMenuTaskHistory() {
-        view?.showTaskHistory()
-    }
-
-    override fun onClickMenuAbout() {
-        view?.navigateToAbout()
-    }
-
     override fun onClickNewTask() {
         view?.showNewTask()
     }

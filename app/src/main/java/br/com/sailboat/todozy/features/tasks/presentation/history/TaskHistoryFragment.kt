@@ -208,26 +208,26 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.refreshHistory.observe(viewLifecycleOwner, EventObserver {
+        viewModel.refreshHistory.observe(viewLifecycleOwner) {
             binding.recycler.adapter?.notifyDataSetChanged()
-        })
+        }
 
         viewModel.taskMetrics.observe(viewLifecycleOwner,  { taskMetrics ->
             binding.appbarTaskHistory.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
             binding.appbarTaskHistory.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
         })
 
-        viewModel.updateHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
+        viewModel.updateHistoryItem.observe(viewLifecycleOwner){ position ->
             binding.recycler.adapter?.notifyItemChanged(position)
-        })
+        }
 
-        viewModel.showConfirmationDelete.observe(viewLifecycleOwner,  EventObserver { position ->
+        viewModel.showConfirmationDelete.observe(viewLifecycleOwner) { position ->
             showDeleteItemDialog(position)
-        })
+        }
 
-        viewModel.removeHistoryItem.observe(viewLifecycleOwner,  EventObserver { position ->
+        viewModel.removeHistoryItem.observe(viewLifecycleOwner) { position ->
             binding.recycler.adapter?.notifyItemRemoved(position)
-        })
+        }
 
     }
 

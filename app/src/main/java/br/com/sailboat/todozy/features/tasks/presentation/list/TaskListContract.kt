@@ -18,20 +18,14 @@ interface TaskListContract {
         fun showErrorOnSwipeTask()
         fun showMetrics(taskMetrics: TaskMetrics)
         fun showNewTask()
-        fun showSettings()
         fun showTasks()
         fun showTaskDetails(taskId: Long)
-        fun showTaskHistory()
         fun updateTasks()
-        fun navigateToAbout()
     }
 
     interface Presenter : BaseMVPContract.Presenter {
         val tasksView: List<ItemView>
         fun getTextForSearch(): String
-        fun onClickMenuSettings()
-        fun onClickMenuTaskHistory()
-        fun onClickMenuAbout()
         fun onClickNewTask()
         fun onClickTask(position: Int)
         fun onSwipeTaskLeft(position: Int)

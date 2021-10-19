@@ -75,6 +75,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.0"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.5.21"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     androidTestImplementation "io.mockk:mockk-android:1.9.3"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

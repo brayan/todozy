@@ -19,11 +19,16 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
+import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
+import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
+import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState.Action.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskListContract.View {
 
     override val presenter: TaskListContract.Presenter by inject()
+    val viewModel: TaskListViewModel by viewModel()
     private lateinit var binding: FrgTaskListBinding
 
     override fun onCreateView(
@@ -35,6 +40,11 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewState()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
         initMenusVisibility(menu)
@@ -43,9 +53,15 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_fragments_history -> presenter.onClickMenuTaskHistory()
-            R.id.menu_fragments_settings -> presenter.onClickMenuSettings()
-            R.id.menu_fragments_about -> presenter.onClickMenuAbout()
+            R.id.menu_fragments_history -> {
+                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuHistory)
+            }
+            R.id.menu_fragments_settings -> {
+                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuSettings)
+            }
+            R.id.menu_fragments_about -> {
+                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuAbout)
+            }
             else -> super.onOptionsItemSelected(item)
         }
         return true
@@ -62,6 +78,16 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         initRecyclerView()
 
         binding.fab.setOnClickListener { presenter.onClickNewTask() }
+    }
+
+    private fun observeViewState() {
+        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+            when (action) {
+                is NavigateToAbout -> navigateToAbout()
+                is NavigateToHistory -> navigateToHistory()
+                is NavigateToSettings -> navigateToSettings()
+            }
+        }
     }
 
     override fun onSubmitSearch(search: String) {
@@ -113,13 +139,13 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
     override fun showNewTask() = startTaskFormActivity()
 
-    override fun showSettings() = startSettingsActivity()
+    private fun navigateToSettings() = startSettingsActivity()
 
     override fun showTasks() = binding.recycler.visible()
 
     override fun showTaskDetails(taskId: Long) = startTaskDetailsActivity(taskId)
 
-    override fun showTaskHistory() {
+    private fun navigateToHistory() {
         activity?.startTaskHistoryActivity()
     }
 
@@ -127,7 +153,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         binding.recycler.adapter?.notifyDataSetChanged()
     }
 
-    override fun navigateToAbout() {
+    private fun navigateToAbout() {
         activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
     }
 
