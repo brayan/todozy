@@ -16,8 +16,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.SECOND))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.SECOND, 1) },
-                repeatType = RepeatType.SECOND))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.SECOND, 1) },
+            repeatType = RepeatType.SECOND,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -25,8 +29,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.MINUTE))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.MINUTE, 1) },
-                repeatType = RepeatType.MINUTE))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.MINUTE, 1) },
+            repeatType = RepeatType.MINUTE,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -34,8 +42,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.HOUR))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.HOUR, 1) },
-                repeatType = RepeatType.HOUR))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.HOUR, 1) },
+            repeatType = RepeatType.HOUR,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -43,8 +55,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.DAY))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.DATE, 1) },
-                repeatType = RepeatType.DAY))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.DATE, 1) },
+            repeatType = RepeatType.DAY,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -52,8 +68,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.WEEK))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.WEEK_OF_YEAR, 1) },
-                repeatType = RepeatType.WEEK))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.WEEK_OF_YEAR, 1) },
+            repeatType = RepeatType.WEEK,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -61,8 +81,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.MONTH))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.MONTH, 1) },
-                repeatType = RepeatType.MONTH))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.MONTH, 1) },
+            repeatType = RepeatType.MONTH,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -70,8 +94,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.YEAR))
-        assertEquals(result, Alarm(dateTime = dateTime.apply { add(Calendar.YEAR, 1) },
-                repeatType = RepeatType.YEAR))
+
+        val expected = Alarm(
+            dateTime = dateTime.apply { add(Calendar.YEAR, 1) },
+            repeatType = RepeatType.YEAR,
+        )
+        assertEquals(expected, result)
     }
 
     @Test
@@ -79,8 +107,12 @@ class GetNextAlarmTest {
         val dateTime = Calendar.getInstance()
 
         val result = getNextAlarm(Alarm(dateTime = dateTime, repeatType = RepeatType.NOT_REPEAT))
-        assertEquals(result, Alarm(dateTime = dateTime,
-                repeatType = RepeatType.NOT_REPEAT))
+
+        val expected = Alarm(
+            dateTime = dateTime,
+            repeatType = RepeatType.NOT_REPEAT,
+        )
+        assertEquals(expected, result)
     }
 
 }

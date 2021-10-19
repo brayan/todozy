@@ -8,6 +8,10 @@ import java.util.*
 class GetNextAlarm : GetNextAlarmUseCase {
 
     override operator fun invoke(alarm: Alarm): Alarm {
+        if (alarm.repeatType == RepeatType.NOT_REPEAT) {
+            return alarm
+        }
+
         do {
             incrementToNext(alarm.dateTime, alarm.repeatType, alarm.customDays)
         } while (alarm.dateTime.isBeforeNow())
