@@ -38,14 +38,14 @@ class TaskListViewModelTest {
     }
 
     @Test
-    fun `should navigate to about screen when dispatchViewAction is called with OnClickMenuHistory`() {
+    fun `should navigate to history screen when dispatchViewAction is called with OnClickMenuHistory`() {
         viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuHistory)
 
         assertEquals(TaskListViewState.Action.NavigateToHistory, viewModel.viewState.action.value)
     }
 
     @Test
-    fun `should navigate to about screen when dispatchViewAction is called with OnClickMenuSettings`() {
+    fun `should navigate to settings screen when dispatchViewAction is called with OnClickMenuSettings`() {
         viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuSettings)
 
         assertEquals(TaskListViewState.Action.NavigateToSettings, viewModel.viewState.action.value)
