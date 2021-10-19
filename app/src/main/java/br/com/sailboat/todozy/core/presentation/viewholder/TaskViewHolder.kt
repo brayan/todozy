@@ -11,22 +11,19 @@ import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.databinding.VhTaskBinding
 import java.util.*
 
-class TaskViewHolder(parent: ViewGroup, callback: Callback) :
+class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<TaskItemView, VhTaskBinding>(
         VhTaskBinding.inflate(getInflater(parent), parent, false)
     ) {
 
-    init {
-        binding.root.setOnClickListener { callback.onClickTask(bindingAdapterPosition) }
-    }
-
     interface Callback {
-        fun onClickTask(position: Int)
+        fun onClickTask(taskId: Long)
     }
 
     override fun bind(item: TaskItemView) = with(binding) {
         task.vhTaskTvName.text = item.taskName
         bindTaskAlarm(item.alarm)
+        root.setOnClickListener { callback.onClickTask(item.taskId) }
     }
 
     private fun bindTaskAlarm(alarm: Calendar?) {

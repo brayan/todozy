@@ -10,6 +10,8 @@ class TaskListViewState {
         object NavigateToAbout : Action()
         object NavigateToHistory : Action()
         object NavigateToSettings : Action()
+        object NavigateToTaskForm : Action()
+        data class NavigateToTaskDetails(val taskId: Long) : Action()
     }
 
 }

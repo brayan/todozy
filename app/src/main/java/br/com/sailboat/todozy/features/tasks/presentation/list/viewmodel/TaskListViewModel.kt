@@ -20,9 +20,11 @@ class TaskListViewModel(
 
     override fun dispatchViewAction(viewAction: TaskListViewAction) {
         when (viewAction) {
-            OnClickMenuAbout -> onClickMenuAbout()
-            OnClickMenuSettings -> onClickMenuSettings()
-            OnClickMenuHistory -> onClickMenuHistory()
+            is OnClickMenuAbout -> onClickMenuAbout()
+            is OnClickMenuSettings -> onClickMenuSettings()
+            is OnClickMenuHistory -> onClickMenuHistory()
+            is OnClickNewTask -> onClickNewTask()
+            is OnClickTask -> onClickTask(viewAction.taskId)
         }
     }
 
@@ -36,6 +38,14 @@ class TaskListViewModel(
 
     private fun onClickMenuHistory() {
         viewState.action.value = TaskListViewState.Action.NavigateToHistory
+    }
+
+    private fun onClickNewTask() {
+        viewState.action.value = TaskListViewState.Action.NavigateToTaskForm
+    }
+
+    private fun onClickTask(taskId: Long) {
+        viewState.action.value = TaskListViewState.Action.NavigateToTaskDetails(taskId = taskId)
     }
 
 }

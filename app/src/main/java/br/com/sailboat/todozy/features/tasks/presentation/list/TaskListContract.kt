@@ -17,17 +17,13 @@ interface TaskListContract {
         fun showEmptyView()
         fun showErrorOnSwipeTask()
         fun showMetrics(taskMetrics: TaskMetrics)
-        fun showNewTask()
         fun showTasks()
-        fun showTaskDetails(taskId: Long)
         fun updateTasks()
     }
 
     interface Presenter : BaseMVPContract.Presenter {
         val tasksView: List<ItemView>
         fun getTextForSearch(): String
-        fun onClickNewTask()
-        fun onClickTask(position: Int)
         fun onSwipeTaskLeft(position: Int)
         fun onSwipeTaskRight(position: Int)
         fun submitTextForSearch(text: String)

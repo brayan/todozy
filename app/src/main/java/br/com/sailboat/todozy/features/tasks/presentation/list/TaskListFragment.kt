@@ -62,7 +62,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
             R.id.menu_fragments_about -> {
                 viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuAbout)
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
@@ -77,7 +77,9 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
 
         initRecyclerView()
 
-        binding.fab.setOnClickListener { presenter.onClickNewTask() }
+        binding.fab.setOnClickListener {
+            viewModel.dispatchViewAction(TaskListViewAction.OnClickNewTask)
+        }
     }
 
     private fun observeViewState() {
@@ -86,6 +88,8 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
                 is NavigateToAbout -> navigateToAbout()
                 is NavigateToHistory -> navigateToHistory()
                 is NavigateToSettings -> navigateToSettings()
+                is NavigateToTaskForm -> navigateToTaskForm()
+                is NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
             }
         }
     }
@@ -137,13 +141,19 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         binding.appbarTaskListFlMetrics.visible()
     }
 
-    override fun showNewTask() = startTaskFormActivity()
+    private fun navigateToTaskForm() {
+        startTaskFormActivity()
+    }
 
-    private fun navigateToSettings() = startSettingsActivity()
+    private fun navigateToSettings() {
+        startSettingsActivity()
+    }
 
     override fun showTasks() = binding.recycler.visible()
 
-    override fun showTaskDetails(taskId: Long) = startTaskDetailsActivity(taskId)
+    private fun navigateToTaskDetails(taskId: Long) {
+        startTaskDetailsActivity(taskId)
+    }
 
     private fun navigateToHistory() {
         activity?.startTaskHistoryActivity()
@@ -161,7 +171,9 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         binding.recycler.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
                 override val tasksView = presenter.tasksView
-                override fun onClickTask(position: Int) = presenter.onClickTask(position)
+                override fun onClickTask(taskId: Long) {
+                    viewModel.dispatchViewAction(TaskListViewAction.OnClickTask(taskId = taskId))
+                }
             })
             layoutManager = LinearLayoutManager(activity)
         }

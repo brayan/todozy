@@ -32,15 +32,6 @@ class TaskListPresenter(
 
     override fun getTextForSearch() = filter.text
 
-    override fun onClickNewTask() {
-        view?.showNewTask()
-    }
-
-    override fun onClickTask(position: Int) {
-        val task = tasksView[position] as TaskItemView
-        view?.showTaskDetails(task.taskId)
-    }
-
     override fun onSwipeTaskRight(position: Int) = onTaskSwiped(position, TaskStatus.DONE)
 
     override fun onSwipeTaskLeft(position: Int) = onTaskSwiped(position, TaskStatus.NOT_DONE)

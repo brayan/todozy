@@ -51,4 +51,21 @@ class TaskListViewModelTest {
         assertEquals(TaskListViewState.Action.NavigateToSettings, viewModel.viewState.action.value)
     }
 
+    @Test
+    fun `should navigate to task form screen when dispatchViewAction is called with OnClickNewTask`() {
+        viewModel.dispatchViewAction(TaskListViewAction.OnClickNewTask)
+
+        assertEquals(TaskListViewState.Action.NavigateToTaskForm, viewModel.viewState.action.value)
+    }
+
+    @Test
+    fun `should navigate to task details screen when dispatchViewAction is called with OnClickTask`() {
+        val taskId = 123L
+
+        viewModel.dispatchViewAction(TaskListViewAction.OnClickTask(taskId = taskId))
+
+        val expected = TaskListViewState.Action.NavigateToTaskDetails(taskId = taskId)
+        assertEquals(expected, viewModel.viewState.action.value)
+    }
+
 }
