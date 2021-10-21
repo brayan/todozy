@@ -1,12 +1,17 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
+import androidx.lifecycle.viewModelScope
+import br.com.sailboat.todozy.core.platform.LogService
 import br.com.sailboat.todozy.core.presentation.base.BaseViewModel
+import br.com.sailboat.todozy.core.presentation.model.TaskItemView
+import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction.*
+import kotlinx.coroutines.*
 
 class TaskListViewModel(
     private val getTasksViewUseCase: GetTasksViewUseCase,
@@ -14,17 +19,34 @@ class TaskListViewModel(
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
+    private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
 
     override val viewState = TaskListViewState()
+    private var filter = TaskFilter(TaskCategory.TODAY)
+    private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
     override fun dispatchViewAction(viewAction: TaskListViewAction) {
         when (viewAction) {
+            is OnStart -> onStart()
             is OnClickMenuAbout -> onClickMenuAbout()
             is OnClickMenuSettings -> onClickMenuSettings()
             is OnClickMenuHistory -> onClickMenuHistory()
             is OnClickNewTask -> onClickNewTask()
             is OnClickTask -> onClickTask(viewAction.taskId)
+            is OnInputSearchTerm -> onInputSearchTerm(viewAction.term)
+            is OnSwipeTask -> onSwipeTask(viewAction.position, viewAction.status)
+        }
+    }
+
+    private fun onStart() = viewModelScope.launch {
+        try {
+            viewState.action.postValue(TaskListViewState.Action.CloseNotifications)
+            loadTasks()
+            scheduleAllAlarmsUseCase()
+        } catch (e: Exception) {
+            logService.error(e)
+            // TODO: Handle error
         }
     }
 
@@ -46,6 +68,69 @@ class TaskListViewModel(
 
     private fun onClickTask(taskId: Long) {
         viewState.action.value = TaskListViewState.Action.NavigateToTaskDetails(taskId = taskId)
+    }
+
+    private fun onInputSearchTerm(term: String) = viewModelScope.launch {
+        try {
+            filter.text = term
+            loadTasks()
+        } catch (e: Exception) {
+            logService.error(e)
+            // TODO: Handle error
+        }
+    }
+
+    private suspend fun loadTasks() {
+        viewState.loading.postValue(true)
+        val tasks = getTasksViewUseCase(filter.text)
+        viewState.itemsView.postValue(tasks.toMutableList())
+        viewState.loading.postValue(false)
+    }
+
+    // TODO: Refactor
+    private fun onSwipeTask(position: Int, status: TaskStatus) = launchSwipeTask {
+        try {
+            viewState.taskMetrics.value = null
+
+            val itemsView = viewState.itemsView.value
+
+            val taskId = (itemsView?.get(position) as TaskItemView).taskId
+
+            completeTaskUseCase(taskId, status)
+
+            itemsView.removeAt(position)
+            viewState.action.postValue(TaskListViewState.Action.UpdateRemovedTask(position))
+
+            viewState.itemsView.postValue(itemsView)
+
+            val alarm = getAlarmUseCase(taskId)
+
+            alarm?.run {
+                if (RepeatType.isAlarmRepeating(alarm)) {
+                    viewState.taskMetrics.value =
+                        getTaskMetricsUseCase(TaskHistoryFilter(taskId = taskId))
+                }
+            }
+
+            delay(4000)
+
+            if (swipeTaskAsyncJobs.size == 1) {
+                loadTasks()
+                viewState.taskMetrics.value = null
+            }
+
+        } catch (e: Exception) {
+            // TODO: Handle error
+            logService.error(e)
+        }
+    }
+
+    private fun launchSwipeTask(block: suspend CoroutineScope.() -> Unit) {
+        val job: Job = viewModelScope.launch {
+            supervisorScope { block() }
+        }
+        swipeTaskAsyncJobs.add(job)
+        job.invokeOnCompletion { swipeTaskAsyncJobs.remove(job) }
     }
 
 }

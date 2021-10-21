@@ -1,6 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.SubheadView
@@ -10,11 +13,10 @@ import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
 
-class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TaskListAdapter(private val callback: Callback) :
+    ListAdapter<ItemView, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {
 
-    interface Callback : TaskViewHolder.Callback {
-        val tasksView: List<ItemView>
-    }
+    interface Callback : TaskViewHolder.Callback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         ViewType.TASK.ordinal -> TaskViewHolder(parent, callback)
@@ -23,7 +25,7 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = callback.tasksView[position]
+        val item = getItem(position)
 
         when (item.viewType) {
             ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskItemView)
@@ -31,8 +33,18 @@ class TaskListAdapter(private val callback: Callback) : RecyclerView.Adapter<Rec
         }
     }
 
-    override fun getItemCount() = callback.tasksView.size
+    override fun getItemViewType(position: Int) = getItem(position).viewType
 
-    override fun getItemViewType(position: Int) = callback.tasksView[position].viewType
+    private class TaskListAdapterDiffUtilCallback : DiffUtil.ItemCallback<ItemView>() {
+        override fun areItemsTheSame(
+            oldItem: ItemView,
+            newItem: ItemView,
+        ) = oldItem.viewType == newItem.viewType
 
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(
+            oldItem: ItemView,
+            newItem: ItemView,
+        ) = oldItem == newItem
+    }
 }

@@ -9,40 +9,44 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
+import br.com.sailboat.todozy.core.extensions.isTrue
 import br.com.sailboat.todozy.core.extensions.logDebug
-import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
+import br.com.sailboat.todozy.core.presentation.base.BaseFragment
+import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState.Action.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskListContract.View {
+class TaskListFragment : BaseFragment() {
 
-    override val presenter: TaskListContract.Presenter by inject()
-    val viewModel: TaskListViewModel by viewModel()
+    private val viewModel: TaskListViewModel by viewModel()
+
     private lateinit var binding: FrgTaskListBinding
+    private var progress: ProgressDialog? = null
+    private var taskListAdapter: TaskListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FrgTaskListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ) = FrgTaskListBinding.inflate(inflater, container, false).apply {
+        binding = this
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewState()
+        observeViewModel()
+        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,7 +72,7 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     }
 
     override fun initViews() {
-        setMainTitle()
+        binding.toolbar.setTitle(R.string.app_name)
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
@@ -82,51 +86,67 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         }
     }
 
-    private fun observeViewState() {
+    private fun observeViewModel() {
+        observeActions()
+        viewModel.viewState.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading) showProgress() else hideProgress()
+        }
+        viewModel.viewState.itemsView.observe(viewLifecycleOwner) { items ->
+            taskListAdapter?.submitList(items)
+
+            if (items.isEmpty()) {
+                hideTasks()
+                showEmptyView()
+            } else {
+                showTasks()
+                hideEmptyView()
+            }
+        }
+        viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
+            taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
+        }
+    }
+
+    private fun observeActions() {
         viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
             when (action) {
+                is CloseNotifications -> closeNotifications()
                 is NavigateToAbout -> navigateToAbout()
                 is NavigateToHistory -> navigateToHistory()
                 is NavigateToSettings -> navigateToSettings()
                 is NavigateToTaskForm -> navigateToTaskForm()
                 is NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
+                is UpdateRemovedTask -> updateRemovedTask(action.position)
             }
         }
     }
 
     override fun onSubmitSearch(search: String) {
-        presenter.submitTextForSearch(search)
+        viewModel.dispatchViewAction(TaskListViewAction.OnInputSearchTerm(term = search))
         "onSubmitSearch: $search".logDebug()
     }
 
-    override fun closeNotifications() {
+    private fun closeNotifications() {
         activity?.apply { NotificationHelper().closeNotifications(this) }
     }
 
-    override fun hideEmptyView() = binding.eptView.root.gone()
-
-    override fun hideMetrics() = binding.appbarTaskListFlMetrics.gone()
-
-    override fun hideTasks() = binding.recycler.gone()
-
-    override fun removeTaskFromList(position: Int) {
-        binding.recycler.adapter?.notifyItemRemoved(position)
+    private fun hideEmptyView() {
+        binding.eptView.root.gone()
     }
 
-    override fun setMainTitle() = binding.toolbar.setTitle(R.string.app_name)
-
-    override fun setEmptyTitle() {
-        binding.toolbar.title = ""
+    private fun hideMetrics() {
+        binding.appbarTaskListFlMetrics.gone()
     }
 
-    override fun showEmptyView() = binding.eptView.root.visible()
-
-    override fun showErrorOnSwipeTask() {
-        // TODO: IMPROVE THIS
-        Toast.makeText(activity, getString(R.string.msg_error), Toast.LENGTH_LONG).show()
+    private fun hideTasks() {
+        binding.recycler.gone()
     }
 
-    override fun showMetrics(taskMetrics: TaskMetrics) {
+    private  fun showEmptyView() {
+        binding.eptView.root.visible()
+    }
+
+    private fun showMetrics(taskMetrics: TaskMetrics) {
         binding.taskMetrics.tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
         binding.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
         binding.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
@@ -149,7 +169,9 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         startSettingsActivity()
     }
 
-    override fun showTasks() = binding.recycler.visible()
+    private fun showTasks() {
+        binding.recycler.visible()
+    }
 
     private fun navigateToTaskDetails(taskId: Long) {
         startTaskDetailsActivity(taskId)
@@ -159,8 +181,8 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
         activity?.startTaskHistoryActivity()
     }
 
-    override fun updateTasks() {
-        binding.recycler.adapter?.notifyDataSetChanged()
+    private fun updateRemovedTask(position: Int) {
+        taskListAdapter?.notifyItemRemoved(position)
     }
 
     private fun navigateToAbout() {
@@ -170,22 +192,40 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
     private fun initRecyclerView() {
         binding.recycler.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
-                override val tasksView = presenter.tasksView
                 override fun onClickTask(taskId: Long) {
                     viewModel.dispatchViewAction(TaskListViewAction.OnClickTask(taskId = taskId))
                 }
-            })
+            }).apply {
+                taskListAdapter = this
+            }
             layoutManager = LinearLayoutManager(activity)
         }
 
-        activity?.run {
-            val itemTouchHelper = ItemTouchHelper(SwipeTaskLeftRight(this, object : SwipeTaskLeftRight.Callback {
-                override fun onSwipeLeft(position: Int) = presenter.onSwipeTaskLeft(position)
-                override fun onSwipeRight(position: Int) = presenter.onSwipeTaskRight(position)
-            }))
+        val itemTouchHelper = ItemTouchHelper(
+            SwipeTaskLeftRight(
+                requireContext(),
+                object : SwipeTaskLeftRight.Callback {
+                    override fun onSwipeLeft(position: Int) {
+                        viewModel.dispatchViewAction(
+                            TaskListViewAction.OnSwipeTask(
+                                position = position,
+                                status = TaskStatus.NOT_DONE
+                            )
+                        )
+                    }
 
-            itemTouchHelper.attachToRecyclerView(binding.recycler)
-        }
+                    override fun onSwipeRight(position: Int) {
+                        viewModel.dispatchViewAction(
+                            TaskListViewAction.OnSwipeTask(
+                                position = position,
+                                status = TaskStatus.DONE
+                            )
+                        )
+                    }
+                })
+        )
+
+        itemTouchHelper.attachToRecyclerView(binding.recycler)
 
         binding.recycler.hideFabWhenScrolling(binding.fab)
     }
@@ -201,6 +241,18 @@ class TaskListFragment : BaseMVPFragment<TaskListContract.Presenter>(), TaskList
             settings.isVisible = false
             about.isVisible = true
         }
+    }
+
+    private fun showProgress() {
+        progress = ProgressDialog()
+        if (progress?.isAdded.isTrue().not()) {
+            progress?.show(childFragmentManager, "PROGRESS")
+        }
+    }
+
+    private fun hideProgress() {
+        progress?.dismissAllowingStateLoss()
+        progress = null
     }
 
 }
