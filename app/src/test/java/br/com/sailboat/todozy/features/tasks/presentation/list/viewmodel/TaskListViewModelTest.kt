@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.TestCoroutineRule
 import br.com.sailboat.todozy.core.platform.LogService
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
@@ -112,6 +113,38 @@ class TaskListViewModelTest {
         assertEquals(expected, viewModel.viewState.action.value)
     }
 
+    @Test
+    fun `should call getTasksViewUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
+        runBlocking {
+            val tasks = mutableListOf<ItemView>(TaskItemView(taskId = 543L, taskName = "Task 543"))
+            val term = "Term"
+            prepareScenario(tasksResult = tasks)
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnInputSearchTerm(term = term))
+
+            coVerify(exactly = 1) { getTasksViewUseCase(search = term) }
+            assertEquals(tasks, viewModel.viewState.itemsView.value)
+        }
+    }
+
+    @Test
+    fun `should call completeTaskUseCase when dispatchViewAction is called with OnSwipeTask`() {
+        testCoroutineRule.runBlockingTest {
+            val tasks = mutableListOf<ItemView>(
+                TaskItemView(taskId = 543L, taskName = "Task 543"),
+                TaskItemView(taskId = 978L, taskName = "Task 978"),
+            )
+            val position = 1
+            val status = TaskStatus.DONE
+            viewModel.viewState.itemsView.value = tasks
+            prepareScenario()
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
+
+            coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
+        }
+    }
+
     private fun prepareScenario(
         tasksResult: List<ItemView> = listOf(
             TaskItemView(
@@ -121,7 +154,6 @@ class TaskListViewModelTest {
         )
     ) {
         coEvery { getTasksViewUseCase(any()) } returns tasksResult
-        coEvery { scheduleAllAlarmsUseCase() } just runs
     }
 
 }
