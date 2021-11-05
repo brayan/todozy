@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,6 +105,10 @@ class TaskListFragment : BaseFragment() {
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
     }
 
     private fun observeActions() {
