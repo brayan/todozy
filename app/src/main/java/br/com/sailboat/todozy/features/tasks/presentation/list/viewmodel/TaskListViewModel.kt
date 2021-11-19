@@ -14,6 +14,7 @@ import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskLis
 import kotlinx.coroutines.*
 
 class TaskListViewModel(
+    override val viewState: TaskListViewState = TaskListViewState(),
     private val getTasksViewUseCase: GetTasksViewUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
@@ -22,7 +23,6 @@ class TaskListViewModel(
     private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
 
-    override val viewState = TaskListViewState()
     private var filter = TaskFilter(TaskCategory.TODAY)
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 

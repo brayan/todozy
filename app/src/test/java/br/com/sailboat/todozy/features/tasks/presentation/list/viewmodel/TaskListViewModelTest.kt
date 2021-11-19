@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.TestCoroutineRule
 import br.com.sailboat.todozy.core.platform.LogService
 import br.com.sailboat.todozy.core.presentation.model.ItemView
@@ -17,6 +18,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 class TaskListViewModelTest {
@@ -142,6 +144,49 @@ class TaskListViewModelTest {
             viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
 
             coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
+        }
+    }
+
+    @Test
+    fun `should update removed task when dispatchViewAction is called with OnSwipeTask`() {
+        testCoroutineRule.runBlockingTest {
+            val task1 = TaskItemView(taskId = 543L, taskName = "Task 543")
+            val task2 = TaskItemView(taskId = 978L, taskName = "Task 978")
+            val tasks = mutableListOf<ItemView>(task1, task2)
+            val position = 1
+            val status = TaskStatus.DONE
+            val observer = mockk<Observer<TaskListViewState.Action>>()
+            val slot = slot<TaskListViewState.Action>()
+            val list = arrayListOf<TaskListViewState.Action>()
+            viewModel.viewState.action.observeForever(observer)
+            viewModel.viewState.itemsView.value = tasks
+            every { observer.onChanged(capture(slot)) } answers {
+                list.add(slot.captured)
+            }
+            prepareScenario()
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
+
+            val expected = TaskListViewState.Action.UpdateRemovedTask(position)
+            assertTrue { list.contains(expected) }
+        }
+    }
+
+    @Test
+    fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() {
+        testCoroutineRule.runBlockingTest {
+            val tasks = mutableListOf<ItemView>(
+                TaskItemView(taskId = 543L, taskName = "Task 543"),
+                TaskItemView(taskId = 978L, taskName = "Task 978"),
+            )
+            val position = 1
+            val status = TaskStatus.DONE
+            viewModel.viewState.itemsView.value = tasks
+            prepareScenario()
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
+
+            coVerify { getAlarmUseCase(taskId = 978L) }
         }
     }
 

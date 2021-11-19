@@ -1,9 +1,14 @@
 package br.com.sailboat.todozy.di
 
+import br.com.sailboat.todozy.core.platform.LogService
 import br.com.sailboat.todozy.features.about.presentation.AboutContract
 import br.com.sailboat.todozy.features.about.presentation.AboutPresenter
 import br.com.sailboat.todozy.features.settings.presentation.SettingsContract
 import br.com.sailboat.todozy.features.settings.presentation.SettingsPresenter
+import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
+import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
+import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
@@ -38,6 +43,16 @@ val uiModule = module {
     factory<GetShortDateViewUseCase> { GetShortDateView(get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
-    viewModel { TaskListViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        TaskListViewModel(
+            getTasksViewUseCase = get(),
+            getAlarmUseCase = get(),
+            scheduleAllAlarmsUseCase = get(),
+            getTaskMetricsUseCase = get(),
+            completeTaskUseCase = get(),
+            logService = get(),
+        )
+    }
+
     viewModel { TaskHistoryViewModel(get(), get(), get(), get(), get(), get(), get()) }
 }
