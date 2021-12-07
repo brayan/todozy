@@ -6,6 +6,9 @@ import br.com.sailboat.todozy.TestCoroutineRule
 import br.com.sailboat.todozy.core.platform.LogService
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
+import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
+import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
@@ -17,6 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -190,15 +194,42 @@ class TaskListViewModelTest {
         }
     }
 
+    @Test
+    fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnSwipeTask on a task with repetitive alarm`() {
+        testCoroutineRule.runBlockingTest {
+            val tasks = mutableListOf<ItemView>(
+                TaskItemView(taskId = 543L, taskName = "Task 543"),
+                TaskItemView(taskId = 978L, taskName = "Task 978"),
+            )
+            val alarm = Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            )
+            val position = 1
+            val status = TaskStatus.DONE
+            viewModel.viewState.itemsView.value = tasks
+            prepareScenario(alarmResult = alarm)
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
+
+            coVerify { getTaskMetricsUseCase(TaskHistoryFilter(taskId = 978L)) }
+        }
+    }
+
     private fun prepareScenario(
         tasksResult: List<ItemView> = listOf(
             TaskItemView(
                 taskName = "Task Name",
                 taskId = 123L,
             )
+        ),
+        alarmResult: Alarm = Alarm(
+            dateTime = Calendar.getInstance(),
+            repeatType = RepeatType.WEEK,
         )
     ) {
         coEvery { getTasksViewUseCase(any()) } returns tasksResult
+        coEvery { getAlarmUseCase(any()) } returns alarmResult
     }
 
 }
