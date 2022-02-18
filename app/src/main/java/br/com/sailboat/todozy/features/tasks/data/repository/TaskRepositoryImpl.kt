@@ -10,8 +10,10 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
 
-class TaskRepositoryImpl(private val alarmRepository: AlarmRepository,
-                         private val taskLocalDataSource: TaskLocalDataSource) : TaskRepository {
+class TaskRepositoryImpl(
+    private val alarmRepository: AlarmRepository,
+    private val taskLocalDataSource: TaskLocalDataSource
+) : TaskRepository {
 
     override suspend fun getTask(taskId: Long): Task {
         "${javaClass.simpleName}.getTask($taskId)".logDebug()

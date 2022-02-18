@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
+import br.com.sailboat.todozy.features.tasks.domain.factory.TaskMockFactory
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
@@ -17,14 +18,10 @@ class GetTasksTest {
     private val repository: TaskRepository = mockk(relaxed = true)
     private val getTasks = GetTasks(repository)
 
-    private val tasks = listOf(
-        Task(id = 45, name = "Task 1", notes = "Some notes"),
-        Task(id = 58, name = "Task 2", notes = "Some notes")
-    )
-
     @Test
     fun `should get tasks from repository with alarms triggered before now`() = runBlocking {
-        coEvery { repository.getBeforeNowTasks() } returns tasks
+        val tasks = TaskMockFactory.makeTaskList()
+        prepareScenario(tasks = tasks)
 
         val result = getTasks(TaskFilter(TaskCategory.BEFORE_NOW))
 
@@ -39,7 +36,8 @@ class GetTasksTest {
 
     @Test
     fun `should get tasks from repository with alarms triggered before today`() = runBlocking {
-        coEvery { repository.getBeforeTodayTasks(any()) } returns tasks
+        val tasks = TaskMockFactory.makeTaskList()
+        prepareScenario(tasks = tasks)
 
         val result = getTasks(TaskFilter(TaskCategory.BEFORE_TODAY))
 
@@ -55,7 +53,8 @@ class GetTasksTest {
     @Test
     fun `should get tasks from repository with alarms for today or without any alarm`() =
         runBlocking {
-            coEvery { repository.getTodayTasks(any()) } returns tasks
+            val tasks = TaskMockFactory.makeTaskList()
+            prepareScenario(tasks = tasks)
 
             val result = getTasks(TaskFilter(TaskCategory.TODAY))
 
@@ -70,7 +69,8 @@ class GetTasksTest {
 
     @Test
     fun `should get tasks from repository with alarms for tomorrow`() = runBlocking {
-        coEvery { repository.getTomorrowTasks(any()) } returns tasks
+        val tasks = TaskMockFactory.makeTaskList()
+        prepareScenario(tasks = tasks)
 
         val result = getTasks(TaskFilter(TaskCategory.TOMORROW))
 
@@ -85,7 +85,8 @@ class GetTasksTest {
 
     @Test
     fun `should get tasks from repository with alarms for next days`() = runBlocking {
-        coEvery { repository.getNextDaysTasks(any()) } returns tasks
+        val tasks = TaskMockFactory.makeTaskList()
+        prepareScenario(tasks = tasks)
 
         val result = getTasks(TaskFilter(TaskCategory.NEXT_DAYS))
 
@@ -96,6 +97,16 @@ class GetTasksTest {
         coVerify(exactly = 1) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
         assertEquals(result, tasks)
+    }
+
+    private fun prepareScenario(
+        tasks: List<Task> = TaskMockFactory.makeTaskList(),
+    ) {
+        coEvery { repository.getBeforeNowTasks() } returns tasks
+        coEvery { repository.getBeforeTodayTasks(any()) } returns tasks
+        coEvery { repository.getTodayTasks(any()) } returns tasks
+        coEvery { repository.getTomorrowTasks(any()) } returns tasks
+        coEvery { repository.getNextDaysTasks(any()) } returns tasks
     }
 
 }
