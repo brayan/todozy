@@ -112,7 +112,7 @@ class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(datab
         return insert(statement)
     }
 
-    override suspend fun update(task: TaskData, enable: Boolean) {
+    override suspend fun update(task: TaskData, enabled: Boolean) {
         val sql = StringBuilder()
         sql.append(" UPDATE Task SET ")
         sql.append(" name = ?, ")
@@ -125,7 +125,7 @@ class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(datab
         statement.bindString(1, task.name)
         statement.bindString(2, task.notes)
         statement.bindString(3, getCalendarToBind(Calendar.getInstance()))
-        statement.bindLong(4, parseBooleanToInt(enable).toLong())
+        statement.bindLong(4, parseBooleanToInt(enabled).toLong())
         statement.bindLong(5, task.id)
 
         update(statement)

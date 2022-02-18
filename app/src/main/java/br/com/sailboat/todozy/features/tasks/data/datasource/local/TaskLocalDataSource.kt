@@ -12,5 +12,5 @@ interface TaskLocalDataSource {
     suspend fun getTasksThrowBeforeNow(): List<TaskData>
     suspend fun getTasksWithAlarms(): List<TaskData>
     suspend fun insert(taskData: TaskData): Long
-    suspend fun update(taskData: TaskData, b: Boolean)
+    suspend fun update(taskData: TaskData, enabled: Boolean)
 }

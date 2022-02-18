@@ -10,9 +10,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -26,9 +24,6 @@ class TaskRepositoryImplTest {
         alarmRepository = alarmRepository,
         taskLocalDataSource = taskLocalDataSource,
     )
-
-//    suspend fun insert(taskData: TaskData): Long
-//    suspend fun update(taskData: TaskData, b: Boolean)
 
     @Test
     fun `should call getTask from taskLocalDataSource when getTask is called from taskRepository`() =
@@ -205,14 +200,15 @@ class TaskRepositoryImplTest {
     fun `should call insert from taskLocalDataSource when insert is called from taskRepository`() =
         runBlocking {
             val task = TaskMockFactory.makeTask()
-            prepareScenario()
+            val taskId = 45L
+            prepareScenario(taskId = taskId)
 
             taskRepository.insert(task)
 
             coVerify {
                 taskLocalDataSource.insert(
                     TaskData(
-                        id = task.id,
+                        id = taskId,
                         name = task.name,
                         notes = task.notes,
                     )
@@ -220,9 +216,30 @@ class TaskRepositoryImplTest {
             }
         }
 
+    @Test
+    fun `should call update from taskLocalDataSource when update is called from taskRepository`() =
+        runBlocking {
+            val task = TaskMockFactory.makeTask()
+            prepareScenario()
+
+            taskRepository.update(task)
+
+            coVerify {
+                taskLocalDataSource.update(
+                    taskData = TaskData(
+                        id = task.id,
+                        name = task.name,
+                        notes = task.notes,
+                    ),
+                    enabled = true,
+                )
+            }
+        }
+
     private fun prepareScenario(
         taskDataResult: TaskData = TaskDataMockFactory.makeTaskData(),
-        alarmResult: Alarm? = AlarmMockFactory.makeAlarm()
+        alarmResult: Alarm? = AlarmMockFactory.makeAlarm(),
+        taskId: Long = 45L,
     ) {
         coEvery { taskLocalDataSource.getTask(any()) } returns taskDataResult
         coEvery { taskLocalDataSource.getBeforeTodayTasks(any()) } returns listOf(taskDataResult)
@@ -231,6 +248,8 @@ class TaskRepositoryImplTest {
         coEvery { taskLocalDataSource.getNextDaysTasks(any()) } returns listOf(taskDataResult)
         coEvery { taskLocalDataSource.getTasksThrowBeforeNow() } returns listOf(taskDataResult)
         coEvery { taskLocalDataSource.getTasksWithAlarms() } returns listOf(taskDataResult)
+        coEvery { taskLocalDataSource.insert(any()) } returns taskId
+        coEvery { taskLocalDataSource.update(any(), any()) } just runs
         coEvery { alarmRepository.getAlarmByTaskId(any()) } returns alarmResult
     }
 
