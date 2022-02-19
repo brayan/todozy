@@ -12,7 +12,9 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import java.util.*
 
-class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database), TaskHistoryLocalDataSource {
+class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) :
+    BaseSQLite(database),
+    TaskHistoryLocalDataSource {
 
     override val createTableStatement = StringBuilder()
             .append(" CREATE TABLE TaskHistory ( ")
@@ -26,7 +28,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
             .toString()
 
 
-    fun save(taskId: Long, taskStatus: Int): Long {
+    override fun save(taskId: Long, taskStatus: Int): Long {
         val sql = StringBuilder()
 
         sql.append(" INSERT INTO TaskHistory ")
@@ -42,7 +44,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return insert(statement)
     }
 
-    fun update(taskHistory: TaskHistoryData) {
+    override fun update(taskHistoryData: TaskHistoryData) {
         val sql = StringBuilder()
         sql.append(" UPDATE TaskHistory SET ")
         sql.append(" status = ?, ")
@@ -50,14 +52,14 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         sql.append(" WHERE id = ? ")
 
         val statement = compileStatement(sql.toString())
-        statement.bindLong(1, taskHistory.status.toLong())
-        statement.bindLong(2, parseBooleanToInt(taskHistory.enabled).toLong())
-        statement.bindLong(3, taskHistory.id)
+        statement.bindLong(1, taskHistoryData.status.toLong())
+        statement.bindLong(2, parseBooleanToInt(taskHistoryData.enabled).toLong())
+        statement.bindLong(3, taskHistoryData.id)
 
         update(statement)
     }
 
-    fun delete(taskHistoryId: Long) {
+    override fun delete(taskHistoryId: Long) {
         val sql = StringBuilder()
         sql.append(" DELETE FROM TaskHistory WHERE TaskHistory.id = ?")
 
@@ -67,12 +69,12 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         delete(statement)
     }
 
-    fun deleteAllHistory() {
+    override fun deleteAllHistory() {
         val delete = " DELETE FROM TaskHistory"
         delete(compileStatement(delete))
     }
 
-    fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -86,7 +88,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -100,7 +102,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -114,7 +116,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    fun getTaskHistoryByTask(taskId: Long): List<TaskHistoryData> {
+    override fun getTaskHistoryByTask(taskId: Long): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -138,7 +140,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int {
+    override fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int {
         val query = TaskHistoryQueryBuilder()
         query.bindSelectCount()
         query.bindDefaultInnerJoin()
@@ -150,7 +152,7 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return getCountFromQuery(query.toString(), filter)
     }
 
-    fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
+    override fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
         val query = TaskHistoryQueryBuilder()
         query.bindSelectCount()
         query.bindDefaultInnerJoin()
@@ -218,13 +220,14 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLit
         return historyList
     }
 
-    private fun Cursor.mapToTaskHistoryData() = TaskHistoryData(id = getLong(this, "id")
-            ?: Entity.NO_ID,
+    private fun Cursor.mapToTaskHistoryData() =
+        TaskHistoryData(
+            id = getLong(this, "id") ?: Entity.NO_ID,
             taskId = getLong(this, "fkTaskId") ?: Entity.NO_ID,
             taskName = getString(this, "name"),
             status = getInt(this, "status") ?: TaskStatus.DONE.id,
             insertingDate = getString(this, "insertingDate"),
-            enabled = getBoolean(this, "enabled") ?: true)
-
+            enabled = getBoolean(this, "enabled") ?: true
+        )
 
 }

@@ -10,8 +10,10 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import java.util.*
 
-class AlarmRepositoryImpl(private val alarmLocalDataSource: AlarmLocalDataSource,
-                          private val alarmManager: AlarmManagerHelper) : AlarmRepository {
+class AlarmRepositoryImpl(
+    private val alarmLocalDataSource: AlarmLocalDataSource,
+    private val alarmManager: AlarmManagerHelper,
+) : AlarmRepository {
 
     override suspend fun getAlarmByTaskId(taskId: Long): Alarm? {
         "${javaClass.simpleName}.getAlarmByTaskId(taskId: $taskId)".logDebug()

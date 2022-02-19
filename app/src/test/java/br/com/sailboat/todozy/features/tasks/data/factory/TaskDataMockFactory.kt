@@ -10,15 +10,13 @@ object TaskDataMockFactory {
         notes: String? = "Task Notes",
         insertingDate: String? = null, // TODO: ADD A VALID INSERTING DATE
         enabled: Boolean = true,
-    ): TaskData {
-        return TaskData(
-            id = id,
-            name = name,
-            notes = notes,
-            insertingDate = insertingDate,
-            enabled = enabled,
-        )
-    }
+    ) = TaskData(
+        id = id,
+        name = name,
+        notes = notes,
+        insertingDate = insertingDate,
+        enabled = enabled,
+    )
 
     fun makeTaskDataList(task: TaskData = makeTaskData()) = listOf(task)
 }

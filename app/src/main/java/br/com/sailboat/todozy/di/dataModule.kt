@@ -19,11 +19,13 @@ val dataModule = module {
     single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
     single<AlarmRepository> { AlarmRepositoryImpl(get(), get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
+    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+
     single<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
     single<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
     single<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
-    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
+
     single { DatabaseOpenHelper(get()) }
     single { AlarmManagerHelper(get()) }
 }

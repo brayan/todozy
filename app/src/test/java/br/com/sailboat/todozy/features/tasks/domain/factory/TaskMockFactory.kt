@@ -20,7 +20,7 @@ object TaskMockFactory {
             id = id,
             name = name,
             notes = notes,
-            alarm = alarm
+            alarm = alarm,
         )
     }
 
