@@ -13,21 +13,24 @@ data class TaskHistoryData(
     var enabled: Boolean = true,
 )
 
-fun TaskHistoryData.mapToTaskHistory() = TaskHistory(
-    id = id,
-    taskId = taskId,
-    taskName = taskName ?: "",
-    status = TaskStatus.getById(status),
-    insertingDate = insertingDate ?: ""
-)
+// TODO: Move mappers into a specific class
+fun TaskHistoryData.mapToTaskHistory() =
+    TaskHistory(
+        id = id,
+        taskId = taskId,
+        taskName = taskName.orEmpty(),
+        status = TaskStatus.getById(status),
+        insertingDate = insertingDate.orEmpty(),
+    )
 
 fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
 
-fun TaskHistory.mapToTaskHistoryData() = TaskHistoryData(
-    id = id,
-    taskId = taskId,
-    taskName = taskName,
-    status = status.id,
-    insertingDate = insertingDate,
-    enabled = true
-)
+fun TaskHistory.mapToTaskHistoryData():TaskHistoryData =
+    TaskHistoryData(
+        id = id,
+        taskId = taskId,
+        taskName = taskName,
+        status = status.id,
+        insertingDate = insertingDate,
+        enabled = true
+    )

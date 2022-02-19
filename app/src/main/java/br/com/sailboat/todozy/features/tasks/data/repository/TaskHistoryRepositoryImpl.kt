@@ -16,6 +16,16 @@ class TaskHistoryRepositoryImpl(
     private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource
 ) : TaskHistoryRepository {
 
+    override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
+        "${javaClass.simpleName}.getTotalOfNotDoneTasks($filter)".logDebug()
+        return taskHistoryLocalDataSource.getTotalOfNotDoneTasks(filter)
+    }
+
+    override suspend fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int {
+        "${javaClass.simpleName}.getTotalOfDoneTasks($filter)".logDebug()
+        return taskHistoryLocalDataSource.getTotalOfDoneTasks(filter)
+    }
+
     override suspend fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistory> {
         "${javaClass.simpleName}.getTodayHistory($filter)".logDebug()
         return taskHistoryLocalDataSource.getTodayHistory(filter).mapToTaskHistoryList()
@@ -29,6 +39,11 @@ class TaskHistoryRepositoryImpl(
     override suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistory> {
         "${javaClass.simpleName}.getPreviousDaysHistory($filter)".logDebug()
         return taskHistoryLocalDataSource.getPreviousDaysHistory(filter).mapToTaskHistoryList()
+    }
+
+    override suspend fun getTaskHistory(taskId: Long): List<TaskHistory> {
+        "${javaClass.simpleName}.getTaskHistory($taskId)".logDebug()
+        return taskHistoryLocalDataSource.getTaskHistoryByTask(taskId).mapToTaskHistoryList()
     }
 
     override suspend fun insert(task: Task, status: TaskStatus) {
@@ -49,21 +64,6 @@ class TaskHistoryRepositoryImpl(
     override suspend fun deleteAll() {
         "${javaClass.simpleName}.deleteAll()".logDebug()
         taskHistoryLocalDataSource.deleteAllHistory()
-    }
-
-    override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
-        "${javaClass.simpleName}.getTotalOfNotDoneTasks($filter)".logDebug()
-        return taskHistoryLocalDataSource.getTotalOfNotDoneTasks(filter)
-    }
-
-    override suspend fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int {
-        "${javaClass.simpleName}.getTotalOfDoneTasks($filter)".logDebug()
-        return taskHistoryLocalDataSource.getTotalOfDoneTasks(filter)
-    }
-
-    override suspend fun getTaskHistory(taskId: Long): List<TaskHistory> {
-        "${javaClass.simpleName}.getTaskHistory($taskId)".logDebug()
-        return taskHistoryLocalDataSource.getTaskHistoryByTask(taskId).mapToTaskHistoryList()
     }
 
 }

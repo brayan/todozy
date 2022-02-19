@@ -22,7 +22,9 @@
             android:name="android.test.runner"
             android:required="false" />
 
-        <receiver android:name=".core.platform.receivers.BootReceiver">
+        <receiver
+            android:name=".core.platform.receivers.BootReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -36,7 +38,8 @@
 
         <activity
             android:name=".features.LauncherActivity"
-            android:theme="@style/AppTheme.SplashScreen">
+            android:theme="@style/AppTheme.SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />

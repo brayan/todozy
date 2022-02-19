@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
-    compileSdkVersion 31
+    compileSdk 31
     buildToolsVersion = '30.0.3'
 
     defaultConfig {
         applicationId "br.com.sailboat.todozy"
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdk 21
+        targetSdk 31
         versionCode 14
         versionName "1.5"
         vectorDrawables.useSupportLibrary = true
@@ -29,8 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     testOptions {

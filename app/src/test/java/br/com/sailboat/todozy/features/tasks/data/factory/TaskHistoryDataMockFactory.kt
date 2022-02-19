@@ -1,7 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.data.factory
 
-import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
 
 object TaskHistoryDataMockFactory {
@@ -10,7 +8,7 @@ object TaskHistoryDataMockFactory {
         id: Long = 45L,
         taskId: Long = 45L,
         taskName: String = "Task Name",
-        status: Int = 0,
+        status: Int = 1,
         insertingDate: String? = null, // TODO: ADD A VALID INSERTING DATE
         enabled: Boolean = true,
     ) = TaskHistoryData(
