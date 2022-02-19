@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.core.extensions.isAfterNow
-import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.utility.kotlin.extension.isAfterNow
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 
 class ScheduleAllAlarms(
     private val getTasksUseCase: GetTasksUseCase,

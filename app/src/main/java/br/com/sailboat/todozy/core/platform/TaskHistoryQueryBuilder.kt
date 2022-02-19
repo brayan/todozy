@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.extensions.*
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.utility.kotlin.extension.*
 import java.util.*
 
 class TaskHistoryQueryBuilder {

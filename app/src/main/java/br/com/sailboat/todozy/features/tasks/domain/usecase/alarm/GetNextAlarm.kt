@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.*
 
 class GetNextAlarm : GetNextAlarmUseCase {

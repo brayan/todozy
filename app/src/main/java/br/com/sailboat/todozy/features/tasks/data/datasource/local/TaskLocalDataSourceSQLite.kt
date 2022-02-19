@@ -5,13 +5,13 @@ import br.com.sailboat.todozy.core.base.BaseFilter
 import br.com.sailboat.todozy.core.base.BaseSQLite
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.exceptions.EntityNotFoundException
-import br.com.sailboat.todozy.core.extensions.getFinalCalendarForToday
-import br.com.sailboat.todozy.core.extensions.getFinalCalendarForTomorrow
-import br.com.sailboat.todozy.core.extensions.getInitialCalendarForToday
-import br.com.sailboat.todozy.core.extensions.getInitialCalendarForTomorrow
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForToday
+import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForTomorrow
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToday
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 import java.util.*
 
 class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database), TaskLocalDataSource {

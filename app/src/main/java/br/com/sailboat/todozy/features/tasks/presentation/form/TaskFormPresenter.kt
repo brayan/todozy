@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.features.tasks.presentation.form
 
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.exceptions.RequiredFieldNotFilledException
-import br.com.sailboat.todozy.core.extensions.getInitialAlarm
 import br.com.sailboat.todozy.core.extensions.incrementToNextValidDate
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
@@ -14,6 +13,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFieldsUseCa
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetNextAlarmUseCase
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialAlarm
 import kotlinx.coroutines.runBlocking
 import java.util.*
 

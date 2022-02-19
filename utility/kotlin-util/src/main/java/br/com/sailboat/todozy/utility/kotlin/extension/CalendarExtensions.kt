@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.extensions
+package br.com.sailboat.todozy.utility.kotlin.extension
 
 import java.text.SimpleDateFormat
 import java.util.*

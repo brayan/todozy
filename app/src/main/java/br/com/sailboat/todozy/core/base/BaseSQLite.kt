@@ -4,8 +4,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
-import br.com.sailboat.todozy.core.extensions.toDateTimeCalendar
-import br.com.sailboat.todozy.core.extensions.toDateTimeString
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import java.util.*
 
 abstract class BaseSQLite(database: SQLiteOpenHelper) {

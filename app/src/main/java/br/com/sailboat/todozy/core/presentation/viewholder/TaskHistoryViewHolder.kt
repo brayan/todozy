@@ -4,15 +4,15 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.isCurrentYear
-import br.com.sailboat.todozy.core.extensions.isToday
-import br.com.sailboat.todozy.core.extensions.isYesterday
-import br.com.sailboat.todozy.core.extensions.toDateTimeCalendar
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
 import br.com.sailboat.todozy.databinding.VhTaskHistoryBinding
+import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
+import br.com.sailboat.todozy.utility.kotlin.extension.isToday
+import br.com.sailboat.todozy.utility.kotlin.extension.isYesterday
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import java.text.ParseException
 import java.util.*
 

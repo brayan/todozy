@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.*
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
+import br.com.sailboat.todozy.utility.kotlin.extension.isToday
+import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
 import java.util.*
 
 class AlarmColor {

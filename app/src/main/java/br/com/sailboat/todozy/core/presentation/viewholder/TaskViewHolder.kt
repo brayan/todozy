@@ -1,14 +1,14 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.core.extensions.isAfterTomorrow
-import br.com.sailboat.todozy.core.extensions.isBeforeToday
-import br.com.sailboat.todozy.core.extensions.isCurrentYear
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.TaskItemView
 import br.com.sailboat.todozy.databinding.VhTaskBinding
+import br.com.sailboat.todozy.utility.kotlin.extension.isAfterTomorrow
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeToday
+import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
 import java.util.*
 
 class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :

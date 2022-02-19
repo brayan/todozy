@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.core.extensions.getInitialCalendarForTomorrow
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 
 class ScheduleAlarmUpdates(
     private val alarmRepository: AlarmRepository,

@@ -3,10 +3,10 @@ package br.com.sailboat.todozy.core.presentation.helper
 import android.content.Context
 import android.text.format.DateFormat
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.getDayName
-import br.com.sailboat.todozy.core.extensions.isToday
-import br.com.sailboat.todozy.core.extensions.isTomorrow
-import br.com.sailboat.todozy.core.extensions.toDateTimeCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.getDayName
+import br.com.sailboat.todozy.utility.kotlin.extension.isToday
+import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import java.text.SimpleDateFormat
 import java.util.*
 

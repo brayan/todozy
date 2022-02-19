@@ -3,8 +3,6 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.extensions.clearTime
-import br.com.sailboat.todozy.core.extensions.setFinalTimeToCalendar
 import br.com.sailboat.todozy.core.presentation.base.BaseViewModel
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
@@ -21,6 +19,8 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistor
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState
+import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
+import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.core.extensions
 
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.*
 
 // TODO: REMOVE THIS EXTENSIONS AFTER REFACTORING

@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.core.extensions.isBeforeNow
 import br.com.sailboat.todozy.core.extensions.isTrue
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions
+import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 
 class CheckTaskFields : CheckTaskFieldsUseCase {
 

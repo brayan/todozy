@@ -3,10 +3,10 @@ package br.com.sailboat.todozy.features.tasks.data.datasource.local
 import android.database.Cursor
 import br.com.sailboat.todozy.core.base.BaseSQLite
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.extensions.toDateTimeString
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.AlarmData
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import java.util.*
 
 class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database), AlarmLocalDataSource {
