@@ -39,7 +39,7 @@ class TaskHistoryRepositoryImplTest {
 //    fun getTaskHistoryByTask(taskId: Long): List<TaskHistoryData>
 
 //    @Test
-//    fun `should call getBeforeTodayTasks from taskLocalDataSource when getBeforeTodayTasks is called from taskRepository`() =
+//    fun `should call getTodayHistory from taskHistoryLocalDataSource when getTodayHistory is called from taskHistoryRepository`() =
 //        runBlocking {
 //            val taskDataResult = TaskDataMockFactory.makeTaskData()
 //            val taskHistoryFilter = TaskHistoryFilter()
