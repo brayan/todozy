@@ -490,10 +490,8 @@
             <path
                 android:pathData="M187.4612 -353.22518a0.49494777 0.49494777 0 0 0 -0.40848 0.49017l0 6.73161a0.49494777 0.49494777 0 0 0 0.50651 0.49017l15.66897 0a0.49494777 0.49494777 0 0 0 0.40847 -0.78427l-4.75461 -6.71527a0.49494777 0.49494777 0 0 0 -0.40847 -0.21241l-10.91436 0a0.49494777 0.49494777 0 0 0 -0.049 0 0.49494777 0.49494777 0 0 0 -0.049 0z"
                 android:fillColor="#d5e5ff" />
-            <group
-                android:translateX="0.2565623">
-                <group
-                    android:translateY="-6.875">
+            <group android:translateX="0.2565623">
+                <group android:translateY="-6.875">
                     <path
                         android:pathData="M183.1875 -330.625c-0.75555 0.0212 -1.54665 0.21893 -2.25 0.625 -2.24405 1.29561 -3.01482 4.16139 -1.71875 6.40625 1.29611 2.24493 4.19213 3.04636 6.4375 1.75 2.24542 -1.2964 3.01461 -4.193 1.71875 -6.4375 -0.89068 -1.54271 -2.52123 -2.39055 -4.1875 -2.34375z"
                         android:fillColor="#f9f9f9" />
@@ -697,14 +695,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1025.46">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -713,14 +709,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1060.715">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -729,14 +723,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1095.969">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -745,14 +737,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1131.223">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -761,14 +751,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1166.478">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -777,14 +765,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1201.732">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -793,14 +779,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1236.986">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -809,14 +793,12 @@
                 <group
                     android:translateX="563.8932"
                     android:translateY="-1272.241">
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 147.08238l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
                     </group>
-                    <group
-                        android:rotation="-90">
+                    <group android:rotation="-90">
                         <path
                             android:pathData="M-820.27545 192.33722l9.335 0 0 34.79409 -9.335 0z"
                             android:fillColor="#ffffff" />
@@ -967,8 +949,7 @@
             <path
                 android:pathData="M111.70565 -363.60878c0.17507 0.73529 0.18982 1.53837 -0.0204 2.32285 -0.67066 2.50292 -3.25031 4.00573 -5.75412 3.33483 -2.5039 -0.67091 -4.01011 -3.26553 -3.33906 -5.76991 0.67107 -2.50444 3.27071 -3.99406 5.77413 -3.32327 1.72067 0.46104 2.95336 1.8139 3.33942 3.4355zm-0.50503 0.13532c-0.34332 -1.442 -1.43494 -2.65035 -2.9685 -3.06126 -2.23 -0.59753 -4.53321 0.71885 -5.13047 2.94783 -0.59726 2.22903 0.73407 4.52882 2.96361 5.12623 2.22959 0.59741 4.51279 -0.72888 5.11045 -2.95937 0.18615 -0.69472 0.18138 -1.39616 0.0249 -2.05343z"
                 android:fillColor="#b3b3b3" />
-            <group
-                android:scaleX="-1">
+            <group android:scaleX="-1">
                 <path
                     android:pathData="M-149.1691 -374.27408l51.52294 0 0 2.3103 -51.52294 0z"
                     android:fillColor="#ffaaaa" />
@@ -1053,8 +1034,7 @@
                 android:scaleY="0.2727005"
                 android:translateX="385.4716"
                 android:translateY="-632.8816">
-                <group
-                    android:rotation="38.34298">
+                <group android:rotation="38.34298">
                     <path
                         android:pathData="M552.61383 477.78415l10.67948 0 0 48.43906 -10.67948 0z"
                         android:fillColor="#d89a70" />
@@ -1083,8 +1063,7 @@
                 android:scaleY="0.1860942"
                 android:translateX="428.4465"
                 android:translateY="-575.5693">
-                <group
-                    android:rotation="38.34298">
+                <group android:rotation="38.34298">
                     <path
                         android:pathData="M552.61383 477.78415l10.67948 0 0 48.43906 -10.67948 0z"
                         android:fillColor="#d89a70" />
@@ -1127,8 +1106,7 @@
                 <path
                     android:pathData="M1414.9268 -537.40735l89.6518 0 0 153.35028 -89.6518 0z"
                     android:fillColor="#ffccaa" />
-                <group
-                    android:scaleY="-1">
+                <group android:scaleY="-1">
                     <path
                         android:pathData="M1410.9268 537.40735l97.6518 0 0 7.14972 -97.6518 0z"
                         android:fillColor="#b3e9ff" />
@@ -1146,8 +1124,7 @@
                 <group
                     android:translateX="1660.878"
                     android:translateY="-1040.517">
-                    <group
-                        android:translateX="-3.5">
+                    <group android:translateX="-3.5">
                         <path
                             android:pathData="M-238.17303 508.37769l21.76955 0 0 26.67238 -21.76955 0z"
                             android:fillColor="#ffffff" />
@@ -1162,8 +1139,7 @@
                                 android:fillColor="#83cbc6" />
                         </group>
                     </group>
-                    <group
-                        android:translateX="26.5">
+                    <group android:translateX="26.5">
                         <path
                             android:pathData="M-238.17303 508.37769l21.76955 0 0 26.67238 -21.76955 0z"
                             android:fillColor="#ffffff" />
@@ -1178,8 +1154,7 @@
                                 android:fillColor="#83cbc6" />
                         </group>
                     </group>
-                    <group
-                        android:translateX="56.5">
+                    <group android:translateX="56.5">
                         <path
                             android:pathData="M-238.17303 508.37769l21.76955 0 0 26.67238 -21.76955 0z"
                             android:fillColor="#ffffff" />
@@ -1301,8 +1276,7 @@
                             android:pathData="M-269.40767 710.1225a16.970562 16.970562 0 0 1 -16.97056 16.97056 16.970562 16.970562 0 0 1 -16.97057 -16.97056 16.970562 16.970562 0 0 1 16.97057 -16.97056 16.970562 16.970562 0 0 1 16.97056 16.97056z"
                             android:fillColor="#4d4d4d" />
                     </group>
-                    <group
-                        android:scaleX="-1">
+                    <group android:scaleX="-1">
                         <path
                             android:pathData="M352.44113 634.06927l28 0 0 56 -28 0z"
                             android:fillColor="#83caca" />
@@ -1316,15 +1290,13 @@
                             android:pathData="M-269.40767 710.1225a16.970562 16.970562 0 0 1 -16.97056 16.97056 16.970562 16.970562 0 0 1 -16.97057 -16.97056 16.970562 16.970562 0 0 1 16.97057 -16.97056 16.970562 16.970562 0 0 1 16.97056 16.97056z"
                             android:fillColor="#4d4d4d" />
                     </group>
-                    <group
-                        android:scaleX="-1">
+                    <group android:scaleX="-1">
                         <path
                             android:pathData="M380.44113 634.06927l1.5 0 0 56 -1.5 0z"
                             android:fillColor="#4aacac" />
                     </group>
                 </group>
-                <group
-                    android:scaleX="-1">
+                <group android:scaleX="-1">
                     <path
                         android:pathData="M-1481.9628 -427.13348l44.4202 0 0 2.89028 -44.4202 0z"
                         android:fillColor="#f8fdff" />
@@ -1349,8 +1321,7 @@
                     android:pathData="M112.52245 727.40906l14.65938 0 0 96.80811 -14.65938 0z"
                     android:fillColor="#d89a70" />
             </group>
-            <group
-                android:rotation="34.97008">
+            <group android:rotation="34.97008">
                 <path
                     android:pathData="M743.81403 285.86517l14.65937 0 0 96.80812 -14.65937 0z"
                     android:fillColor="#d89a70" />

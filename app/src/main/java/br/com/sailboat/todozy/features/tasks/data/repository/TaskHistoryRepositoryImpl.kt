@@ -1,9 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
 import br.com.sailboat.todozy.core.extensions.logDebug
-import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSource
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.features.tasks.data.model.mapToTaskHistoryData
 import br.com.sailboat.todozy.features.tasks.data.model.mapToTaskHistoryList
 import br.com.sailboat.todozy.features.tasks.domain.model.Task

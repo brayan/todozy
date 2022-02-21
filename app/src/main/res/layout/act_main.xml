@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background">
 
-    <include layout="@layout/appbar_scroll"/>
+    <include layout="@layout/appbar_scroll" />
 
     <include
         android:id="@+id/act_main__frame__left"
-        layout="@layout/frame_layout"/>
+        layout="@layout/frame_layout" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

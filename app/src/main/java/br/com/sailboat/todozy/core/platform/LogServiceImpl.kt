@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.core.platform
 
 import timber.log.Timber
 
-class LogServiceImpl: LogService {
+class LogServiceImpl : LogService {
 
     override fun error(t: Throwable) {
         Timber.e(t)

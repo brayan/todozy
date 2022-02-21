@@ -25,7 +25,7 @@ fun TaskHistoryData.mapToTaskHistory() =
 
 fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
 
-fun TaskHistory.mapToTaskHistoryData():TaskHistoryData =
+fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData =
     TaskHistoryData(
         id = id,
         taskId = taskId,

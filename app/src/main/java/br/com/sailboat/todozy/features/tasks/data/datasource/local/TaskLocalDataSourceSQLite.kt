@@ -14,17 +14,18 @@ import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToda
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 import java.util.*
 
-class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database), TaskLocalDataSource {
+class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database),
+    TaskLocalDataSource {
 
     override val createTableStatement = StringBuilder()
-            .append(" CREATE TABLE Task ( ")
-            .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-            .append(" name TEXT NOT NULL, ")
-            .append(" notes TEXT, ")
-            .append(" insertingDate TEXT, ")
-            .append(" enabled INTEGER ")
-            .append(" ); ")
-            .toString()
+        .append(" CREATE TABLE Task ( ")
+        .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+        .append(" name TEXT NOT NULL, ")
+        .append(" notes TEXT, ")
+        .append(" insertingDate TEXT, ")
+        .append(" enabled INTEGER ")
+        .append(" ); ")
+        .toString()
 
     override suspend fun getTask(taskId: Long): TaskData {
         val sb = StringBuilder()
@@ -157,10 +158,11 @@ class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(datab
     }
 
     private fun Cursor.mapTask() = TaskData(
-            id = getLong(this, "taskId") ?: Entity.NO_ID,
-            name = getString(this, "taskName") ?: "",
-            notes = getString(this, "taskNotes"),
-            insertingDate = null)
+        id = getLong(this, "taskId") ?: Entity.NO_ID,
+        name = getString(this, "taskName") ?: "",
+        notes = getString(this, "taskNotes"),
+        insertingDate = null
+    )
 
 
     private fun bindSelect(sb: StringBuilder) {

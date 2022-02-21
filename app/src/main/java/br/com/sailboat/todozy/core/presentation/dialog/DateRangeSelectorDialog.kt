@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.*
+import br.com.sailboat.todozy.core.extensions.orFalse
+import br.com.sailboat.todozy.core.extensions.orNewCalendar
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.helper.toShortDateView
 import br.com.sailboat.todozy.databinding.DlgDateRangeSelectorBinding

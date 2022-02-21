@@ -9,19 +9,20 @@ import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import java.util.*
 
-class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database), AlarmLocalDataSource {
+class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database),
+    AlarmLocalDataSource {
 
     override val createTableStatement = StringBuilder()
-            .append(" CREATE TABLE Alarm ( ")
-            .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-            .append(" fkTaskId INTEGER, ")
-            .append(" repeatType INTEGER, ")
-            .append(" nextAlarmDate TEXT NOT NULL, ")
-            .append(" insertingDate TEXT, ")
-            .append(" days TEXT, ")
-            .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
-            .append(" ); ")
-            .toString()
+        .append(" CREATE TABLE Alarm ( ")
+        .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+        .append(" fkTaskId INTEGER, ")
+        .append(" repeatType INTEGER, ")
+        .append(" nextAlarmDate TEXT NOT NULL, ")
+        .append(" insertingDate TEXT, ")
+        .append(" days TEXT, ")
+        .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
+        .append(" ); ")
+        .toString()
 
     override fun getAlarmByTask(taskId: Long): AlarmData? {
         val sb = StringBuilder()
@@ -92,11 +93,12 @@ class AlarmLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(data
     }
 
     private fun buildFromCursor(cursor: Cursor) = AlarmData(
-            id = getLong(cursor, "id") ?: Entity.NO_ID,
-            taskId = getLong(cursor, "fkTaskId") ?: Entity.NO_ID,
-            repeatType = getInt(cursor, "repeatType") ?: RepeatType.NOT_REPEAT.ordinal,
-            nextAlarmDate = getString(cursor, "nextAlarmDate"),
-            insertingDate = getString(cursor, "insertingDate"),
-            days = getString(cursor, "days"))
+        id = getLong(cursor, "id") ?: Entity.NO_ID,
+        taskId = getLong(cursor, "fkTaskId") ?: Entity.NO_ID,
+        repeatType = getInt(cursor, "repeatType") ?: RepeatType.NOT_REPEAT.ordinal,
+        nextAlarmDate = getString(cursor, "nextAlarmDate"),
+        insertingDate = getString(cursor, "insertingDate"),
+        days = getString(cursor, "days")
+    )
 
 }

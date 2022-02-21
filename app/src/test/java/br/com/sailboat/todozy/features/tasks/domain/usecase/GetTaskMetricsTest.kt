@@ -20,23 +20,27 @@ class GetTaskMetricsTest {
     private val getTaskMetrics = GetTaskMetrics(repository)
 
     private val history = listOf(
-            TaskHistory(
-                    id = 2,
-                    taskId = 22,
-                    taskName = "Task 1",
-                    status = TaskStatus.DONE,
-                    insertingDate = "2020-08-29-13-26-56"),
-            TaskHistory(
-                    id = 2,
-                    taskId = 22,
-                    taskName = "Task 1",
-                    status = TaskStatus.DONE,
-                    insertingDate = "2020-08-29-13-26-58"),
-            TaskHistory(id = 3,
-                    taskId = 22,
-                    taskName = "Task 1",
-                    status = TaskStatus.NOT_DONE,
-                    insertingDate = "2020-08-29-13-27-39")
+        TaskHistory(
+            id = 2,
+            taskId = 22,
+            taskName = "Task 1",
+            status = TaskStatus.DONE,
+            insertingDate = "2020-08-29-13-26-56"
+        ),
+        TaskHistory(
+            id = 2,
+            taskId = 22,
+            taskName = "Task 1",
+            status = TaskStatus.DONE,
+            insertingDate = "2020-08-29-13-26-58"
+        ),
+        TaskHistory(
+            id = 3,
+            taskId = 22,
+            taskName = "Task 1",
+            status = TaskStatus.NOT_DONE,
+            insertingDate = "2020-08-29-13-27-39"
+        )
     )
 
     @Test

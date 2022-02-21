@@ -7,7 +7,11 @@ import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
 
 class DialogHelper {
 
-    fun showDeleteDialog(manager: FragmentManager, ctx: Context, callback: TwoOptionsDialog.PositiveCallback) {
+    fun showDeleteDialog(
+        manager: FragmentManager,
+        ctx: Context,
+        callback: TwoOptionsDialog.PositiveCallback
+    ) {
         val dialog = TwoOptionsDialog()
         dialog.message = ctx.getString(R.string.are_you_sure)
         dialog.positiveMsg = R.string.delete
@@ -16,7 +20,11 @@ class DialogHelper {
         dialog.show(manager, "DELETE_DIALOG")
     }
 
-    fun showYesOrNoDialog(manager: FragmentManager, ctx: Context, callback: TwoOptionsDialog.PositiveCallback) {
+    fun showYesOrNoDialog(
+        manager: FragmentManager,
+        ctx: Context,
+        callback: TwoOptionsDialog.PositiveCallback
+    ) {
         val dialog = TwoOptionsDialog()
         dialog.message = ctx.getString(R.string.are_you_sure)
         dialog.positiveMsg = android.R.string.yes

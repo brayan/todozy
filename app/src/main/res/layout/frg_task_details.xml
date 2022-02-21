@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
     <include
         android:id="@+id/appbar_task_details"
-        layout="@layout/appbar_task_details"/>
+        layout="@layout/appbar_task_details" />
 
     <include
         android:id="@+id/recycler"
-        layout="@layout/recycler"/>
+        layout="@layout/recycler" />
 
     <include
         android:id="@+id/fab"
-        layout="@layout/fab"/>
+        layout="@layout/fab" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

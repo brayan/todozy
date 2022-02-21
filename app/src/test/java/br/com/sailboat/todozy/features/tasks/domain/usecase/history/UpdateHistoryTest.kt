@@ -18,10 +18,11 @@ class UpdateHistoryTest {
     @Test
     fun `should delete history from repository`() = runBlocking {
         val history = TaskHistory(
-                taskId = 12,
-                status = TaskStatus.DONE,
-                insertingDate = "2020-08-29-16-18-00",
-                taskName = "Task 1")
+            taskId = 12,
+            status = TaskStatus.DONE,
+            insertingDate = "2020-08-29-16-18-00",
+            taskName = "Task 1"
+        )
         updateHistory(history)
 
         coVerify { repository.update(history) }

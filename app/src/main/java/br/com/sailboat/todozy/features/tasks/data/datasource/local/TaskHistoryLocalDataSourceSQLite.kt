@@ -17,15 +17,15 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) :
     TaskHistoryLocalDataSource {
 
     override val createTableStatement = StringBuilder()
-            .append(" CREATE TABLE TaskHistory ( ")
-            .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-            .append(" fkTaskId INTEGER, ")
-            .append(" status INTEGER, ")
-            .append(" insertingDate TEXT, ")
-            .append(" enabled INTEGER, ")
-            .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
-            .append(" ); ")
-            .toString()
+        .append(" CREATE TABLE TaskHistory ( ")
+        .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+        .append(" fkTaskId INTEGER, ")
+        .append(" status INTEGER, ")
+        .append(" insertingDate TEXT, ")
+        .append(" enabled INTEGER, ")
+        .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
+        .append(" ); ")
+        .toString()
 
 
     override fun save(taskId: Long, taskStatus: Int): Long {
@@ -127,7 +127,11 @@ class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) :
         return getTaskHistoryList(query.toString(), null)
     }
 
-    fun getPreviousDaysHistoryFromDate(initialDate: Calendar, finalDate: Calendar, filter: TaskHistoryFilter): List<TaskHistoryData> {
+    fun getPreviousDaysHistoryFromDate(
+        initialDate: Calendar,
+        finalDate: Calendar,
+        filter: TaskHistoryFilter
+    ): List<TaskHistoryData> {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()

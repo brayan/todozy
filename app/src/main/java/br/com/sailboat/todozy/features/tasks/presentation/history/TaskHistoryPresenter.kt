@@ -83,7 +83,8 @@ class TaskHistoryPresenter(
 
     override fun onClickFilterDate(dateRangeTypeSelected: DateFilterTaskHistorySelectableItem) {
         if (dateRangeTypeSelected === dateRangeType &&
-                dateRangeTypeSelected !== DateFilterTaskHistorySelectableItem.DATE_RANGE) {
+            dateRangeTypeSelected !== DateFilterTaskHistorySelectableItem.DATE_RANGE
+        ) {
             return
         }
 

@@ -86,16 +86,23 @@ class TaskHistoryFragment : BaseFragment() {
         viewModel.onSubmitSearch(search)
     }
 
-    fun showFilterDialog(dateRangeType: DateFilterTaskHistorySelectableItem, status: TaskStatusSelectableItem) {
-        TaskHistoryFilterDialog.show(childFragmentManager, dateRangeType, status, object : TaskHistoryFilterDialog.Callback {
-            override fun onClickFilterDate() {
-                viewModel.onClickFilterDate()
-            }
+    fun showFilterDialog(
+        dateRangeType: DateFilterTaskHistorySelectableItem,
+        status: TaskStatusSelectableItem
+    ) {
+        TaskHistoryFilterDialog.show(
+            childFragmentManager,
+            dateRangeType,
+            status,
+            object : TaskHistoryFilterDialog.Callback {
+                override fun onClickFilterDate() {
+                    viewModel.onClickFilterDate()
+                }
 
-            override fun onClickFilterStatus() {
-                viewModel.onClickFilterStatus()
-            }
-        })
+                override fun onClickFilterStatus() {
+                    viewModel.onClickFilterStatus()
+                }
+            })
     }
 
     fun setEmptySubtitle() {
@@ -150,31 +157,46 @@ class TaskHistoryFragment : BaseFragment() {
     }
 
     fun setDateFilterSubtitle(dateRangeType: DateFilterTaskHistorySelectableItem) {
-        binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = getString(dateRangeType.getName()).toUpperCase(Locale.getDefault())
+        binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle =
+            getString(dateRangeType.getName()).toUpperCase(Locale.getDefault())
     }
 
     fun showDateRangeSelectorDialog(initialDate: Calendar, finalDate: Calendar) {
-        DateRangeSelectorDialog.show(childFragmentManager, initialDate, finalDate, object : DateRangeSelectorDialog.Callback {
-            override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
-                viewModel.onClickOkDateRangeSelectorDialog(initialDate, finalDate)
-            }
-        })
+        DateRangeSelectorDialog.show(
+            childFragmentManager,
+            initialDate,
+            finalDate,
+            object : DateRangeSelectorDialog.Callback {
+                override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
+                    viewModel.onClickOkDateRangeSelectorDialog(initialDate, finalDate)
+                }
+            })
     }
 
     fun showStatusFilterDialog(status: TaskStatusSelectableItem) {
-        SelectItemDialog.show(childFragmentManager, getString(R.string.filter_status), TaskStatusSelectableItem.getItems(), status, object : SelectItemDialog.Callback {
-            override fun onClickItem(item: SelectableItem) {
-                viewModel.onClickFilterStatusItem(item as TaskStatusSelectableItem)
-            }
-        })
+        SelectItemDialog.show(
+            childFragmentManager,
+            getString(R.string.filter_status),
+            TaskStatusSelectableItem.getItems(),
+            status,
+            object : SelectItemDialog.Callback {
+                override fun onClickItem(item: SelectableItem) {
+                    viewModel.onClickFilterStatusItem(item as TaskStatusSelectableItem)
+                }
+            })
     }
 
     fun showDateFilterDialog(selectedFilter: DateFilterTaskHistorySelectableItem) {
-        SelectItemDialog.show(childFragmentManager, getString(R.string.filter), DateFilterTaskHistorySelectableItem.getItems(), selectedFilter, object : SelectItemDialog.Callback {
-            override fun onClickItem(item: SelectableItem) {
-                onClickFilterDate(item)
-            }
-        })
+        SelectItemDialog.show(
+            childFragmentManager,
+            getString(R.string.filter),
+            DateFilterTaskHistorySelectableItem.getItems(),
+            selectedFilter,
+            object : SelectItemDialog.Callback {
+                override fun onClickItem(item: SelectableItem) {
+                    onClickFilterDate(item)
+                }
+            })
     }
 
     fun showConfirmationClearAllHistory() {
@@ -191,11 +213,14 @@ class TaskHistoryFragment : BaseFragment() {
 
     private fun showDeleteItemDialog(position: Int) {
         activity?.run {
-            DialogHelper().showDeleteDialog(childFragmentManager, this, object : TwoOptionsDialog.PositiveCallback {
-                override fun onClickPositiveOption() {
-                    viewModel.onClickYesDeleteHistory(position)
-                }
-            })
+            DialogHelper().showDeleteDialog(
+                childFragmentManager,
+                this,
+                object : TwoOptionsDialog.PositiveCallback {
+                    override fun onClickPositiveOption() {
+                        viewModel.onClickYesDeleteHistory(position)
+                    }
+                })
         }
     }
 
@@ -212,12 +237,14 @@ class TaskHistoryFragment : BaseFragment() {
             binding.recycler.adapter?.notifyDataSetChanged()
         }
 
-        viewModel.taskMetrics.observe(viewLifecycleOwner,  { taskMetrics ->
-            binding.appbarTaskHistory.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
-            binding.appbarTaskHistory.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
+        viewModel.taskMetrics.observe(viewLifecycleOwner, { taskMetrics ->
+            binding.appbarTaskHistory.taskMetrics.tvMetricsDone.text =
+                taskMetrics.doneTasks.toString()
+            binding.appbarTaskHistory.taskMetrics.tvMetricsNotDone.text =
+                taskMetrics.notDoneTasks.toString()
         })
 
-        viewModel.updateHistoryItem.observe(viewLifecycleOwner){ position ->
+        viewModel.updateHistoryItem.observe(viewLifecycleOwner) { position ->
             binding.recycler.adapter?.notifyItemChanged(position)
         }
 
@@ -238,8 +265,12 @@ class TaskHistoryFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.recycler.run {
             adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
-                override fun onClickMarkTaskAsDone(position: Int) = viewModel.onClickMarkTaskAsDone(position)
-                override fun onClickMarkTaskAsNotDone(position: Int) = viewModel.onClickMarkTaskAsNotDone(position)
+                override fun onClickMarkTaskAsDone(position: Int) =
+                    viewModel.onClickMarkTaskAsDone(position)
+
+                override fun onClickMarkTaskAsNotDone(position: Int) =
+                    viewModel.onClickMarkTaskAsNotDone(position)
+
                 override fun onClickHistory(position: Int) = viewModel.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = viewModel.onClickDelete(position)

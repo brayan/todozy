@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +8,7 @@
 
     <include
         android:id="@+id/appbar"
-        layout="@layout/appbar"/>
+        layout="@layout/appbar" />
 
     <TextView
         style="@style/TextViewLabel"
@@ -18,7 +17,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        android:text="@string/notifications"/>
+        android:text="@string/notifications" />
 
     <LinearLayout
         android:id="@+id/llSettingsTone"
@@ -35,7 +34,7 @@
             android:paddingTop="8dp"
             android:text="@string/notification_tone"
             android:textColor="@color/md_blue_grey_700"
-            android:textSize="@dimen/text_size_small"/>
+            android:textSize="@dimen/text_size_small" />
 
         <TextView
             android:id="@+id/tvSettingsCurrentTone"
@@ -45,7 +44,7 @@
             android:paddingStart="16dp"
             android:textColor="@color/md_blue_grey_500"
             android:textSize="@dimen/text_size_xsmall"
-            tools:text="Default ringtone (Hello)"/>
+            tools:text="Default ringtone (Hello)" />
 
     </LinearLayout>
 
@@ -55,7 +54,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
-        <include layout="@layout/divider"/>
+        <include layout="@layout/divider" />
 
     </FrameLayout>
 
@@ -74,18 +73,18 @@
             android:paddingStart="16dp"
             android:text="@string/vibrate"
             android:textColor="@color/md_blue_grey_700"
-            android:textSize="@dimen/text_size_small"/>
+            android:textSize="@dimen/text_size_small" />
 
         <CheckBox
             android:id="@+id/cbSettingsVibrate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
 
     </FrameLayout>
 
-    <include layout="@layout/divider"/>
+    <include layout="@layout/divider" />
 
     <TextView
         android:id="@+id/tvSettingsAbout"
@@ -96,8 +95,8 @@
         android:paddingStart="16dp"
         android:text="@string/about"
         android:textColor="@color/md_blue_grey_700"
-        android:textSize="@dimen/text_size_small"/>
+        android:textSize="@dimen/text_size_small" />
 
-    <include layout="@layout/divider"/>
+    <include layout="@layout/divider" />
 
 </LinearLayout>

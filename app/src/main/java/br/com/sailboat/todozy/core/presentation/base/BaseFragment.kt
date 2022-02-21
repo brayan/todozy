@@ -1,7 +1,10 @@
 package br.com.sailboat.todozy.core.presentation.base
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.R

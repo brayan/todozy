@@ -8,7 +8,8 @@ import br.com.sailboat.todozy.core.presentation.viewholder.LabelValueViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.LabelViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TitleViewHolder
 
-class TaskDetailsAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TaskDetailsAdapter(private val callback: Callback) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callback {
         val details: List<ItemView>

@@ -22,8 +22,8 @@ class GetAlarmTest {
     fun `should get alarm from repository`() = runBlocking {
         val taskId = 12L
         val alarm = Alarm(
-                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                repeatType = RepeatType.NOT_REPEAT
+            dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+            repeatType = RepeatType.NOT_REPEAT
         )
 
         coEvery { repository.getAlarmByTaskId(any()) } returns alarm

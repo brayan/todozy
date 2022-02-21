@@ -9,7 +9,8 @@ import br.com.sailboat.todozy.core.presentation.model.ViewType
 import br.com.sailboat.todozy.core.presentation.viewholder.ImageTitleDividerViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.LabelValueViewHolder
 
-class AboutAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AboutAdapter(private val callback: Callback) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callback {
         fun getAbout(): List<ItemView>

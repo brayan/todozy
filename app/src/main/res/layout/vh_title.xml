@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
         android:scrollbars="vertical"
         android:textColor="@color/md_blue_grey_500"
         android:textSize="@dimen/text_size_xlarge"
-        tools:text="Title"/>
+        tools:text="Title" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
-        <include layout="@layout/diamond_divider"/>
+        <include layout="@layout/diamond_divider" />
 
     </FrameLayout>
 

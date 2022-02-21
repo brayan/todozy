@@ -1,20 +1,16 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSource
-import br.com.sailboat.todozy.features.tasks.data.factory.TaskDataMockFactory
-import br.com.sailboat.todozy.features.tasks.data.factory.TaskHistoryDataMockFactory
 import br.com.sailboat.todozy.features.tasks.data.factory.TaskHistoryDataMockFactory.makeTaskHistoryData
 import br.com.sailboat.todozy.features.tasks.data.factory.TaskHistoryDataMockFactory.makeTaskHistoryDataList
-import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
-import br.com.sailboat.todozy.features.tasks.domain.factory.AlarmMockFactory
 import br.com.sailboat.todozy.features.tasks.domain.factory.TaskHistoryMockFactory.makeTaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.factory.TaskHistoryMockFactory.makeTaskHistoryList
 import br.com.sailboat.todozy.features.tasks.domain.factory.TaskMockFactory.makeTask
-import br.com.sailboat.todozy.features.tasks.domain.model.*
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

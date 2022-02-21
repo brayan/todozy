@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,7 +25,7 @@
             android:textSize="@dimen/text_size_xxsmall"
             android:textStyle="bold"
             android:visibility="visible"
-            tools:text="11/10/2018"/>
+            tools:text="11/10/2018" />
 
         <TextView
             android:id="@+id/vh_task__tv__time"
@@ -38,7 +37,7 @@
             android:maxLines="1"
             android:textColor="@color/md_light_blue_500"
             android:textSize="@dimen/text_size_xxxxlarge"
-            tools:text="15:00"/>
+            tools:text="15:00" />
 
     </FrameLayout>
 
@@ -55,6 +54,6 @@
         android:paddingTop="8dp"
         android:textColor="@color/md_blue_grey_700"
         android:textSize="@dimen/text_size_small"
-        tools:text="Task"/>
+        tools:text="Task" />
 
 </RelativeLayout>

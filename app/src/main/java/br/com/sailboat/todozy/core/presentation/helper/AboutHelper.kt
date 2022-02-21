@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.model.ImageTitleDividerItemView
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.LabelValueItemView
-import java.util.*
 
 class AboutHelper(private val context: Context) {
 
@@ -21,23 +20,31 @@ class AboutHelper(private val context: Context) {
     }
 
     private fun getImageWithTitle(): ImageTitleDividerItemView {
-        return ImageTitleDividerItemView(imageRes = R.drawable.ic_todozy_128px,
-                title = context.getString(R.string.app_full_name))
+        return ImageTitleDividerItemView(
+            imageRes = R.drawable.ic_todozy_128px,
+            title = context.getString(R.string.app_full_name)
+        )
     }
 
     private fun getAppDescription(): ItemView {
-        return LabelValueItemView(label = context.getString(R.string.label_description),
-                value = context.getString(R.string.app_description))
+        return LabelValueItemView(
+            label = context.getString(R.string.label_description),
+            value = context.getString(R.string.app_description)
+        )
     }
 
     private fun getVersion(): LabelValueItemView {
-        return LabelValueItemView(label = context.getString(R.string.version),
-                value = BuildConfig.VERSION_NAME)
+        return LabelValueItemView(
+            label = context.getString(R.string.version),
+            value = BuildConfig.VERSION_NAME
+        )
     }
 
     private fun getDevelopedBy(): LabelValueItemView {
-        return LabelValueItemView(label = context.getString(R.string.developed_by),
-                value = "Brayan Bedritchuk")
+        return LabelValueItemView(
+            label = context.getString(R.string.developed_by),
+            value = "Brayan Bedritchuk"
+        )
     }
 
 }

@@ -146,7 +146,7 @@ class TaskListFragment : BaseFragment() {
         binding.recycler.gone()
     }
 
-    private  fun showEmptyView() {
+    private fun showEmptyView() {
         binding.eptView.root.visible()
     }
 

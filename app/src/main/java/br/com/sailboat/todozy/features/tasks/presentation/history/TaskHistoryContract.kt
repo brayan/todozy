@@ -16,7 +16,11 @@ interface TaskHistoryContract {
         fun showConfirmationClearAllHistory()
         fun showDeleteItemDialog(position: Int)
         fun startInsertTaskActivity(id: Long)
-        fun showFilterDialog(dateRangeType: DateFilterTaskHistorySelectableItem, status: TaskStatusSelectableItem)
+        fun showFilterDialog(
+            dateRangeType: DateFilterTaskHistorySelectableItem,
+            status: TaskStatusSelectableItem
+        )
+
         fun showStatusFilterDialog(status: TaskStatusSelectableItem)
         fun setEmptySubtitle()
         fun setDateRangeSubtitle(initialDate: Calendar, finalDate: Calendar)

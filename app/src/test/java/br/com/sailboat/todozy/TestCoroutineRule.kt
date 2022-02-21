@@ -6,10 +6,9 @@ import kotlinx.coroutines.test.*
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
-class TestCoroutineRule: TestRule {
+class TestCoroutineRule : TestRule {
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
 

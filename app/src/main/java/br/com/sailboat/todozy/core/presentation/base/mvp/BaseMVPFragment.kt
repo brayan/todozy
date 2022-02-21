@@ -11,7 +11,8 @@ import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.model.ViewResult
 
-abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(), BaseMVPContract.View {
+abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(),
+    BaseMVPContract.View {
 
     abstract val presenter: P
     private var progress = ProgressDialog()

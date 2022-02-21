@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    android:id="@+id/vh_subheader__tv__name"
+<TextView android:id="@+id/vh_subheader__tv__name"
     style="@style/TextViewLabel"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,4 +10,4 @@
     android:textAllCaps="true"
     android:textColor="?attr/colorAccent"
     android:textSize="@dimen/text_size_xxsmall"
-    tools:text="Subheader"/>
+    tools:text="Subheader" />

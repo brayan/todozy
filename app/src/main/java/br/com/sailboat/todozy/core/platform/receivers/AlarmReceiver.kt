@@ -49,24 +49,29 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private suspend fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.makeNotificationChannel(context)
         }
         notificationManager.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
     }
 
-    private suspend fun buildNotification(context: Context, intent: Intent): NotificationCompat.Builder {
+    private suspend fun buildNotification(
+        context: Context,
+        intent: Intent
+    ): NotificationCompat.Builder {
         val resultIntent = Intent(context, LauncherActivity::class.java)
-        val resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val resultPendingIntent =
+            PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
-                .setSmallIcon(R.drawable.ic_vec_notification_icon)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setContentIntent(resultPendingIntent)
-                .setAutoCancel(true)
-                .apply { priority = NotificationCompat.PRIORITY_HIGH }
-                .apply { color = ContextCompat.getColor(context, R.color.md_blue_500) }
+            .setSmallIcon(R.drawable.ic_vec_notification_icon)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setContentIntent(resultPendingIntent)
+            .setAutoCancel(true)
+            .apply { priority = NotificationCompat.PRIORITY_HIGH }
+            .apply { color = ContextCompat.getColor(context, R.color.md_blue_500) }
 
         initContentTextAndTitle(context, intent, builder)
 
@@ -78,7 +83,11 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         return builder
     }
 
-    private suspend fun initContentTextAndTitle(context: Context, intent: Intent, builder: NotificationCompat.Builder) {
+    private suspend fun initContentTextAndTitle(
+        context: Context,
+        intent: Intent,
+        builder: NotificationCompat.Builder
+    ) {
         try {
             val tasks = getTasksUseCase(TaskFilter(TaskCategory.BEFORE_NOW))
 
@@ -106,7 +115,11 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private fun setTextAndTitleFromList(context: Context, builder: NotificationCompat.Builder, tasksQuantity: Int) {
+    private fun setTextAndTitleFromList(
+        context: Context,
+        builder: NotificationCompat.Builder,
+        tasksQuantity: Int
+    ) {
         builder.setContentTitle(tasksQuantity.toString() + " " + context.getString(R.string.tasks_to_do))
         builder.setContentText(context.getString(R.string.touch_to_check))
     }
@@ -122,15 +135,15 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun NotificationManager.makeNotificationChannel(context: Context) {
         createNotificationChannel(
-                NotificationChannel(
-                        CHANNEL_ID_ALARM,
-                        context.getString(R.string.notification_title_task_alarms),
-                        NotificationManager.IMPORTANCE_HIGH
-                ).apply {
-                    lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-                    enableLights(true)
-                    enableVibration(true)
-                }
+            NotificationChannel(
+                CHANNEL_ID_ALARM,
+                context.getString(R.string.notification_title_task_alarms),
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                enableLights(true)
+                enableVibration(true)
+            }
         )
     }
 

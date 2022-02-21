@@ -4,7 +4,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.core.presentation.model.DayView
 
-class WeekDaysSelectorAdapter(private val callback: Callback) : RecyclerView.Adapter<WeekDayViewHolder>() {
+class WeekDaysSelectorAdapter(private val callback: Callback) :
+    RecyclerView.Adapter<WeekDayViewHolder>() {
 
     interface Callback : WeekDayViewHolder.Callback {
         val days: List<DayView>

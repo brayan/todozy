@@ -31,7 +31,8 @@ fun Toolbar.disableScroll() {
 
 fun Toolbar.enableScroll() {
     val params = layoutParams as AppBarLayout.LayoutParams
-    params.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+    params.scrollFlags =
+        AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 }
 
 fun RecyclerView.hideFabWhenScrolling(fab: FloatingActionButton) {

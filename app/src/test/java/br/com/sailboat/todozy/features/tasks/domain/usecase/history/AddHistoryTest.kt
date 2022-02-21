@@ -22,8 +22,8 @@ class AddHistoryTest {
     fun `should insert history in the repository`() = runBlocking {
         val dateTime = Calendar.getInstance()
         val alarm = Alarm(
-                dateTime = dateTime,
-                repeatType = RepeatType.DAY
+            dateTime = dateTime,
+            repeatType = RepeatType.DAY
         )
         val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
 

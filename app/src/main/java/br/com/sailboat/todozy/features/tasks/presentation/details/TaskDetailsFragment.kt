@@ -10,13 +10,13 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
-import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
 import org.koin.android.ext.android.inject
 
 
-class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), TaskDetailsContract.View {
+class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
+    TaskDetailsContract.View {
 
     override val presenter: TaskDetailsContract.Presenter by inject()
 
@@ -70,11 +70,14 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(), Ta
 
     override fun showDialogDeleteTask() {
         activity?.run {
-            DialogHelper().showDeleteDialog(childFragmentManager, this, object : TwoOptionsDialog.PositiveCallback {
-                override fun onClickPositiveOption() {
-                    presenter.onClickDeleteTask()
-                }
-            })
+            DialogHelper().showDeleteDialog(
+                childFragmentManager,
+                this,
+                object : TwoOptionsDialog.PositiveCallback {
+                    override fun onClickPositiveOption() {
+                        presenter.onClickDeleteTask()
+                    }
+                })
         }
     }
 

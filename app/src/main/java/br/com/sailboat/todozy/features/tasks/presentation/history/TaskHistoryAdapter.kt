@@ -9,7 +9,8 @@ import br.com.sailboat.todozy.core.presentation.model.ViewType
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskHistoryViewHolder
 
-class TaskHistoryAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TaskHistoryAdapter(private val callback: Callback) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callback : TaskHistoryViewHolder.Callback {
         val history: List<ItemView>

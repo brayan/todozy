@@ -14,12 +14,12 @@ class AnimationHelper {
 
     fun performScaleUpAnimation(view: View) {
         view.animate().scaleX(1f)
-                .scaleY(1f).interpolator = FastOutSlowInInterpolator()
+            .scaleY(1f).interpolator = FastOutSlowInInterpolator()
     }
 
     fun performScaleDownAnimation(view: View) {
         view.animate().scaleX(0f)
-                .scaleY(0f).interpolator = FastOutSlowInInterpolator()
+            .scaleY(0f).interpolator = FastOutSlowInInterpolator()
     }
 
     fun expand(v: View) {
@@ -55,7 +55,8 @@ class AnimationHelper {
                 if (interpolatedTime == 1f) {
                     v.visibility = View.GONE
                 } else {
-                    v.layoutParams.height = initialHeight - (initialHeight * interpolatedTime).toInt()
+                    v.layoutParams.height =
+                        initialHeight - (initialHeight * interpolatedTime).toInt()
                     v.requestLayout()
                 }
             }
@@ -70,7 +71,13 @@ class AnimationHelper {
         v.startAnimation(a)
     }
 
-    fun performAnimationBackgroundColor(ctx: Context, colorFrom: Int, colorTo: Int, duration: Int, callback: BackgroundColorCallback) {
+    fun performAnimationBackgroundColor(
+        ctx: Context,
+        colorFrom: Int,
+        colorTo: Int,
+        duration: Int,
+        callback: BackgroundColorCallback
+    ) {
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
         colorAnimation.duration = duration.toLong()
         colorAnimation.addUpdateListener { animator -> callback.onAnimationUpdate(animator) }

@@ -1,7 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
-import android.content.Context
-import br.com.sailboat.todozy.core.presentation.helper.toShortDateView
 import java.util.*
 
 // TODO: Repalce this use case by a service

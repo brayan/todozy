@@ -6,8 +6,8 @@
     android:viewportHeight="24">
 
     <group
-            android:translateX="4.7205733"
-            android:translateY="-548.08275">
+        android:translateX="4.7205733"
+        android:translateY="-548.08275">
         <path
             android:fillColor="#FFF"
             android:strokeWidth="1"

@@ -11,7 +11,6 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.databinding.FrgAboutBinding
 import org.koin.android.ext.android.inject
-import java.util.*
 
 class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.View,
     AboutAdapter.Callback {

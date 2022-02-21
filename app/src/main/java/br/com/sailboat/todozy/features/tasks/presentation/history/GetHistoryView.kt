@@ -31,7 +31,10 @@ class GetHistoryView(
         }.awaitAll().flatten()
     }
 
-    private suspend fun getTaskHistoryView(filter: TaskHistoryFilter, subhead: Int): List<ItemView> {
+    private suspend fun getTaskHistoryView(
+        filter: TaskHistoryFilter,
+        subhead: Int
+    ): List<ItemView> {
         val history = getTasksHistoryUseCase(filter)
         val historyView = mutableListOf<ItemView>()
 
@@ -43,10 +46,12 @@ class GetHistoryView(
         return historyView
     }
 
-    private fun TaskHistoryFilter.copyFilter() = TaskHistoryFilter(initialDate = initialDate,
-            finalDate = finalDate,
-            status = status,
-            category = category,
-            taskId = taskId).apply { text = this@copyFilter.text }
+    private fun TaskHistoryFilter.copyFilter() = TaskHistoryFilter(
+        initialDate = initialDate,
+        finalDate = finalDate,
+        status = status,
+        category = category,
+        taskId = taskId
+    ).apply { text = this@copyFilter.text }
 
 }
