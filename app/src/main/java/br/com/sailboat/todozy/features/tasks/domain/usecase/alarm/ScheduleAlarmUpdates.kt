@@ -1,15 +1,15 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
-import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
+import br.com.sailboat.todozy.core.platform.AlarmManagerService
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 
 class ScheduleAlarmUpdates(
-    private val alarmRepository: AlarmRepository,
+    private val alarmManagerService: AlarmManagerService,
 ) : ScheduleAlarmUpdatesUseCase {
 
     override suspend operator fun invoke() {
         val calendar = getInitialCalendarForTomorrow()
-        alarmRepository.scheduleAlarmUpdates(calendar)
+        alarmManagerService.scheduleAlarmUpdates(calendar)
     }
 
 }

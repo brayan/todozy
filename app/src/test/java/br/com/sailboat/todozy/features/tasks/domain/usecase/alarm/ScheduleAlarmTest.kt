@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 
+import br.com.sailboat.todozy.core.platform.AlarmManagerService
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
@@ -12,19 +13,19 @@ import java.util.*
 
 class ScheduleAlarmTest {
 
-    private val repository: AlarmRepository = mockk(relaxed = true)
+    private val alarmManagerService: AlarmManagerService = mockk(relaxed = true)
 
-    private val scheduleAlarm = ScheduleAlarm(repository)
+    private val scheduleAlarm = ScheduleAlarm(alarmManagerService)
 
     @Test
-    fun `should schedule alarm on repository`() = runBlocking {
+    fun `should schedule alarm on alarmManagerService`() = runBlocking {
         val taskId = 45L
         val alarm = Alarm(dateTime = Calendar.getInstance(), repeatType = RepeatType.WEEK)
 
         scheduleAlarm(alarm, taskId)
 
-        coVerify { repository.scheduleAlarm(alarm, taskId) }
-        confirmVerified(repository)
+        coVerify { alarmManagerService.scheduleAlarm(alarm.dateTime, taskId) }
+        confirmVerified(alarmManagerService)
     }
 
 }

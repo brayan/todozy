@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.di
 
 import br.com.sailboat.todozy.core.platform.AlarmManagerHelper
+import br.com.sailboat.todozy.core.platform.AlarmManagerService
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSource
 import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSourceImpl
@@ -17,7 +18,7 @@ import org.koin.dsl.module
 
 val dataModule = module {
     single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
-    single<AlarmRepository> { AlarmRepositoryImpl(get(), get()) }
+    single<AlarmRepository> { AlarmRepositoryImpl(get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
 
@@ -27,5 +28,5 @@ val dataModule = module {
     single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
 
     single { DatabaseOpenHelper(get()) }
-    single { AlarmManagerHelper(get()) }
+    single<AlarmManagerService> { AlarmManagerHelper(get()) }
 }
