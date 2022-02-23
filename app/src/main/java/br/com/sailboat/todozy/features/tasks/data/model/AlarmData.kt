@@ -28,6 +28,6 @@ fun Alarm.mapToAlarmData(taskId: Long) =
         taskId = taskId,
         repeatType = repeatType.ordinal,
         nextAlarmDate = dateTime.toDateTimeString(),
-        insertingDate = Calendar.getInstance().toDateTimeString(),
+        insertingDate = null,
         days = customDays,
     )
