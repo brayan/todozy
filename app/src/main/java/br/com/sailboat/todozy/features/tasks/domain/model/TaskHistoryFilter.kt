@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.model
 
-import br.com.sailboat.todozy.core.base.BaseFilter
-import br.com.sailboat.todozy.core.base.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 
 data class TaskHistoryFilter(

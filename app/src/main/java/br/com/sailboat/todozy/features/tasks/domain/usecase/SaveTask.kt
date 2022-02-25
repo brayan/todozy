@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.core.base.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.features.tasks.domain.TaskFieldsException
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository

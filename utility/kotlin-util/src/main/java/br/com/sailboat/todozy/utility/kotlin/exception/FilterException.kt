@@ -1,6 +1,6 @@
-package br.com.sailboat.todozy.core.exceptions
+package br.com.sailboat.todozy.utility.kotlin.exception
 
-class RequiredFieldNotFilledException : Exception {
+class FilterException : Exception {
 
     constructor() : super()
     constructor(message: String?) : super(message)

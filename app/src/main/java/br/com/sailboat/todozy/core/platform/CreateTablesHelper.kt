@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.core.platform
 
 import android.database.sqlite.SQLiteDatabase
-import br.com.sailboat.todozy.core.base.BaseSQLite
+import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 
 class CreateTablesHelper(
     private val database: SQLiteDatabase,

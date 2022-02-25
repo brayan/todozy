@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.base
+package br.com.sailboat.todozy.utility.kotlin.model
 
 abstract class Entity {
     abstract var id: Long

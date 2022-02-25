@@ -1,9 +1,10 @@
-package br.com.sailboat.todozy.core.exceptions
+package br.com.sailboat.todozy.utility.kotlin.exception
 
-class FilterException : Exception {
+class EntityNotFoundException : Exception {
 
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)
     constructor(cause: Throwable?) : super(cause)
+
 }

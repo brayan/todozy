@@ -5,7 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.base.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog

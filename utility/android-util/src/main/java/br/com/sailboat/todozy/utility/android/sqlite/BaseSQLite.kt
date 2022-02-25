@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.base
+package br.com.sailboat.todozy.utility.android.sqlite
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
+import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import java.util.*
 
 abstract class BaseSQLite(database: SQLiteOpenHelper) {

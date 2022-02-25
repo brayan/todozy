@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.model
 
-import br.com.sailboat.todozy.core.base.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
 data class TaskHistory(
     override var id: Long = NO_ID,

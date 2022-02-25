@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import android.database.Cursor
-import br.com.sailboat.todozy.core.base.BaseFilter
-import br.com.sailboat.todozy.core.base.BaseSQLite
-import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.exceptions.EntityNotFoundException
+import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
