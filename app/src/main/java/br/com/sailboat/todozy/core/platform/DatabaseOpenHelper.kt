@@ -7,8 +7,10 @@ import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDat
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskLocalDataSourceSQLite
 
-class DatabaseOpenHelper(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseOpenHelper(
+    context: Context,
+    private val databaseService: DatabaseService,
+) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         const val DATABASE_VERSION = 3
@@ -22,7 +24,7 @@ class DatabaseOpenHelper(context: Context) :
             TaskHistoryLocalDataSourceSQLite(this)
         )
 
-        CreateTablesHelper(db, tables).invoke()
+        databaseService.createTables(db, tables)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}

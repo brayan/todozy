@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.platform
+package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter

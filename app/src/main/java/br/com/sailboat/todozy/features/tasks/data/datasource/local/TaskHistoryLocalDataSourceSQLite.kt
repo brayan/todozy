@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
-import br.com.sailboat.todozy.core.platform.TaskHistoryQueryBuilder
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus

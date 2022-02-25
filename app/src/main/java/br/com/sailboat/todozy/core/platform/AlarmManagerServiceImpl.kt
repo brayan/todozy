@@ -10,7 +10,7 @@ import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
 import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import java.util.*
 
-class AlarmManagerHelper(private val context: Context) : AlarmManagerService {
+class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {
 
     private val alarmManager by lazy { (context.getSystemService(ALARM_SERVICE) as AlarmManager) }
 
