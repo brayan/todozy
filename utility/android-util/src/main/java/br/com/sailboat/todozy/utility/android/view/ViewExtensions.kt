@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.extensions
+package br.com.sailboat.todozy.utility.android.view
 
 import android.content.Context
 import android.graphics.Point

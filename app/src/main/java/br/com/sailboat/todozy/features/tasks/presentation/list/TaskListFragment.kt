@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.hideFabWhenScrolling
-import br.com.sailboat.todozy.core.extensions.isTrue
+import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog

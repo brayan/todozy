@@ -148,3 +148,5 @@ fun Calendar.setFinalTimeToCalendar(): Calendar {
 
     return this
 }
+
+fun Calendar?.orNewCalendar(): Calendar = this ?: Calendar.getInstance()

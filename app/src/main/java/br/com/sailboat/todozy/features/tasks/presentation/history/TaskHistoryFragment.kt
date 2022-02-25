@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.extensions.scrollPositionToMiddleScreen
-import br.com.sailboat.todozy.core.extensions.scrollToTop
+import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
+import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateRangeSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.TaskHistoryFilterDialog

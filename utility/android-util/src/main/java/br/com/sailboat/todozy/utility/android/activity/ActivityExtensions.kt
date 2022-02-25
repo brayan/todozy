@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.extensions
+package br.com.sailboat.todozy.utility.android.activity
 
 import android.app.Activity
 import android.content.Context

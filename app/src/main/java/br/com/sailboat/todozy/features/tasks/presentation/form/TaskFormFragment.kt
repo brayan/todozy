@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.extensions.hideKeyboard
-import br.com.sailboat.todozy.core.extensions.setActivityToHideKeyboard
-import br.com.sailboat.todozy.core.extensions.showKeyboard
+import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
+import br.com.sailboat.todozy.utility.android.activity.setActivityToHideKeyboard
+import br.com.sailboat.todozy.utility.android.activity.showKeyboard
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.TimeSelectorDialog
