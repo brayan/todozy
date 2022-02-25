@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.helper.gone
 import br.com.sailboat.todozy.core.presentation.helper.visible
 import br.com.sailboat.todozy.databinding.DlgReyclerBinding

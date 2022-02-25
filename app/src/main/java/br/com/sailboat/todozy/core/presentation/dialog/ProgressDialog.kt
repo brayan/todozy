@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.databinding.DlgProgressBinding
 
 class ProgressDialog : BaseDialogFragment() {

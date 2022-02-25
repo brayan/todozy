@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.core.presentation.dialog
 
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 
 class MessageDialog : BaseDialogFragment() {
 

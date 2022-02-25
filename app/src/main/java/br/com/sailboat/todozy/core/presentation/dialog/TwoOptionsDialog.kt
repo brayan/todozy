@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.core.presentation.dialog
 
 import androidx.appcompat.app.AlertDialog
-import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 
 class TwoOptionsDialog : BaseDialogFragment() {
 
