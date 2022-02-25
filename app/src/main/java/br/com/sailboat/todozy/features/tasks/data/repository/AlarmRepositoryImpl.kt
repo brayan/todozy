@@ -1,29 +1,29 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSource
-import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarm
-import br.com.sailboat.todozy.features.tasks.data.model.mapToAlarmData
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmDataToAlarmMapper
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 
 class AlarmRepositoryImpl(
     private val alarmLocalDataSource: AlarmLocalDataSource,
+    private val alarmDataToAlarmMapper: AlarmDataToAlarmMapper,
+    private val alarmToAlarmDataMapper: AlarmToAlarmDataMapper,
 ) : AlarmRepository {
 
     override suspend fun getAlarmByTaskId(taskId: Long): Alarm? {
-        "${javaClass.simpleName}.getAlarmByTaskId(taskId: $taskId)".logDebug()
-        return alarmLocalDataSource.getAlarmByTask(taskId)?.mapToAlarm()
+        val alarmData = alarmLocalDataSource.getAlarmByTask(taskId)
+        return alarmData?.run { alarmDataToAlarmMapper.map(this) }
     }
 
     override suspend fun deleteAlarmByTask(taskId: Long) {
-        "${javaClass.simpleName}.deleteAlarmByTask(taskId: $taskId)".logDebug()
         alarmLocalDataSource.deleteByTask(taskId)
     }
 
     override suspend fun save(alarm: Alarm, taskId: Long) {
-        "${javaClass.simpleName}.save($alarm, taskId: $taskId)".logDebug()
-        alarmLocalDataSource.save(alarm.mapToAlarmData(taskId))
+        val alarmData = alarmToAlarmDataMapper.map(alarm, taskId)
+        alarmLocalDataSource.save(alarmData)
     }
 
 }

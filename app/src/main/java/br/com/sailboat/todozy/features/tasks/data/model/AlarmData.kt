@@ -14,19 +14,3 @@ data class AlarmData(
     var insertingDate: String?,
     var days: String?,
 )
-
-fun AlarmData.mapToAlarm() = Alarm(
-    dateTime = nextAlarmDate!!.toDateTimeCalendar(),
-    repeatType = RepeatType.indexOf(repeatType),
-    customDays = days
-)
-
-fun Alarm.mapToAlarmData(taskId: Long) =
-    AlarmData(
-        id = Entity.NO_ID,
-        taskId = taskId,
-        repeatType = repeatType.ordinal,
-        nextAlarmDate = dateTime.toDateTimeString(),
-        insertingDate = null,
-        days = customDays,
-    )

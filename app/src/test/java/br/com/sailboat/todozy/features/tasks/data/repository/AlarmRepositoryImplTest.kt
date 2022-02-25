@@ -2,6 +2,8 @@ package br.com.sailboat.todozy.features.tasks.data.repository
 
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.factory.AlarmDataMockFactory.makeAlarmData
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmDataToAlarmMapper
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.features.tasks.data.model.AlarmData
 import br.com.sailboat.todozy.features.tasks.domain.factory.AlarmMockFactory.makeAlarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
@@ -15,9 +17,13 @@ import kotlin.test.assertEquals
 class AlarmRepositoryImplTest {
 
     private val alarmLocalDataSource: AlarmLocalDataSource = mockk(relaxed = true)
+    private val alarmDataToAlarmMapper: AlarmDataToAlarmMapper = mockk(relaxed = true)
+    private val alarmToAlarmDataMapper: AlarmToAlarmDataMapper = mockk(relaxed = true)
 
     private val alarmRepository = AlarmRepositoryImpl(
         alarmLocalDataSource = alarmLocalDataSource,
+        alarmDataToAlarmMapper = alarmDataToAlarmMapper,
+        alarmToAlarmDataMapper = alarmToAlarmDataMapper,
     )
 
     @Test
@@ -29,11 +35,7 @@ class AlarmRepositoryImplTest {
                 repeatType = RepeatType.WEEK.ordinal,
                 nextAlarmDate = "2022-02-23 08:40:00",
             )
-            prepareScenario(alarmData = alarmData)
-
-            val result = alarmRepository.getAlarmByTaskId(taskId)
-
-            val expected = Alarm(
+            val alarm = Alarm(
                 dateTime = with(Calendar.getInstance()) {
                     set(Calendar.YEAR, 2022)
                     set(Calendar.MONTH, 1)
@@ -46,7 +48,14 @@ class AlarmRepositoryImplTest {
                 },
                 repeatType = RepeatType.WEEK,
             )
-            assertEquals(expected, result)
+            prepareScenario(
+                alarmData = alarmData,
+                alarm = alarm,
+            )
+
+            val result = alarmRepository.getAlarmByTaskId(taskId)
+
+            assertEquals(alarm, result)
             coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
         }
 
@@ -85,7 +94,7 @@ class AlarmRepositoryImplTest {
                 },
                 repeatType = RepeatType.WEEK,
             )
-            prepareScenario()
+            prepareScenario(alarmData = alarmData)
 
             alarmRepository.save(alarm, taskId)
 
@@ -93,11 +102,14 @@ class AlarmRepositoryImplTest {
         }
 
     private fun prepareScenario(
-        alarmData: AlarmData? = makeAlarmData(),
+        alarm: Alarm = makeAlarm(),
+        alarmData: AlarmData = makeAlarmData(),
     ) {
         coEvery { alarmLocalDataSource.getAlarmByTask(any()) } returns alarmData
         coEvery { alarmLocalDataSource.deleteByTask(any()) } just runs
         coEvery { alarmLocalDataSource.save(any()) } just runs
+        coEvery { alarmDataToAlarmMapper.map(any()) } returns alarm
+        coEvery { alarmToAlarmDataMapper.map(any(), any()) } returns alarmData
     }
 
 }

@@ -6,6 +6,8 @@ import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLo
 import br.com.sailboat.todozy.features.settings.data.repository.SettingsRepositoryImpl
 import br.com.sailboat.todozy.features.settings.domain.respository.SettingsRepository
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.*
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmDataToAlarmMapper
+import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.features.tasks.data.repository.AlarmRepositoryImpl
 import br.com.sailboat.todozy.features.tasks.data.repository.TaskHistoryRepositoryImpl
 import br.com.sailboat.todozy.features.tasks.data.repository.TaskRepositoryImpl
@@ -16,7 +18,7 @@ import org.koin.dsl.module
 
 val dataModule = module {
     single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
-    single<AlarmRepository> { AlarmRepositoryImpl(get()) }
+    single<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
 
@@ -28,4 +30,7 @@ val dataModule = module {
     single { DatabaseOpenHelper(get(), get()) }
     single<DatabaseService> { DatabaseServiceImpl() }
     single<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
+
+    single { AlarmDataToAlarmMapper() }
+    single { AlarmToAlarmDataMapper() }
 }
