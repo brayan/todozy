@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.base.mvp
 
-import br.com.sailboat.todozy.core.presentation.helper.CoroutineContextProvider
+import br.com.sailboat.todozy.utility.kotlin.coroutines.CoroutineContextProvider
 import br.com.sailboat.todozy.core.presentation.model.ViewResult
 import kotlinx.coroutines.*
 

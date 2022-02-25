@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.presentation.base.BaseViewModel
+import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.Event

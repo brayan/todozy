@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.base
+package br.com.sailboat.todozy.utility.android.viewmodel
 
 import androidx.lifecycle.ViewModel
 

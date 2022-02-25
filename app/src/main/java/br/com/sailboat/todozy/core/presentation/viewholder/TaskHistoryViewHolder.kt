@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
+import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView

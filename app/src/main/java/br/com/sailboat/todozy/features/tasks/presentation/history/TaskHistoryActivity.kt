@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.content.Context
 import android.content.Intent
-import br.com.sailboat.todozy.core.presentation.base.BaseActivity
+import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 import br.com.sailboat.todozy.core.presentation.helper.getBundle
 import br.com.sailboat.todozy.core.presentation.helper.getTaskId
 import br.com.sailboat.todozy.core.presentation.helper.hasTaskId

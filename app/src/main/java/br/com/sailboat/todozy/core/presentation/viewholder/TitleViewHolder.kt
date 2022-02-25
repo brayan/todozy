@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.core.presentation.base.BaseViewHolder
+import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.model.TitleItemView
 import br.com.sailboat.todozy.databinding.VhTitleBinding
 

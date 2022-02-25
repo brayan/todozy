@@ -1,10 +1,9 @@
-package br.com.sailboat.todozy.core.presentation.base
+package br.com.sailboat.todozy.utility.android.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.logDebug
+import br.com.sailboat.todozy.utility.android.R
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -12,7 +11,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.frame_layout)
+        setContentView(R.layout.activity_base)
 
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(TAG)
 
@@ -22,13 +21,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 .replace(R.id.frameLayout, newFragmentInstance(), TAG)
                 .commit()
         }
-
-        "${javaClass.simpleName}.onCreate".logDebug()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        "${javaClass.simpleName}.onDestroy".logDebug()
     }
 
     protected abstract fun newFragmentInstance(): Fragment

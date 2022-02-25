@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.core.base
 
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
@@ -10,8 +11,8 @@ import java.util.*
 
 abstract class BaseSQLite(database: SQLiteOpenHelper) {
 
-    val readable by lazy { database.readableDatabase }
-    val writable by lazy { database.writableDatabase }
+    private val readable: SQLiteDatabase by lazy { database.readableDatabase }
+    private val writable: SQLiteDatabase by lazy { database.writableDatabase }
 
     abstract val createTableStatement: String
 

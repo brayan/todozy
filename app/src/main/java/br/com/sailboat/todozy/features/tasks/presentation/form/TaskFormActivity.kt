@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.core.extensions.isTrue
 import br.com.sailboat.todozy.core.extensions.orZero
-import br.com.sailboat.todozy.core.presentation.base.BaseActivity
+import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 import br.com.sailboat.todozy.core.presentation.helper.*
 
 fun Fragment.startTaskFormActivity() {

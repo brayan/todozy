@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.base
+package br.com.sailboat.todozy.utility.android.recyclerview
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.list
 
 import android.content.Context
 import android.content.Intent
-import br.com.sailboat.todozy.core.presentation.base.BaseActivity
+import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 
 fun Context.startTaskListActivity() {

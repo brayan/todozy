@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.utility.kotlin.coroutines
 
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
