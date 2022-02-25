@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.core.presentation.viewholder
 import android.view.ViewGroup
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.databinding.VhTaskBinding
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.kotlin.extension.isAfterTomorrow

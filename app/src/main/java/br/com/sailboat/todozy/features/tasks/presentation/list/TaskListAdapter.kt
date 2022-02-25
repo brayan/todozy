@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
 import br.com.sailboat.todozy.uicomponent.model.SubheadView
 import br.com.sailboat.todozy.uicomponent.model.UiModel
-import br.com.sailboat.todozy.uicomponent.model.ViewType
+import br.com.sailboat.todozy.uicomponent.model.UiModelType
 
 class TaskListAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {
@@ -19,8 +19,8 @@ class TaskListAdapter(private val callback: Callback) :
     interface Callback : TaskViewHolder.Callback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        ViewType.TASK.ordinal -> TaskViewHolder(parent, callback)
-        ViewType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
+        UiModelType.TASK.ordinal -> TaskViewHolder(parent, callback)
+        UiModelType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
         else -> EmptyViewHolder(parent)
     }
 
@@ -28,8 +28,8 @@ class TaskListAdapter(private val callback: Callback) :
         val item = getItem(position)
 
         when (item.index) {
-            ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
-            ViewType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
+            UiModelType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
+            UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
         }
     }
 

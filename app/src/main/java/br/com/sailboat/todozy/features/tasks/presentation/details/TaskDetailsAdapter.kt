@@ -17,10 +17,10 @@ class TaskDetailsAdapter(private val callback: Callback) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        ViewType.TITLE.ordinal -> TitleViewHolder(parent)
-        ViewType.ALARM.ordinal -> AlarmViewHolder(parent)
-        ViewType.LABEL.ordinal -> LabelViewHolder(parent)
-        ViewType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
+        UiModelType.TITLE.ordinal -> TitleViewHolder(parent)
+        UiModelType.ALARM.ordinal -> AlarmViewHolder(parent)
+        UiModelType.LABEL.ordinal -> LabelViewHolder(parent)
+        UiModelType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
         else -> throw RuntimeException("ViewHolder not found")
     }
 
@@ -28,10 +28,10 @@ class TaskDetailsAdapter(private val callback: Callback) :
         val item = callback.details[position]
 
         when (item.index) {
-            ViewType.TITLE.ordinal -> (holder as TitleViewHolder).bind(item as TitleUiModel)
-            ViewType.ALARM.ordinal -> (holder as AlarmViewHolder).bind(item as AlarmView)
-            ViewType.LABEL.ordinal -> (holder as LabelViewHolder).bind(item as LabelUiModel)
-            ViewType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
+            UiModelType.TITLE.ordinal -> (holder as TitleViewHolder).bind(item as TitleUiModel)
+            UiModelType.ALARM.ordinal -> (holder as AlarmViewHolder).bind(item as AlarmView)
+            UiModelType.LABEL.ordinal -> (holder as LabelViewHolder).bind(item as LabelUiModel)
+            UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
             else -> throw RuntimeException("ViewHolder not found")
         }
     }

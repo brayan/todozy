@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.TestCoroutineRule
 import br.com.sailboat.todozy.core.platform.LogService
-import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter

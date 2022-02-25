@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.mapToTaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
 import br.com.sailboat.todozy.uicomponent.model.SubheadView
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async
@@ -14,6 +14,7 @@ import kotlinx.coroutines.coroutineScope
 // TODO: Add unit tests
 class GetTasksView(
     private val getTasksUseCase: GetTasksUseCase,
+    private val taskToTaskUiModelMapper: TaskToTaskUiModelMapper,
 ) : GetTasksViewUseCase {
 
     private val taskCategories = mapOf(
@@ -38,7 +39,7 @@ class GetTasksView(
 
         if (tasks.isNotEmpty()) {
             tasksView.add(SubheadView(subhead))
-            tasksView.addAll(tasks.mapToTaskItemView())
+            tasksView.addAll(tasks.map { taskToTaskUiModelMapper.map(it) })
         }
 
         return tasksView

@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.platform.LogService
-import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase

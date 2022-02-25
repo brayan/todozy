@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.core.presentation.viewholder.LabelValueViewHolder
 import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
-import br.com.sailboat.todozy.uicomponent.model.ViewType
+import br.com.sailboat.todozy.uicomponent.model.UiModelType
 
 class AboutAdapter(private val callback: Callback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -17,8 +17,8 @@ class AboutAdapter(private val callback: Callback) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        ViewType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
-        ViewType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
+        UiModelType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
+        UiModelType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
         else -> throw RuntimeException("ViewHolder not found")
     }
 
@@ -26,8 +26,8 @@ class AboutAdapter(private val callback: Callback) :
         val item = callback.getAbout()[position]
 
         when (item.index) {
-            ViewType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
-            ViewType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
+            UiModelType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
+            UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
             else -> throw RuntimeException("ViewHolder not found")
         }
     }

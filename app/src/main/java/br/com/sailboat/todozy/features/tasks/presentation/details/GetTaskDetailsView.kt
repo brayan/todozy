@@ -37,7 +37,7 @@ class GetTaskDetailsView(
     }
 
     private fun addAlarm(context: Context, alarm: Alarm, uiModels: MutableList<UiModel>) {
-        val item = LabelUiModel(context.getString(R.string.alarm), ViewType.LABEL.ordinal)
+        val item = LabelUiModel(context.getString(R.string.alarm), UiModelType.LABEL.ordinal)
         uiModels.add(item)
 
         val alarmView = AlarmView(

@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.uicomponent.model
 
-enum class ViewType {
+enum class UiModelType {
     TASK,
     TASK_HISTORY,
     ALARM,
