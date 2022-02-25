@@ -3,11 +3,11 @@ package br.com.sailboat.todozy.core.presentation.helper
 import android.content.Context
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.core.extensions.log
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import java.util.*
 
 class AlarmColor {

@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
-import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.databinding.FrgAboutBinding
+import br.com.sailboat.todozy.uicomponent.model.UiModel
 import org.koin.android.ext.android.inject
 
 class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.View,
@@ -18,9 +18,9 @@ class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.
     override val presenter: AboutContract.Presenter by inject()
 
     companion object {
-        fun newInstance(itemViews: ArrayList<ItemView>): AboutFragment {
+        fun newInstance(uiModels: ArrayList<UiModel>): AboutFragment {
             val args = Bundle()
-            args.putSerializable("RECYCLER_ITEMS", itemViews)
+            args.putSerializable("RECYCLER_ITEMS", uiModels)
             val fragment = AboutFragment()
             fragment.arguments = args
 
@@ -48,8 +48,8 @@ class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.
         binding.recycler.adapter?.notifyDataSetChanged()
     }
 
-    override fun extractAboutInfo(): List<ItemView> {
-        return arguments?.getSerializable("RECYCLER_ITEMS") as List<ItemView>
+    override fun extractAboutInfo(): List<UiModel> {
+        return arguments?.getSerializable("RECYCLER_ITEMS") as List<UiModel>
     }
 
     override fun getAbout() = presenter.getAbout()

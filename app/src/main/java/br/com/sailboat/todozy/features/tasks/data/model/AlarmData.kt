@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
-import java.util.*
 
 data class AlarmData(
     var id: Long = Entity.NO_ID,

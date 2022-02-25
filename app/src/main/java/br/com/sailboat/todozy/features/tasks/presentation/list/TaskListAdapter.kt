@@ -5,16 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.ItemView
-import br.com.sailboat.todozy.core.presentation.model.SubheadView
-import br.com.sailboat.todozy.core.presentation.model.TaskItemView
-import br.com.sailboat.todozy.core.presentation.model.ViewType
+import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
 import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
+import br.com.sailboat.todozy.uicomponent.model.SubheadView
+import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.uicomponent.model.ViewType
 
 class TaskListAdapter(private val callback: Callback) :
-    ListAdapter<ItemView, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {
 
     interface Callback : TaskViewHolder.Callback
 
@@ -27,24 +27,24 @@ class TaskListAdapter(private val callback: Callback) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        when (item.viewType) {
-            ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskItemView)
+        when (item.index) {
+            ViewType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
             ViewType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
         }
     }
 
-    override fun getItemViewType(position: Int) = getItem(position).viewType
+    override fun getItemViewType(position: Int) = getItem(position).index
 
-    private class TaskListAdapterDiffUtilCallback : DiffUtil.ItemCallback<ItemView>() {
+    private class TaskListAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
         override fun areItemsTheSame(
-            oldItem: ItemView,
-            newItem: ItemView,
-        ) = oldItem.viewType == newItem.viewType
+            oldItem: UiModel,
+            newItem: UiModel,
+        ) = oldItem.index == newItem.index
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(
-            oldItem: ItemView,
-            newItem: ItemView,
+            oldItem: UiModel,
+            newItem: UiModel,
         ) = oldItem == newItem
     }
 }

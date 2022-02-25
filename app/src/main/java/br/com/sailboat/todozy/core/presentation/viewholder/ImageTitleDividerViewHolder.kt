@@ -1,16 +1,16 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
-import br.com.sailboat.todozy.core.presentation.model.ImageTitleDividerItemView
 import br.com.sailboat.todozy.databinding.VhImageTitleDividerBinding
+import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
+import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 
 class ImageTitleDividerViewHolder(parent: ViewGroup) :
-    BaseViewHolder<ImageTitleDividerItemView, VhImageTitleDividerBinding>(
+    BaseViewHolder<ImageTitleDividerUiModel, VhImageTitleDividerBinding>(
         VhImageTitleDividerBinding.inflate(getInflater(parent), parent, false)
     ) {
 
-    override fun bind(item: ImageTitleDividerItemView) = with(binding) {
+    override fun bind(item: ImageTitleDividerUiModel) = with(binding) {
         vhImageTitleDividerImg.setImageResource(item.imageRes)
         vhImageTitleDividerTvTitle.text = item.title
     }

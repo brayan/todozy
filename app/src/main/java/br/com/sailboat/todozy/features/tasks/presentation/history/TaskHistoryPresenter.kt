@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
-import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
@@ -15,6 +14,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
+import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import kotlinx.coroutines.delay
@@ -29,7 +29,7 @@ class TaskHistoryPresenter(
 ) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private var taskId = Entity.NO_ID
-    private val history = mutableListOf<ItemView>()
+    private val history = mutableListOf<UiModel>()
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
     private var taskMetrics: TaskMetrics? = null
@@ -322,7 +322,7 @@ class TaskHistoryPresenter(
         selectedItemPosition = -1
     }
 
-    override fun getHistoryViewList(): List<ItemView> {
+    override fun getHistoryViewList(): List<UiModel> {
         return history
     }
 

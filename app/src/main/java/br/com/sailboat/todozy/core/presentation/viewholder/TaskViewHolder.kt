@@ -2,17 +2,17 @@ package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
 import br.com.sailboat.todozy.core.extensions.log
-import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.core.presentation.model.TaskItemView
+import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
 import br.com.sailboat.todozy.databinding.VhTaskBinding
+import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.kotlin.extension.isAfterTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
 import java.util.*
 
 class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
-    BaseViewHolder<TaskItemView, VhTaskBinding>(
+    BaseViewHolder<TaskUiModel, VhTaskBinding>(
         VhTaskBinding.inflate(getInflater(parent), parent, false)
     ) {
 
@@ -20,7 +20,7 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         fun onClickTask(taskId: Long)
     }
 
-    override fun bind(item: TaskItemView) = with(binding) {
+    override fun bind(item: TaskUiModel) = with(binding) {
         task.vhTaskTvName.text = item.taskName
         bindTaskAlarm(item.alarm)
         root.setOnClickListener { callback.onClickTask(item.taskId) }

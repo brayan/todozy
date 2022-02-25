@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
-import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.core.extensions.logDebug
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
@@ -25,6 +23,8 @@ import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHisto
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState.Action.*
+import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseFragment() {

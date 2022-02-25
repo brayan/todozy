@@ -59,6 +59,7 @@ dependencies {
 
     implementation project(':utility:kotlin-util')
     implementation project(':utility:android-util')
+    implementation project(':ui-component')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
@@ -81,8 +82,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.0"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.5.21"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.6.10"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     androidTestImplementation "io.mockk:mockk-android:1.9.3"

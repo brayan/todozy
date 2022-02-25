@@ -1,12 +1,12 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.ItemView
-import br.com.sailboat.todozy.core.presentation.model.SubheadView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskItemView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.uicomponent.model.SubheadView
+import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -32,9 +32,9 @@ class GetTasksView(
         }.awaitAll().flatten()
     }
 
-    private suspend fun getTasksView(filter: TaskFilter, subhead: Int): List<ItemView> {
+    private suspend fun getTasksView(filter: TaskFilter, subhead: Int): List<UiModel> {
         val tasks = getTasksUseCase(filter)
-        val tasksView = mutableListOf<ItemView>()
+        val tasksView = mutableListOf<UiModel>()
 
         if (tasks.isNotEmpty()) {
             tasksView.add(SubheadView(subhead))

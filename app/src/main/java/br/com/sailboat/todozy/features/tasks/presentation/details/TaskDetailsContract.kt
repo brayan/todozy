@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPContract
-import br.com.sailboat.todozy.core.presentation.model.ItemView
+import br.com.sailboat.todozy.uicomponent.model.UiModel
 
 interface TaskDetailsContract {
 
@@ -24,7 +24,7 @@ interface TaskDetailsContract {
     }
 
     interface Presenter : BaseMVPContract.Presenter {
-        val details: List<ItemView>
+        val details: List<UiModel>
         fun onClickMenuDelete()
         fun onClickMenuHistory()
         fun onClickDeleteTask()

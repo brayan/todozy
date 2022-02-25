@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.utility.kotlin.extension.orFalse
-import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
 import br.com.sailboat.todozy.core.presentation.base.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.helper.toShortDateView
 import br.com.sailboat.todozy.databinding.DlgDateRangeSelectorBinding
-import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
-import br.com.sailboat.todozy.utility.kotlin.extension.isAfterToday
-import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.*
 import java.util.*
 
 class DateRangeSelectorDialog : BaseDialogFragment() {

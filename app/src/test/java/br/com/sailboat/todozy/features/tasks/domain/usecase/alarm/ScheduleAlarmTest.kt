@@ -3,7 +3,6 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase.alarm
 import br.com.sailboat.todozy.core.platform.AlarmManagerService
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
-import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

@@ -2,13 +2,13 @@ package br.com.sailboat.todozy.core.presentation.dialog.weekdays
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.DayView
+import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 
 class WeekDaysSelectorAdapter(private val callback: Callback) :
     RecyclerView.Adapter<WeekDayViewHolder>() {
 
     interface Callback : WeekDayViewHolder.Callback {
-        val days: List<DayView>
+        val days: List<DayUiModel>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekDayViewHolder {

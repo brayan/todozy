@@ -3,11 +3,9 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.Event
-import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
@@ -19,6 +17,8 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistor
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState
+import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class TaskHistoryViewModel(
     override val viewState = TaskListViewState()
 
     private var taskId = Entity.NO_ID
-    val history = mutableListOf<ItemView>()
+    val history = mutableListOf<UiModel>()
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
     private var dateRangeType = DateFilterTaskHistorySelectableItem.NO_FILTER

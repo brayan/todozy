@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.core.presentation.helper
 
 import android.content.Context
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.DayView
+import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import java.util.*
 
 class WeekDaysHelper {
@@ -38,28 +38,28 @@ class WeekDaysHelper {
 
     }
 
-    fun getDayViewFromId(ctx: Context, id: Int): DayView {
+    fun getDayViewFromId(ctx: Context, id: Int): DayUiModel {
         when (id) {
             Calendar.SUNDAY -> {
-                return DayView(id, ctx.getString(R.string.sunday))
+                return DayUiModel(id, ctx.getString(R.string.sunday))
             }
             Calendar.MONDAY -> {
-                return DayView(id, ctx.getString(R.string.monday))
+                return DayUiModel(id, ctx.getString(R.string.monday))
             }
             Calendar.TUESDAY -> {
-                return DayView(id, ctx.getString(R.string.tuesday))
+                return DayUiModel(id, ctx.getString(R.string.tuesday))
             }
             Calendar.WEDNESDAY -> {
-                return DayView(id, ctx.getString(R.string.wednesday))
+                return DayUiModel(id, ctx.getString(R.string.wednesday))
             }
             Calendar.THURSDAY -> {
-                return DayView(id, ctx.getString(R.string.thursday))
+                return DayUiModel(id, ctx.getString(R.string.thursday))
             }
             Calendar.FRIDAY -> {
-                return DayView(id, ctx.getString(R.string.friday))
+                return DayUiModel(id, ctx.getString(R.string.friday))
             }
             Calendar.SATURDAY -> {
-                return DayView(id, ctx.getString(R.string.saturday))
+                return DayUiModel(id, ctx.getString(R.string.saturday))
             }
             else -> {
                 throw IllegalArgumentException("Invalid Day ID")

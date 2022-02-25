@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list
 
-import br.com.sailboat.todozy.core.presentation.model.ItemView
+import br.com.sailboat.todozy.uicomponent.model.UiModel
 
 interface GetTasksViewUseCase {
-    suspend operator fun invoke(search: String): List<ItemView>
+    suspend operator fun invoke(search: String): List<UiModel>
 }

@@ -9,16 +9,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.DayView
 import br.com.sailboat.todozy.databinding.DlgWeekDaysSelectorBinding
+import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import java.util.*
 
 class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
     WeekDaysSelectorAdapter.Callback {
 
     private var selectedDays = ""
-    private val hashSelectedDays = mutableMapOf<Int, DayView>()
-    private var loadedDays = mutableListOf<DayView>()
+    private val hashSelectedDays = mutableMapOf<Int, DayUiModel>()
+    private var loadedDays = mutableListOf<DayUiModel>()
     override val days = loadedDays
 
     private lateinit var binding: DlgWeekDaysSelectorBinding
@@ -52,13 +52,13 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
     }
 
     private fun initDays() {
-        days.add(DayView(Calendar.SUNDAY, getString(R.string.sunday)))
-        days.add(DayView(Calendar.THURSDAY, getString(R.string.thursday)))
-        days.add(DayView(Calendar.MONDAY, getString(R.string.monday)))
-        days.add(DayView(Calendar.FRIDAY, getString(R.string.friday)))
-        days.add(DayView(Calendar.TUESDAY, getString(R.string.tuesday)))
-        days.add(DayView(Calendar.SATURDAY, getString(R.string.saturday)))
-        days.add(DayView(Calendar.WEDNESDAY, getString(R.string.wednesday)))
+        days.add(DayUiModel(Calendar.SUNDAY, getString(R.string.sunday)))
+        days.add(DayUiModel(Calendar.THURSDAY, getString(R.string.thursday)))
+        days.add(DayUiModel(Calendar.MONDAY, getString(R.string.monday)))
+        days.add(DayUiModel(Calendar.FRIDAY, getString(R.string.friday)))
+        days.add(DayUiModel(Calendar.TUESDAY, getString(R.string.tuesday)))
+        days.add(DayUiModel(Calendar.SATURDAY, getString(R.string.saturday)))
+        days.add(DayUiModel(Calendar.WEDNESDAY, getString(R.string.wednesday)))
     }
 
     private fun initSelectedDays() {
@@ -105,13 +105,13 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
     }
 
     private fun getDayViewFromId(id: Int) = when (id) {
-        Calendar.SUNDAY -> DayView(id, getString(R.string.sunday))
-        Calendar.MONDAY -> DayView(id, getString(R.string.monday))
-        Calendar.TUESDAY -> DayView(id, getString(R.string.tuesday))
-        Calendar.WEDNESDAY -> DayView(id, getString(R.string.wednesday))
-        Calendar.THURSDAY -> DayView(id, getString(R.string.thursday))
-        Calendar.FRIDAY -> DayView(id, getString(R.string.friday))
-        Calendar.SATURDAY -> DayView(id, getString(R.string.saturday))
+        Calendar.SUNDAY -> DayUiModel(id, getString(R.string.sunday))
+        Calendar.MONDAY -> DayUiModel(id, getString(R.string.monday))
+        Calendar.TUESDAY -> DayUiModel(id, getString(R.string.tuesday))
+        Calendar.WEDNESDAY -> DayUiModel(id, getString(R.string.wednesday))
+        Calendar.THURSDAY -> DayUiModel(id, getString(R.string.thursday))
+        Calendar.FRIDAY -> DayUiModel(id, getString(R.string.friday))
+        Calendar.SATURDAY -> DayUiModel(id, getString(R.string.saturday))
         else -> null
     }
 

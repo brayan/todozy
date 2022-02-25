@@ -2,8 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.platform.LogService
-import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
-import br.com.sailboat.todozy.core.presentation.model.TaskItemView
+import br.com.sailboat.todozy.core.presentation.model.TaskUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
@@ -11,6 +10,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction.*
+import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 
 class TaskListViewModel(
@@ -94,7 +94,7 @@ class TaskListViewModel(
 
             val itemsView = viewState.itemsView.value
 
-            val taskId = (itemsView?.get(position) as TaskItemView).taskId
+            val taskId = (itemsView?.get(position) as TaskUiModel).taskId
 
             completeTaskUseCase(taskId, status)
 

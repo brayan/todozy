@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
-import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import br.com.sailboat.todozy.core.presentation.base.BaseFragment
 import br.com.sailboat.todozy.core.presentation.dialog.DateRangeSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.TaskHistoryFilterDialog
@@ -17,9 +15,11 @@ import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDial
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.core.presentation.model.ItemView
 import br.com.sailboat.todozy.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
+import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
+import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -274,7 +274,7 @@ class TaskHistoryFragment : BaseFragment() {
                 override fun onClickHistory(position: Int) = viewModel.onClickHistory(position)
                 override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
                 override fun onClickDelete(position: Int) = viewModel.onClickDelete(position)
-                override val history: List<ItemView> = viewModel.history
+                override val history: List<UiModel> = viewModel.history
             })
             layoutManager = LinearLayoutManager(activity)
         }
