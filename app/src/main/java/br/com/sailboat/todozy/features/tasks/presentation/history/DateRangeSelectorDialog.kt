@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog
+package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,6 +9,8 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.core.presentation.helper.toShortDateView
 import br.com.sailboat.todozy.databinding.DlgDateRangeSelectorBinding
+import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
+import br.com.sailboat.todozy.uicomponent.dialog.MessageDialog
 import br.com.sailboat.todozy.utility.kotlin.extension.*
 import java.util.*
 

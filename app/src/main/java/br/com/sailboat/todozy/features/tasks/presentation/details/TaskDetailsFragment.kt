@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
-import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
+import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity

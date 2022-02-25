@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog
+package br.com.sailboat.todozy.uicomponent.dialog
 
 import androidx.appcompat.app.AlertDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment

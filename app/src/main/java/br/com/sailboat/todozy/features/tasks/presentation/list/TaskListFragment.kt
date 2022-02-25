@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.extensions.logDebug
-import br.com.sailboat.todozy.core.presentation.base.BaseFragment
-import br.com.sailboat.todozy.core.presentation.dialog.ProgressDialog
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.uicomponent.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity

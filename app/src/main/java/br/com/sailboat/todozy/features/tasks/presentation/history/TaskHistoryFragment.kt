@@ -6,10 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
-import br.com.sailboat.todozy.core.presentation.base.BaseFragment
-import br.com.sailboat.todozy.core.presentation.dialog.DateRangeSelectorDialog
-import br.com.sailboat.todozy.core.presentation.dialog.TaskHistoryFilterDialog
-import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem

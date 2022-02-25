@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.core.presentation.helper
 import android.content.Context
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.dialog.TwoOptionsDialog
+import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 
 class DialogHelper {
 

@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.base.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
-import br.com.sailboat.todozy.core.presentation.dialog.DateSelectorDialog
-import br.com.sailboat.todozy.core.presentation.dialog.TimeSelectorDialog
+import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
+import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.RepeatAlarmSelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem

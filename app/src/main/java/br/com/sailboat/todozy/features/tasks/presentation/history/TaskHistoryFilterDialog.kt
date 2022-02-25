@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog
+package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.app.Dialog
 import android.os.Bundle

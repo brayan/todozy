@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.base
+package br.com.sailboat.todozy.utility.android.fragment
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.utility.android.R
 import java.util.*
 
 abstract class BaseFragment : Fragment() {

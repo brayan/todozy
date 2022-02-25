@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog
+package br.com.sailboat.todozy.uicomponent.dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import br.com.sailboat.todozy.uicomponent.databinding.DialogProgressBinding
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
-import br.com.sailboat.todozy.databinding.DlgProgressBinding
 
 class ProgressDialog : BaseDialogFragment() {
 
-    private lateinit var binding: DlgProgressBinding
+    private lateinit var binding: DialogProgressBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class ProgressDialog : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DlgProgressBinding.inflate(LayoutInflater.from(requireContext()))
+        binding = DialogProgressBinding.inflate(LayoutInflater.from(requireContext()))
         return buildDialog()
     }
 

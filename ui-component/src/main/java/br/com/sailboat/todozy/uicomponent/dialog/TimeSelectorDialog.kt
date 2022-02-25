@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog
+package br.com.sailboat.todozy.uicomponent.dialog
 
 import android.app.Dialog
 import android.app.TimePickerDialog
