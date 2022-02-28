@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.presentation.form
 
-import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.uicomponent.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
-import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
 import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.SelectItemDialog

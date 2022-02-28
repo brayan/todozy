@@ -6,14 +6,15 @@ import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
+import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 
-class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) :
-    BaseSQLite(database),
-    TaskHistoryLocalDataSource {
+class TaskHistoryLocalDataSourceSQLite(
+    database: DatabaseOpenHelperService,
+) : BaseSQLite(database), TaskHistoryLocalDataSource {
 
     override val createTableStatement = StringBuilder()
         .append(" CREATE TABLE TaskHistory ( ")

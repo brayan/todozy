@@ -10,7 +10,6 @@ import br.com.sailboat.todozy.features.tasks.presentation.history.*
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.features.tasks.presentation.mapper.AlarmToAlarmUiModelMapper
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
@@ -47,7 +46,6 @@ val uiModule = module {
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     single { TaskToTaskUiModelMapper() }
-    single { AlarmToAlarmUiModelMapper(get()) }
     single { TaskHistoryToTaskHistoryUiModelMapper() }
     single { TaskHistoryUiModelToTaskHistoryMapper() }
 

@@ -10,10 +10,10 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import java.util.*
 
-abstract class BaseSQLite(database: SQLiteOpenHelper) {
+abstract class BaseSQLite(database: DatabaseOpenHelperService) {
 
-    private val readable: SQLiteDatabase by lazy { database.readableDatabase }
-    private val writable: SQLiteDatabase by lazy { database.writableDatabase }
+    private val readable: SQLiteDatabase by lazy { database.readable }
+    private val writable: SQLiteDatabase by lazy { database.writable }
 
     abstract val createTableStatement: String
 

@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.factory
 
-import br.com.sailboat.todozy.features.tasks.data.model.AlarmData
-import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
+import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
 
 object AlarmDataMockFactory {
 

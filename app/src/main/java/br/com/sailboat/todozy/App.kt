@@ -4,6 +4,7 @@ import android.app.Application
 import br.com.sailboat.todozy.core.platform.CrashlyticsReportingTree
 import br.com.sailboat.todozy.di.appComponent
 import br.com.sailboat.todozy.feature.about.di.aboutComponent
+import br.com.sailboat.todozy.feature.alarm.di.alarmComponent
 import br.com.sailboat.todozy.feature.settings.di.settingsComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -21,6 +22,7 @@ class App : Application() {
             androidContext(this@App)
             modules(aboutComponent)
             modules(settingsComponent)
+            modules(alarmComponent)
             modules(appComponent)
         }
 

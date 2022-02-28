@@ -1,13 +1,14 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.AlarmLocalDataSource
+import br.com.sailboat.todozy.feature.alarm.data.repository.AlarmRepositoryImpl
+import br.com.sailboat.todozy.feature.alarm.data.datasource.AlarmLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.factory.AlarmDataMockFactory.makeAlarmData
-import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmDataToAlarmMapper
-import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmToAlarmDataMapper
-import br.com.sailboat.todozy.features.tasks.data.model.AlarmData
-import br.com.sailboat.todozy.features.tasks.domain.factory.AlarmMockFactory.makeAlarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.data.mapper.AlarmDataToAlarmMapper
+import br.com.sailboat.todozy.feature.alarm.data.mapper.AlarmToAlarmDataMapper
+import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
+import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory.makeAlarm
+import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
+import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

@@ -1,11 +1,11 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
+import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.DeleteAlarmUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.SaveAlarmUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import io.mockk.coVerify
 import io.mockk.confirmVerified

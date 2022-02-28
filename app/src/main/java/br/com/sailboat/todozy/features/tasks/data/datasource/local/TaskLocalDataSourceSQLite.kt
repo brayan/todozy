@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
+import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForTomorrow
@@ -14,8 +15,9 @@ import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 
-class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database),
-    TaskLocalDataSource {
+class TaskLocalDataSourceSQLite(
+    database: DatabaseOpenHelperService,
+) : BaseSQLite(database), TaskLocalDataSource {
 
     override val createTableStatement = StringBuilder()
         .append(" CREATE TABLE Task ( ")

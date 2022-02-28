@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.core.platform.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
 import kotlinx.coroutines.Dispatchers

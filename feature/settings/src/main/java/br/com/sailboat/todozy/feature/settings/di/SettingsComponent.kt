@@ -19,7 +19,7 @@ private val domain = module {
     factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSetting(get()) }
     factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSetting(get()) }
     factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSetting(get()) }
-    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get()) }
+    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get(), get()) }
 }
 
 private val data = module {

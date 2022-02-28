@@ -3,13 +3,13 @@ package br.com.sailboat.todozy.features.tasks.data.repository
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.factory.TaskDataMockFactory
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
-import br.com.sailboat.todozy.features.tasks.domain.factory.AlarmMockFactory
+import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory
 import br.com.sailboat.todozy.features.tasks.domain.factory.TaskMockFactory
-import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
+import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
-import br.com.sailboat.todozy.features.tasks.domain.repository.AlarmRepository
+import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

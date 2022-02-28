@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.di
 
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.*
-import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
 import org.koin.dsl.module
 
@@ -21,11 +21,4 @@ val domainModule = module {
     factory<DeleteHistoryUseCase> { DeleteHistory(get()) }
     factory<DeleteAllHistoryUseCase> { DeleteAllHistory(get()) }
     factory<SaveTaskUseCase> { SaveTask(get(), get(), get(), get()) }
-
-    factory<ScheduleAlarmUseCase> { ScheduleAlarm(get()) }
-    factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarms(get(), get(), get()) }
-    factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdates(get()) }
-    factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
-    factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
-
 }
