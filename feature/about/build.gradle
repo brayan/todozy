@@ -36,6 +36,7 @@ dependencies {
     implementation project(':utility:kotlin-util')
     implementation project(':utility:android-util')
     implementation project(':ui-component')
+    implementation project(':domain')
     implementation project(':feature:alarm')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

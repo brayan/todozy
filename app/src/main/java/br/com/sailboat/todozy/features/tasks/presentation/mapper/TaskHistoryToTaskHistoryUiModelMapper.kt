@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.mapper
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 
 class TaskHistoryToTaskHistoryUiModelMapper {

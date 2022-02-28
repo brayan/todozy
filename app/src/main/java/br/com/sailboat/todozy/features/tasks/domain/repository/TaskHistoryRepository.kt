@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.domain.repository
 
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.TaskStatus
 
 interface TaskHistoryRepository {
     suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int

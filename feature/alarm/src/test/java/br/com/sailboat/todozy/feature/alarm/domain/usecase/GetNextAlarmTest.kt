@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.alarm.domain.usecase
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.*

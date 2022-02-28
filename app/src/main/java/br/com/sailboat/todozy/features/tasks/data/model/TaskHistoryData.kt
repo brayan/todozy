@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.model
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
 data class TaskHistoryData(

@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskCategory
+import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
 
 class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {

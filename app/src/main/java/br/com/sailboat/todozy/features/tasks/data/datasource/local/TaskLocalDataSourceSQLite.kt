@@ -1,9 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import android.database.Cursor
-import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException

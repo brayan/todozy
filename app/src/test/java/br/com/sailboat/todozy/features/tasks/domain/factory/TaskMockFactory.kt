@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.factory
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Task
 import java.util.*
 
 object TaskMockFactory {

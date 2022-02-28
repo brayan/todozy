@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import io.mockk.coEvery

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.features.tasks.domain.model
+package br.com.sailboat.todozy.domain.model
 
 enum class TaskStatus(val id: Int) {
 

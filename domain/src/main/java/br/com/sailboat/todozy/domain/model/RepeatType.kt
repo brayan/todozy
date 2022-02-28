@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.alarm.domain.model
+package br.com.sailboat.todozy.domain.model
 
 enum class RepeatType {
 

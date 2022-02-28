@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import android.content.Context
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
 import br.com.sailboat.todozy.uicomponent.model.*

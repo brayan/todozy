@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskFilter
 
 interface TaskLocalDataSource {
     suspend fun getTask(taskId: Long): TaskData

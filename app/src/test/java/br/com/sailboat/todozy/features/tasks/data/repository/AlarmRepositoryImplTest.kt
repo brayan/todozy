@@ -7,8 +7,8 @@ import br.com.sailboat.todozy.feature.alarm.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
 import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory.makeAlarm
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

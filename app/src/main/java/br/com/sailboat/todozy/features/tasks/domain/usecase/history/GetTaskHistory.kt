@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase.history
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryCategory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.TaskHistory
+import br.com.sailboat.todozy.domain.model.TaskHistoryCategory
+import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
 
 class GetTaskHistory(

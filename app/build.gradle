@@ -59,6 +59,7 @@ dependencies {
 
     implementation project(':utility:kotlin-util')
     implementation project(':utility:android-util')
+    implementation project(':domain')
     implementation project(':ui-component')
     implementation project(':feature:about')
     implementation project(':feature:settings')

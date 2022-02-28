@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
 

@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.model
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
 data class TaskData(

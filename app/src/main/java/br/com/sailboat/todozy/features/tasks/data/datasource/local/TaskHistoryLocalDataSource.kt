@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 
 interface TaskHistoryLocalDataSource {
     fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData>

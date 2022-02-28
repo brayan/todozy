@@ -5,10 +5,10 @@ import br.com.sailboat.todozy.features.tasks.data.factory.TaskDataMockFactory
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory
 import br.com.sailboat.todozy.features.tasks.domain.factory.TaskMockFactory
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskCategory
+import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import io.mockk.*
 import kotlinx.coroutines.runBlocking

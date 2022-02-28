@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.domain.repository
 
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskFilter
 
 interface TaskRepository {
     suspend fun getTask(taskId: Long): Task

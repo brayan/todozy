@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.presentation.form
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
-import br.com.sailboat.todozy.features.tasks.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions.ALARM_NOT_VALID
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskFieldsConditions.TASK_NAME_NOT_FILLED
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.ALARM_NOT_VALID
+import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.TASK_NAME_NOT_FILLED
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.SaveTaskUseCase

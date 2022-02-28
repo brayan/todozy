@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.form
 
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.RepeatType
 
 enum class RepeatTypeUiModel(val repeatType: RepeatType, val description: Int) {
 

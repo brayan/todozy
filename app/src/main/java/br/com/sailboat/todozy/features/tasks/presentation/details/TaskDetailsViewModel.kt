@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.details
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 
 class TaskDetailsViewModel {

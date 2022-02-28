@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.domain.repository
 
-import br.com.sailboat.todozy.feature.alarm.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.Alarm
 
 interface AlarmRepository {
     suspend fun getAlarmByTaskId(taskId: Long): Alarm?

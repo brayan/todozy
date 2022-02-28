@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
-import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.TaskStatus
 
 sealed class TaskListViewAction {
     object OnClickMenuSettings : TaskListViewAction()

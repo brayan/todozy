@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.alarm.data.datasource
 
 import android.database.Cursor
 import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
-import br.com.sailboat.todozy.feature.alarm.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
