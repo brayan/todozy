@@ -1,11 +1,16 @@
-package br.com.sailboat.todozy.core.presentation.viewholder
+package br.com.sailboat.todozy.uicomponent.viewholder
 
+import android.util.Log
 import android.view.ViewGroup
-import br.com.sailboat.todozy.core.extensions.log
-import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.uicomponent.databinding.VhTaskBinding
+import br.com.sailboat.todozy.uicomponent.model.AlarmColor
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
-import br.com.sailboat.todozy.databinding.VhTaskBinding
+import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
+import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
+import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isAfterTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
@@ -34,7 +39,7 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
                 updateAlarmColor(this)
             }
         } catch (e: Exception) {
-            e.log()
+            Log.e("TASK_VIEW_HOLDER", "Error binding alarm", e)
         }
     }
 

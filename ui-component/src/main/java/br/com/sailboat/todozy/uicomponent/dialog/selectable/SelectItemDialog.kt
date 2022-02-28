@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.uicomponent.dialog.selectable
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
-import br.com.sailboat.todozy.core.presentation.helper.gone
-import br.com.sailboat.todozy.core.presentation.helper.visible
-import br.com.sailboat.todozy.databinding.DlgReyclerBinding
+import br.com.sailboat.todozy.uicomponent.databinding.DialogRecyclerBinding
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 
 class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
     SelectableItemAdapter.Callback {
@@ -17,10 +18,10 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
     override lateinit var selectableItems: List<SelectableItem>
     override var selectedItem: SelectableItem? = null
 
-    private lateinit var binding: DlgReyclerBinding
+    private lateinit var binding: DialogRecyclerBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DlgReyclerBinding.inflate(LayoutInflater.from(requireContext()))
+        binding = DialogRecyclerBinding.inflate(LayoutInflater.from(requireContext()))
 
         binding.recycler.layoutManager = LinearLayoutManager(activity)
         binding.recycler.adapter = SelectableItemAdapter(this).apply {

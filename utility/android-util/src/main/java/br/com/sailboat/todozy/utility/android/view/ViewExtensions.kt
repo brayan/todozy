@@ -60,3 +60,11 @@ fun View.scaleDown() {
     scaleX = 0f
     scaleY = 0f
 }
+
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
+}

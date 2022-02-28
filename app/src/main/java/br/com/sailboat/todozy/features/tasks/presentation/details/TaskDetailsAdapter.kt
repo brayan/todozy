@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.core.presentation.model.AlarmView
 import br.com.sailboat.todozy.core.presentation.viewholder.AlarmViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.LabelValueViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.LabelViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.TitleViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.TitleViewHolder
 import br.com.sailboat.todozy.uicomponent.model.*
 
 class TaskDetailsAdapter(private val callback: Callback) :

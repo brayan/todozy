@@ -12,6 +12,8 @@ import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 import org.koin.android.ext.android.inject
 
 

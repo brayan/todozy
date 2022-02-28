@@ -1,8 +1,8 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.utility.android.calendar
 
 import android.content.Context
 import android.text.format.DateFormat
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.utility.android.R
 import br.com.sailboat.todozy.utility.kotlin.extension.getDayName
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow

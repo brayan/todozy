@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
 import br.com.sailboat.todozy.uicomponent.model.SubheadView
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType

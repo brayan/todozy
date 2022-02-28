@@ -1,6 +1,6 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.uicomponent.dialog.selectable.model
 
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import java.util.*
 
 enum class TaskStatusSelectableItem : SelectableItem {

@@ -14,7 +14,7 @@
         android:layout_height="28dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
-        android:tint="?colorAccent"
+        app:tint="?colorAccent"
         app:srcCompat="@drawable/ic_check_white_36dp"
         tools:ignore="MissingPrefix" />
 

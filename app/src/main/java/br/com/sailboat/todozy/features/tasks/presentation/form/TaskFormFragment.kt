@@ -10,8 +10,8 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.core.presentation.dialog.selectable.RepeatAlarmSelectableItem
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDialog
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.SelectItemDialog
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 import br.com.sailboat.todozy.core.presentation.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskFormBinding
@@ -19,6 +19,10 @@ import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.setActivityToHideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
+import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
+import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 import org.koin.android.ext.android.inject
 import java.util.*
 

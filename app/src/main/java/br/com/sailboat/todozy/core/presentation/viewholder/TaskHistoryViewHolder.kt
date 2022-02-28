@@ -4,11 +4,15 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
+import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
-import br.com.sailboat.todozy.databinding.VhTaskHistoryBinding
+import br.com.sailboat.todozy.uicomponent.databinding.VhTaskHistoryBinding
+import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
+import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
+import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isYesterday
@@ -17,7 +21,7 @@ import java.text.ParseException
 import java.util.*
 
 class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
-    BaseViewHolder<TaskHistoryView, VhTaskHistoryBinding>(
+    BaseViewHolder<TaskHistoryUiModel, VhTaskHistoryBinding>(
         VhTaskHistoryBinding.inflate(getInflater(parent), parent, false)
     ) {
 
@@ -26,14 +30,14 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         binding.tvDelete.setOnClickListener { callback.onClickDelete(bindingAdapterPosition) }
     }
 
-    override fun bind(item: TaskHistoryView) = with(binding) {
+    override fun bind(item: TaskHistoryUiModel) = with(binding) {
         tvTaskName.text = item.taskName
         setStatus(item)
         setOptions(item)
         setDateTimeTask(item)
     }
 
-    private fun setStatus(history: TaskHistoryView) = with(binding) {
+    private fun setStatus(history: TaskHistoryUiModel) = with(binding) {
         if (isTaskDone(history)) {
             ivStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
             ivStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
@@ -44,7 +48,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         }
     }
 
-    private fun setDateTimeTask(history: TaskHistoryView) = with(binding) {
+    private fun setDateTimeTask(history: TaskHistoryUiModel) = with(binding) {
         try {
             val calendar = history.insertingDate.toDateTimeCalendar()
             tvLongDateTime.text = getFullDateTime(calendar)
@@ -74,11 +78,11 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         }
     }
 
-    private fun isTaskDone(history: TaskHistoryView): Boolean {
+    private fun isTaskDone(history: TaskHistoryUiModel): Boolean {
         return history.status === TaskStatusView.DONE
     }
 
-    private fun setOptions(history: TaskHistoryView) = with(binding) {
+    private fun setOptions(history: TaskHistoryUiModel) = with(binding) {
         if (callback.isShowingOptions(bindingAdapterPosition)) {
             tvShortDateTime.gone()
             tvLongDateTime.visible()

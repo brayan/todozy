@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
 
-data class TaskHistoryView(
+data class TaskHistoryUiModel(
     val id: Long,
     val taskName: String,
     var status: TaskStatusView,
@@ -14,9 +14,9 @@ data class TaskHistoryView(
     override val index: Int = UiModelType.TASK_HISTORY.ordinal
 ) : UiModel
 
-fun TaskHistory.mapToTaskHistoryView(): TaskHistoryView {
+fun TaskHistory.mapToTaskHistoryView(): TaskHistoryUiModel {
     val status = if (status == TaskStatus.DONE) TaskStatusView.DONE else TaskStatusView.NOT_DONE
-    return TaskHistoryView(
+    return TaskHistoryUiModel(
         id = id,
         taskName = taskName,
         status = status,
@@ -24,7 +24,7 @@ fun TaskHistory.mapToTaskHistoryView(): TaskHistoryView {
     )
 }
 
-fun TaskHistoryView.mapToTaskHistory(): TaskHistory {
+fun TaskHistoryUiModel.mapToTaskHistory(): TaskHistory {
     val status = if (status == TaskStatusView.DONE) TaskStatus.DONE else TaskStatus.NOT_DONE
     return TaskHistory(
         id = id,

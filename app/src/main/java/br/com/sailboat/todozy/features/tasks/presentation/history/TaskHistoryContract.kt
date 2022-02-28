@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPContract
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import java.util.*
 

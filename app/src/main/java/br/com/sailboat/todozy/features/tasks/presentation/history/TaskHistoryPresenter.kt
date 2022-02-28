@@ -2,9 +2,9 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
@@ -112,7 +112,7 @@ class TaskHistoryPresenter(
         try {
             clearHistorySelectedPosition()
 
-            val taskHistory = history[position] as TaskHistoryView
+            val taskHistory = history[position] as TaskHistoryUiModel
 
             history.removeAt(position)
             view?.removeHistoryItem(position)
@@ -297,7 +297,7 @@ class TaskHistoryPresenter(
         try {
             clearHistorySelectedPosition()
 
-            val historyView = history[position] as TaskHistoryView
+            val historyView = history[position] as TaskHistoryUiModel
             historyView.status = status
 
             view?.updateHistoryItem(position)

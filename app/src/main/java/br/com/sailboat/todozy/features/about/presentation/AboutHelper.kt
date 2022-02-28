@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.features.about.presentation
 
 import android.content.Context
 import br.com.sailboat.todozy.BuildConfig

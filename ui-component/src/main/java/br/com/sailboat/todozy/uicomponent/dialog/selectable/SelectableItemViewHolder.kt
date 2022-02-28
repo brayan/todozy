@@ -1,10 +1,11 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.uicomponent.dialog.selectable
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.core.presentation.helper.gone
-import br.com.sailboat.todozy.core.presentation.helper.visible
-import br.com.sailboat.todozy.databinding.VhSelectableItemBinding
+import br.com.sailboat.todozy.uicomponent.databinding.VhSelectableItemBinding
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
 
 class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<SelectableItem, VhSelectableItemBinding>(

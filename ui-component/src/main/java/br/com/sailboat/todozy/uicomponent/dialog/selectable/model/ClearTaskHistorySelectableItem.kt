@@ -1,6 +1,6 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.uicomponent.dialog.selectable.model
 
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import java.util.*
 
 enum class ClearTaskHistorySelectableItem : SelectableItem {
@@ -19,7 +19,7 @@ enum class ClearTaskHistorySelectableItem : SelectableItem {
 
     companion object {
         fun getItems(): List<SelectableItem> {
-            return ArrayList<SelectableItem>(Arrays.asList(*values()))
+            return ArrayList<SelectableItem>(listOf(*values()))
         }
     }
 

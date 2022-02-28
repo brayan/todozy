@@ -1,8 +1,9 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.uicomponent.dialog.selectable
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 
 class SelectableItemAdapter(private val callback: Callback) :
     ListAdapter<SelectableItem, SelectableItemViewHolder>(

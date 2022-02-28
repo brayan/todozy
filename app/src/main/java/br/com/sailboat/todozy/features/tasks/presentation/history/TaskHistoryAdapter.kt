@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryView
+import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.core.presentation.viewholder.TaskHistoryViewHolder
 import br.com.sailboat.todozy.uicomponent.model.SubheadView
@@ -26,7 +26,7 @@ class TaskHistoryAdapter(private val callback: Callback) :
         val item = callback.history[position]
 
         when (item.index) {
-            UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryView)
+            UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryUiModel)
             UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
             else -> throw RuntimeException("ViewHolder not found")
         }

@@ -13,6 +13,7 @@ import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.uicomponent.dialog.ProgressDialog
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskListBinding
+import br.com.sailboat.todozy.features.about.presentation.AboutHelper
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
@@ -23,7 +24,9 @@ import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHisto
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState.Action.*
+import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
+import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

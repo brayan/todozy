@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.databinding.DlgWeekDaysSelectorBinding
+import br.com.sailboat.todozy.uicomponent.databinding.DlgWeekDaysSelectorBinding
 import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import java.util.*
 

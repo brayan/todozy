@@ -8,16 +8,19 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectItemDialog
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.SelectableItem
-import br.com.sailboat.todozy.core.presentation.dialog.selectable.TaskStatusSelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.SelectItemDialog
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
+import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
+import br.com.sailboat.todozy.utility.android.view.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 

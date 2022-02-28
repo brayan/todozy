@@ -1,9 +1,9 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.model
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.ContextCompat
-import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.log
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
@@ -28,7 +28,7 @@ class AlarmColor {
             } else ContextCompat.getColor(context, R.color.md_blue_500)
 
         } catch (e: Exception) {
-            e.log()
+            Log.e("ALARM_COLOR", "Error while getting alarm color", e)
             return ContextCompat.getColor(context, R.color.md_blue_500)
         }
 

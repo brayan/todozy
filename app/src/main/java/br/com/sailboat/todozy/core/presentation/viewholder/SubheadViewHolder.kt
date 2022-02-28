@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.databinding.VhSubheaderBinding
+import br.com.sailboat.todozy.uicomponent.databinding.VhSubheaderBinding
 import br.com.sailboat.todozy.uicomponent.model.SubheadView
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 

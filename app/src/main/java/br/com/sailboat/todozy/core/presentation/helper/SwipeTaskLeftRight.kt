@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.viewholder.TaskViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
 import kotlin.math.roundToInt
 
 
