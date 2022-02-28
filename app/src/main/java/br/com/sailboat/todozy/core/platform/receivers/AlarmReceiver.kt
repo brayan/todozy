@@ -13,8 +13,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.features.LauncherActivity
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase
-import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSettingUseCase
+import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmSoundSettingUseCase
+import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase

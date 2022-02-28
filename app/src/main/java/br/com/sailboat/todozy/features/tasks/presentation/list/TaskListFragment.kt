@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
 import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
-import br.com.sailboat.todozy.features.settings.presentation.startSettingsActivity
+import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity

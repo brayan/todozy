@@ -56,7 +56,7 @@
 
         <activity android:name=".features.tasks.presentation.form.TaskFormActivity" />
 
-        <activity android:name=".features.settings.presentation.SettingsActivity" />
+        <activity android:name=".feature.settings.presentation.SettingsActivity" />
 
     </application>
 

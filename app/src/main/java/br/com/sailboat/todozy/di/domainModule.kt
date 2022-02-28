@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.di
 
-import br.com.sailboat.todozy.features.settings.domain.usecase.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.*
@@ -22,14 +21,11 @@ val domainModule = module {
     factory<DeleteHistoryUseCase> { DeleteHistory(get()) }
     factory<DeleteAllHistoryUseCase> { DeleteAllHistory(get()) }
     factory<SaveTaskUseCase> { SaveTask(get(), get(), get(), get()) }
-    factory<SetAlarmSoundSettingUseCase> { SetAlarmSoundSetting(get()) }
-    factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSetting(get()) }
-    factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSetting(get()) }
-    factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSetting(get()) }
+
     factory<ScheduleAlarmUseCase> { ScheduleAlarm(get()) }
     factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarms(get(), get(), get()) }
     factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdates(get()) }
     factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
     factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
-    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get(), get()) }
+
 }

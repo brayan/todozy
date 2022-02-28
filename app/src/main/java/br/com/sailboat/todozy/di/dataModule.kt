@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.di
 
 import br.com.sailboat.todozy.core.platform.*
-import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSource
-import br.com.sailboat.todozy.features.settings.data.datasource.local.SettingsLocalDataSourceImpl
-import br.com.sailboat.todozy.features.settings.data.repository.SettingsRepositoryImpl
-import br.com.sailboat.todozy.features.settings.domain.respository.SettingsRepository
+import br.com.sailboat.todozy.feature.settings.data.datasource.SettingsLocalDataSource
+import br.com.sailboat.todozy.feature.settings.data.datasource.SettingsLocalDataSourceImpl
+import br.com.sailboat.todozy.feature.settings.data.repository.SettingsRepositoryImpl
+import br.com.sailboat.todozy.feature.settings.domain.repository.SettingsRepository
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.*
 import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.features.tasks.data.mapper.AlarmToAlarmDataMapper
@@ -20,12 +20,10 @@ val dataModule = module {
     single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
     single<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
     single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
-    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
 
     single<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
     single<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
     single<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
-    single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
 
     single { DatabaseOpenHelper(get(), get()) }
     single<DatabaseService> { DatabaseServiceImpl() }
