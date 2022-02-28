@@ -14,6 +14,7 @@ import br.com.sailboat.todozy.features.tasks.presentation.history.*
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
+import br.com.sailboat.todozy.features.tasks.presentation.mapper.AlarmToAlarmUiModelMapper
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -42,12 +43,13 @@ val uiModule = module {
     factory<AboutContract.Presenter> { AboutPresenter() }
 
     factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
-    factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get()) }
+    factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }
     factory<GetHistoryViewUseCase> { GetHistoryView(get()) }
     factory<GetShortDateViewUseCase> { GetShortDateView(get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     single { TaskToTaskUiModelMapper() }
+    single { AlarmToAlarmUiModelMapper(get()) }
 
     viewModel {
         TaskListViewModel(

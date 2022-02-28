@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.AlarmUiModel
-import br.com.sailboat.todozy.core.presentation.viewholder.AlarmViewHolder
+import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
+import br.com.sailboat.todozy.uicomponent.viewholder.AlarmViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.LabelViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TitleViewHolder

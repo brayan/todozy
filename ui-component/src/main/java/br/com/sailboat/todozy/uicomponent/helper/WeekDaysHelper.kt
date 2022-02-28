@@ -1,7 +1,7 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.helper
 
 import android.content.Context
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import java.util.*
 
