@@ -3,8 +3,8 @@ package br.com.sailboat.todozy.uicomponent.viewholder
 import android.view.ViewGroup
 import br.com.sailboat.todozy.uicomponent.databinding.AlarmDetailsBinding
 import br.com.sailboat.todozy.uicomponent.helper.WeekDaysHelper
-import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
+import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible

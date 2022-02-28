@@ -1,17 +1,17 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import android.database.Cursor
-import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
-import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
+import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
+import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
+import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 
 class TaskLocalDataSourceSQLite(database: DatabaseOpenHelper) : BaseSQLite(database),

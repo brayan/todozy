@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.model.mapToTaskHistoryData
 import br.com.sailboat.todozy.features.tasks.data.model.mapToTaskHistoryList
@@ -9,6 +8,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.utility.android.log.logDebug
 
 class TaskHistoryRepositoryImpl(
     private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource

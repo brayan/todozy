@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.data.model
 
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
 data class TaskHistoryData(
     var id: Long = Entity.NO_ID,

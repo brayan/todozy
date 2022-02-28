@@ -2,9 +2,9 @@ package br.com.sailboat.todozy.features.tasks.presentation.mapper
 
 import android.content.Context
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 
@@ -14,21 +14,20 @@ class AlarmToAlarmUiModelMapper(
 ) {
 
     fun map(alarm: Alarm): AlarmUiModel {
-
         val date = alarm.dateTime.getFullDateName(context)
         val time = alarm.dateTime.formatTimeWithAndroidFormat(context)
 
         return AlarmUiModel(
             date = date,
             time = time,
-            description = mapDescription(alarm.repeatType),
+            description = mapRepeatTypeDescription(alarm.repeatType),
             isCustom = alarm.repeatType == RepeatType.CUSTOM,
             shouldRepeat = alarm.repeatType != RepeatType.NOT_REPEAT,
             customDays = alarm.customDays,
         )
     }
 
-    private fun mapDescription(repeatType: RepeatType): String {
+    private fun mapRepeatTypeDescription(repeatType: RepeatType): String {
         return when (repeatType) {
             RepeatType.NOT_REPEAT -> R.string.not_repeat
             RepeatType.DAY -> R.string.every_day

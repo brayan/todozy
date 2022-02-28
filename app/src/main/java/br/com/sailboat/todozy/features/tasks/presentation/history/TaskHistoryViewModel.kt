@@ -2,25 +2,25 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
-import br.com.sailboat.todozy.core.presentation.helper.Event
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
-import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
+import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewState
+import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.todozy.uicomponent.helper.Event
+import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,6 +36,7 @@ class TaskHistoryViewModel(
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
+    private val taskHistoryUiModelToTaskHistoryMapper: TaskHistoryUiModelToTaskHistoryMapper,
 ) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
 
     override val viewState = TaskListViewState()
@@ -73,11 +74,11 @@ class TaskHistoryViewModel(
     }
 
     fun onClickMarkTaskAsDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusUiModel.DONE)
+        updateHistoryStatus(position, TaskStatus.DONE)
     }
 
     fun onClickMarkTaskAsNotDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusUiModel.NOT_DONE)
+        updateHistoryStatus(position, TaskStatus.NOT_DONE)
     }
 
     fun onClickHistory(position: Int) {
@@ -222,7 +223,8 @@ class TaskHistoryViewModel(
             history.removeAt(position)
             removeHistoryItem.postValue(position)
 
-            deleteHistoryUseCase(taskHistory.mapToTaskHistory())
+            val history = taskHistoryUiModelToTaskHistoryMapper.map(taskHistory)
+            deleteHistoryUseCase(history)
 
             delay(1000)
 
@@ -285,15 +287,16 @@ class TaskHistoryViewModel(
     private fun logError(e: Exception) = logError.apply { value = e }
     private fun refreshHistory() = refreshHistory.apply { value = Unit }
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatusUiModel) = viewModelScope.launch {
+    private fun updateHistoryStatus(position: Int, status: TaskStatus) = viewModelScope.launch {
         try {
             clearHistorySelectedPosition()
 
             val historyView = history[position] as TaskHistoryUiModel
-            historyView.status = status
+            historyView.done = status == TaskStatus.DONE
 
             updateHistoryItem(position)
-            updateHistoryUseCase(historyView.mapToTaskHistory())
+            val history = taskHistoryUiModelToTaskHistoryMapper.map(historyView)
+            updateHistoryUseCase(history)
             taskMetrics.value = getTaskMetricsUseCase(filter)
 
         } catch (e: Exception) {

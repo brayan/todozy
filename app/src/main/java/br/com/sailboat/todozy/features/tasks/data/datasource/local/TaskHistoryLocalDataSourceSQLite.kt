@@ -1,14 +1,14 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import android.database.Cursor
-import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
-import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
+import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
+import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
+import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 
 class TaskHistoryLocalDataSourceSQLite(database: DatabaseOpenHelper) :

@@ -1,13 +1,13 @@
 package br.com.sailboat.todozy.features.tasks.presentation.details
 
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
+import br.com.sailboat.todozy.utility.android.mvp.BasePresenter
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.withContext
 
 class TaskDetailsPresenter(

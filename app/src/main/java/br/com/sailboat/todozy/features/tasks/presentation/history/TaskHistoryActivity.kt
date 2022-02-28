@@ -2,9 +2,9 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.content.Context
 import android.content.Intent
-import br.com.sailboat.todozy.core.presentation.helper.getBundle
-import br.com.sailboat.todozy.core.presentation.helper.getTaskId
-import br.com.sailboat.todozy.core.presentation.helper.hasTaskId
+import br.com.sailboat.todozy.uicomponent.helper.getBundle
+import br.com.sailboat.todozy.uicomponent.helper.getTaskId
+import br.com.sailboat.todozy.uicomponent.helper.hasTaskId
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 fun Context.startTaskHistoryActivity() {

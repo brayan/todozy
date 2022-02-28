@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.base.mvp
+package br.com.sailboat.todozy.utility.android.mvp
 
 import br.com.sailboat.todozy.utility.android.view.ViewResult
 import br.com.sailboat.todozy.utility.kotlin.coroutines.CoroutineContextProvider

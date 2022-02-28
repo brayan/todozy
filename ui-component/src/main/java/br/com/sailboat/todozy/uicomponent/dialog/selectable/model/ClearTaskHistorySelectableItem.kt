@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.uicomponent.dialog.selectable.model
 
 import br.com.sailboat.todozy.uicomponent.R
-import java.util.*
 
 enum class ClearTaskHistorySelectableItem : SelectableItem {
 

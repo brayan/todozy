@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.tasks.presentation.form
 
-import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPContract
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
+import br.com.sailboat.todozy.utility.android.mvp.BaseMVPContract
 import java.util.*
 
 interface TaskFormContract {

@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
+import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.uicomponent.model.UiModelType
 import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
-import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModelType
 
 class TaskListAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {

@@ -12,9 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.utility.android.log.log
-import br.com.sailboat.todozy.utility.android.log.logDebug
-import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmVibrateSettingUseCase
@@ -22,6 +19,9 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
+import br.com.sailboat.todozy.utility.android.log.log
+import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

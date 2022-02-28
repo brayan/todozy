@@ -2,12 +2,12 @@ package br.com.sailboat.todozy.features.about.presentation
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.uicomponent.viewholder.ImageTitleDividerViewHolder
-import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
 import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
+import br.com.sailboat.todozy.uicomponent.viewholder.ImageTitleDividerViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
 
 class AboutAdapter(private val callback: Callback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

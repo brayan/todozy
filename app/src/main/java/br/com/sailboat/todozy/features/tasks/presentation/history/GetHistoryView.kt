@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistoryView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.GetTaskHistoryUseCase
+import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async
@@ -14,6 +14,7 @@ import kotlinx.coroutines.coroutineScope
 // TODO: Add unit tests
 class GetHistoryView(
     private val getTasksHistoryUseCase: GetTaskHistoryUseCase,
+    private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper
 ) : GetHistoryViewUseCase {
 
     private val historyCategories = mapOf(
@@ -40,7 +41,7 @@ class GetHistoryView(
 
         if (history.isNotEmpty()) {
             historyView.add(SubheadUiModel(subhead))
-            historyView.addAll(history.mapToTaskHistoryView())
+            historyView.addAll(history.map { taskHistoryToTaskHistoryUiModelMapper.map(it) })
         }
 
         return historyView

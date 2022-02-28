@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.data.datasource.local
 
 import androidx.test.platform.app.InstrumentationRegistry
-import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.core.platform.DatabaseOpenHelper
+import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

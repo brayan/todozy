@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.uicomponent.dialog
+package br.com.sailboat.todozy.utility.android.dialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import br.com.sailboat.todozy.uicomponent.databinding.DialogProgressBinding
+import br.com.sailboat.todozy.utility.android.databinding.DialogProgressBinding
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 
 class ProgressDialog : BaseDialogFragment() {

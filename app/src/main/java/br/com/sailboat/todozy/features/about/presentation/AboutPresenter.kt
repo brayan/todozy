@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.about.presentation
 
-import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
+import br.com.sailboat.todozy.utility.android.mvp.BasePresenter
 
 class AboutPresenter : BasePresenter<AboutContract.View>(), AboutContract.Presenter {
 

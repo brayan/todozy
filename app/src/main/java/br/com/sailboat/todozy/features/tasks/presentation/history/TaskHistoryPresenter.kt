@@ -1,12 +1,5 @@
 package br.com.sailboat.todozy.features.tasks.presentation.history
 
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
-import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskStatus
@@ -14,9 +7,15 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.DeleteHistoryUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.UpdateHistoryUseCase
+import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.utility.android.mvp.BasePresenter
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.delay
 import java.util.*
 
@@ -26,6 +25,7 @@ class TaskHistoryPresenter(
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
+    private val taskHistoryUiModelToTaskHistoryMapper: TaskHistoryUiModelToTaskHistoryMapper,
 ) : BasePresenter<TaskHistoryContract.View>(), TaskHistoryContract.Presenter {
 
     private var taskId = Entity.NO_ID
@@ -101,11 +101,11 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickMarkTaskAsDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusUiModel.DONE)
+        updateHistoryStatus(position, TaskStatus.DONE)
     }
 
     override fun onClickMarkTaskAsNotDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusUiModel.NOT_DONE)
+        updateHistoryStatus(position, TaskStatus.NOT_DONE)
     }
 
     override fun onClickYesDeleteHistory(position: Int) = launchMain {
@@ -117,7 +117,8 @@ class TaskHistoryPresenter(
             history.removeAt(position)
             view?.removeHistoryItem(position)
 
-            deleteHistoryUseCase(taskHistory.mapToTaskHistory())
+            val history = taskHistoryUiModelToTaskHistoryMapper.map(taskHistory)
+            deleteHistoryUseCase(history)
 
             delay(1000)
 
@@ -293,16 +294,17 @@ class TaskHistoryPresenter(
     }
 
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatusUiModel) = launchMain {
+    private fun updateHistoryStatus(position: Int, status: TaskStatus) = launchMain {
         try {
             clearHistorySelectedPosition()
 
             val historyView = history[position] as TaskHistoryUiModel
-            historyView.status = status
+            historyView.done = status == TaskStatus.DONE
 
             view?.updateHistoryItem(position)
 
-            updateHistoryUseCase(historyView.mapToTaskHistory())
+            val history = taskHistoryUiModelToTaskHistoryMapper.map(historyView)
+            updateHistoryUseCase(history)
 
             taskMetrics = getTaskMetricsUseCase(filter)
 

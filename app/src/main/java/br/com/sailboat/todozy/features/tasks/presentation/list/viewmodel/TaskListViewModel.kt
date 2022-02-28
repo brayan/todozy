@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.core.platform.LogService
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.*
 import br.com.sailboat.todozy.features.tasks.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCase
@@ -10,6 +9,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction.*
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 

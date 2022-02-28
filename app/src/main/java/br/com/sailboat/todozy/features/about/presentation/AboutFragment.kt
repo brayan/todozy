@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.databinding.FrgAboutBinding
 import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
 import org.koin.android.ext.android.inject
 
 class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.View,

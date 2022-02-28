@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.dialog.selectable
 
-import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeUiModel
+import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 import java.util.*
@@ -13,7 +13,7 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.NOT_REPEAT).description
+            return R.string.not_repeat
         }
     },
     DAY {
@@ -22,7 +22,7 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.DAY).description
+            return R.string.every_day
         }
     },
     WEEK {
@@ -31,36 +31,35 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.WEEK).description
+            return R.string.every_week
         }
     },
     MONTH {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.MONTH).description
+            return R.string.every_month
         }
     },
     YEAR {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.YEAR).description
+            return R.string.every_year
         }
     },
     CUSTOM {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeUiModel.getFromRepeatType(RepeatType.CUSTOM).description
+            return R.string.custom
         }
     };
 
     companion object {
         fun getFromId(id: Int): RepeatAlarmSelectableItem {
-            val repeatType = RepeatType.indexOf(id)
 
-            when (repeatType) {
+            when (RepeatType.indexOf(id)) {
                 RepeatType.DAY -> {
                     return DAY
                 }

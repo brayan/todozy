@@ -1,8 +1,8 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.helper
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 
 class DialogHelper {

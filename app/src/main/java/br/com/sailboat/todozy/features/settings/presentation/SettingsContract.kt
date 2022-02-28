@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.features.settings.presentation
 
 import android.net.Uri
-import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPContract
+import br.com.sailboat.todozy.utility.android.mvp.BaseMVPContract
 
 interface SettingsContract {
 

@@ -2,12 +2,12 @@ package br.com.sailboat.todozy.features.tasks.presentation.history
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.TaskHistoryViewHolder
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
+import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.TaskHistoryViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

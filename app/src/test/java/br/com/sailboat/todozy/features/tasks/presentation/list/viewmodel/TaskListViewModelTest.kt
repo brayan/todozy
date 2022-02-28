@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.TestCoroutineRule
 import br.com.sailboat.todozy.core.platform.LogService
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
@@ -14,6 +13,7 @@ import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskMetricsUseCas
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.GetAlarmUseCase
 import br.com.sailboat.todozy.features.tasks.domain.usecase.alarm.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,12 +1,11 @@
-package br.com.sailboat.todozy.core.presentation.viewholder
+package br.com.sailboat.todozy.uicomponent.viewholder
 
 import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.databinding.VhTaskHistoryBinding
+import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
@@ -38,7 +37,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     }
 
     private fun setStatus(history: TaskHistoryUiModel) = with(binding) {
-        if (isTaskDone(history)) {
+        if (history.done) {
             ivStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
             ivStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
 
@@ -78,10 +77,6 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         }
     }
 
-    private fun isTaskDone(history: TaskHistoryUiModel): Boolean {
-        return history.status === TaskStatusUiModel.DONE
-    }
-
     private fun setOptions(history: TaskHistoryUiModel) = with(binding) {
         if (callback.isShowingOptions(bindingAdapterPosition)) {
             tvShortDateTime.gone()
@@ -91,7 +86,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             tvTaskName.ellipsize = null
             (itemView as CardView).cardElevation = 6f
 
-            if (isTaskDone(history)) {
+            if (history.done) {
                 initViewMarkAsNotDone()
             } else {
                 initViewMarkAsDone()

@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.uicomponent.databinding.DialogRecyclerBinding
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
+import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 

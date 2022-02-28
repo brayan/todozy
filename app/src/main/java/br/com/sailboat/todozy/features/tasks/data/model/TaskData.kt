@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.data.model
 
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
 data class TaskData(
     var id: Long = Entity.NO_ID,

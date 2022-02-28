@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.helper
 
 import android.content.Intent
 import android.os.Bundle

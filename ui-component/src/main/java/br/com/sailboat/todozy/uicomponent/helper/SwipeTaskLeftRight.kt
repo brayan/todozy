@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.helper
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,7 +8,7 @@ import android.util.DisplayMetrics
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
 import kotlin.math.roundToInt
 

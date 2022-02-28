@@ -5,15 +5,17 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
-import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
-import br.com.sailboat.todozy.core.presentation.helper.*
 import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
 import br.com.sailboat.todozy.features.tasks.presentation.history.startTaskHistoryActivity
+import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
+import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
+import br.com.sailboat.todozy.uicomponent.helper.getTaskId
+import br.com.sailboat.todozy.uicomponent.helper.putTaskId
+import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import org.koin.android.ext.android.inject
 
 

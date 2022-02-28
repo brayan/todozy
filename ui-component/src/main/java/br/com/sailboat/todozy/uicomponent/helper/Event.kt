@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.helper
+package br.com.sailboat.todozy.uicomponent.helper
 
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread

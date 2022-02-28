@@ -1,15 +1,15 @@
-package br.com.sailboat.todozy.core.presentation.base.mvp
+package br.com.sailboat.todozy.utility.android.mvp
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import br.com.sailboat.todozy.utility.android.log.log
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
-import br.com.sailboat.todozy.uicomponent.dialog.ProgressDialog
-import br.com.sailboat.todozy.utility.android.view.ViewResult
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
+import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.utility.android.log.log
+import br.com.sailboat.todozy.utility.android.view.ViewResult
 
 abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(),
     BaseMVPContract.View {
