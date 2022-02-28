@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog.weekdays
+package br.com.sailboat.todozy.uicomponent.dialog.weekdays
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.databinding.DlgWeekDaysSelectorBinding
 import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import java.util.*

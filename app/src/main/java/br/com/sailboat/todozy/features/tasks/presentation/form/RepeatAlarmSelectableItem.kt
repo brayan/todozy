@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog.selectable
+package br.com.sailboat.todozy.features.tasks.presentation.form
 
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
@@ -77,29 +77,6 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
                 }
                 else -> {
                     return NOT_REPEAT
-                }
-            }
-        }
-
-        fun getRepeatTypeFromSelectable(repeatAlarm: RepeatAlarmSelectableItem): RepeatType {
-            when (repeatAlarm) {
-                DAY -> {
-                    return RepeatType.DAY
-                }
-                WEEK -> {
-                    return RepeatType.WEEK
-                }
-                MONTH -> {
-                    return RepeatType.MONTH
-                }
-                YEAR -> {
-                    return RepeatType.YEAR
-                }
-                CUSTOM -> {
-                    return RepeatType.CUSTOM
-                }
-                else -> {
-                    return RepeatType.NOT_REPEAT
                 }
             }
         }

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.dialog.weekdays
+package br.com.sailboat.todozy.uicomponent.dialog.weekdays
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

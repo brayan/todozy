@@ -1,8 +1,8 @@
-package br.com.sailboat.todozy.core.presentation.dialog.weekdays
+package br.com.sailboat.todozy.uicomponent.dialog.weekdays
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.uicomponent.R
 import br.com.sailboat.todozy.uicomponent.databinding.VhWeekDayBinding
 import br.com.sailboat.todozy.uicomponent.model.DayUiModel
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
