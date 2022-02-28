@@ -161,7 +161,7 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
     }
 
     override fun setRepeatType(repeatType: RepeatType) {
-        binding.alarmDetails.tvAlarmRepeat.setText(RepeatTypeView.getFromRepeatType(repeatType).description)
+        binding.alarmDetails.tvAlarmRepeat.setText(RepeatTypeUiModel.getFromRepeatType(repeatType).description)
     }
 
     override fun getName(): String {

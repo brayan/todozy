@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.features.tasks.domain.model.TaskCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
-import br.com.sailboat.todozy.uicomponent.model.SubheadView
+import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -38,7 +38,7 @@ class GetTasksView(
         val tasksView = mutableListOf<UiModel>()
 
         if (tasks.isNotEmpty()) {
-            tasksView.add(SubheadView(subhead))
+            tasksView.add(SubheadUiModel(subhead))
             tasksView.addAll(tasks.map { taskToTaskUiModelMapper.map(it) })
         }
 

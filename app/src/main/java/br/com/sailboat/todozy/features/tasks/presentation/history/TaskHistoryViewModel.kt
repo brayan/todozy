@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTask
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.helper.Event
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
+import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
@@ -73,11 +73,11 @@ class TaskHistoryViewModel(
     }
 
     fun onClickMarkTaskAsDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusView.DONE)
+        updateHistoryStatus(position, TaskStatusUiModel.DONE)
     }
 
     fun onClickMarkTaskAsNotDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusView.NOT_DONE)
+        updateHistoryStatus(position, TaskStatusUiModel.NOT_DONE)
     }
 
     fun onClickHistory(position: Int) {
@@ -285,7 +285,7 @@ class TaskHistoryViewModel(
     private fun logError(e: Exception) = logError.apply { value = e }
     private fun refreshHistory() = refreshHistory.apply { value = Unit }
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatusView) = viewModelScope.launch {
+    private fun updateHistoryStatus(position: Int, status: TaskStatusUiModel) = viewModelScope.launch {
         try {
             clearHistorySelectedPosition()
 

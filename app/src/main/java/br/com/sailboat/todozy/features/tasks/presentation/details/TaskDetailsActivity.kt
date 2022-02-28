@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.core.presentation.helper.*
+import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 fun Fragment.startTaskDetailsActivity(taskId: Long) {

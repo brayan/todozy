@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.core.presentation.base.mvp.BasePresenter
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
+import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
 import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskMetrics
@@ -101,11 +101,11 @@ class TaskHistoryPresenter(
     }
 
     override fun onClickMarkTaskAsDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusView.DONE)
+        updateHistoryStatus(position, TaskStatusUiModel.DONE)
     }
 
     override fun onClickMarkTaskAsNotDone(position: Int) {
-        updateHistoryStatus(position, TaskStatusView.NOT_DONE)
+        updateHistoryStatus(position, TaskStatusUiModel.NOT_DONE)
     }
 
     override fun onClickYesDeleteHistory(position: Int) = launchMain {
@@ -293,7 +293,7 @@ class TaskHistoryPresenter(
     }
 
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatusView) = launchMain {
+    private fun updateHistoryStatus(position: Int, status: TaskStatusUiModel) = launchMain {
         try {
             clearHistorySelectedPosition()
 

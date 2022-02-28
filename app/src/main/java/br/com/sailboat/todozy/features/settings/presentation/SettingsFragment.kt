@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.base.mvp.BaseMVPFragment
 import br.com.sailboat.todozy.features.about.presentation.AboutHelper
-import br.com.sailboat.todozy.core.presentation.helper.RequestCode
+import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
 import org.koin.android.ext.android.inject

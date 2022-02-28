@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import br.com.sailboat.todozy.core.extensions.logDebug
+import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.model.TaskData
 import br.com.sailboat.todozy.features.tasks.data.model.mapToTask

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.viewholder
+package br.com.sailboat.todozy.uicomponent.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

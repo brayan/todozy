@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.core.presentation.helper
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 
-enum class RepeatTypeView(val repeatType: RepeatType, val description: Int) {
+enum class RepeatTypeUiModel(val repeatType: RepeatType, val description: Int) {
 
     NOT_REPEAT(RepeatType.NOT_REPEAT, R.string.not_repeat),
     DAY(RepeatType.DAY, R.string.every_day),
@@ -16,7 +16,7 @@ enum class RepeatTypeView(val repeatType: RepeatType, val description: Int) {
     CUSTOM(RepeatType.CUSTOM, R.string.custom);
 
     companion object {
-        fun getFromRepeatType(repeatType: RepeatType): RepeatTypeView {
+        fun getFromRepeatType(repeatType: RepeatType): RepeatTypeUiModel {
             values().forEach {
                 if (it.repeatType == repeatType) {
                     return it

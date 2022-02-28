@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.settings.presentation
 
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import br.com.sailboat.todozy.core.presentation.helper.RequestCode
+import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 fun Fragment.startSettingsActivity() {

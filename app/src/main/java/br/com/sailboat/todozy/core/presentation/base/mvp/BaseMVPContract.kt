@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.base.mvp
 
-import br.com.sailboat.todozy.core.presentation.model.ViewResult
+import br.com.sailboat.todozy.utility.android.view.ViewResult
 
 interface BaseMVPContract {
 

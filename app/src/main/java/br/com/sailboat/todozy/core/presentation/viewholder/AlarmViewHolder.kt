@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.core.presentation.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.core.extensions.log
+import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.core.presentation.helper.*
-import br.com.sailboat.todozy.core.presentation.model.AlarmView
+import br.com.sailboat.todozy.core.presentation.model.AlarmUiModel
 import br.com.sailboat.todozy.databinding.AlarmDetailsBinding
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
@@ -12,11 +12,11 @@ import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 
 class AlarmViewHolder(parent: ViewGroup) :
-    BaseViewHolder<AlarmView, AlarmDetailsBinding>(
+    BaseViewHolder<AlarmUiModel, AlarmDetailsBinding>(
         AlarmDetailsBinding.inflate(getInflater(parent), parent, false)
     ) {
 
-    override fun bind(item: AlarmView) = with(binding) {
+    override fun bind(item: AlarmUiModel): Unit = with(binding) {
         try {
             tvAlarmDate.text = item.dateTime.getFullDateName(itemView.context)
             tvAlarmTime.text = item.dateTime.formatTimeWithAndroidFormat(itemView.context)
@@ -27,12 +27,12 @@ class AlarmViewHolder(parent: ViewGroup) :
         }
     }
 
-    private fun updateAlarmRepeatType(alarm: AlarmView) = with(binding) {
+    private fun updateAlarmRepeatType(alarm: AlarmUiModel) = with(binding) {
 
-        if (alarm.repeatType != RepeatTypeView.NOT_REPEAT) {
+        if (alarm.repeatType != RepeatTypeUiModel.NOT_REPEAT) {
             tvAlarmRepeat.visible()
 
-            if (alarm.repeatType == RepeatTypeView.CUSTOM) {
+            if (alarm.repeatType == RepeatTypeUiModel.CUSTOM) {
                 tvAlarmRepeat.text =
                     WeekDaysHelper().getCustomRepeat(itemView.context, alarm.customDays!!)
             } else {

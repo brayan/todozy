@@ -12,8 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.extensions.log
-import br.com.sailboat.todozy.core.extensions.logDebug
+import br.com.sailboat.todozy.utility.android.log.log
+import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.core.presentation.helper.NotificationHelper
 import br.com.sailboat.todozy.features.LauncherActivity
 import br.com.sailboat.todozy.features.settings.domain.usecase.GetAlarmSoundSettingUseCase

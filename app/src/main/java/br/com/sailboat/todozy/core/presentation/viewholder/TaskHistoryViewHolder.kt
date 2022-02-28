@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.core.presentation.model.TaskHistoryUiModel
-import br.com.sailboat.todozy.core.presentation.model.TaskStatusView
+import br.com.sailboat.todozy.core.presentation.model.TaskStatusUiModel
 import br.com.sailboat.todozy.uicomponent.databinding.VhTaskHistoryBinding
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
@@ -79,7 +79,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     }
 
     private fun isTaskDone(history: TaskHistoryUiModel): Boolean {
-        return history.status === TaskStatusView.DONE
+        return history.status === TaskStatusUiModel.DONE
     }
 
     private fun setOptions(history: TaskHistoryUiModel) = with(binding) {

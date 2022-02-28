@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.core.presentation.dialog.selectable
 
-import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeView
+import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.RepeatType
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 import java.util.*
@@ -13,7 +13,7 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.NOT_REPEAT).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.NOT_REPEAT).description
         }
     },
     DAY {
@@ -22,7 +22,7 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.DAY).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.DAY).description
         }
     },
     WEEK {
@@ -31,28 +31,28 @@ enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.WEEK).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.WEEK).description
         }
     },
     MONTH {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.MONTH).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.MONTH).description
         }
     },
     YEAR {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.YEAR).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.YEAR).description
         }
     },
     CUSTOM {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return RepeatTypeView.getFromRepeatType(RepeatType.CUSTOM).description
+            return RepeatTypeUiModel.getFromRepeatType(RepeatType.CUSTOM).description
         }
     };
 

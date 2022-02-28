@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
-import br.com.sailboat.todozy.core.presentation.viewholder.EmptyViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.SubheadViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
-import br.com.sailboat.todozy.uicomponent.model.SubheadView
+import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
 
@@ -29,7 +29,7 @@ class TaskListAdapter(private val callback: Callback) :
 
         when (item.index) {
             UiModelType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
-            UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadView)
+            UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
         }
     }
 

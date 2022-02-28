@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import android.content.Context
 import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeView
-import br.com.sailboat.todozy.core.presentation.model.AlarmView
+import br.com.sailboat.todozy.core.presentation.helper.RepeatTypeUiModel
+import br.com.sailboat.todozy.core.presentation.model.AlarmUiModel
 import br.com.sailboat.todozy.features.tasks.domain.model.Alarm
 import br.com.sailboat.todozy.features.tasks.domain.model.Task
 import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTaskUseCase
@@ -40,10 +40,10 @@ class GetTaskDetailsView(
         val item = LabelUiModel(context.getString(R.string.alarm), UiModelType.LABEL.ordinal)
         uiModels.add(item)
 
-        val alarmView = AlarmView(
+        val alarmView = AlarmUiModel(
             dateTime = alarm.dateTime,
             customDays = alarm.customDays,
-            repeatType = RepeatTypeView.getFromRepeatType(alarm.repeatType)
+            repeatType = RepeatTypeUiModel.getFromRepeatType(alarm.repeatType)
         )
         uiModels.add(alarmView)
 

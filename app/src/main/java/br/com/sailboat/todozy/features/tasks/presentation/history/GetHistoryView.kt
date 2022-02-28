@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.core.presentation.model.mapToTaskHistoryView
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.features.tasks.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.features.tasks.domain.usecase.history.GetTaskHistoryUseCase
-import br.com.sailboat.todozy.uicomponent.model.SubheadView
+import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -39,7 +39,7 @@ class GetHistoryView(
         val historyView = mutableListOf<UiModel>()
 
         if (history.isNotEmpty()) {
-            historyView.add(SubheadView(subhead))
+            historyView.add(SubheadUiModel(subhead))
             historyView.addAll(history.mapToTaskHistoryView())
         }
 

@@ -9,13 +9,13 @@ import br.com.sailboat.todozy.uicomponent.model.UiModelType
 data class TaskHistoryUiModel(
     val id: Long,
     val taskName: String,
-    var status: TaskStatusView,
+    var status: TaskStatusUiModel,
     val insertingDate: String,
     override val index: Int = UiModelType.TASK_HISTORY.ordinal
 ) : UiModel
 
 fun TaskHistory.mapToTaskHistoryView(): TaskHistoryUiModel {
-    val status = if (status == TaskStatus.DONE) TaskStatusView.DONE else TaskStatusView.NOT_DONE
+    val status = if (status == TaskStatus.DONE) TaskStatusUiModel.DONE else TaskStatusUiModel.NOT_DONE
     return TaskHistoryUiModel(
         id = id,
         taskName = taskName,
@@ -25,7 +25,7 @@ fun TaskHistory.mapToTaskHistoryView(): TaskHistoryUiModel {
 }
 
 fun TaskHistoryUiModel.mapToTaskHistory(): TaskHistory {
-    val status = if (status == TaskStatusView.DONE) TaskStatus.DONE else TaskStatus.NOT_DONE
+    val status = if (status == TaskStatusUiModel.DONE) TaskStatus.DONE else TaskStatus.NOT_DONE
     return TaskHistory(
         id = id,
         taskId = Entity.NO_ID,

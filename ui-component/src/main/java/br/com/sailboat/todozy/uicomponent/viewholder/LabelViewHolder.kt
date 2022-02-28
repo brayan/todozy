@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.presentation.viewholder
+package br.com.sailboat.todozy.uicomponent.viewholder
 
 import android.view.ViewGroup
 import br.com.sailboat.todozy.uicomponent.databinding.VhLabelBinding

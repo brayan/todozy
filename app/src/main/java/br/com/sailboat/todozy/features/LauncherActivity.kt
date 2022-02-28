@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.features
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
-import br.com.sailboat.todozy.core.extensions.log
+import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.features.settings.domain.usecase.CheckAndSetUpInitialSettingsUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.startTaskListActivity
 import kotlinx.coroutines.launch

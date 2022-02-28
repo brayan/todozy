@@ -2,10 +2,10 @@ package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.core.presentation.model.AlarmView
+import br.com.sailboat.todozy.core.presentation.model.AlarmUiModel
 import br.com.sailboat.todozy.core.presentation.viewholder.AlarmViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.LabelValueViewHolder
-import br.com.sailboat.todozy.core.presentation.viewholder.LabelViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
+import br.com.sailboat.todozy.uicomponent.viewholder.LabelViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TitleViewHolder
 import br.com.sailboat.todozy.uicomponent.model.*
 
@@ -29,7 +29,7 @@ class TaskDetailsAdapter(private val callback: Callback) :
 
         when (item.index) {
             UiModelType.TITLE.ordinal -> (holder as TitleViewHolder).bind(item as TitleUiModel)
-            UiModelType.ALARM.ordinal -> (holder as AlarmViewHolder).bind(item as AlarmView)
+            UiModelType.ALARM.ordinal -> (holder as AlarmViewHolder).bind(item as AlarmUiModel)
             UiModelType.LABEL.ordinal -> (holder as LabelViewHolder).bind(item as LabelUiModel)
             UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
             else -> throw RuntimeException("ViewHolder not found")

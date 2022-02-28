@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import br.com.sailboat.todozy.core.extensions.log
+import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.uicomponent.dialog.ProgressDialog
-import br.com.sailboat.todozy.core.presentation.model.ViewResult
+import br.com.sailboat.todozy.utility.android.view.ViewResult
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 
 abstract class BaseMVPFragment<P : BaseMVPContract.Presenter> : BaseFragment(),
