@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.features.about.presentation
+package br.com.sailboat.todozy.feature.about.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.R
-import br.com.sailboat.todozy.databinding.FrgAboutBinding
+import br.com.sailboat.todozy.feature.about.R
+import br.com.sailboat.todozy.feature.about.databinding.FragmentAboutBinding
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
 import org.koin.android.ext.android.inject
@@ -28,14 +28,14 @@ class AboutFragment : BaseMVPFragment<AboutContract.Presenter>(), AboutContract.
         }
     }
 
-    private lateinit var binding: FrgAboutBinding
+    private lateinit var binding: FragmentAboutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FrgAboutBinding.inflate(inflater, container, false)
+        binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
 

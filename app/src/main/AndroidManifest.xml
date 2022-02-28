@@ -58,8 +58,6 @@
 
         <activity android:name=".features.settings.presentation.SettingsActivity" />
 
-        <activity android:name=".features.about.presentation.AboutActivity" />
-
     </application>
 
 </manifest>

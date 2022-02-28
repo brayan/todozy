@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.databinding.FrgSettingsBinding
-import br.com.sailboat.todozy.features.about.presentation.AboutHelper
-import br.com.sailboat.todozy.features.about.presentation.startAboutActivity
+import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
+import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
 import org.koin.android.ext.android.inject

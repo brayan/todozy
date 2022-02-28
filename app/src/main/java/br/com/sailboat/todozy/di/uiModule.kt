@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.di
 
-import br.com.sailboat.todozy.features.about.presentation.AboutContract
-import br.com.sailboat.todozy.features.about.presentation.AboutPresenter
+import br.com.sailboat.todozy.feature.about.presentation.AboutContract
+import br.com.sailboat.todozy.feature.about.presentation.AboutPresenter
 import br.com.sailboat.todozy.features.settings.presentation.SettingsContract
 import br.com.sailboat.todozy.features.settings.presentation.SettingsPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsView
@@ -43,7 +43,6 @@ val uiModule = module {
         )
     }
     factory<SettingsContract.Presenter> { SettingsPresenter(get(), get(), get(), get()) }
-    factory<AboutContract.Presenter> { AboutPresenter() }
 
     factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }

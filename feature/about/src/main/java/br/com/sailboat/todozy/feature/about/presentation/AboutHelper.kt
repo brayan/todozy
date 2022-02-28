@@ -1,8 +1,7 @@
-package br.com.sailboat.todozy.features.about.presentation
+package br.com.sailboat.todozy.feature.about.presentation
 
 import android.content.Context
-import br.com.sailboat.todozy.BuildConfig
-import br.com.sailboat.todozy.R
+import br.com.sailboat.todozy.feature.about.R
 import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
@@ -36,7 +35,7 @@ class AboutHelper(private val context: Context) {
     private fun getVersion(): LabelValueUiModel {
         return LabelValueUiModel(
             label = context.getString(R.string.version),
-            value = BuildConfig.VERSION_NAME
+            value = "1.5.0"
         )
     }
 

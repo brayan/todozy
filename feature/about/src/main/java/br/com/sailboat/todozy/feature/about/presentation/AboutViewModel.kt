@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.features.about.presentation
+package br.com.sailboat.todozy.feature.about.presentation
 
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 
