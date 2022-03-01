@@ -4,13 +4,6 @@ import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetails
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
-import br.com.sailboat.todozy.feature.task.form.presentation.TaskFormContract
-import br.com.sailboat.todozy.feature.task.form.presentation.TaskFormPresenter
-import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
-import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
-import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
@@ -24,19 +17,5 @@ val uiModule = module {
         )
     }
 
-    factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }
-
-    single { TaskToTaskUiModelMapper() }
-
-    viewModel {
-        TaskListViewModel(
-            getTasksViewUseCase = get(),
-            getAlarmUseCase = get(),
-            scheduleAllAlarmsUseCase = get(),
-            getTaskMetricsUseCase = get(),
-            completeTaskUseCase = get(),
-            logService = get(),
-        )
-    }
 }

@@ -46,10 +46,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".features.tasks.presentation.list.TaskListActivity"
-            android:launchMode="singleTask" />
-
         <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity" />
 
     </application>

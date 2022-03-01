@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.features.tasks.presentation.details
 
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.features.tasks.domain.usecase.DisableTaskUseCase
+import br.com.sailboat.todozy.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase

@@ -8,6 +8,7 @@ import br.com.sailboat.todozy.feature.alarm.di.alarmComponent
 import br.com.sailboat.todozy.feature.settings.di.settingsComponent
 import br.com.sailboat.todozy.feature.task.form.di.taskFormComponent
 import br.com.sailboat.todozy.feature.task.history.di.taskHistoryComponent
+import br.com.sailboat.todozy.feature.task.list.di.taskListComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -27,6 +28,7 @@ class App : Application() {
             modules(alarmComponent)
             modules(taskHistoryComponent)
             modules(taskFormComponent)
+            modules(taskListComponent)
             modules(appComponent)
         }
 

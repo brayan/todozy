@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import br.com.sailboat.todozy.feature.settings.domain.usecase.CheckAndSetUpInitialSettingsUseCase
-import br.com.sailboat.todozy.features.tasks.presentation.list.startTaskListActivity
+import br.com.sailboat.todozy.feature.task.list.presentation.startTaskListActivity
 import br.com.sailboat.todozy.utility.android.log.log
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

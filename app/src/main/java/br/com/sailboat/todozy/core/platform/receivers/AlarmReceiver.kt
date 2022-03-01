@@ -18,7 +18,7 @@ import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSet
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
 import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
