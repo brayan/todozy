@@ -7,6 +7,7 @@ package br.com.sailboat.todozy.feature.alarm.domain.usecase
 //import io.mockk.coEvery
 //import io.mockk.coVerify
 //import io.mockk.confirmVerified
+import br.com.sailboat.todozy.domain.usecase.GetNextAlarmUseCase
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

@@ -4,8 +4,8 @@ import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetails
 import br.com.sailboat.todozy.features.tasks.presentation.details.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsContract
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
-import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
-import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormPresenter
+import br.com.sailboat.todozy.feature.task.form.presentation.TaskFormContract
+import br.com.sailboat.todozy.feature.task.form.presentation.TaskFormPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    factory<TaskFormContract.Presenter> { TaskFormPresenter(get(), get(), get(), get()) }
     factory<TaskDetailsContract.Presenter> {
         TaskDetailsPresenter(
             get(),

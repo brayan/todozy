@@ -15,7 +15,7 @@ import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivit
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.features.tasks.presentation.details.startTaskDetailsActivity
-import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
+import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
 import br.com.sailboat.todozy.feature.task.history.presentation.startTaskHistoryActivity
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel

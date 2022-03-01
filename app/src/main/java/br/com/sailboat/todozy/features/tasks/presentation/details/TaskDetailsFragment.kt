@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.databinding.FrgTaskDetailsBinding
-import br.com.sailboat.todozy.features.tasks.presentation.form.startTaskFormActivity
+import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
 import br.com.sailboat.todozy.feature.task.history.presentation.startTaskHistoryActivity
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper

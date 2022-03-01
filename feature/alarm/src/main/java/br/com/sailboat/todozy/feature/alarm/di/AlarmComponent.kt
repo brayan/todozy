@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.di
 
+import br.com.sailboat.todozy.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.domain.usecase.ScheduleAlarmUpdatesUseCase
 import br.com.sailboat.todozy.feature.alarm.data.datasource.AlarmLocalDataSource
 import br.com.sailboat.todozy.feature.alarm.data.datasource.AlarmLocalDataSourceSQLite

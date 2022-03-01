@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.Task
-import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase
+import br.com.sailboat.todozy.domain.repository.TaskRepository
+import br.com.sailboat.todozy.domain.usecase.DeleteAlarmUseCase
 
 class DisableTask(
     private val taskRepository: TaskRepository,

@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.core.platform.*
 import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.*
 import br.com.sailboat.todozy.features.tasks.data.repository.TaskRepositoryImpl
-import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
+import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import org.koin.dsl.module
 

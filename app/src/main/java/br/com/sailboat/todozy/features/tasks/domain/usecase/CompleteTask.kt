@@ -1,7 +1,9 @@
 package br.com.sailboat.todozy.features.tasks.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
+import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.domain.usecase.SaveTaskUseCase
+import br.com.sailboat.todozy.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 
 class CompleteTask(

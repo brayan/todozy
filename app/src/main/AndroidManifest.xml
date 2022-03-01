@@ -52,8 +52,6 @@
 
         <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity" />
 
-        <activity android:name=".features.tasks.presentation.form.TaskFormActivity" />
-
     </application>
 
 </manifest>

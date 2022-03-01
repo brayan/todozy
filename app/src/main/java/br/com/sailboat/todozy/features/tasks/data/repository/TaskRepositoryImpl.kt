@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.features.tasks.data.model.mapToTaskData
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
-import br.com.sailboat.todozy.features.tasks.domain.repository.TaskRepository
+import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.utility.android.log.logDebug
 
 class TaskRepositoryImpl(

@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.domain.usecase
 
+import br.com.sailboat.todozy.domain.usecase.DeleteAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 
 class DeleteAlarm(
