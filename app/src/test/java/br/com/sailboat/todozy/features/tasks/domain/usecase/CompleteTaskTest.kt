@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
-import br.com.sailboat.todozy.features.tasks.domain.usecase.history.AddHistoryUseCase
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

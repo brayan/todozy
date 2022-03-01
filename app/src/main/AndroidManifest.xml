@@ -52,11 +52,7 @@
 
         <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity" />
 
-        <activity android:name=".features.tasks.presentation.history.TaskHistoryActivity" />
-
         <activity android:name=".features.tasks.presentation.form.TaskFormActivity" />
-
-        <activity android:name=".feature.settings.presentation.SettingsActivity" />
 
     </application>
 

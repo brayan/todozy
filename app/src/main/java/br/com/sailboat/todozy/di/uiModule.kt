@@ -6,12 +6,9 @@ import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsCon
 import br.com.sailboat.todozy.features.tasks.presentation.details.TaskDetailsPresenter
 import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormContract
 import br.com.sailboat.todozy.features.tasks.presentation.form.TaskFormPresenter
-import br.com.sailboat.todozy.features.tasks.presentation.history.*
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksView
 import br.com.sailboat.todozy.features.tasks.presentation.list.GetTasksViewUseCase
 import br.com.sailboat.todozy.features.tasks.presentation.list.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
-import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.features.tasks.presentation.mapper.TaskToTaskUiModelMapper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,27 +24,11 @@ val uiModule = module {
             get()
         )
     }
-    factory<TaskHistoryContract.Presenter> {
-        TaskHistoryPresenter(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-        )
-    }
-
 
     factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }
-    factory<GetHistoryViewUseCase> { GetHistoryView(get(), get()) }
-    factory<GetShortDateViewUseCase> { GetShortDateView(get()) }
-    factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     single { TaskToTaskUiModelMapper() }
-    single { TaskHistoryToTaskHistoryUiModelMapper() }
-    single { TaskHistoryUiModelToTaskHistoryMapper() }
 
     viewModel {
         TaskListViewModel(
@@ -59,6 +40,4 @@ val uiModule = module {
             logService = get(),
         )
     }
-
-    viewModel { TaskHistoryViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

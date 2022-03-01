@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.domain.usecase
 
+import br.com.sailboat.todozy.domain.usecase.ScheduleAlarmUpdatesUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 

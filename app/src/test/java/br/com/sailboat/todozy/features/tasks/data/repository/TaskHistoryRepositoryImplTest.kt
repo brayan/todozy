@@ -1,14 +1,15 @@
 package br.com.sailboat.todozy.features.tasks.data.repository
 
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSource
+import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.features.tasks.data.factory.TaskHistoryDataMockFactory.makeTaskHistoryData
 import br.com.sailboat.todozy.features.tasks.data.factory.TaskHistoryDataMockFactory.makeTaskHistoryDataList
 import br.com.sailboat.todozy.features.tasks.data.model.TaskHistoryData
-import br.com.sailboat.todozy.features.tasks.domain.factory.TaskHistoryMockFactory.makeTaskHistory
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.factory.TaskHistoryMockFactory.makeTaskHistory
 import br.com.sailboat.todozy.features.tasks.domain.factory.TaskMockFactory.makeTask
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.feature.task.history.data.repository.TaskHistoryRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

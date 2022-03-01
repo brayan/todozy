@@ -3,7 +3,8 @@ package br.com.sailboat.todozy.features.tasks.domain.usecase
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.features.tasks.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

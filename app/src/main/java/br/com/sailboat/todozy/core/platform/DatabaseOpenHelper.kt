@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import br.com.sailboat.todozy.feature.alarm.data.datasource.AlarmLocalDataSourceSQLite
-import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskHistoryLocalDataSourceSQLite
+import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.features.tasks.data.datasource.local.TaskLocalDataSourceSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 
