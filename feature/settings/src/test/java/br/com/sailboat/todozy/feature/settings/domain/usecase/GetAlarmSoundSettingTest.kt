@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.settings.domain.usecase
 
 import br.com.sailboat.todozy.feature.settings.domain.repository.SettingsRepository
-import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmSoundSetting
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

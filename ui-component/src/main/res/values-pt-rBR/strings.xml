@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Todozy</string>
-    <string name="msg_invalid_date_time">A data/hora selecionada é inválida</string>
     <string name="edit_task">Editar Tarefa</string>
     <string name="new_task">Nova Tarefa</string>
     <string name="add_alarm">ADICIONAR ALARME</string>
@@ -65,11 +64,6 @@
     <string name="history_details">Detalhes do Histórico</string>
     <string name="msg_error">Ocorreu um erro ao efetuar a operação</string>
     <string name="previous_days">Dias anteriores</string>
-    <string name="today">Hoje</string>
-    <string name="tomorrow">Amanhã</string>
-    <string name="yesterday">Ontem</string>
-    <string name="pattern_month_day_short">dd \'de\' MMM</string>
-    <string name="pattern_month_day_long">dd \'de\' MMMM</string>
     <string name="delete">Excluir</string>
     <string name="save">Salvar</string>
     <string name="default_string">---</string>

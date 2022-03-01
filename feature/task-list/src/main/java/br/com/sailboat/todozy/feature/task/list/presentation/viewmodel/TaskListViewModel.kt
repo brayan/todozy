@@ -3,10 +3,10 @@ package br.com.sailboat.todozy.feature.task.list.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.*
 import br.com.sailboat.todozy.domain.service.LogService
-import br.com.sailboat.todozy.feature.task.list.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.feature.task.list.presentation.viewmodel.TaskListViewAction.*
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
@@ -46,7 +46,6 @@ class TaskListViewModel(
             scheduleAllAlarmsUseCase()
         } catch (e: Exception) {
             logService.error(e)
-            // TODO: Handle error
         }
     }
 
@@ -76,7 +75,6 @@ class TaskListViewModel(
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
-            // TODO: Handle error
         }
     }
 
@@ -87,7 +85,6 @@ class TaskListViewModel(
         viewState.loading.postValue(false)
     }
 
-    // TODO: Refactor
     private fun onSwipeTask(position: Int, status: TaskStatus) = launchSwipeTask {
         try {
             viewState.taskMetrics.value = null
@@ -120,7 +117,6 @@ class TaskListViewModel(
             }
 
         } catch (e: Exception) {
-            // TODO: Handle error
             logService.error(e)
         }
     }

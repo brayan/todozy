@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.feature.task.list.data.repository
 
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFilter
-import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.domain.repository.TaskRepository
+import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.feature.task.list.data.datasource.TaskLocalDataSource
 import br.com.sailboat.todozy.feature.task.list.data.model.TaskData
 import br.com.sailboat.todozy.feature.task.list.data.model.mapToTask

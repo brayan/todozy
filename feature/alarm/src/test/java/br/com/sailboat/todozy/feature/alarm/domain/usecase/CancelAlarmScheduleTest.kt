@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.domain.usecase
 
 import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.CancelAlarmSchedule
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

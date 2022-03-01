@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import br.com.sailboat.todozy.uicomponent.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.R
 import br.com.sailboat.todozy.feature.task.form.databinding.FragmentTaskFormBinding
@@ -12,6 +11,7 @@ import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.SelectItemDialog
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
+import br.com.sailboat.todozy.uicomponent.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.uicomponent.helper.AnimationHelper
 import br.com.sailboat.todozy.uicomponent.helper.WeekDaysHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId

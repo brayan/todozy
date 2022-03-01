@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.alarm.data.mapper
 
-import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
 import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.feature.alarm.data.model.AlarmData
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 

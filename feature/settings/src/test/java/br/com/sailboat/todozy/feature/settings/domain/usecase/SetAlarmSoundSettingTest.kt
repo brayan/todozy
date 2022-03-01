@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.feature.settings.domain.usecase
 
 import android.net.Uri
 import br.com.sailboat.todozy.feature.settings.domain.repository.SettingsRepository
-import br.com.sailboat.todozy.feature.settings.domain.usecase.SetAlarmSoundSetting
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

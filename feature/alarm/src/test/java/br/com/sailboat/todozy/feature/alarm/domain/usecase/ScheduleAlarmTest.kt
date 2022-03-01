@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.feature.alarm.domain.usecase
 
-import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

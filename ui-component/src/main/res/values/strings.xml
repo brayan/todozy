@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Todozy</string>
-    <string name="msg_invalid_date_time">The selected date/time is invalid</string>
     <string name="edit_task">Edit Task</string>
     <string name="new_task">New Task</string>
     <string name="add_alarm">ADD ALARM</string>
@@ -67,10 +66,6 @@
     <string name="history_details">History Details</string>
 
     <string name="msg_error">An error occurred while performing the operation</string>
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="pattern_month_day_short">MMM dd</string>
-    <string name="pattern_month_day_long">MMMM dd</string>
     <string name="delete">Delete</string>
     <string name="save">SAVE</string>
     <string name="default_string">---</string>
@@ -85,7 +80,6 @@
     <string name="every_year">Every year</string>
     <string name="custom">Custom</string>
     <string name="no_records_found">No records found</string>
-    <string name="yesterday">Yesterday</string>
     <string name="notes">Notes</string>
     <string name="about">About</string>
     <string name="info">Info</string>

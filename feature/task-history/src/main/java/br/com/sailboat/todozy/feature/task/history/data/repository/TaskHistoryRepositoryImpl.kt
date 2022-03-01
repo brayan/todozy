@@ -1,13 +1,13 @@
 package br.com.sailboat.todozy.feature.task.history.data.repository
 
-import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.data.model.mapToTaskHistoryData
 import br.com.sailboat.todozy.feature.task.history.data.model.mapToTaskHistoryList
-import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.utility.android.log.logDebug
 
 class TaskHistoryRepositoryImpl(

@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import io.mockk.coEvery

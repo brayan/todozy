@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.feature.task.list.domain.usecase
 
-import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.domain.repository.TaskRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -3,7 +3,6 @@ package br.com.sailboat.todozy.utility.android.sqlite
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
-import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString

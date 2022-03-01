@@ -10,8 +10,8 @@ import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasks
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.presentation.GetTasksView
 import br.com.sailboat.todozy.feature.task.list.presentation.GetTasksViewUseCase
-import br.com.sailboat.todozy.feature.task.list.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.feature.task.list.presentation.TaskToTaskUiModelMapper
+import br.com.sailboat.todozy.feature.task.list.presentation.viewmodel.TaskListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

@@ -4,12 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.usecase.DisableTaskUseCase
-import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.domain.usecase.SaveTaskUseCase
-import br.com.sailboat.todozy.domain.usecase.GetNextAlarmUseCase
-import br.com.sailboat.todozy.domain.usecase.AddHistoryUseCase
-import br.com.sailboat.todozy.feature.task.list.domain.usecase.CompleteTask
+import br.com.sailboat.todozy.domain.usecase.*
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

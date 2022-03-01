@@ -1,6 +1,8 @@
 package br.com.sailboat.todozy.feature.task.details.di
 
-import br.com.sailboat.todozy.domain.usecase.*
+import br.com.sailboat.todozy.domain.usecase.DisableTaskUseCase
+import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTask
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTask
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetrics

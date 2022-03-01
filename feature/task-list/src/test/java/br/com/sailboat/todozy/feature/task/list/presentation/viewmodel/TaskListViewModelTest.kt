@@ -2,15 +2,15 @@ package br.com.sailboat.todozy.feature.task.list.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.task.list.domain.usecase.CompleteTaskUseCase
+import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
