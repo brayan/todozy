@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.history.data.model.mapToTaskHistoryData
 import br.com.sailboat.todozy.feature.task.history.data.model.mapToTaskHistoryList
-import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.utility.android.log.logDebug
 
 class TaskHistoryRepositoryImpl(

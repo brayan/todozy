@@ -12,6 +12,7 @@ import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
 import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivity
+import br.com.sailboat.todozy.feature.task.details.presentation.startTaskDetailsActivity
 import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
 import br.com.sailboat.todozy.feature.task.history.presentation.startTaskHistoryActivity
 import br.com.sailboat.todozy.feature.task.list.R
@@ -181,8 +182,7 @@ class TaskListFragment : BaseFragment() {
     }
 
     private fun navigateToTaskDetails(taskId: Long) {
-        // TODO: Fix this
-//        startTaskDetailsActivity(taskId)
+        startTaskDetailsActivity(taskId)
     }
 
     private fun navigateToHistory() {

@@ -2,8 +2,7 @@ package br.com.sailboat.todozy.feature.task.history.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
-import br.com.sailboat.todozy.feature.task.history.domain.usecase.UpdateHistory
+import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

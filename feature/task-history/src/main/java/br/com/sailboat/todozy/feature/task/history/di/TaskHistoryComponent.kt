@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.data.datasource.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.feature.task.history.data.repository.TaskHistoryRepositoryImpl
-import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.*
 import br.com.sailboat.todozy.feature.task.history.presentation.*
 import br.com.sailboat.todozy.feature.task.history.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper

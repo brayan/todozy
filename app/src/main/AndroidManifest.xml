@@ -37,7 +37,7 @@
         <receiver android:name=".core.platform.receivers.ScheduleAlarmsReceiver" />
 
         <activity
-            android:name=".features.LauncherActivity"
+            android:name=".LauncherActivity"
             android:theme="@style/AppTheme.SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -45,8 +45,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".features.tasks.presentation.details.TaskDetailsActivity" />
 
     </application>
 

@@ -1,5 +1,7 @@
 package br.com.sailboat.todozy.feature.alarm.di
 
+import br.com.sailboat.todozy.domain.usecase.DeleteAlarmUseCase
+import br.com.sailboat.todozy.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.domain.usecase.ScheduleAlarmUpdatesUseCase
 import br.com.sailboat.todozy.feature.alarm.data.datasource.AlarmLocalDataSource
@@ -23,6 +25,9 @@ private val domain = module {
     factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdates(get()) }
     factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
     factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
+    factory<GetAlarmUseCase> { GetAlarm(get()) }
+    factory<DeleteAlarmUseCase> { DeleteAlarm(get(), get()) }
+    factory<GetNextAlarmUseCase> { GetNextAlarm() }
 }
 
 private val data = module {
