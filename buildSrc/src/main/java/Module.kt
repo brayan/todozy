@@ -8,6 +8,7 @@ object Module {
     const val alarm = ":feature:alarm"
     const val taskHistory = ":feature:task-history"
     const val taskForm = ":feature:task-form"
-    const val taskList = ":feature:task-list"
+    const val taskListPublic = ":feature:task-list:public"
+    const val taskListImpl = ":feature:task-list:impl"
     const val taskDetails = ":feature:task-details"
 }

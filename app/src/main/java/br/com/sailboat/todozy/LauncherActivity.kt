@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import br.com.sailboat.todozy.feature.settings.domain.usecase.CheckAndSetUpInitialSettingsUseCase
-import br.com.sailboat.todozy.feature.task.list.presentation.startTaskListActivity
+import br.com.sailboat.todozy.feature.task.list.presentation.navigator.TaskListNavigator
 import br.com.sailboat.todozy.utility.android.log.log
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -12,13 +12,14 @@ import org.koin.android.ext.android.inject
 class LauncherActivity : AppCompatActivity() {
 
     val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
+    val taskListNavigator: TaskListNavigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.coroutineScope.launch {
             try {
                 checkAndSetUpInitialSettingsUseCase()
-                startTaskListActivity()
+                taskListNavigator.navigateToTaskList(this@LauncherActivity)
                 finish()
             } catch (e: Exception) {
                 e.log()
