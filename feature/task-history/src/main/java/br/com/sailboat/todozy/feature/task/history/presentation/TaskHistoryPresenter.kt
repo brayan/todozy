@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.history.presentation
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.DeleteHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.UpdateHistoryUseCase

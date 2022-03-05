@@ -15,7 +15,7 @@ import br.com.sailboat.todozy.LauncherActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
-import br.com.sailboat.todozy.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasksUseCase

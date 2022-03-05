@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.di.appComponent
 import br.com.sailboat.todozy.feature.about.di.aboutComponent
 import br.com.sailboat.todozy.feature.alarm.di.alarmComponent
 import br.com.sailboat.todozy.feature.settings.di.settingsComponent
-import br.com.sailboat.todozy.feature.task.details.di.taskDetailsComponent
+import br.com.sailboat.todozy.feature.task.details.impl.di.taskDetailsComponent
 import br.com.sailboat.todozy.feature.task.form.di.taskFormComponent
 import br.com.sailboat.todozy.feature.task.history.di.taskHistoryComponent
 import br.com.sailboat.todozy.feature.task.list.impl.di.taskListComponent

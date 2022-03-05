@@ -10,5 +10,6 @@ object Module {
     const val taskForm = ":feature:task-form"
     const val taskListPublic = ":feature:task-list:public"
     const val taskListImpl = ":feature:task-list:impl"
-    const val taskDetails = ":feature:task-details"
+    const val taskDetailsPublic = ":feature:task-details:public"
+    const val taskDetailsImpl = ":feature:task-details:impl"
 }

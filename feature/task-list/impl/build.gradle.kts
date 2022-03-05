@@ -41,7 +41,7 @@ dependencies {
     implementation(project(Module.settings))
     implementation(project(Module.taskForm))
     implementation(project(Module.taskHistory))
-    implementation(project(Module.taskDetails))
+    implementation(project(Module.taskDetailsPublic))
     implementation(project(Module.taskListPublic))
 
     implementation(Kotlin.stdlib)

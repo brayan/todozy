@@ -11,8 +11,8 @@ import org.koin.android.ext.android.inject
 
 class LauncherActivity : AppCompatActivity() {
 
-    val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
-    val taskListNavigator: TaskListNavigator by inject()
+    private val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
+    private val taskListNavigator: TaskListNavigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

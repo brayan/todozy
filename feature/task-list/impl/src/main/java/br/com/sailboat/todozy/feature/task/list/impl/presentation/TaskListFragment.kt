@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
 import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivity
-import br.com.sailboat.todozy.feature.task.details.presentation.startTaskDetailsActivity
+import br.com.sailboat.todozy.feature.task.details.presentation.navigator.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
 import br.com.sailboat.todozy.feature.task.history.presentation.startTaskHistoryActivity
 import br.com.sailboat.todozy.feature.task.list.impl.R
@@ -20,6 +20,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBind
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
+import br.com.sailboat.todozy.feature.task.list.presentation.navigator.TaskListNavigator
 import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
 import br.com.sailboat.todozy.uicomponent.helper.SwipeTaskLeftRight
 import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
@@ -29,11 +30,13 @@ import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseFragment() {
 
     private val viewModel: TaskListViewModel by viewModel()
+    private val taskDetailsNavigator: TaskDetailsNavigator by inject()
 
     private lateinit var binding: FrgTaskListBinding
     private var progress: ProgressDialog? = null
@@ -182,7 +185,7 @@ class TaskListFragment : BaseFragment() {
     }
 
     private fun navigateToTaskDetails(taskId: Long) {
-        startTaskDetailsActivity(taskId)
+        taskDetailsNavigator.navigateToTaskDetails(this, taskId)
     }
 
     private fun navigateToHistory() {

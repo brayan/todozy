@@ -1,7 +1,0 @@
-package br.com.sailboat.todozy.feature.task.details.presentation
-
-import br.com.sailboat.todozy.uicomponent.model.UiModel
-
-interface GetTaskDetailsViewUseCase {
-    suspend operator fun invoke(taskId: Long): List<UiModel>
-}
