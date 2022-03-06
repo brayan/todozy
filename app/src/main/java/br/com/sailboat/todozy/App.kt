@@ -3,7 +3,7 @@ package br.com.sailboat.todozy
 import android.app.Application
 import br.com.sailboat.todozy.core.platform.CrashlyticsReportingTree
 import br.com.sailboat.todozy.di.appComponent
-import br.com.sailboat.todozy.feature.about.di.aboutComponent
+import br.com.sailboat.todozy.feature.about.impl.di.aboutComponent
 import br.com.sailboat.todozy.feature.alarm.impl.di.alarmComponent
 import br.com.sailboat.todozy.feature.settings.di.settingsComponent
 import br.com.sailboat.todozy.feature.task.details.impl.di.taskDetailsComponent

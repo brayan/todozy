@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.sailboat.todozy.feature.about">
+    package="br.com.sailboat.todozy.feature.about.impl">
 
     <application>
-        <activity android:name="br.com.sailboat.todozy.feature.about.presentation.AboutActivity" />
+        <activity android:name=".presentation.AboutActivity" />
     </application>
 
 </manifest>

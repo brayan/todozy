@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.about.presentation
+package br.com.sailboat.todozy.feature.about.impl.presentation
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

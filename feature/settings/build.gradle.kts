@@ -37,7 +37,7 @@ dependencies {
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
     implementation(project(Module.alarmPublic))
-    implementation(project(Module.about))
+    implementation(project(Module.aboutPublic))
 
     implementation(Kotlin.stdlib)
     implementation(Kotlin.reflect)

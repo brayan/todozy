@@ -1,7 +1,7 @@
-package br.com.sailboat.todozy.feature.about.presentation
+package br.com.sailboat.todozy.feature.about.impl.presentation
 
 import android.content.Context
-import br.com.sailboat.todozy.feature.about.R
+import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel

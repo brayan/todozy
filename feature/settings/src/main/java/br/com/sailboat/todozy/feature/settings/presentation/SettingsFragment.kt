@@ -8,8 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
-import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
+import br.com.sailboat.todozy.feature.about.presentation.navigator.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.R
 import br.com.sailboat.todozy.feature.settings.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.uicomponent.model.RequestCode
@@ -19,6 +18,8 @@ import org.koin.android.ext.android.inject
 class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), SettingsContract.View {
 
     override val presenter: SettingsContract.Presenter by inject()
+
+    private  val aboutNavigator: AboutNavigator by inject()
 
     private lateinit var binding: FrgSettingsBinding
 
@@ -69,7 +70,7 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
 
     private fun initAbout() {
         binding.tvSettingsAbout.setOnClickListener {
-            activity?.run { startAboutActivity(AboutHelper(this).getInfo()) }
+            activity?.run { aboutNavigator.navigateToAbout(this) }
         }
     }
 
