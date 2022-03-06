@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
-import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
+import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
@@ -24,6 +24,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
     override val presenter: TaskDetailsContract.Presenter by inject()
 
     private val taskHistoryNavigator: TaskHistoryNavigator by inject()
+    private val taskFormNavigator: TaskFormNavigator by inject()
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -87,7 +88,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
     }
 
     override fun startInsertTaskActivity(taskId: Long) {
-        startTaskFormActivity(taskId)
+        taskFormNavigator.navigateToEditTaskForm(this, taskId)
     }
 
     override fun showMetrics() {

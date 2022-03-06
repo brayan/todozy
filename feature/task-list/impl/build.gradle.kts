@@ -39,7 +39,7 @@ dependencies {
     implementation(project(Module.about))
     implementation(project(Module.alarmPublic))
     implementation(project(Module.settings))
-    implementation(project(Module.taskForm))
+    implementation(project(Module.taskFormPublic))
     implementation(project(Module.taskHistoryPublic))
     implementation(project(Module.taskDetailsPublic))
     implementation(project(Module.taskListPublic))

@@ -36,10 +36,9 @@ dependencies {
     implementation(project(Module.androidUtil))
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
-    implementation(project(Module.alarmPublic))
-    implementation(project(Module.taskHistoryPublic))
     implementation(project(Module.taskFormPublic))
     implementation(project(Module.taskDetailsPublic))
+    implementation(project(Module.alarmPublic))
 
     implementation(Kotlin.stdlib)
     implementation(Kotlin.reflect)

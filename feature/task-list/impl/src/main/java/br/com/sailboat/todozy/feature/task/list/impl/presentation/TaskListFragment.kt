@@ -13,7 +13,7 @@ import br.com.sailboat.todozy.feature.about.presentation.AboutHelper
 import br.com.sailboat.todozy.feature.about.presentation.startAboutActivity
 import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivity
 import br.com.sailboat.todozy.feature.task.details.presentation.navigator.TaskDetailsNavigator
-import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
+import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
 import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBinding
@@ -37,6 +37,7 @@ class TaskListFragment : BaseFragment() {
     private val viewModel: TaskListViewModel by viewModel()
     private val taskDetailsNavigator: TaskDetailsNavigator by inject()
     private val taskHistoryNavigator: TaskHistoryNavigator by inject()
+    private val taskFormNavigator: TaskFormNavigator by inject()
 
     private lateinit var binding: FrgTaskListBinding
     private var progress: ProgressDialog? = null
@@ -173,7 +174,7 @@ class TaskListFragment : BaseFragment() {
     }
 
     private fun navigateToTaskForm() {
-        startTaskFormActivity()
+        taskFormNavigator.navigateToAddTaskForm(this)
     }
 
     private fun navigateToSettings() {
