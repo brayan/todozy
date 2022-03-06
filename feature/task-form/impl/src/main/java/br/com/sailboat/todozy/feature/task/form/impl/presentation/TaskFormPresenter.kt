@@ -5,9 +5,9 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.ALARM_NOT_VALID
 import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.TASK_NAME_NOT_FILLED
-import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.utility.android.mvp.BasePresenter
 import br.com.sailboat.todozy.utility.kotlin.exception.RequiredFieldNotFilledException

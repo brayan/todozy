@@ -67,7 +67,8 @@ object AndroidX {
     const val ktx = "androidx.core:core-ktx:${Versions.ktx}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val materialDesign = "com.google.android.material:material:${Versions.materialDesign}"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val constraintLayout =
+        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     const val recyclerview = "androidx.recyclerview:recyclerview:${Versions.recyclerView}"
     const val legacy = "androidx.legacy:legacy-support-v4:${Versions.legacy}"
     const val annotations = "androidx.annotation:annotation:${Versions.annotation}"

@@ -19,7 +19,7 @@ class SettingsFragment : BaseMVPFragment<SettingsContract.Presenter>(), Settings
 
     override val presenter: SettingsContract.Presenter by inject()
 
-    private  val aboutNavigator: AboutNavigator by inject()
+    private val aboutNavigator: AboutNavigator by inject()
 
     private lateinit var binding: FrgSettingsBinding
 

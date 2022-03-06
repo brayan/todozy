@@ -2,12 +2,12 @@ package br.com.sailboat.todozy.feature.alarm.impl.data.repository
 
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory.makeAlarm
 import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataSource
 import br.com.sailboat.todozy.feature.alarm.impl.data.factory.AlarmDataMockFactory.makeAlarmData
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
-import br.com.sailboat.todozy.feature.alarm.domain.factory.AlarmMockFactory.makeAlarm
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

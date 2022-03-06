@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.alarm.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.*
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,14 +13,15 @@ import java.util.*
 class ScheduleAllAlarmsTest {
 
     private val getTasksUseCase: GetTasksUseCase = mockk(relaxed = true)
-    private val getNextAlarmUseCase: br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase = mockk(relaxed = true)
+    private val getNextAlarmUseCase: br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase =
+        mockk(relaxed = true)
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase = mockk(relaxed = true)
 
     private val scheduleAllAlarms = ScheduleAllAlarms(
         getTasksUseCase = getTasksUseCase,
-            getNextAlarmUseCase = getNextAlarmUseCase,
-            scheduleAlarmUseCase = scheduleAlarmUseCase,
-        )
+        getNextAlarmUseCase = getNextAlarmUseCase,
+        scheduleAlarmUseCase = scheduleAlarmUseCase,
+    )
 
     @Test
     fun `should get tasks with alarms`() = runBlocking {

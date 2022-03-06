@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.feature.alarm.impl.data.repository
 
 import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataSource
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
-import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 
 class AlarmRepositoryImpl(
     private val alarmLocalDataSource: AlarmLocalDataSource,

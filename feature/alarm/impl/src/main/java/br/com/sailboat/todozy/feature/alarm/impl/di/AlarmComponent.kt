@@ -1,12 +1,12 @@
 package br.com.sailboat.todozy.feature.alarm.impl.di
 
+import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.*
 import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataSource
 import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataSourceSQLite
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.repository.AlarmRepositoryImpl
-import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.*
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.*
 import br.com.sailboat.todozy.feature.alarm.impl.presentation.mapper.AlarmToAlarmUiModelMapperImpl
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper

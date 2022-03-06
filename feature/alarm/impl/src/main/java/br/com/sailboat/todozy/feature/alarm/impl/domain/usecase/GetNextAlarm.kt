@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.feature.alarm.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.*
 

@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 class AlarmToAlarmUiModelMapperImpl(
     // TODO: Add string provider
     private val context: Context,
-): AlarmToAlarmUiModelMapper {
+) : AlarmToAlarmUiModelMapper {
 
     override fun map(alarm: Alarm): AlarmUiModel {
         val date = alarm.dateTime.getFullDateName(context)
