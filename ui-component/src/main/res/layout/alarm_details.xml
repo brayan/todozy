@@ -12,10 +12,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
+        android:paddingHorizontal="@dimen/spacing_medium"
+        android:paddingVertical="@dimen/spacing_small"
         android:textColor="@color/md_blue_300"
         android:textSize="@dimen/text_size_xlarge"
         tools:text="@string/today" />
@@ -28,7 +26,7 @@
         android:background="?attr/selectableItemBackground"
         android:fontFamily="sans-serif-light"
         android:includeFontPadding="false"
-        android:paddingLeft="16dp"
+        android:paddingStart="@dimen/spacing_medium"
         android:textColor="@color/md_teal_300"
         android:textSize="42sp"
         tools:text="15:30" />
@@ -40,9 +38,8 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:minHeight="48dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingHorizontal="@dimen/spacing_medium"
         android:textColor="@color/md_blue_grey_300"
         android:textSize="@dimen/text_size_medium"
         tools:text="Every day" />

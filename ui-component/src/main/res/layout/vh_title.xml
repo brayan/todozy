@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="24dp"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:paddingTop="@dimen/spacing_large"
         android:scrollbars="vertical"
         android:textColor="@color/md_blue_grey_500"
         android:textSize="@dimen/text_size_xlarge"
@@ -23,9 +22,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:layout_marginHorizontal="@dimen/spacing_medium">
 
         <include layout="@layout/diamond_divider" />
 

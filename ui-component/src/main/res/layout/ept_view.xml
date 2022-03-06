@@ -19,8 +19,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp"
+            android:paddingVertical="@dimen/spacing_medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -49,8 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingHorizontal="@dimen/spacing_medium"
                 android:textAllCaps="true"
                 android:textColor="?colorAccent"
                 android:textSize="@dimen/text_size_small"

@@ -12,11 +12,10 @@
         android:layout_height="16dp"
         android:layout_centerInParent="true"
         android:layout_gravity="end"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:tint="?colorAccent"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
         app:srcCompat="@drawable/ic_diamond_white_24dp"
-        tools:tint="#000" />
+        tools:tint="#000"
+        app:tint="?colorAccent" />
 
     <View
         android:layout_width="match_parent"

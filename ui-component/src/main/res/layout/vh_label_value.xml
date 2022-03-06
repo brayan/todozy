@@ -9,15 +9,15 @@
     <TextView
         android:id="@+id/vh_label_value__tv__label"
         style="@style/TextViewLabel"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="@dimen/spacing_medium"
         tools:text="Label" />
 
     <TextView
         android:id="@+id/vh_label_value__tv__value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:paddingRight="16dp"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:paddingEnd="@dimen/spacing_medium"
         android:textColor="@color/md_blue_grey_500"
         android:textSize="@dimen/text_size_small"
         tools:text="Value" />

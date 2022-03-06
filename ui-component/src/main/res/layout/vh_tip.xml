@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="@dimen/spacing_small"
     app:cardBackgroundColor="@android:color/white"
     app:cardElevation="2dp">
 
@@ -17,18 +17,18 @@
             style="@style/TextViewLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingStart="@dimen/spacing_small"
+            android:paddingTop="@dimen/spacing_small"
             android:text="@string/tip" />
 
         <TextView
             android:id="@+id/vh_tip__tv__tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="@dimen/spacing_small"
             android:ellipsize="end"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingStart="@dimen/spacing_small"
+            android:paddingTop="@dimen/spacing_small"
             android:textColor="@color/md_blue_grey_700"
             android:textSize="@dimen/text_size_small"
             tools:text="This is a tip" />
@@ -40,7 +40,7 @@
             android:layout_gravity="right"
             android:background="?selectableItemBackground"
             android:ellipsize="end"
-            android:padding="8dp"
+            android:padding="@dimen/spacing_small"
             android:text="@string/got_it"
             android:textColor="?colorAccent"
             android:textSize="@dimen/text_size_xsmall" />

@@ -19,7 +19,7 @@
             android:id="@+id/appbar_task_details__fl__metrics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="@dimen/spacing_medium"
             android:layout_marginTop="10dp"
             android:visibility="gone">
 
@@ -28,9 +28,5 @@
                 layout="@layout/task_metrics" />
 
         </FrameLayout>
-
-
     </androidx.appcompat.widget.Toolbar>
-
-
 </com.google.android.material.appbar.AppBarLayout>

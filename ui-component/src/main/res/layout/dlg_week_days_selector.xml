@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_medium"
         android:text="@string/custom_alarm"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -20,6 +20,6 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="@dimen/spacing_medium" />
 
 </LinearLayout>

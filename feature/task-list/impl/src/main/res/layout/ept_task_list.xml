@@ -22,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:padding="@dimen/spacing_small"
             app:srcCompat="@drawable/ept_task_list_landscape" />
 
         <TextView
@@ -41,10 +41,9 @@
             android:id="@+id/tvEmptyViewMessageSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
             android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingHorizontal="@dimen/spacing_medium"
             android:textAllCaps="true"
             android:textColor="?colorPrimaryDark"
             android:textSize="@dimen/text_size_small"

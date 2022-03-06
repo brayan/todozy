@@ -35,9 +35,8 @@
                 android:id="@+id/appbar_task_list__fl__metrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
                 android:visibility="gone"
                 app:layout_scrollFlags="scroll|enterAlways">
 
@@ -66,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/spacing_medium"
         app:backgroundTint="?attr/colorAccent"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_white_48dp" />

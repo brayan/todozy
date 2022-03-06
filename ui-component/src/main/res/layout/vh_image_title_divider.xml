@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_medium"
             android:scrollbars="vertical"
             tools:text="Title"
             android:textColor="@color/md_blue_grey_500"
@@ -38,9 +38,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:layout_marginHorizontal="@dimen/spacing_medium">
 
         <include layout="@layout/diamond_divider" />
 

@@ -38,18 +38,17 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginBottom="@dimen/spacing_small"
                 android:orientation="vertical"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="2dp">
 
                 <TextView
                     style="@style/TextViewLabel"
-                    android:paddingStart="8dp"
-                    android:paddingTop="4dp"
+                    android:paddingStart="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_xsmall"
                     android:text="@string/label_task" />
 
                 <EditText
@@ -61,10 +60,9 @@
                     android:inputType="textCapSentences|textMultiLine"
                     android:maxLength="250"
                     android:minHeight="48dp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="24dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="8dp"
+                    android:paddingTop="@dimen/spacing_large"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_small"
                     android:textColor="@color/md_blue_grey_500"
                     android:textColorHint="@color/md_blue_grey_200"
                     android:textSize="@dimen/text_size_medium" />
@@ -74,10 +72,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginVertical="@dimen/spacing_small"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="2dp">
 
@@ -103,8 +99,7 @@
                                 android:layout_height="12dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerInParent="true"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"
+                                android:layout_marginHorizontal="@dimen/spacing_small"
                                 app:srcCompat="@drawable/ic_diamond_white_24dp"
                                 app:tint="@color/md_white_1000" />
 
@@ -114,8 +109,7 @@
                                 android:layout_height="12dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerInParent="true"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"
+                                android:layout_marginHorizontal="@dimen/spacing_small"
                                 app:srcCompat="@drawable/ic_diamond_white_24dp"
                                 app:tint="@color/md_white_1000" />
 
@@ -145,9 +139,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:layout_marginBottom="100dp"
                 android:orientation="vertical"
                 app:cardBackgroundColor="@android:color/white"
@@ -155,8 +148,8 @@
 
                 <TextView
                     style="@style/TextViewLabel"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="4dp"
+                    android:paddingStart="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_xsmall"
                     android:text="@string/label_notes" />
 
                 <EditText
@@ -168,10 +161,9 @@
                     android:inputType="textCapSentences|textMultiLine"
                     android:maxLength="400"
                     android:minHeight="48dp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="24dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="8dp"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_large"
+                    android:paddingBottom="@dimen/spacing_small"
                     android:textColor="@color/md_blue_grey_500"
                     android:textColorHint="@color/md_blue_grey_200"
                     android:textSize="@dimen/text_size_medium" />

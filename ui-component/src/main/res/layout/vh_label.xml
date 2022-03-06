@@ -3,5 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vh_label__tv__label"
     style="@style/TextViewLabel"
-    android:layout_marginLeft="16dp"
+    android:layout_marginStart="@dimen/spacing_medium"
     tools:text="Label" />
