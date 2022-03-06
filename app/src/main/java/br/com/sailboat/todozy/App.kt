@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.alarm.impl.di.alarmComponent
 import br.com.sailboat.todozy.feature.settings.di.settingsComponent
 import br.com.sailboat.todozy.feature.task.details.impl.di.taskDetailsComponent
 import br.com.sailboat.todozy.feature.task.form.di.taskFormComponent
-import br.com.sailboat.todozy.feature.task.history.di.taskHistoryComponent
+import br.com.sailboat.todozy.feature.task.history.impl.di.taskHistoryComponent
 import br.com.sailboat.todozy.feature.task.list.impl.di.taskListComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

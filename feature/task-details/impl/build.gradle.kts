@@ -37,7 +37,7 @@ dependencies {
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
     implementation(project(Module.alarmPublic))
-    implementation(project(Module.taskHistory))
+    implementation(project(Module.taskHistoryPublic))
     implementation(project(Module.taskForm))
     implementation(project(Module.taskDetailsPublic))
 

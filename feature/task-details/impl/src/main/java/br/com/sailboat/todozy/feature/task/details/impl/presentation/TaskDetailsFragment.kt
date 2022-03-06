@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.form.presentation.startTaskFormActivity
-import br.com.sailboat.todozy.feature.task.history.presentation.startTaskHistoryActivity
+import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId
@@ -18,11 +18,12 @@ import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import org.koin.android.ext.android.inject
 
-
 class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
     TaskDetailsContract.View {
 
     override val presenter: TaskDetailsContract.Presenter by inject()
+
+    private val taskHistoryNavigator: TaskHistoryNavigator by inject()
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -98,7 +99,7 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
     }
 
     override fun startTaskHistoryActivity(taskId: Long) {
-        activity?.startTaskHistoryActivity()
+        taskHistoryNavigator.navigateToTaskHistory(requireContext())
     }
 
     override fun setFire(fire: String) {
