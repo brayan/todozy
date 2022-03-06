@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

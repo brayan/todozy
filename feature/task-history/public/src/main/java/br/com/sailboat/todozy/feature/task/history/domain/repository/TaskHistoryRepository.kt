@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.domain.repository
+package br.com.sailboat.todozy.feature.task.history.domain.repository
 
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskHistory

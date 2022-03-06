@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.feature.task.form.impl.di
 
-import br.com.sailboat.todozy.domain.usecase.SaveTaskUseCase
+import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFields
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.SaveTask

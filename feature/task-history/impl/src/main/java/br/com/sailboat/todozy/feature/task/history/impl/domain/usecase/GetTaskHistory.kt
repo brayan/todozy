@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.history.impl.domain.usecase
 import br.com.sailboat.todozy.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 
 class GetTaskHistory(
     private val taskHistoryRepository: TaskHistoryRepository,

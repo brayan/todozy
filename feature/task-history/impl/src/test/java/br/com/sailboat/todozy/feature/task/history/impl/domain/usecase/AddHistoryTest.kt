@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk

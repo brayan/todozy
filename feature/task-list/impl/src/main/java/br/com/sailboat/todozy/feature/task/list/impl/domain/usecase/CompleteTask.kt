@@ -1,11 +1,11 @@
 package br.com.sailboat.todozy.feature.task.list.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.usecase.*
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 
 class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,

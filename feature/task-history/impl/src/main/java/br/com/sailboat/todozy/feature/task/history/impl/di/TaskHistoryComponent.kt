@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.feature.task.history.impl.di
 
-import br.com.sailboat.todozy.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSourceSQLite
