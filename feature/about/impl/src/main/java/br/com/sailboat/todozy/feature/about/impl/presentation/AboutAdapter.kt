@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
+import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.ImageTitleDividerViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
 
@@ -19,7 +20,7 @@ class AboutAdapter(private val callback: Callback) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
         UiModelType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
-        else -> throw RuntimeException("ViewHolder not found")
+        else -> EmptyViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -28,7 +29,6 @@ class AboutAdapter(private val callback: Callback) :
         when (item.index) {
             UiModelType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
             UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
-            else -> throw RuntimeException("ViewHolder not found")
         }
     }
 

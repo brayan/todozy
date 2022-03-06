@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModelType
+import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskHistoryViewHolder
 
@@ -19,7 +20,7 @@ class TaskHistoryAdapter(private val callback: Callback) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, callback)
         UiModelType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
-        else -> throw RuntimeException("ViewHolder not found")
+        else -> EmptyViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -28,7 +29,6 @@ class TaskHistoryAdapter(private val callback: Callback) :
         when (item.index) {
             UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryUiModel)
             UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
-            else -> throw RuntimeException("ViewHolder not found")
         }
     }
 

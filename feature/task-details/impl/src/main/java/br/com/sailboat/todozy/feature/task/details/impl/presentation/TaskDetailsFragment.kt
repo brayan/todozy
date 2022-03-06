@@ -4,27 +4,31 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ConfirmDeleteTask
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.NavigateToTaskForm
 import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
-import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId
 import br.com.sailboat.todozy.uicomponent.helper.putTaskId
-import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
-    TaskDetailsContract.View {
+class TaskDetailsFragment : BaseFragment() {
 
-    override val presenter: TaskDetailsContract.Presenter by inject()
-
-    private val taskHistoryNavigator: TaskHistoryNavigator by inject()
+    private val viewModel: TaskDetailsViewModel by viewModel()
     private val taskFormNavigator: TaskFormNavigator by inject()
+
+    private var taskDetailsAdapter: TaskDetailsAdapter? = null
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -41,108 +45,101 @@ class TaskDetailsFragment : BaseMVPFragment<TaskDetailsContract.Presenter>(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FrgTaskDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ) = FrgTaskDetailsBinding.inflate(inflater, container, false).apply {
+        binding = this
+    }.root
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_details, menu)
     }
 
-    override fun initViews() {
-        binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
-        binding.fab.root.setOnClickListener { presenter.onClickEditTask() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
 
-        binding.recycler.recycler.run {
-            adapter = TaskDetailsAdapter(object : TaskDetailsAdapter.Callback {
-                override val details = presenter.details
-            })
-            layoutManager = LinearLayoutManager(activity)
+        val taskId = arguments?.getTaskId() ?: Entity.NO_ID
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+    }
+
+    private fun observeViewModel() {
+        observeActions()
+        viewModel.viewState.taskDetails.observe(viewLifecycleOwner) { items ->
+            taskDetailsAdapter?.submitList(items)
         }
-
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.appbarTaskDetails.toolbar)
-        binding.appbarTaskDetails.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        binding.appbarTaskDetails.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
+            taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
+        }
     }
 
-    override fun setDoneTasks(amount: String) {
-        binding.appbarTaskDetails.taskMetrics.tvMetricsDone.text = amount
+    private fun observeActions() {
+        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+            when (action) {
+                is ConfirmDeleteTask -> confirmDeleteTask()
+                is NavigateToTaskForm -> navigateToTaskForm(action)
+            }
+        }
     }
 
-    override fun setNotDoneTasks(amount: String) {
-        binding.appbarTaskDetails.taskMetrics.tvMetricsNotDone.text = amount
-    }
-
-    override fun showDialogDeleteTask() {
+    private fun confirmDeleteTask() {
         activity?.run {
             DialogHelper().showDeleteDialog(
                 childFragmentManager,
                 this,
                 object : TwoOptionsDialog.PositiveCallback {
                     override fun onClickPositiveOption() {
-                        presenter.onClickDeleteTask()
+                        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
                     }
                 })
         }
     }
 
-    override fun startInsertTaskActivity(taskId: Long) {
-        taskFormNavigator.navigateToEditTaskForm(this, taskId)
+    private fun navigateToTaskForm(action: NavigateToTaskForm) {
+        taskFormNavigator.navigateToEditTaskForm(this, action.taskId)
     }
 
-    override fun showMetrics() {
-        binding.appbarTaskDetails.root.visible()
+    override fun initViews() {
+        binding.toolbar.setTitle(R.string.task_details)
+        binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
+        binding.fab.root.setOnClickListener {
+            viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
+        }
+
+        binding.recycler.recycler.run {
+            adapter = TaskDetailsAdapter().apply {
+                taskDetailsAdapter = this
+            }
+            layoutManager = LinearLayoutManager(activity)
+        }
+
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     }
 
-    override fun hideMetrics() {
-        binding.appbarTaskDetails.root.gone()
+    private fun showMetrics(taskMetrics: TaskMetrics) {
+        binding.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
+        binding.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
+        binding.taskMetrics.tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
+
+        if (taskMetrics.consecutiveDone == 0) {
+            binding.taskMetrics.taskMetricsLlFire.gone()
+        } else {
+            binding.taskMetrics.taskMetricsLlFire.visible()
+        }
+
+        binding.appbar.setExpanded(true, true)
+        binding.appbarTaskDetailsFlMetrics.visible()
     }
 
-    override fun startTaskHistoryActivity(taskId: Long) {
-        taskHistoryNavigator.navigateToTaskHistory(requireContext())
-    }
-
-    override fun setFire(fire: String) {
-        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.text = fire
-    }
-
-    override fun showFire() {
-        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.visible()
-    }
-
-    override fun hideFire() {
-        binding.appbarTaskDetails.taskMetrics.tvMetricsFire.gone()
-    }
-
-    override fun updateDetails() {
-        binding.recycler.recycler.adapter?.notifyDataSetChanged()
-    }
-
-    override fun showErrorOnDeleteTask() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setTaskDetailsTitle() {
-        binding.appbarTaskDetails.toolbar.setTitle(R.string.task_details)
-    }
-
-    override fun setEmptyTitle() {
-        binding.appbarTaskDetails.toolbar.title = ""
-    }
-
-    override fun closeWithResultNotOk() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getTaskId(): Long {
-        return arguments?.getTaskId() ?: Entity.NO_ID
+    private fun hideMetrics() {
+        binding.appbarTaskDetailsFlMetrics.gone()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_delete -> presenter.onClickMenuDelete()
-            R.id.menu_history -> presenter.onClickMenuHistory()
+            R.id.menu_delete -> {
+                viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickMenuDelete)
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true

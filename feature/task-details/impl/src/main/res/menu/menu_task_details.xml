@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_history"
-        android:title="@string/history"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/menu_delete"
         android:title="@string/delete"
         app:showAsAction="never" />
