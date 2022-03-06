@@ -4,8 +4,8 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.repository.TaskRepository
-import br.com.sailboat.todozy.domain.usecase.DeleteAlarmUseCase
-import br.com.sailboat.todozy.domain.usecase.SaveAlarmUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -17,8 +17,8 @@ import java.util.*
 class SaveTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
-    private val deleteAlarmUseCase: DeleteAlarmUseCase = mockk(relaxed = true)
-    private val saveAlarmUseCase: SaveAlarmUseCase = mockk(relaxed = true)
+    private val deleteAlarmUseCase: br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase = mockk(relaxed = true)
+    private val saveAlarmUseCase: br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase = mockk(relaxed = true)
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase = mockk(relaxed = true)
 
     private val saveTask = SaveTask(

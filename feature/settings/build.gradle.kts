@@ -36,6 +36,7 @@ dependencies {
     implementation(project(Module.androidUtil))
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
+    implementation(project(Module.alarmPublic))
     implementation(project(Module.about))
 
     implementation(Kotlin.stdlib)

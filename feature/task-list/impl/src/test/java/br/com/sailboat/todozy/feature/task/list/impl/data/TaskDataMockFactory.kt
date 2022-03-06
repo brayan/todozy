@@ -1,6 +1,6 @@
 package br.com.sailboat.todozy.feature.task.list.impl.data
 
-import br.com.sailboat.todozy.feature.task.list.data.model.TaskData
+import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 
 object TaskDataMockFactory {
 

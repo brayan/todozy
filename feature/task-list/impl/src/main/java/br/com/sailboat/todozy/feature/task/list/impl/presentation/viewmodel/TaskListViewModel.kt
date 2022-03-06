@@ -3,9 +3,9 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.*
 import br.com.sailboat.todozy.domain.service.LogService
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
+import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.*

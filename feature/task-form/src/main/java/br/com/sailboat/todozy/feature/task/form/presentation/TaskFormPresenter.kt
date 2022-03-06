@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.ALARM_NOT_VALID
 import br.com.sailboat.todozy.domain.model.TaskFieldsConditions.TASK_NAME_NOT_FILLED
-import br.com.sailboat.todozy.domain.usecase.GetNextAlarmUseCase
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.domain.usecase.CheckTaskFieldsUseCase
@@ -19,7 +19,7 @@ import java.util.*
 class TaskFormPresenter(
     private val getTaskUseCase: GetTaskUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,
-    private val getNextAlarmUseCase: GetNextAlarmUseCase,
+    private val getNextAlarmUseCase: br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase,
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : BasePresenter<TaskFormContract.View>(), TaskFormContract.Presenter {
 

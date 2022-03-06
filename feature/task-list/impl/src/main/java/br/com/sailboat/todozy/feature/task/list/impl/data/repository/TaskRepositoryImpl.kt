@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.feature.task.list.impl.data.datasource.TaskLocalDa
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.mapToTask
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.mapToTaskData
-import br.com.sailboat.todozy.utility.android.log.logDebug
 
 class TaskRepositoryImpl(
     private val alarmRepository: AlarmRepository,
@@ -16,61 +15,50 @@ class TaskRepositoryImpl(
 ) : TaskRepository {
 
     override suspend fun getTask(taskId: Long): Task {
-        "${javaClass.simpleName}.getTask($taskId)".logDebug()
-
         val taskData = taskLocalDataSource.getTask(taskId)
         val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
         return taskData.mapToTask(alarm)
     }
 
     override suspend fun getBeforeTodayTasks(filter: TaskFilter): List<Task> {
-        "${javaClass.simpleName}.getBeforeTodayTasks($filter)".logDebug()
         val tasksData = taskLocalDataSource.getBeforeTodayTasks(filter)
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun getTodayTasks(filter: TaskFilter): List<Task> {
-        "${javaClass.simpleName}.getTodayTasks($filter)".logDebug()
         val tasksData = taskLocalDataSource.getTodayTasks(filter)
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun getTomorrowTasks(filter: TaskFilter): List<Task> {
-        "${javaClass.simpleName}.getTomorrowTasks($filter)".logDebug()
         val tasksData = taskLocalDataSource.getTomorrowTasks(filter)
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun getNextDaysTasks(filter: TaskFilter): List<Task> {
-        "${javaClass.simpleName}.getNextDaysTasks($filter)".logDebug()
         val tasksData = taskLocalDataSource.getNextDaysTasks(filter)
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun getBeforeNowTasks(): List<Task> {
-        "${javaClass.simpleName}.getBeforeNowTasks()".logDebug()
         val tasksData = taskLocalDataSource.getTasksThrowBeforeNow()
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun getTasksWithAlarms(): List<Task> {
-        "${javaClass.simpleName}.getTasksWithAlarms()".logDebug()
         val tasksData = taskLocalDataSource.getTasksWithAlarms()
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun insert(task: Task) {
-        "${javaClass.simpleName}.insert($task)".logDebug()
         task.id = taskLocalDataSource.insert(task.mapToTaskData())
     }
 
     override suspend fun update(task: Task) {
-        "${javaClass.simpleName}.update($task)".logDebug()
         taskLocalDataSource.update(task.mapToTaskData(), true)
     }
 
     override suspend fun disableTask(task: Task) {
-        "${javaClass.simpleName}.disableTask($task)".logDebug()
         taskLocalDataSource.update(task.mapToTaskData(), false)
     }
 

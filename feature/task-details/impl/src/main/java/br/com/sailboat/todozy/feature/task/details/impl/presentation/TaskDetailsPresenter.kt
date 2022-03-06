@@ -2,10 +2,10 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation
 
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.utility.android.mvp.BasePresenter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.withContext

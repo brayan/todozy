@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.data.repository.TaskReposit
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasks
-import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksView
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.TaskToTaskUiModelMapper

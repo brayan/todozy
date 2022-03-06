@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Build
 import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
 import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
-import br.com.sailboat.todozy.feature.alarm.domain.service.AlarmManagerService
+import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import java.util.*
 
 class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {

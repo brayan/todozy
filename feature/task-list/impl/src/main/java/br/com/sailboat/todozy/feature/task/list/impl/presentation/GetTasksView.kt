@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.task.list.impl.R
-import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import kotlinx.coroutines.async

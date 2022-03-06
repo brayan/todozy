@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.domain.repository.TaskRepository
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 
 class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {
 
