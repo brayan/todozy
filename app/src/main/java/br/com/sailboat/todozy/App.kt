@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.core.platform.CrashlyticsReportingTree
 import br.com.sailboat.todozy.di.appComponent
 import br.com.sailboat.todozy.feature.about.impl.di.aboutComponent
 import br.com.sailboat.todozy.feature.alarm.impl.di.alarmComponent
-import br.com.sailboat.todozy.feature.settings.di.settingsComponent
+import br.com.sailboat.todozy.feature.settings.impl.di.settingsComponent
 import br.com.sailboat.todozy.feature.task.details.impl.di.taskDetailsComponent
 import br.com.sailboat.todozy.feature.task.form.impl.di.taskFormComponent
 import br.com.sailboat.todozy.feature.task.history.impl.di.taskHistoryComponent

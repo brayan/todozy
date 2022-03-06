@@ -6,6 +6,8 @@ object Module {
     const val aboutPublic = ":feature:about:public"
     const val aboutImpl = ":feature:about:impl"
     const val settings = ":feature:settings"
+    const val settingsPublic = ":feature:settings:public"
+    const val settingsImpl = ":feature:settings:impl"
     const val alarmPublic = ":feature:alarm:public"
     const val alarmImpl = ":feature:alarm:impl"
     const val taskHistoryPublic = ":feature:task-history:public"

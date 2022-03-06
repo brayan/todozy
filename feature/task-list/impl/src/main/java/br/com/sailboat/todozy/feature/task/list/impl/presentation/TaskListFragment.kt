@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.about.presentation.navigator.AboutNavigator
-import br.com.sailboat.todozy.feature.settings.presentation.startSettingsActivity
+import br.com.sailboat.todozy.feature.settings.presentation.navigator.SettingsNavigator
 import br.com.sailboat.todozy.feature.task.details.presentation.navigator.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
@@ -37,7 +37,8 @@ class TaskListFragment : BaseFragment() {
     private val taskDetailsNavigator: TaskDetailsNavigator by inject()
     private val taskHistoryNavigator: TaskHistoryNavigator by inject()
     private val taskFormNavigator: TaskFormNavigator by inject()
-    private  val aboutNavigator: AboutNavigator by inject()
+    private val aboutNavigator: AboutNavigator by inject()
+    private val settingsNavigator: SettingsNavigator by inject()
 
     private lateinit var binding: FrgTaskListBinding
     private var progress: ProgressDialog? = null
@@ -178,7 +179,7 @@ class TaskListFragment : BaseFragment() {
     }
 
     private fun navigateToSettings() {
-        startSettingsActivity()
+        settingsNavigator.navigateToSettings(this)
     }
 
     private fun showTasks() {
