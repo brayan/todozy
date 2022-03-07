@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.task.details.impl.presentation
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -9,13 +10,14 @@ import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ConfirmDeleteTask
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.NavigateToTaskForm
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId
 import br.com.sailboat.todozy.uicomponent.helper.putTaskId
+import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -76,6 +78,7 @@ class TaskDetailsFragment : BaseFragment() {
             when (action) {
                 is ConfirmDeleteTask -> confirmDeleteTask()
                 is NavigateToTaskForm -> navigateToTaskForm(action)
+                is CloseTaskDetails -> closeTaskDetails()
             }
         }
     }
@@ -95,6 +98,11 @@ class TaskDetailsFragment : BaseFragment() {
 
     private fun navigateToTaskForm(action: NavigateToTaskForm) {
         taskFormNavigator.navigateToEditTaskForm(this, action.taskId)
+    }
+
+    private fun closeTaskDetails() {
+        activity?.setResult(Activity.RESULT_OK)
+        activity?.finish()
     }
 
     override fun initViews() {

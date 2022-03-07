@@ -47,6 +47,7 @@ class TaskDetailsViewModel(
         try {
             val task = getTaskUseCase(taskId)
             disableTaskUseCase(task)
+            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails
         } catch (e: Exception) {
             logService.error(e)
         }
@@ -68,11 +69,10 @@ class TaskDetailsViewModel(
 
             alarm?.run {
                 if (RepeatType.isAlarmRepeating(alarm)) {
-                    viewState.taskMetrics.value =
-                        getTaskMetricsUseCase(TaskHistoryFilter(taskId = taskId))
+                    val filter = TaskHistoryFilter(taskId = taskId)
+                    viewState.taskMetrics.value = getTaskMetricsUseCase(filter)
                 }
             }
-
         } catch (e: Exception) {
             logService.error(e)
         }

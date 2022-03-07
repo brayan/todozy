@@ -15,6 +15,7 @@ class TaskDetailsViewState {
     sealed class Action {
         data class NavigateToTaskForm(val taskId: Long) : Action()
         object ConfirmDeleteTask : Action()
+        object CloseTaskDetails : Action()
     }
 
 }

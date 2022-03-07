@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.task.list.impl.viewmodel
+package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -12,14 +12,13 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseC
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState
+import br.com.sailboat.todozy.uicomponent.helper.CoroutinesTestRule
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import java.util.*
@@ -33,7 +32,7 @@ class TaskListViewModelTest {
     val instantTask = InstantTaskExecutorRule()
 
     @get:Rule
-    val testCoroutineRule = TestCoroutineRule()
+    val coroutinesTestRule = CoroutinesTestRule()
 
     private val getTasksViewUseCase: GetTasksViewUseCase = mockk(relaxed = true)
     private val getAlarmUseCase: GetAlarmUseCase = mockk(relaxed = true)
@@ -137,7 +136,7 @@ class TaskListViewModelTest {
 
     @Test
     fun `should call completeTaskUseCase when dispatchViewAction is called with OnSwipeTask`() {
-        testCoroutineRule.runBlockingTest {
+        runTest {
             val tasks = mutableListOf<UiModel>(
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
                 TaskUiModel(taskId = 978L, taskName = "Task 978"),
@@ -155,7 +154,7 @@ class TaskListViewModelTest {
 
     @Test
     fun `should update removed task when dispatchViewAction is called with OnSwipeTask`() {
-        testCoroutineRule.runBlockingTest {
+        runTest {
             val task1 = TaskUiModel(taskId = 543L, taskName = "Task 543")
             val task2 = TaskUiModel(taskId = 978L, taskName = "Task 978")
             val tasks = mutableListOf<UiModel>(task1, task2)
@@ -179,8 +178,8 @@ class TaskListViewModelTest {
     }
 
     @Test
-    fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() {
-        testCoroutineRule.runBlockingTest {
+    fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() =
+        runTest {
             val tasks = mutableListOf<UiModel>(
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
                 TaskUiModel(taskId = 978L, taskName = "Task 978"),
@@ -193,12 +192,11 @@ class TaskListViewModelTest {
             viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
 
             coVerify { getAlarmUseCase(taskId = 978L) }
-        }
     }
 
     @Test
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnSwipeTask on a task with repetitive alarm`() {
-        testCoroutineRule.runBlockingTest {
+        runTest {
             val tasks = mutableListOf<UiModel>(
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
                 TaskUiModel(taskId = 978L, taskName = "Task 978"),
