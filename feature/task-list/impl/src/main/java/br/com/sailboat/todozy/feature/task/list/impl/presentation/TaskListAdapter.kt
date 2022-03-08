@@ -27,19 +27,19 @@ class TaskListAdapter(private val callback: Callback) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        when (item.index) {
+        when (item.uiModelId) {
             UiModelType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
             UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
         }
     }
 
-    override fun getItemViewType(position: Int) = getItem(position).index
+    override fun getItemViewType(position: Int) = getItem(position).uiModelId
 
     private class TaskListAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
         override fun areItemsTheSame(
             oldItem: UiModel,
             newItem: UiModel,
-        ) = oldItem.index == newItem.index
+        ) = oldItem.uiModelId == newItem.uiModelId
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(

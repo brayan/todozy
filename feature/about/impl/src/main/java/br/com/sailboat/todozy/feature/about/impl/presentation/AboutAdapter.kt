@@ -26,7 +26,7 @@ class AboutAdapter(private val callback: Callback) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = callback.getAbout()[position]
 
-        when (item.index) {
+        when (item.uiModelId) {
             UiModelType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
             UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
         }
@@ -34,6 +34,6 @@ class AboutAdapter(private val callback: Callback) :
 
     override fun getItemCount() = callback.getAbout().size
 
-    override fun getItemViewType(position: Int) = callback.getAbout()[position].index
+    override fun getItemViewType(position: Int) = callback.getAbout()[position].uiModelId
 
 }

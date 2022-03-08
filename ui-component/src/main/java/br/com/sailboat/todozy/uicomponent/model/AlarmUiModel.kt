@@ -7,5 +7,5 @@ data class AlarmUiModel(
     val isCustom: Boolean,
     val shouldRepeat: Boolean,
     val customDays: String?,
-    override val index: Int = UiModelType.ALARM.ordinal,
+    override val uiModelId: Int = UiModelType.ALARM.ordinal,
 ) : UiModel

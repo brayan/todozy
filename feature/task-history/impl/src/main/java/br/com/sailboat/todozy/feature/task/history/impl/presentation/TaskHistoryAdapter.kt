@@ -26,7 +26,7 @@ class TaskHistoryAdapter(private val callback: Callback) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = callback.history[position]
 
-        when (item.index) {
+        when (item.uiModelId) {
             UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryUiModel)
             UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
         }
@@ -34,6 +34,6 @@ class TaskHistoryAdapter(private val callback: Callback) :
 
     override fun getItemCount() = callback.history.size
 
-    override fun getItemViewType(position: Int) = callback.history[position].index
+    override fun getItemViewType(position: Int) = callback.history[position].uiModelId
 
 }

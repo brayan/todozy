@@ -6,5 +6,5 @@ data class TaskUiModel(
     var taskId: Long,
     var taskName: String,
     var alarm: Calendar? = null,
-    override val index: Int = UiModelType.TASK.ordinal,
+    override val uiModelId: Int = UiModelType.TASK.ordinal,
 ) : UiModel
