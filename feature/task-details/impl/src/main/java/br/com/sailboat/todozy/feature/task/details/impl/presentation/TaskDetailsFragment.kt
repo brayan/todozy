@@ -1,8 +1,10 @@
 package br.com.sailboat.todozy.feature.task.details.impl.presentation
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -10,14 +12,12 @@ import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId
 import br.com.sailboat.todozy.uicomponent.helper.putTaskId
-import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -63,46 +63,8 @@ class TaskDetailsFragment : BaseFragment() {
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
     }
 
-    private fun observeViewModel() {
-        observeActions()
-        viewModel.viewState.taskDetails.observe(viewLifecycleOwner) { items ->
-            taskDetailsAdapter?.submitList(items)
-        }
-        viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
-            taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
-        }
-    }
-
-    private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
-            when (action) {
-                is ConfirmDeleteTask -> confirmDeleteTask()
-                is NavigateToTaskForm -> navigateToTaskForm(action)
-                is CloseTaskDetails -> closeTaskDetails()
-            }
-        }
-    }
-
-    private fun confirmDeleteTask() {
-        activity?.run {
-            DialogHelper().showDeleteDialog(
-                childFragmentManager,
-                this,
-                object : TwoOptionsDialog.PositiveCallback {
-                    override fun onClickPositiveOption() {
-                        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
-                    }
-                })
-        }
-    }
-
-    private fun navigateToTaskForm(action: NavigateToTaskForm) {
-        taskFormNavigator.navigateToEditTaskForm(this, action.taskId)
-    }
-
-    private fun closeTaskDetails() {
-        activity?.setResult(Activity.RESULT_OK)
-        activity?.finish()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
     }
 
     override fun initViews() {
@@ -122,6 +84,58 @@ class TaskDetailsFragment : BaseFragment() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    }
+
+    private fun observeViewModel() {
+        observeActions()
+        viewModel.viewState.taskDetails.observe(viewLifecycleOwner) { items ->
+            taskDetailsAdapter?.submitList(items)
+        }
+        viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
+            taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
+        }
+    }
+
+    private fun observeActions() {
+        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+            when (action) {
+                is ConfirmDeleteTask -> confirmDeleteTask()
+                is CloseTaskDetails -> closeTaskDetails(action)
+                is NavigateToTaskForm -> navigateToTaskForm(action)
+                is ShowErrorLoadingTaskDetails -> showErrorLoadingTaskDetails()
+            }
+        }
+    }
+
+    private fun confirmDeleteTask() {
+        activity?.run {
+            DialogHelper().showDeleteDialog(
+                childFragmentManager,
+                this,
+                object : TwoOptionsDialog.PositiveCallback {
+                    override fun onClickPositiveOption() {
+                        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
+                    }
+                })
+        }
+    }
+
+    private fun closeTaskDetails(action: CloseTaskDetails) {
+        val result = if (action.success) {
+            Activity.RESULT_OK
+        } else {
+            Activity.RESULT_CANCELED
+        }
+        activity?.setResult(result)
+        activity?.finish()
+    }
+
+    private fun navigateToTaskForm(action: NavigateToTaskForm) {
+        taskFormNavigator.navigateToEditTaskForm(this, action.taskId)
+    }
+
+    private fun showErrorLoadingTaskDetails() {
+        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 
     private fun showMetrics(taskMetrics: TaskMetrics) {

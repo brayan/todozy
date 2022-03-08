@@ -4,33 +4,32 @@ import br.com.sailboat.todozy.utility.kotlin.coroutines.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-import kotlin.coroutines.ContinuationInterceptor
 
 @ExperimentalCoroutinesApi
-class CoroutinesTestRule : TestWatcher(), TestCoroutineScope by TestCoroutineScope() {
-    val testDispatcher = coroutineContext[ContinuationInterceptor] as TestCoroutineDispatcher
+class CoroutinesTestRule(
+    private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()
+) : TestWatcher() {
+    val scope = TestScope(dispatcher)
 
-    val testDispatcherProvider = object : DispatcherProvider {
-        override fun default(): CoroutineDispatcher = testDispatcher
-        override fun io(): CoroutineDispatcher = testDispatcher
-        override fun main(): CoroutineDispatcher = testDispatcher
-        override fun unconfined(): CoroutineDispatcher = testDispatcher
+    val dispatcherProvider by lazy {
+        object : DispatcherProvider {
+            override fun default(): CoroutineDispatcher = dispatcher
+            override fun io(): CoroutineDispatcher = dispatcher
+            override fun main(): CoroutineDispatcher = dispatcher
+            override fun unconfined(): CoroutineDispatcher = dispatcher
+        }
     }
 
     override fun starting(description: Description?) {
         super.starting(description)
-        Dispatchers.setMain(testDispatcher)
+        Dispatchers.setMain(dispatcher)
     }
 
     override fun finished(description: Description?) {
         super.finished(description)
         Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 }

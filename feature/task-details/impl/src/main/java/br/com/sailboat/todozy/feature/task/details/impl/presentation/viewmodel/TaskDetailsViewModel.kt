@@ -6,11 +6,14 @@ import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.*
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TaskDetailsViewModel(
@@ -23,58 +26,62 @@ class TaskDetailsViewModel(
     private val logService: LogService,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewAction>() {
 
-    private var taskId: Long = Entity.NO_ID
-
     override fun dispatchViewAction(viewAction: TaskDetailsViewAction) {
         when (viewAction) {
-            is TaskDetailsViewAction.OnStart -> onStart(viewAction)
-            is TaskDetailsViewAction.OnClickMenuDelete -> onClickMenuDelete()
-            is TaskDetailsViewAction.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
-            is TaskDetailsViewAction.OnClickEditTask -> onClickEditTask()
+            is OnStart -> onStart(viewAction)
+            is OnClickMenuDelete -> onClickMenuDelete()
+            is OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
+            is OnClickEditTask -> onClickEditTask()
+            is OnReturnToDetails -> onReturnToDetails()
         }
     }
 
-    private fun onStart(viewAction: TaskDetailsViewAction.OnStart) {
-        this.taskId = viewAction.taskId
+    private fun onStart(viewAction: OnStart) {
+        viewState.taskId = viewAction.taskId
         loadDetails()
     }
 
     private fun onClickMenuDelete() {
-        viewState.action.value = TaskDetailsViewState.Action.ConfirmDeleteTask
+        viewState.action.value = ConfirmDeleteTask
     }
 
     private fun onClickConfirmDeleteTask() = viewModelScope.launch {
         try {
-            val task = getTaskUseCase(taskId)
+            val task = getTaskUseCase(viewState.taskId)
             disableTaskUseCase(task)
-            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails
+            viewState.action.value = CloseTaskDetails(success = true)
         } catch (e: Exception) {
             logService.error(e)
+            viewState.action.value = ShowErrorLoadingTaskDetails
         }
     }
 
     private fun onClickEditTask() {
-        viewState.action.value = TaskDetailsViewState.Action.NavigateToTaskForm(taskId)
+        viewState.action.value = NavigateToTaskForm(viewState.taskId)
+    }
+
+    private fun onReturnToDetails() {
+        loadDetails()
     }
 
     private fun loadDetails() = viewModelScope.launch {
         try {
-            val taskDetails = getTaskDetailsViewUseCase(taskId)
-            viewState.taskDetails.postValue(taskDetails)
+            val taskDetails = async { getTaskDetailsViewUseCase(viewState.taskId) }
+            val alarm = async { getAlarmUseCase(viewState.taskId) }
 
-            val taskMetrics = getTaskMetricsUseCase(TaskHistoryFilter(taskId = taskId))
-            viewState.taskMetrics.postValue(taskMetrics)
+            viewState.taskDetails.postValue(taskDetails.await())
 
-            val alarm = getAlarmUseCase(taskId)
-
-            alarm?.run {
-                if (RepeatType.isAlarmRepeating(alarm)) {
-                    val filter = TaskHistoryFilter(taskId = taskId)
-                    viewState.taskMetrics.value = getTaskMetricsUseCase(filter)
+            alarm.await()?.run {
+                if (RepeatType.isAlarmRepeating(this)) {
+                    val filter = TaskHistoryFilter(taskId = viewState.taskId)
+                    val taskMetrics = getTaskMetricsUseCase(filter)
+                    viewState.taskMetrics.postValue(taskMetrics)
                 }
             }
         } catch (e: Exception) {
             logService.error(e)
+            viewState.action.value = ShowErrorLoadingTaskDetails
+            viewState.action.value = CloseTaskDetails(success = false)
         }
     }
 

@@ -5,4 +5,5 @@ sealed class TaskDetailsViewAction {
     object OnClickMenuDelete : TaskDetailsViewAction()
     object OnClickEditTask : TaskDetailsViewAction()
     object OnClickConfirmDeleteTask : TaskDetailsViewAction()
+    object OnReturnToDetails : TaskDetailsViewAction()
 }
