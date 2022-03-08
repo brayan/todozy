@@ -11,6 +11,6 @@ interface TaskLocalDataSource {
     suspend fun getNextDaysTasks(filter: TaskFilter): List<TaskData>
     suspend fun getTasksThrowBeforeNow(): List<TaskData>
     suspend fun getTasksWithAlarms(): List<TaskData>
-    suspend fun insert(taskData: TaskData): Long
-    suspend fun update(taskData: TaskData, enabled: Boolean)
+    suspend fun insert(taskData: TaskData): Result<Long>
+    suspend fun update(taskData: TaskData, enabled: Boolean): Result<Unit?>
 }

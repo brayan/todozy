@@ -203,7 +203,7 @@ class TaskRepositoryImplTest {
         runBlocking {
             val task = TaskMockFactory.makeTask()
             val taskId = 45L
-            prepareScenario(taskId = taskId)
+            prepareScenario(insertResult = Result.success(taskId))
 
             taskRepository.insert(task)
 
@@ -242,7 +242,8 @@ class TaskRepositoryImplTest {
         taskDataResult: Result<TaskData> = Result.success(TaskDataMockFactory.makeTaskData()),
         taskDataListResult: List<TaskData> = listOf(TaskDataMockFactory.makeTaskData()),
         alarmResult: Alarm? = AlarmMockFactory.makeAlarm(),
-        taskId: Long = 45L,
+        insertResult: Result<Long> = Result.success(45L),
+        updateResult: Result<Unit?> = Result.success(Unit),
     ) {
         coEvery { taskLocalDataSource.getTask(any()) } returns taskDataResult
         coEvery { taskLocalDataSource.getBeforeTodayTasks(any()) } returns taskDataListResult
@@ -251,8 +252,8 @@ class TaskRepositoryImplTest {
         coEvery { taskLocalDataSource.getNextDaysTasks(any()) } returns taskDataListResult
         coEvery { taskLocalDataSource.getTasksThrowBeforeNow() } returns taskDataListResult
         coEvery { taskLocalDataSource.getTasksWithAlarms() } returns taskDataListResult
-        coEvery { taskLocalDataSource.insert(any()) } returns taskId
-        coEvery { taskLocalDataSource.update(any(), any()) } just runs
+        coEvery { taskLocalDataSource.insert(any()) } returns insertResult
+        coEvery { taskLocalDataSource.update(any(), any()) } returns updateResult
         coEvery { alarmRepository.getAlarmByTaskId(any()) } returns alarmResult
     }
 

@@ -16,7 +16,6 @@ class CompleteTask(
 ) : CompleteTaskUseCase {
 
     override suspend operator fun invoke(taskId: Long, status: TaskStatus) {
-        // TODO: Fix this
         val task = getTaskUseCase(taskId).getOrThrow()
 
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {

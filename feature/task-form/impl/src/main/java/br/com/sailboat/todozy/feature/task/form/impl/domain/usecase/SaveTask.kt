@@ -15,21 +15,23 @@ class SaveTask(
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : SaveTaskUseCase {
 
-    override suspend operator fun invoke(task: Task) {
+    override suspend operator fun invoke(task: Task): Result<Task> = runCatching {
         val conditions = checkTaskFieldsUseCase(task)
 
         if (conditions.isNotEmpty()) {
             throw TaskFieldsException(conditions)
         }
 
-        if (task.id == Entity.NO_ID) {
+        val result = if (task.id == Entity.NO_ID) {
             taskRepository.insert(task)
         } else {
-            taskRepository.update(task)
             deleteAlarmUseCase(task.id)
+            taskRepository.update(task)
         }
 
         task.alarm?.run { saveAlarmUseCase(this, task.id) }
+
+        return@runCatching result.getOrThrow()
     }
 
 }

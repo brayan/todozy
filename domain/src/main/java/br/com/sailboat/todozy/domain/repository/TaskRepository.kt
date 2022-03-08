@@ -11,7 +11,7 @@ interface TaskRepository {
     suspend fun getNextDaysTasks(filter: TaskFilter): List<Task>
     suspend fun getBeforeNowTasks(): List<Task>
     suspend fun getTasksWithAlarms(): List<Task>
-    suspend fun insert(task: Task)
-    suspend fun update(task: Task)
+    suspend fun insert(task: Task): Result<Task>
+    suspend fun update(task: Task): Result<Task>
     suspend fun disableTask(task: Task)
 }

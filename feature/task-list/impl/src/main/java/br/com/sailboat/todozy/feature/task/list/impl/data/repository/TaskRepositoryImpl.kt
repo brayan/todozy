@@ -50,12 +50,16 @@ class TaskRepositoryImpl(
         return tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun insert(task: Task) {
-        task.id = taskLocalDataSource.insert(task.mapToTaskData())
+    override suspend fun insert(task: Task): Result<Task> = runCatching {
+        val taskData = task.mapToTaskData()
+        val taskId = taskLocalDataSource.insert(taskData).getOrThrow()
+
+        return@runCatching task.copy(id = taskId)
     }
 
-    override suspend fun update(task: Task) {
+    override suspend fun update(task: Task): Result<Task> = runCatching {
         taskLocalDataSource.update(task.mapToTaskData(), true)
+        return@runCatching task
     }
 
     override suspend fun disableTask(task: Task) {

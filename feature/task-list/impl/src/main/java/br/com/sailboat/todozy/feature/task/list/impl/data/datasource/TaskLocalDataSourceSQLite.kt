@@ -98,7 +98,7 @@ class TaskLocalDataSourceSQLite(
         return getListFromQuery(sb.toString(), null)
     }
 
-    override suspend fun insert(task: TaskData): Long {
+    override suspend fun insert(taskData: TaskData): Result<Long> = runCatching {
         val sql = StringBuilder()
 
         sql.append(" INSERT INTO Task ")
@@ -106,15 +106,15 @@ class TaskLocalDataSourceSQLite(
         sql.append(" VALUES (?, ?, ?, ?); ")
 
         val statement = compileStatement(sql.toString())
-        statement.bindString(1, task.name)
-        statement.bindString(2, task.notes)
+        statement.bindString(1, taskData.name)
+        statement.bindString(2, taskData.notes)
         statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
         statement.bindLong(4, parseBooleanToInt(true).toLong())
 
-        return insert(statement)
+        return@runCatching insert(statement)
     }
 
-    override suspend fun update(task: TaskData, enabled: Boolean) {
+    override suspend fun update(taskData: TaskData, enabled: Boolean): Result<Unit?> = runCatching {
         val sql = StringBuilder()
         sql.append(" UPDATE Task SET ")
         sql.append(" name = ?, ")
@@ -124,11 +124,11 @@ class TaskLocalDataSourceSQLite(
         sql.append(" WHERE id = ? ")
 
         val statement = compileStatement(sql.toString())
-        statement.bindString(1, task.name)
-        statement.bindString(2, task.notes)
+        statement.bindString(1, taskData.name)
+        statement.bindString(2, taskData.notes)
         statement.bindString(3, getCalendarToBind(Calendar.getInstance()))
         statement.bindLong(4, parseBooleanToInt(enabled).toLong())
-        statement.bindLong(5, task.id)
+        statement.bindLong(5, taskData.id)
 
         update(statement)
     }
