@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,29 +10,34 @@
         android:id="@+id/diamond"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="end"
-        android:layout_marginHorizontal="@dimen/spacing_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="?colorAccent"
         app:srcCompat="@drawable/ic_diamond_white_24dp"
-        tools:tint="#000"
-        app:tint="?colorAccent" />
+        tools:tint="@color/md_black_1000" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="end"
-        android:layout_toLeftOf="@id/diamond"
         android:background="?colorAccent"
-        tools:background="#000" />
+        android:layout_marginEnd="@dimen/spacing_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/diamond"
+        tools:background="@color/md_black_1000" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="end"
-        android:layout_toRightOf="@id/diamond"
         android:background="?colorAccent"
-        tools:background="#000" />
+        android:layout_marginStart="@dimen/spacing_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/diamond"
+        tools:background="#@color/md_black_1000" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
