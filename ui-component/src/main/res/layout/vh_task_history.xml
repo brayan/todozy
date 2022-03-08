@@ -39,7 +39,7 @@
                 android:layout_marginEnd="@dimen/spacing_medium"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="#9E9E9E"
+                android:textColor="@color/md_grey_500"
                 android:textSize="@dimen/text_size_xxsmall"
                 android:textStyle="bold"
                 tools:text="11/10/2018" />

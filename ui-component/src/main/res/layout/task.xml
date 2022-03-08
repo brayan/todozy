@@ -1,34 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="64dp"
-    android:paddingBottom="18dp">
+    android:paddingBottom="@dimen/spacing_medium">
+
+    <TextView
+        android:id="@+id/tv_task_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:maxLines="3"
+        android:paddingTop="@dimen/spacing_small"
+        android:textColor="@color/md_blue_grey_700"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fl_task_date_time"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Task" />
 
     <FrameLayout
-        android:id="@+id/vh_task__fl__date_time"
+        android:id="@+id/fl_task_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_task_name"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/vh_task__tv__date"
+            android:id="@+id/tv_task_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/spacing_medium"
             android:layout_marginTop="@dimen/spacing_xsmall"
+            android:layout_marginEnd="@dimen/spacing_medium"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/md_grey_500"
             android:textSize="@dimen/text_size_xxsmall"
             android:textStyle="bold"
             android:visibility="visible"
             tools:text="11/10/2018" />
 
         <TextView
-            android:id="@+id/vh_task__tv__time"
+            android:id="@+id/tv_task_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_medium"
@@ -38,21 +56,6 @@
             android:textColor="@color/md_light_blue_500"
             android:textSize="@dimen/text_size_xxxxlarge"
             tools:text="15:00" />
-
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/vh_task__tv__name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_medium"
-        android:layout_toLeftOf="@id/vh_task__fl__date_time"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:maxLines="3"
-        android:paddingTop="@dimen/spacing_small"
-        android:textColor="@color/md_blue_grey_700"
-        android:textSize="@dimen/text_size_small"
-        tools:text="Task" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

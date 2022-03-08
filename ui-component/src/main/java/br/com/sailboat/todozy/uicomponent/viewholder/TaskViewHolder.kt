@@ -26,7 +26,7 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
     }
 
     override fun bind(item: TaskUiModel) = with(binding) {
-        task.vhTaskTvName.text = item.taskName
+        task.tvTaskName.text = item.taskName
         bindTaskAlarm(item.alarm)
         root.setOnClickListener { callback.onClickTask(item.taskId) }
     }
@@ -47,34 +47,34 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
 
         if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
 
-            task.vhTaskTvDate.text = if (alarm.isCurrentYear()) {
+            task.tvTaskDate.text = if (alarm.isCurrentYear()) {
                 alarm.getMonthAndDayShort(context)
             } else {
                 alarm.toShortDateView(context)
             }
 
         } else {
-            task.vhTaskTvTime.text = alarm.formatTimeWithAndroidFormat(context)
+            task.tvTaskTime.text = alarm.formatTimeWithAndroidFormat(context)
         }
     }
 
     private fun updateAlarmColor(alarm: Calendar) = with(binding) {
-        task.vhTaskTvDate.setTextColor(AlarmColor().getAlarmColor(context, alarm))
-        task.vhTaskTvTime.setTextColor(AlarmColor().getAlarmColor(context, alarm))
+        task.tvTaskDate.setTextColor(AlarmColor().getAlarmColor(context, alarm))
+        task.tvTaskTime.setTextColor(AlarmColor().getAlarmColor(context, alarm))
     }
 
     private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(binding) {
         if (alarm == null) {
-            task.vhTaskTvDate.gone()
-            task.vhTaskTvTime.gone()
+            task.tvTaskDate.gone()
+            task.tvTaskTime.gone()
 
         } else if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
-            task.vhTaskTvTime.gone()
-            task.vhTaskTvDate.visible()
+            task.tvTaskTime.gone()
+            task.tvTaskDate.visible()
 
         } else {
-            task.vhTaskTvTime.visible()
-            task.vhTaskTvDate.gone()
+            task.tvTaskTime.visible()
+            task.tvTaskDate.gone()
         }
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="triggered_alarm_color">#9E9E9E</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="default_background">#fff3f3f3</color>

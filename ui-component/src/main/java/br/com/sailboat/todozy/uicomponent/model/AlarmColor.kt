@@ -16,7 +16,7 @@ class AlarmColor {
         try {
 
             if (alarm?.isBeforeNow().isTrue()) {
-                return ContextCompat.getColor(context, R.color.triggered_alarm_color)
+                return ContextCompat.getColor(context, R.color.md_grey_500)
             }
 
             if (alarm?.isToday().isTrue()) {
