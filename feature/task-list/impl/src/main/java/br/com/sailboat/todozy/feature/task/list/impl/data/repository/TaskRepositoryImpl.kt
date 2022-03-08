@@ -62,8 +62,9 @@ class TaskRepositoryImpl(
         return@runCatching task
     }
 
-    override suspend fun disableTask(task: Task) {
+    override suspend fun disableTask(task: Task): Result<Task> = runCatching {
         taskLocalDataSource.update(task.mapToTaskData(), false)
+        return@runCatching task
     }
 
     private suspend fun List<TaskData>.loadAlarmsAndMapToTasks() = map { taskData ->

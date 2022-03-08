@@ -13,5 +13,5 @@ interface TaskRepository {
     suspend fun getTasksWithAlarms(): List<Task>
     suspend fun insert(task: Task): Result<Task>
     suspend fun update(task: Task): Result<Task>
-    suspend fun disableTask(task: Task)
+    suspend fun disableTask(task: Task): Result<Task>
 }
