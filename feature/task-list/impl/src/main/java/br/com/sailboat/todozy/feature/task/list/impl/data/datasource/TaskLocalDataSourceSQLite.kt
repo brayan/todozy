@@ -28,7 +28,7 @@ class TaskLocalDataSourceSQLite(
         .append(" ); ")
         .toString()
 
-    override suspend fun getTask(taskId: Long): TaskData {
+    override suspend fun getTask(taskId: Long): Result<TaskData> = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         sb.append(" WHERE taskId = $taskId")
@@ -38,7 +38,7 @@ class TaskLocalDataSourceSQLite(
         if (cursor.moveToNext()) {
             val task = cursor.mapTask()
             cursor.close()
-            return task
+            return@runCatching task
         }
 
         throw EntityNotFoundException()

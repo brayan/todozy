@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.G
 
 class GetTask(private val taskRepository: TaskRepository) : GetTaskUseCase {
 
-    override suspend operator fun invoke(taskId: Long): Task {
+    override suspend operator fun invoke(taskId: Long): Result<Task> {
         return taskRepository.getTask(taskId)
     }
 

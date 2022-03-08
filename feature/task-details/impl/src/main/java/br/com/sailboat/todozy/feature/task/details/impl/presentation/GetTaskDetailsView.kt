@@ -18,7 +18,8 @@ class GetTaskDetailsView(
     override suspend operator fun invoke(taskId: Long): List<UiModel> {
         val itemViews = mutableListOf<UiModel>()
 
-        val task = getTaskUseCase(taskId)
+        // TODO: Change this
+        val task = getTaskUseCase(taskId).getOrThrow()
 
         addTitle(itemViews, task)
         task.alarm?.run { addAlarm(context, this, itemViews) }

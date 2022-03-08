@@ -141,9 +141,9 @@ class TaskFormPresenter(
             view?.showProgress()
             val taskId = viewModel.taskId
 
-            val task = getTaskUseCase(taskId)
+            val task = getTaskUseCase(taskId).getOrThrow()
             viewModel.name = task.name
-            viewModel.notes = task.notes ?: ""
+            viewModel.notes = task.notes.orEmpty()
 
             task.alarm?.run {
                 viewModel.alarm = dateTime

@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 
 interface TaskLocalDataSource {
-    suspend fun getTask(taskId: Long): TaskData
+    suspend fun getTask(taskId: Long): Result<TaskData>
     suspend fun getBeforeTodayTasks(filter: TaskFilter): List<TaskData>
     suspend fun getTodayTasks(filter: TaskFilter): List<TaskData>
     suspend fun getTomorrowTasks(filter: TaskFilter): List<TaskData>

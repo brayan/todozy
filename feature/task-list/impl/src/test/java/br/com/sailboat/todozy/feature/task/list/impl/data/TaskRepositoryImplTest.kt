@@ -29,20 +29,22 @@ class TaskRepositoryImplTest {
     fun `should call getTask from taskLocalDataSource when getTask is called from taskRepository`() =
         runBlocking {
             val taskId = 45L
-            val taskDataResult = TaskDataMockFactory.makeTaskData()
+            val taskData = TaskDataMockFactory.makeTaskData()
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataResult = Result.success(taskData),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getTask(taskId)
 
-            val expected = Task(
-                id = taskDataResult.id,
-                name = taskDataResult.name.orEmpty(),
-                notes = taskDataResult.notes,
-                alarm = alarm
+            val expected = Result.success(
+                Task(
+                    id = taskData.id,
+                    name = taskData.name.orEmpty(),
+                    notes = taskData.notes,
+                    alarm = alarm
+                )
             )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTask(taskId) }
@@ -55,7 +57,7 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.BEFORE_TODAY)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -80,7 +82,7 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TODAY)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -105,7 +107,7 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TOMORROW)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -130,7 +132,7 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TOMORROW)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -154,7 +156,7 @@ class TaskRepositoryImplTest {
             val taskDataResult = TaskDataMockFactory.makeTaskData()
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -178,7 +180,7 @@ class TaskRepositoryImplTest {
             val taskDataResult = TaskDataMockFactory.makeTaskData()
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataResult = taskDataResult,
+                taskDataListResult = listOf(taskDataResult),
                 alarmResult = alarm,
             )
 
@@ -237,17 +239,18 @@ class TaskRepositoryImplTest {
         }
 
     private fun prepareScenario(
-        taskDataResult: TaskData = TaskDataMockFactory.makeTaskData(),
+        taskDataResult: Result<TaskData> = Result.success(TaskDataMockFactory.makeTaskData()),
+        taskDataListResult: List<TaskData> = listOf(TaskDataMockFactory.makeTaskData()),
         alarmResult: Alarm? = AlarmMockFactory.makeAlarm(),
         taskId: Long = 45L,
     ) {
         coEvery { taskLocalDataSource.getTask(any()) } returns taskDataResult
-        coEvery { taskLocalDataSource.getBeforeTodayTasks(any()) } returns listOf(taskDataResult)
-        coEvery { taskLocalDataSource.getTodayTasks(any()) } returns listOf(taskDataResult)
-        coEvery { taskLocalDataSource.getTomorrowTasks(any()) } returns listOf(taskDataResult)
-        coEvery { taskLocalDataSource.getNextDaysTasks(any()) } returns listOf(taskDataResult)
-        coEvery { taskLocalDataSource.getTasksThrowBeforeNow() } returns listOf(taskDataResult)
-        coEvery { taskLocalDataSource.getTasksWithAlarms() } returns listOf(taskDataResult)
+        coEvery { taskLocalDataSource.getBeforeTodayTasks(any()) } returns taskDataListResult
+        coEvery { taskLocalDataSource.getTodayTasks(any()) } returns taskDataListResult
+        coEvery { taskLocalDataSource.getTomorrowTasks(any()) } returns taskDataListResult
+        coEvery { taskLocalDataSource.getNextDaysTasks(any()) } returns taskDataListResult
+        coEvery { taskLocalDataSource.getTasksThrowBeforeNow() } returns taskDataListResult
+        coEvery { taskLocalDataSource.getTasksWithAlarms() } returns taskDataListResult
         coEvery { taskLocalDataSource.insert(any()) } returns taskId
         coEvery { taskLocalDataSource.update(any(), any()) } just runs
         coEvery { alarmRepository.getAlarmByTaskId(any()) } returns alarmResult

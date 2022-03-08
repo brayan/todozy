@@ -7,7 +7,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -15,23 +14,37 @@ class GetTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
 
-    private lateinit var getTask: GetTask
-
-    @Before
-    fun setUp() {
-        getTask = GetTask(repository)
-    }
+    private val getTask = GetTask(repository)
 
     @Test
     fun `should get task from repository`() = runBlocking {
-        val task = Task(id = 45, name = "Task Name", notes = "Some notes")
-        coEvery { repository.getTask(any()) } returns task
+        val taskId = 42L
+        val taskResult: Result<Task> = Result.success(
+            Task(
+                id = taskId,
+                name = "Task Name",
+                notes = "Some notes",
+            )
+        )
+        prepareScenario()
 
-        val result = getTask(45)
+        val result = getTask(taskId)
 
-        coVerify { repository.getTask(45) }
+        coVerify { repository.getTask(taskId) }
         confirmVerified(repository)
-        assertEquals(result, task)
+        assertEquals(result, taskResult)
+    }
+
+    private fun prepareScenario(
+        taskResult: Result<Task> = Result.success(
+            Task(
+                id = 42L,
+                name = "Task Name",
+                notes = "Some notes",
+            )
+        )
+    ) {
+        coEvery { repository.getTask(any()) } returns taskResult
     }
 
 }

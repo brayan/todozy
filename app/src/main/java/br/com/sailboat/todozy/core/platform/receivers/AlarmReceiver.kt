@@ -107,7 +107,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private suspend fun initContentFromIntent(intent: Intent, builder: NotificationCompat.Builder) {
         val taskId = intent.getLongExtra(EXTRA_TASK_ID, -1)
 
-        val task = getTaskUseCase(taskId)
+        val task = getTaskUseCase(taskId).getOrThrow()
         builder.setContentTitle(task.name)
 
         if (task.notes?.isNotEmpty().isTrue()) {

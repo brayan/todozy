@@ -14,10 +14,10 @@ class TaskRepositoryImpl(
     private val taskLocalDataSource: TaskLocalDataSource
 ) : TaskRepository {
 
-    override suspend fun getTask(taskId: Long): Task {
-        val taskData = taskLocalDataSource.getTask(taskId)
+    override suspend fun getTask(taskId: Long): Result<Task> = runCatching {
+        val taskData = taskLocalDataSource.getTask(taskId).getOrThrow()
         val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
-        return taskData.mapToTask(alarm)
+        taskData.mapToTask(alarm)
     }
 
     override suspend fun getBeforeTodayTasks(filter: TaskFilter): List<Task> {

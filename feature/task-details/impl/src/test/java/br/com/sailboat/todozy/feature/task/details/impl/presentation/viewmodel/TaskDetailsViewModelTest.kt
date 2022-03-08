@@ -123,7 +123,7 @@ class TaskDetailsViewModelTest {
     @Test
     fun `should call disableTaskUseCase when dispatchViewAction is called with OnClickConfirmDeleteTask`() {
         val task = TaskMockFactory.makeTask()
-        prepareScenario(task = task)
+        prepareScenario(taskResult = Result.success(task))
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
 
@@ -231,7 +231,7 @@ class TaskDetailsViewModelTest {
                 customDays = null,
             )
         ),
-        task: Task = TaskMockFactory.makeTask(),
+        taskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
         alarmResult: Alarm? = Alarm(
             dateTime = Calendar.getInstance(),
             repeatType = RepeatType.WEEK,
@@ -243,7 +243,7 @@ class TaskDetailsViewModelTest {
         )
     ) {
         coEvery { getTaskDetailsViewUseCase(any()) } returns taskDetails
-        coEvery { getTaskUseCase(any()) } returns task
+        coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult
         coEvery { getTaskMetricsUseCase(any()) } returns taskMetrics
     }

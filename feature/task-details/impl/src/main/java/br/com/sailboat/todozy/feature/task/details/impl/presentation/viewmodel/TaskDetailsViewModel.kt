@@ -47,7 +47,7 @@ class TaskDetailsViewModel(
 
     private fun onClickConfirmDeleteTask() = viewModelScope.launch {
         try {
-            val task = getTaskUseCase(viewState.taskId)
+            val task = getTaskUseCase(viewState.taskId).getOrThrow()
             disableTaskUseCase(task)
             viewState.action.value = CloseTaskDetails(success = true)
         } catch (e: Exception) {

@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFilter
 
 interface TaskRepository {
-    suspend fun getTask(taskId: Long): Task
+    suspend fun getTask(taskId: Long): Result<Task>
     suspend fun getBeforeTodayTasks(filter: TaskFilter): List<Task>
     suspend fun getTodayTasks(filter: TaskFilter): List<Task>
     suspend fun getTomorrowTasks(filter: TaskFilter): List<Task>
