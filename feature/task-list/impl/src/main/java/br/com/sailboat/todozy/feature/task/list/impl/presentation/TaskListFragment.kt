@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -130,6 +131,8 @@ class TaskListFragment : BaseFragment() {
                 is NavigateToTaskForm -> navigateToTaskForm()
                 is NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
                 is UpdateRemovedTask -> updateRemovedTask(action.position)
+                is ShowErrorCompletingTask -> showErrorCompletingTask()
+                is ShowErrorLoadingTasks -> showErrorLoadingTasks()
             }
         }
     }
@@ -196,6 +199,14 @@ class TaskListFragment : BaseFragment() {
 
     private fun updateRemovedTask(position: Int) {
         taskListAdapter?.notifyItemRemoved(position)
+    }
+
+    private fun showErrorLoadingTasks() {
+        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showErrorCompletingTask() {
+        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToAbout() {

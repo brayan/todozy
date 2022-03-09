@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.domain.model.*
 import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.domain.service.LogService
@@ -11,16 +12,16 @@ import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.G
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.uicomponent.helper.CoroutinesTestRule
 import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
+import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.TitleUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 class TaskDetailsViewModelTest {
@@ -61,7 +62,8 @@ class TaskDetailsViewModelTest {
                 customDays = null,
             )
         )
-        prepareScenario(taskDetails = taskDetails)
+        val taskDetailsResult = Result.success(taskDetails)
+        prepareScenario(taskDetailsResult = taskDetailsResult)
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
 
@@ -110,6 +112,44 @@ class TaskDetailsViewModelTest {
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
+    }
+
+    @Test
+    fun `should call ShowErrorLoadingTaskDetails when getTaskDetailsViewUseCase returns error when dispatchViewAction is called with OnStart`() {
+        val observer = mockk<Observer<TaskDetailsViewState.Action>>()
+        val slot = slot<TaskDetailsViewState.Action>()
+        val list = arrayListOf<TaskDetailsViewState.Action>()
+        val taskId = 42L
+        val taskDetailsResult: Result<List<UiModel>> = Result.failure(Exception())
+        viewModel.viewState.action.observeForever(observer)
+        every { observer.onChanged(capture(slot)) } answers {
+            list.add(slot.captured)
+        }
+        prepareScenario(taskDetailsResult = taskDetailsResult)
+
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+
+        val expected = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
+        assertTrue { list.contains(expected) }
+    }
+
+    @Test
+    fun `should call CloseTaskDetails(success = false) when getTaskDetailsViewUseCase returns error when dispatchViewAction is called with OnStart`() {
+        val observer = mockk<Observer<TaskDetailsViewState.Action>>()
+        val slot = slot<TaskDetailsViewState.Action>()
+        val list = arrayListOf<TaskDetailsViewState.Action>()
+        val taskId = 42L
+        val taskDetailsResult: Result<List<UiModel>> = Result.failure(Exception())
+        viewModel.viewState.action.observeForever(observer)
+        every { observer.onChanged(capture(slot)) } answers {
+            list.add(slot.captured)
+        }
+        prepareScenario(taskDetailsResult = taskDetailsResult)
+
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+
+        val expected = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
+        assertTrue { list.contains(expected) }
     }
 
     @Test
@@ -168,7 +208,8 @@ class TaskDetailsViewModelTest {
                 customDays = null,
             )
         )
-        prepareScenario(taskDetails = taskDetails)
+        val taskDetailsResult = Result.success(taskDetails)
+        prepareScenario(taskDetailsResult = taskDetailsResult)
         viewModel.viewState.taskId = taskId
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
@@ -224,17 +265,20 @@ class TaskDetailsViewModelTest {
     }
 
     private fun prepareScenario(
-        taskDetails: List<UiModel> = listOf(
-            TitleUiModel(title = "Task Name"),
-            AlarmUiModel(
-                date = "07/03/2022",
-                time = "11:55",
-                description = "Today, March 7, 2022",
-                isCustom = false,
-                shouldRepeat = true,
-                customDays = null,
-            )
-        ),
+        taskDetailsResult: Result<List<UiModel>> =
+            Result.success(
+                listOf(
+                    TitleUiModel(title = "Task Name"),
+                    AlarmUiModel(
+                        date = "07/03/2022",
+                        time = "11:55",
+                        description = "Today, March 7, 2022",
+                        isCustom = false,
+                        shouldRepeat = true,
+                        customDays = null,
+                    )
+                )
+            ),
         taskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
         alarmResult: Result<Alarm?> = Result.success(
             Alarm(
@@ -248,7 +292,7 @@ class TaskDetailsViewModelTest {
             consecutiveDone = 5,
         )
     ) {
-        coEvery { getTaskDetailsViewUseCase(any()) } returns taskDetails
+        coEvery { getTaskDetailsViewUseCase(any()) } returns taskDetailsResult
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult
         coEvery { getTaskMetricsUseCase(any()) } returns taskMetrics

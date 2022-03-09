@@ -3,10 +3,12 @@ package br.com.sailboat.todozy.feature.task.form.impl.domain.usecase
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -31,6 +33,7 @@ class SaveTaskTest {
     @Test
     fun `should insert task in the repository when task has no id`() = runBlocking {
         val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes")
+        prepareScenario()
 
         saveTask(task)
 
@@ -41,6 +44,7 @@ class SaveTaskTest {
 
     @Test
     fun `should update task in the repository when task has some id`() = runBlocking {
+        prepareScenario()
         val task = Task(id = 45, name = "Task Name", notes = "Some notes")
 
         saveTask(task)
@@ -52,6 +56,7 @@ class SaveTaskTest {
 
     @Test
     fun `should check task fields when save task is called`() = runBlocking {
+        prepareScenario()
         val task = Task(id = 45, name = "Task Name", notes = "Some notes")
 
         saveTask(task)
@@ -61,6 +66,7 @@ class SaveTaskTest {
 
     @Test
     fun `should delete alarm when update task`() = runBlocking {
+        prepareScenario()
         val alarm = Alarm(
             dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
             repeatType = RepeatType.NOT_REPEAT
@@ -79,7 +85,13 @@ class SaveTaskTest {
             dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
             repeatType = RepeatType.NOT_REPEAT
         )
-        val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes", alarm = alarm)
+        val task = Task(
+            id = Entity.NO_ID,
+            name = "Task Name",
+            notes = "Some notes",
+            alarm = alarm,
+        )
+        prepareScenario(insertTaskResult = Result.success(task))
 
         saveTask(task)
 
@@ -89,6 +101,7 @@ class SaveTaskTest {
 
     @Test
     fun `should save alarm when updating task`() = runBlocking {
+        prepareScenario()
         val alarm = Alarm(
             dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
             repeatType = RepeatType.NOT_REPEAT
@@ -99,6 +112,14 @@ class SaveTaskTest {
 
         coVerify { saveAlarmUseCase(alarm, task.id) }
         confirmVerified(saveAlarmUseCase)
+    }
+
+    private fun prepareScenario(
+        insertTaskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
+        updateTaskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
+    ) {
+        coEvery { repository.insert(any()) } returns insertTaskResult
+        coEvery { repository.update(any()) } returns updateTaskResult
     }
 
 }

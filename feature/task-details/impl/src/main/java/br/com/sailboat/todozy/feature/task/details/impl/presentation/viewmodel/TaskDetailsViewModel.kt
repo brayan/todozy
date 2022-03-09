@@ -69,7 +69,7 @@ class TaskDetailsViewModel(
             val taskDetails = async { getTaskDetailsViewUseCase(viewState.taskId) }
             val alarm = async { getAlarmUseCase(viewState.taskId) }
 
-            viewState.taskDetails.postValue(taskDetails.await())
+            viewState.taskDetails.postValue(taskDetails.await().getOrThrow())
 
             alarm.await().getOrNull()?.run {
                 if (RepeatType.isAlarmRepeating(this)) {

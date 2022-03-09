@@ -15,17 +15,16 @@ class GetTaskDetailsView(
     private val alarmToAlarmUiModelMapper: AlarmToAlarmUiModelMapper,
 ) : GetTaskDetailsViewUseCase {
 
-    override suspend operator fun invoke(taskId: Long): List<UiModel> {
+    override suspend operator fun invoke(taskId: Long): Result<List<UiModel>> = runCatching {
         val itemViews = mutableListOf<UiModel>()
 
-        // TODO: Change this
         val task = getTaskUseCase(taskId).getOrThrow()
 
         addTitle(itemViews, task)
         task.alarm?.run { addAlarm(context, this, itemViews) }
         task.notes?.takeIf { it.isNotBlank() }?.run { addNotes(context, itemViews, this) }
 
-        return itemViews
+        return@runCatching itemViews
     }
 
     private fun addTitle(uiModels: MutableList<UiModel>, task: Task) {

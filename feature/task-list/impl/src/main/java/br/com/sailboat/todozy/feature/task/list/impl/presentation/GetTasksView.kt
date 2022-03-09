@@ -23,13 +23,15 @@ class GetTasksView(
         TaskCategory.NEXT_DAYS to R.string.next_days
     )
 
-    override suspend operator fun invoke(search: String) = coroutineScope {
-        taskCategories.map { taskType ->
-            async {
-                val filter = TaskFilter(taskType.key).apply { text = search }
-                getTasksView(filter, taskType.value)
-            }
-        }.awaitAll().flatten()
+    override suspend operator fun invoke(search: String) = runCatching {
+        coroutineScope {
+            taskCategories.map { taskType ->
+                async {
+                    val filter = TaskFilter(taskType.key).apply { text = search }
+                    getTasksView(filter, taskType.value)
+                }
+            }.awaitAll().flatten()
+        }
     }
 
     private suspend fun getTasksView(filter: TaskFilter, subhead: Int): List<UiModel> {

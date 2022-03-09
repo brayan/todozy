@@ -9,6 +9,7 @@ import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.G
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.*
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
@@ -41,32 +42,33 @@ class TaskListViewModel(
 
     private fun onStart() = viewModelScope.launch {
         try {
-            viewState.action.postValue(TaskListViewState.Action.CloseNotifications)
+            viewState.action.postValue(CloseNotifications)
             loadTasks()
             scheduleAllAlarmsUseCase()
         } catch (e: Exception) {
             logService.error(e)
+            viewState.action.value = ShowErrorLoadingTasks
         }
     }
 
     private fun onClickMenuAbout() {
-        viewState.action.value = TaskListViewState.Action.NavigateToAbout
+        viewState.action.value = NavigateToAbout
     }
 
     private fun onClickMenuSettings() {
-        viewState.action.value = TaskListViewState.Action.NavigateToSettings
+        viewState.action.value = NavigateToSettings
     }
 
     private fun onClickMenuHistory() {
-        viewState.action.value = TaskListViewState.Action.NavigateToHistory
+        viewState.action.value = NavigateToHistory
     }
 
     private fun onClickNewTask() {
-        viewState.action.value = TaskListViewState.Action.NavigateToTaskForm
+        viewState.action.value = NavigateToTaskForm
     }
 
     private fun onClickTask(taskId: Long) {
-        viewState.action.value = TaskListViewState.Action.NavigateToTaskDetails(taskId = taskId)
+        viewState.action.value = NavigateToTaskDetails(taskId = taskId)
     }
 
     private fun onInputSearchTerm(term: String) = viewModelScope.launch {
@@ -75,12 +77,13 @@ class TaskListViewModel(
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
+            viewState.action.value = ShowErrorLoadingTasks
         }
     }
 
     private suspend fun loadTasks() {
         viewState.loading.postValue(true)
-        val tasks = getTasksViewUseCase(filter.text)
+        val tasks = getTasksViewUseCase(filter.text).getOrThrow()
         viewState.itemsView.postValue(tasks.toMutableList())
         viewState.loading.postValue(false)
     }
@@ -96,7 +99,7 @@ class TaskListViewModel(
             completeTaskUseCase(taskId, status)
 
             itemsView.removeAt(position)
-            viewState.action.postValue(TaskListViewState.Action.UpdateRemovedTask(position))
+            viewState.action.postValue(UpdateRemovedTask(position))
 
             viewState.itemsView.postValue(itemsView)
 
@@ -118,6 +121,7 @@ class TaskListViewModel(
 
         } catch (e: Exception) {
             logService.error(e)
+            viewState.action.value = ShowErrorCompletingTask
         }
     }
 

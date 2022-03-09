@@ -18,6 +18,8 @@ class TaskListViewState {
         object NavigateToHistory : Action()
         object NavigateToSettings : Action()
         object NavigateToTaskForm : Action()
+        object ShowErrorLoadingTasks : Action()
+        object ShowErrorCompletingTask : Action()
         data class NavigateToTaskDetails(val taskId: Long) : Action()
         data class UpdateRemovedTask(val position: Int) : Action()
     }

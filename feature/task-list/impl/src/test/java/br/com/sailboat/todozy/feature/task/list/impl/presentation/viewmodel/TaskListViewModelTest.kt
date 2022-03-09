@@ -53,8 +53,13 @@ class TaskListViewModelTest {
     @Test
     fun `should call getTasksViewUseCase when dispatchViewAction is called with OnStart`() {
         runBlocking {
-            val tasks = mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
-            prepareScenario(tasksResult = tasks)
+            val tasks = mutableListOf<UiModel>(
+                TaskUiModel(
+                    taskId = 543L,
+                    taskName = "Task 543",
+                )
+            )
+            prepareScenario(tasksResult = Result.success(tasks))
 
             viewModel.dispatchViewAction(TaskListViewAction.OnStart)
 
@@ -123,9 +128,14 @@ class TaskListViewModelTest {
     @Test
     fun `should call getTasksViewUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
         runBlocking {
-            val tasks = mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
             val term = "Term"
-            prepareScenario(tasksResult = tasks)
+            val tasks = mutableListOf<UiModel>(
+                TaskUiModel(
+                    taskId = 543L,
+                    taskName = "Task 543",
+                )
+            )
+            prepareScenario(tasksResult = Result.success(tasks))
 
             viewModel.dispatchViewAction(TaskListViewAction.OnInputSearchTerm(term = term))
 
@@ -220,10 +230,12 @@ class TaskListViewModelTest {
     }
 
     private fun prepareScenario(
-        tasksResult: List<UiModel> = listOf(
-            TaskUiModel(
-                taskName = "Task Name",
-                taskId = 123L,
+        tasksResult: Result<List<UiModel>> = Result.success(
+            listOf(
+                TaskUiModel(
+                    taskName = "Task Name",
+                    taskId = 42L,
+                )
             )
         ),
         alarmResult: Result<Alarm> = Result.success(
