@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 
 class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {
 
-    override suspend operator fun invoke(filter: TaskFilter): List<Task> = with(taskRepository) {
+    override suspend operator fun invoke(filter: TaskFilter): Result<List<Task>> = with(taskRepository) {
         return when (filter.category) {
             TaskCategory.BEFORE_TODAY -> getBeforeTodayTasks(filter)
             TaskCategory.BEFORE_NOW -> getBeforeNowTasks()

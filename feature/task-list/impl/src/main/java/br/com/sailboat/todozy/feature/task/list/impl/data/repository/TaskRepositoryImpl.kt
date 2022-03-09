@@ -17,37 +17,37 @@ class TaskRepositoryImpl(
     override suspend fun getTask(taskId: Long): Result<Task> = runCatching {
         val taskData = taskLocalDataSource.getTask(taskId).getOrThrow()
         val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
-        taskData.mapToTask(alarm)
+        return@runCatching taskData.mapToTask(alarm)
     }
 
-    override suspend fun getBeforeTodayTasks(filter: TaskFilter): List<Task> {
-        val tasksData = taskLocalDataSource.getBeforeTodayTasks(filter)
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getBeforeTodayTasks(filter: TaskFilter): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getBeforeTodayTasks(filter).getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun getTodayTasks(filter: TaskFilter): List<Task> {
-        val tasksData = taskLocalDataSource.getTodayTasks(filter)
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getTodayTasks(filter: TaskFilter): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getTodayTasks(filter).getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun getTomorrowTasks(filter: TaskFilter): List<Task> {
-        val tasksData = taskLocalDataSource.getTomorrowTasks(filter)
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getTomorrowTasks(filter: TaskFilter): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getTomorrowTasks(filter).getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun getNextDaysTasks(filter: TaskFilter): List<Task> {
-        val tasksData = taskLocalDataSource.getNextDaysTasks(filter)
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getNextDaysTasks(filter: TaskFilter): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getNextDaysTasks(filter).getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun getBeforeNowTasks(): List<Task> {
-        val tasksData = taskLocalDataSource.getTasksThrowBeforeNow()
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getBeforeNowTasks(): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getTasksThrowBeforeNow().getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
-    override suspend fun getTasksWithAlarms(): List<Task> {
-        val tasksData = taskLocalDataSource.getTasksWithAlarms()
-        return tasksData.loadAlarmsAndMapToTasks()
+    override suspend fun getTasksWithAlarms(): Result<List<Task>> = runCatching {
+        val tasksData = taskLocalDataSource.getTasksWithAlarms().getOrThrow()
+        return@runCatching tasksData.loadAlarmsAndMapToTasks()
     }
 
     override suspend fun insert(task: Task): Result<Task> = runCatching {

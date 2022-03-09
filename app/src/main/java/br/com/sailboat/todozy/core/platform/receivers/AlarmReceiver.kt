@@ -89,7 +89,8 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         builder: NotificationCompat.Builder
     ) {
         try {
-            val tasks = getTasksUseCase(TaskFilter(TaskCategory.BEFORE_NOW))
+            val taskFilter = TaskFilter(TaskCategory.BEFORE_NOW)
+            val tasks = getTasksUseCase(taskFilter).getOrDefault(emptyList())
 
             if (tasks.size <= 1) {
                 initContentFromIntent(intent, builder)

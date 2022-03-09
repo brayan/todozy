@@ -33,7 +33,7 @@ class GetTasksView(
     }
 
     private suspend fun getTasksView(filter: TaskFilter, subhead: Int): List<UiModel> {
-        val tasks = getTasksUseCase(filter)
+        val tasks = getTasksUseCase(filter).getOrThrow()
         val tasksView = mutableListOf<UiModel>()
 
         if (tasks.isNotEmpty()) {

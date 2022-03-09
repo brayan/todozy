@@ -10,7 +10,9 @@ import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.feature.task.list.impl.data.datasource.TaskLocalDataSource
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 import br.com.sailboat.todozy.feature.task.list.impl.data.repository.TaskRepositoryImpl
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -57,18 +59,20 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.BEFORE_TODAY)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getBeforeTodayTasks(taskFilter)
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -82,18 +86,20 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TODAY)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getTodayTasks(taskFilter)
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -107,18 +113,20 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TOMORROW)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getTomorrowTasks(taskFilter)
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -132,18 +140,20 @@ class TaskRepositoryImplTest {
             val taskFilter = TaskFilter(category = TaskCategory.TOMORROW)
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getNextDaysTasks(taskFilter)
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -156,18 +166,20 @@ class TaskRepositoryImplTest {
             val taskDataResult = TaskDataMockFactory.makeTaskData()
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getBeforeNowTasks()
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -180,18 +192,20 @@ class TaskRepositoryImplTest {
             val taskDataResult = TaskDataMockFactory.makeTaskData()
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
-                taskDataListResult = listOf(taskDataResult),
+                taskDataListResult = Result.success(listOf(taskDataResult)),
                 alarmResult = alarm,
             )
 
             val result = taskRepository.getTasksWithAlarms()
 
-            val expected = listOf(
-                Task(
-                    id = taskDataResult.id,
-                    name = taskDataResult.name.orEmpty(),
-                    notes = taskDataResult.notes,
-                    alarm = alarm
+            val expected = Result.success(
+                listOf(
+                    Task(
+                        id = taskDataResult.id,
+                        name = taskDataResult.name.orEmpty(),
+                        notes = taskDataResult.notes,
+                        alarm = alarm
+                    )
                 )
             )
             assertEquals(expected, result)
@@ -240,7 +254,9 @@ class TaskRepositoryImplTest {
 
     private fun prepareScenario(
         taskDataResult: Result<TaskData> = Result.success(TaskDataMockFactory.makeTaskData()),
-        taskDataListResult: List<TaskData> = listOf(TaskDataMockFactory.makeTaskData()),
+        taskDataListResult: Result<List<TaskData>> = Result.success(
+            TaskDataMockFactory.makeTaskDataList()
+        ),
         alarmResult: Alarm? = AlarmMockFactory.makeAlarm(),
         insertResult: Result<Long> = Result.success(45L),
         updateResult: Result<Unit?> = Result.success(Unit),

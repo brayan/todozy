@@ -44,7 +44,7 @@ class TaskLocalDataSourceSQLite(
         throw EntityNotFoundException()
     }
 
-    override suspend fun getBeforeTodayTasks(filter: TaskFilter): List<TaskData> {
+    override suspend fun getBeforeTodayTasks(filter: TaskFilter) = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         bindDefaultWhere(sb)
@@ -52,10 +52,10 @@ class TaskLocalDataSourceSQLite(
         bindWhereFilter(sb, filter)
         bindOrderBy(sb)
 
-        return getListFromQuery(sb.toString(), filter)
+        return@runCatching getListFromQuery(sb.toString(), filter)
     }
 
-    override suspend fun getTodayTasks(filter: TaskFilter): List<TaskData> {
+    override suspend fun getTodayTasks(filter: TaskFilter): Result<List<TaskData>> = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         bindDefaultWhere(sb)
@@ -63,10 +63,10 @@ class TaskLocalDataSourceSQLite(
         bindWhereFilter(sb, filter)
         bindOrderBy(sb)
 
-        return getListFromQuery(sb.toString(), filter)
+        return@runCatching getListFromQuery(sb.toString(), filter)
     }
 
-    override suspend fun getTomorrowTasks(filter: TaskFilter): List<TaskData> {
+    override suspend fun getTomorrowTasks(filter: TaskFilter) = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         bindDefaultWhere(sb)
@@ -74,10 +74,10 @@ class TaskLocalDataSourceSQLite(
         bindWhereFilter(sb, filter)
         bindOrderBy(sb)
 
-        return getListFromQuery(sb.toString(), filter)
+        return@runCatching getListFromQuery(sb.toString(), filter)
     }
 
-    override suspend fun getNextDaysTasks(filter: TaskFilter): List<TaskData> {
+    override suspend fun getNextDaysTasks(filter: TaskFilter) = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         bindDefaultWhere(sb)
@@ -85,17 +85,17 @@ class TaskLocalDataSourceSQLite(
         bindWhereFilter(sb, filter)
         bindOrderBy(sb)
 
-        return getListFromQuery(sb.toString(), filter)
+        return@runCatching getListFromQuery(sb.toString(), filter)
     }
 
-    override suspend fun getTasksThrowBeforeNow(): List<TaskData> {
+    override suspend fun getTasksThrowBeforeNow(): Result<List<TaskData>> = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
         sb.append(" WHERE Alarm.nextAlarmDate <= '" + parseCalendarToString(Calendar.getInstance()) + "' ")
         sb.append(" AND Task.enabled = 1 ")
         bindOrderBy(sb)
 
-        return getListFromQuery(sb.toString(), null)
+        return@runCatching getListFromQuery(sb.toString(), null)
     }
 
     override suspend fun insert(taskData: TaskData): Result<Long> = runCatching {
@@ -134,7 +134,7 @@ class TaskLocalDataSourceSQLite(
     }
 
 
-    override suspend fun getTasksWithAlarms(): List<TaskData> {
+    override suspend fun getTasksWithAlarms(): Result<List<TaskData>> = runCatching {
         val sb = StringBuilder()
         sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
         sb.append(" Task.notes as taskNotes ")
@@ -142,7 +142,7 @@ class TaskLocalDataSourceSQLite(
         sb.append(" ON (Task.id = Alarm.fkTaskId) ")
         sb.append(" WHERE Task.enabled = 1 ")
 
-        return getListFromQuery(sb.toString(), null)
+        return@runCatching getListFromQuery(sb.toString(), null)
     }
 
     private fun getListFromQuery(query: String, filter: BaseFilter?): List<TaskData> {

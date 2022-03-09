@@ -20,8 +20,8 @@ class GetTasksTest {
 
     @Test
     fun `should get tasks from repository with alarms triggered before now`() = runBlocking {
-        val tasks = TaskMockFactory.makeTaskList()
-        prepareScenario(tasks = tasks)
+        val tasksResult = Result.success(TaskMockFactory.makeTaskList())
+        prepareScenario(tasksResult = tasksResult)
 
         val result = getTasks(TaskFilter(TaskCategory.BEFORE_NOW))
 
@@ -31,13 +31,13 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasks)
+        assertEquals(result, tasksResult)
     }
 
     @Test
     fun `should get tasks from repository with alarms triggered before today`() = runBlocking {
-        val tasks = TaskMockFactory.makeTaskList()
-        prepareScenario(tasks = tasks)
+        val tasksResult = Result.success(TaskMockFactory.makeTaskList())
+        prepareScenario(tasksResult = tasksResult)
 
         val result = getTasks(TaskFilter(TaskCategory.BEFORE_TODAY))
 
@@ -47,14 +47,14 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasks)
+        assertEquals(result, tasksResult)
     }
 
     @Test
     fun `should get tasks from repository with alarms for today or without any alarm`() =
         runBlocking {
-            val tasks = TaskMockFactory.makeTaskList()
-            prepareScenario(tasks = tasks)
+            val tasksResult = Result.success(TaskMockFactory.makeTaskList())
+            prepareScenario(tasksResult = tasksResult)
 
             val result = getTasks(TaskFilter(TaskCategory.TODAY))
 
@@ -64,13 +64,13 @@ class GetTasksTest {
             coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
             coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
             confirmVerified(repository)
-            assertEquals(result, tasks)
+            assertEquals(result, tasksResult)
         }
 
     @Test
     fun `should get tasks from repository with alarms for tomorrow`() = runBlocking {
-        val tasks = TaskMockFactory.makeTaskList()
-        prepareScenario(tasks = tasks)
+        val tasksResult = Result.success(TaskMockFactory.makeTaskList())
+        prepareScenario(tasksResult = tasksResult)
 
         val result = getTasks(TaskFilter(TaskCategory.TOMORROW))
 
@@ -80,13 +80,13 @@ class GetTasksTest {
         coVerify(exactly = 1) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasks)
+        assertEquals(result, tasksResult)
     }
 
     @Test
     fun `should get tasks from repository with alarms for next days`() = runBlocking {
-        val tasks = TaskMockFactory.makeTaskList()
-        prepareScenario(tasks = tasks)
+        val tasksResult = Result.success(TaskMockFactory.makeTaskList())
+        prepareScenario(tasksResult = tasksResult)
 
         val result = getTasks(TaskFilter(TaskCategory.NEXT_DAYS))
 
@@ -96,17 +96,17 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 1) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasks)
+        assertEquals(result, tasksResult)
     }
 
     private fun prepareScenario(
-        tasks: List<Task> = TaskMockFactory.makeTaskList(),
+        tasksResult: Result<List<Task>> = Result.success(TaskMockFactory.makeTaskList()),
     ) {
-        coEvery { repository.getBeforeNowTasks() } returns tasks
-        coEvery { repository.getBeforeTodayTasks(any()) } returns tasks
-        coEvery { repository.getTodayTasks(any()) } returns tasks
-        coEvery { repository.getTomorrowTasks(any()) } returns tasks
-        coEvery { repository.getNextDaysTasks(any()) } returns tasks
+        coEvery { repository.getBeforeNowTasks() } returns tasksResult
+        coEvery { repository.getBeforeTodayTasks(any()) } returns tasksResult
+        coEvery { repository.getTodayTasks(any()) } returns tasksResult
+        coEvery { repository.getTomorrowTasks(any()) } returns tasksResult
+        coEvery { repository.getNextDaysTasks(any()) } returns tasksResult
     }
 
 }
