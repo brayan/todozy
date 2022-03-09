@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/vh_week_day__tv__name"
+        android:id="@+id/tv_week_day_name"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@drawable/shape_circle_blue"

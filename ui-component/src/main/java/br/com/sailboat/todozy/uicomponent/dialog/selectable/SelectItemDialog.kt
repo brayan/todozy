@@ -23,8 +23,8 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogRecyclerBinding.inflate(LayoutInflater.from(requireContext()))
 
-        binding.recycler.layoutManager = LinearLayoutManager(activity)
-        binding.recycler.adapter = SelectableItemAdapter(this).apply {
+        binding.rvDialogRecycler.layoutManager = LinearLayoutManager(activity)
+        binding.rvDialogRecycler.adapter = SelectableItemAdapter(this).apply {
             submitList(selectableItems)
         }
         updateViews()
@@ -45,10 +45,10 @@ class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
 
     private fun updateViews() = with(binding) {
         if (title?.isNotEmpty() == true) {
-            dlgRecyclerTvTitle.text = title
-            dlgRecyclerTvTitle.visible()
+            tvDialogRecyclerTitle.text = title
+            tvDialogRecyclerTitle.visible()
         } else {
-            dlgRecyclerTvTitle.gone()
+            tvDialogRecyclerTitle.gone()
         }
     }
 

@@ -107,9 +107,9 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
             val view = viewHolder as TaskViewHolder
 
             if (direction == ItemTouchHelper.LEFT) {
-                callback.onSwipeLeft(view.adapterPosition)
+                callback.onSwipeLeft(view.bindingAdapterPosition)
             } else {
-                callback.onSwipeRight(view.adapterPosition)
+                callback.onSwipeRight(view.bindingAdapterPosition)
             }
         }
 

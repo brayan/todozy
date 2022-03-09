@@ -13,23 +13,23 @@ class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
     ) {
 
     init {
-        binding.root.setOnClickListener { callback.onClickDay(adapterPosition) }
+        binding.root.setOnClickListener { callback.onClickDay(bindingAdapterPosition) }
     }
 
     override fun bind(item: DayUiModel) = with(binding) {
-        vhWeekDayTvName.text = item.name
+        tvWeekDayName.text = item.name
 
         if (callback.isDaySelected(item.id)) {
-            vhWeekDayTvName.setBackgroundResource(R.drawable.shape_circle_blue)
-            vhWeekDayTvName.setTextColor(
+            tvWeekDayName.setBackgroundResource(R.drawable.shape_circle_blue)
+            tvWeekDayName.setTextColor(
                 ContextCompat.getColor(
                     itemView.context,
                     android.R.color.white
                 )
             )
         } else {
-            vhWeekDayTvName.setBackgroundResource(R.drawable.shape_circle)
-            vhWeekDayTvName.setTextColor(
+            tvWeekDayName.setBackgroundResource(R.drawable.shape_circle)
+            tvWeekDayName.setTextColor(
                 ContextCompat.getColor(
                     itemView.context,
                     R.color.md_blue_grey_500

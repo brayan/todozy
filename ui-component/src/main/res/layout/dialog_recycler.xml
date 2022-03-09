@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dlg_recycler__tv__title"
+        android:id="@+id/tv_dialog_recycler_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
@@ -20,7 +20,7 @@
         tools:text="@string/filter" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/rv_dialog_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/spacing_medium" />

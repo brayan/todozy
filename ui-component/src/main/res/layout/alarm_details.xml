@@ -18,7 +18,6 @@
         android:textSize="@dimen/text_size_xlarge"
         tools:text="@string/today" />
 
-
     <TextView
         android:id="@+id/tvAlarmTime"
         android:layout_width="match_parent"

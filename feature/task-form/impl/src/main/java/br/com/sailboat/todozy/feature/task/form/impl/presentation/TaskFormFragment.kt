@@ -201,11 +201,11 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
         Toast.makeText(activity, "Alarm not valid", Toast.LENGTH_SHORT).show()
     }
 
-    private fun initAlarmViews() {
-        binding.rlTaskFormAddAlarm.setOnClickListener { presenter.onClickAddAlarm() }
-        binding.alarmDetails.tvAlarmDate.setOnClickListener { presenter.onClickAlarmDate() }
-        binding.alarmDetails.tvAlarmTime.setOnClickListener { presenter.onClickAlarmTime() }
-        binding.alarmDetails.tvAlarmRepeat.setOnClickListener { presenter.onClickRepeatAlarm() }
+    private fun initAlarmViews() = with(binding) {
+        rlTaskFormAddAlarm.setOnClickListener { presenter.onClickAddAlarm() }
+        alarmDetails.tvAlarmDate.setOnClickListener { presenter.onClickAlarmDate() }
+        alarmDetails.tvAlarmTime.setOnClickListener { presenter.onClickAlarmTime() }
+        alarmDetails.tvAlarmRepeat.setOnClickListener { presenter.onClickRepeatAlarm() }
     }
 
     private fun initEditTexts() {

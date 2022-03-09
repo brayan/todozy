@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
-import br.com.sailboat.todozy.uicomponent.databinding.DlgDateRangeSelectorBinding
+import br.com.sailboat.todozy.uicomponent.databinding.DialogDateRangeSelectorBinding
 import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.MessageDialog
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
@@ -19,12 +19,12 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
     private lateinit var initialDate: Calendar
     private lateinit var finalDate: Calendar
 
-    private lateinit var binding: DlgDateRangeSelectorBinding
+    private lateinit var binding: DialogDateRangeSelectorBinding
 
     private var callback: Callback? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DlgDateRangeSelectorBinding.inflate(LayoutInflater.from(requireContext()))
+        binding = DialogDateRangeSelectorBinding.inflate(LayoutInflater.from(requireContext()))
 
         initViews()
         updateViews()
