@@ -1,0 +1,53 @@
+{
+  "project_info": {
+    "project_number": "935235627910",
+    "firebase_url": "https://todozy-d0908.firebaseio.com",
+    "project_id": "todozy-d0908",
+    "storage_bucket": "todozy-d0908.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935235627910:android:f06b11bf4e4a8379",
+        "android_client_info": {
+          "package_name": "br.com.sailboat.todozy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935235627910-4qi7fr339en8q3sf9d8np392idu7o32t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.sailboat.todozy",
+            "certificate_hash": "6F7AB408DC1304E2CBDECC403E546BF59688F924"
+          }
+        },
+        {
+          "client_id": "935235627910-lehatjj5ca88k46r0oh6u49pimdghlf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASU9g4YVZevEEWq6SMsTnojw55dkPx4Ys"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-49662308-3"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
