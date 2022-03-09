@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/md_blue_300">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/rlTaskFormAddAlarm"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -97,11 +97,25 @@
                                 android:id="@+id/diamond_left"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerInParent="true"
                                 android:layout_marginHorizontal="@dimen/spacing_small"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_diamond_white_24dp"
                                 app:tint="@color/md_white_1000" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="center"
+                                android:text="@string/add_alarm"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_xsmall"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/diamond_right"
+                                app:layout_constraintStart_toEndOf="@id/diamond_left"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/diamond_right"
@@ -110,21 +124,13 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerInParent="true"
                                 android:layout_marginHorizontal="@dimen/spacing_small"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_diamond_white_24dp"
                                 app:tint="@color/md_white_1000" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="48dp"
-                                android:layout_toLeftOf="@id/diamond_right"
-                                android:layout_toRightOf="@id/diamond_left"
-                                android:fontFamily="sans-serif-medium"
-                                android:gravity="center"
-                                android:text="@string/add_alarm"
-                                android:textColor="@android:color/white"
-                                android:textSize="@dimen/text_size_xsmall" />
-
-                        </RelativeLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </FrameLayout>
 
                     <include
