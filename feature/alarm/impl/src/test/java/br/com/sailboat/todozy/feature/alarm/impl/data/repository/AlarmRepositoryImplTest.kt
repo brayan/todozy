@@ -48,6 +48,7 @@ class AlarmRepositoryImplTest {
                 },
                 repeatType = RepeatType.WEEK,
             )
+            val alarmResult = Result.success(alarm)
             prepareScenario(
                 alarmData = alarmData,
                 alarm = alarm,
@@ -55,7 +56,7 @@ class AlarmRepositoryImplTest {
 
             val result = alarmRepository.getAlarmByTaskId(taskId)
 
-            assertEquals(alarm, result)
+            assertEquals(alarmResult, result)
             coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
         }
 
@@ -104,10 +105,13 @@ class AlarmRepositoryImplTest {
     private fun prepareScenario(
         alarm: Alarm = makeAlarm(),
         alarmData: AlarmData = makeAlarmData(),
+        alarmDataResult: Result<AlarmData> = Result.success(makeAlarmData()),
+        deleteByTaskResult: Result<Unit?> = Result.success(Unit),
+        saveResult: Result<Long> = Result.success(42L),
     ) {
-        coEvery { alarmLocalDataSource.getAlarmByTask(any()) } returns alarmData
-        coEvery { alarmLocalDataSource.deleteByTask(any()) } just runs
-        coEvery { alarmLocalDataSource.save(any()) } just runs
+        coEvery { alarmLocalDataSource.getAlarmByTask(any()) } returns alarmDataResult
+        coEvery { alarmLocalDataSource.deleteByTask(any()) } returns deleteByTaskResult
+        coEvery { alarmLocalDataSource.save(any()) } returns saveResult
         coEvery { alarmDataToAlarmMapper.map(any()) } returns alarm
         coEvery { alarmToAlarmDataMapper.map(any(), any()) } returns alarmData
     }

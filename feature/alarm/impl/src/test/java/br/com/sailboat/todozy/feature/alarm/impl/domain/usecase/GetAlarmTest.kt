@@ -25,14 +25,15 @@ class GetAlarmTest {
             dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
             repeatType = RepeatType.NOT_REPEAT
         )
+        val alarmResult = Result.success(alarm)
 
-        coEvery { repository.getAlarmByTaskId(any()) } returns alarm
+        coEvery { repository.getAlarmByTaskId(any()) } returns alarmResult
 
         val result = getAlarm(taskId)
 
         coVerify { repository.getAlarmByTaskId(taskId) }
         confirmVerified(repository)
-        assertEquals(result, alarm)
+        assertEquals(result, alarmResult)
     }
 
 }

@@ -8,7 +8,7 @@ class GetAlarm(
     private val alarmRepository: AlarmRepository,
 ) : GetAlarmUseCase {
 
-    override suspend operator fun invoke(taskId: Long): Alarm? {
+    override suspend operator fun invoke(taskId: Long): Result<Alarm?> {
         return alarmRepository.getAlarmByTaskId(taskId)
     }
 

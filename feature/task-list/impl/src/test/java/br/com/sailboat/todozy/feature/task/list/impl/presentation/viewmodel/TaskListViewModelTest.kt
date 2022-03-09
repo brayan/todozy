@@ -201,14 +201,17 @@ class TaskListViewModelTest {
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
                 TaskUiModel(taskId = 978L, taskName = "Task 978"),
             )
-            val alarm = Alarm(
-                dateTime = Calendar.getInstance(),
-                repeatType = RepeatType.WEEK,
+            val alarmResult = Result.success(
+                Alarm(
+                    dateTime = Calendar.getInstance(),
+                    repeatType = RepeatType.WEEK,
+                )
             )
+
             val position = 1
             val status = TaskStatus.DONE
             viewModel.viewState.itemsView.value = tasks
-            prepareScenario(alarmResult = alarm)
+            prepareScenario(alarmResult = alarmResult)
 
             viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
 
@@ -223,9 +226,11 @@ class TaskListViewModelTest {
                 taskId = 123L,
             )
         ),
-        alarmResult: Alarm = Alarm(
-            dateTime = Calendar.getInstance(),
-            repeatType = RepeatType.WEEK,
+        alarmResult: Result<Alarm> = Result.success(
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            )
         )
     ) {
         coEvery { getTasksViewUseCase(any()) } returns tasksResult

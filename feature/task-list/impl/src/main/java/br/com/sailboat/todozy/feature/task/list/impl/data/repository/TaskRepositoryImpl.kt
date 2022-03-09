@@ -16,7 +16,7 @@ class TaskRepositoryImpl(
 
     override suspend fun getTask(taskId: Long): Result<Task> = runCatching {
         val taskData = taskLocalDataSource.getTask(taskId).getOrThrow()
-        val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
+        val alarm = alarmRepository.getAlarmByTaskId(taskData.id).getOrNull()
         return@runCatching taskData.mapToTask(alarm)
     }
 
@@ -68,7 +68,7 @@ class TaskRepositoryImpl(
     }
 
     private suspend fun List<TaskData>.loadAlarmsAndMapToTasks() = map { taskData ->
-        val alarm = alarmRepository.getAlarmByTaskId(taskData.id)
+        val alarm = alarmRepository.getAlarmByTaskId(taskData.id).getOrNull()
         taskData.mapToTask(alarm)
     }
 

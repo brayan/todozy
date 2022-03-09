@@ -23,15 +23,15 @@ class SaveTask(
         }
 
         val result = if (task.id == Entity.NO_ID) {
-            taskRepository.insert(task)
+            taskRepository.insert(task).getOrThrow()
         } else {
             deleteAlarmUseCase(task.id)
-            taskRepository.update(task)
+            taskRepository.update(task).getOrThrow()
         }
 
-        task.alarm?.run { saveAlarmUseCase(this, task.id) }
+        task.alarm?.run { saveAlarmUseCase(this, result.id) }
 
-        return@runCatching result.getOrThrow()
+        return@runCatching result
     }
 
 }

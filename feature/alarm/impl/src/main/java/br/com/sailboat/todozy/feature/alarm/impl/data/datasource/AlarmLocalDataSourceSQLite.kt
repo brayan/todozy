@@ -25,7 +25,7 @@ class AlarmLocalDataSourceSQLite(
         .append(" ); ")
         .toString()
 
-    override fun getAlarmByTask(taskId: Long): AlarmData? {
+    override fun getAlarmByTask(taskId: Long): Result<AlarmData?> = runCatching {
         val sb = StringBuilder()
         sb.append(" SELECT Alarm.* FROM Alarm ")
         sb.append(" WHERE Alarm.fkTaskId = $taskId")
@@ -35,13 +35,13 @@ class AlarmLocalDataSourceSQLite(
         if (cursor.moveToNext()) {
             val alarm = buildFromCursor(cursor)
             cursor.close()
-            return alarm
+            return@runCatching alarm
         }
 
-        return null
+        return@runCatching null
     }
 
-    override fun deleteByTask(taskId: Long) {
+    override fun deleteByTask(taskId: Long): Result<Unit?> = runCatching {
         val sql = " DELETE FROM Alarm WHERE Alarm.fkTaskId = ?"
         val statement = compileStatement(sql)
         statement.bindLong(1, taskId)
@@ -49,7 +49,7 @@ class AlarmLocalDataSourceSQLite(
         delete(statement)
     }
 
-    fun deleteAlarmById(alarmId: Long) {
+    fun deleteAlarmById(alarmId: Long): Result<Unit?> = runCatching {
         val sql = " DELETE FROM Alarm WHERE Alarm.id = ?"
         val statement = compileStatement(sql)
         statement.bindLong(1, alarmId)
@@ -57,7 +57,7 @@ class AlarmLocalDataSourceSQLite(
         delete(statement)
     }
 
-    override fun save(alarmData: AlarmData) {
+    override fun save(alarmData: AlarmData): Result<Long> = runCatching {
         val sb = StringBuilder()
 
         sb.append(" INSERT INTO Alarm ")
@@ -67,16 +67,14 @@ class AlarmLocalDataSourceSQLite(
         val statement = compileStatement(sb.toString())
         statement.bindLong(1, alarmData.taskId)
         statement.bindLong(2, alarmData.repeatType.toLong())
-        statement.bindString(3, alarmData.nextAlarmDate ?: "")
+        statement.bindString(3, alarmData.nextAlarmDate.orEmpty())
         statement.bindString(4, Calendar.getInstance().toDateTimeString())
-        statement.bindString(5, alarmData.days ?: "")
+        statement.bindString(5, alarmData.days.orEmpty())
 
-        val id = insert(statement)
-
-        alarmData.id = id
+        insert(statement)
     }
 
-    override fun update(alarmData: AlarmData) {
+    override fun update(alarmData: AlarmData): Result<Unit?> = runCatching  {
         val sql = StringBuilder()
         sql.append(" UPDATE Alarm SET ")
         sql.append(" repeatType = ?, ")

@@ -100,7 +100,7 @@ class TaskListViewModel(
 
             viewState.itemsView.postValue(itemsView)
 
-            val alarm = getAlarmUseCase(taskId)
+            val alarm = getAlarmUseCase(taskId).getOrNull()
 
             alarm?.run {
                 if (RepeatType.isAlarmRepeating(alarm)) {

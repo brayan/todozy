@@ -72,9 +72,11 @@ class TaskDetailsViewModelTest {
     @Test
     fun `should call getAlarmUseCase when dispatchViewAction is called with OnStart`() {
         val taskId = 42L
-        val alarmResult = Alarm(
-            dateTime = Calendar.getInstance(),
-            repeatType = RepeatType.WEEK,
+        val alarmResult = Result.success(
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            )
         )
         prepareScenario(alarmResult = alarmResult)
 
@@ -103,7 +105,7 @@ class TaskDetailsViewModelTest {
     @Test
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnStart when alarm is null`() {
         val taskId = 42L
-        prepareScenario(alarmResult = null)
+        prepareScenario(alarmResult = Result.success(null))
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
 
@@ -178,9 +180,11 @@ class TaskDetailsViewModelTest {
     @Test
     fun `should call getAlarmUseCase when dispatchViewAction is called with OnReturnToDetails`() {
         val taskId = 42L
-        val alarmResult = Alarm(
-            dateTime = Calendar.getInstance(),
-            repeatType = RepeatType.WEEK,
+        val alarmResult = Result.success(
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            )
         )
         viewModel.viewState.taskId = taskId
         prepareScenario(alarmResult = alarmResult)
@@ -212,7 +216,7 @@ class TaskDetailsViewModelTest {
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnReturnToDetails when alarm is null`() {
         val taskId = 42L
         viewModel.viewState.taskId = taskId
-        prepareScenario(alarmResult = null)
+        prepareScenario(alarmResult = Result.success(null))
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
 
@@ -232,9 +236,11 @@ class TaskDetailsViewModelTest {
             )
         ),
         taskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
-        alarmResult: Alarm? = Alarm(
-            dateTime = Calendar.getInstance(),
-            repeatType = RepeatType.WEEK,
+        alarmResult: Result<Alarm?> = Result.success(
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            )
         ),
         taskMetrics: TaskMetrics = TaskMetrics(
             doneTasks = 15,

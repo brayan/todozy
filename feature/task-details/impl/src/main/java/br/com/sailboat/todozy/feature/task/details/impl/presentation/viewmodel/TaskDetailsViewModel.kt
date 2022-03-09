@@ -71,7 +71,7 @@ class TaskDetailsViewModel(
 
             viewState.taskDetails.postValue(taskDetails.await())
 
-            alarm.await()?.run {
+            alarm.await().getOrNull()?.run {
                 if (RepeatType.isAlarmRepeating(this)) {
                     val filter = TaskHistoryFilter(taskId = viewState.taskId)
                     val taskMetrics = getTaskMetricsUseCase(filter)

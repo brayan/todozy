@@ -35,7 +35,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataResult = Result.success(taskData),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getTask(taskId)
@@ -60,7 +60,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getBeforeTodayTasks(taskFilter)
@@ -87,7 +87,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getTodayTasks(taskFilter)
@@ -114,7 +114,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getTomorrowTasks(taskFilter)
@@ -141,7 +141,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getNextDaysTasks(taskFilter)
@@ -167,7 +167,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getBeforeNowTasks()
@@ -193,7 +193,7 @@ class TaskRepositoryImplTest {
             val alarm = AlarmMockFactory.makeAlarm()
             prepareScenario(
                 taskDataListResult = Result.success(listOf(taskDataResult)),
-                alarmResult = alarm,
+                alarmResult = Result.success(alarm),
             )
 
             val result = taskRepository.getTasksWithAlarms()
@@ -257,8 +257,8 @@ class TaskRepositoryImplTest {
         taskDataListResult: Result<List<TaskData>> = Result.success(
             TaskDataMockFactory.makeTaskDataList()
         ),
-        alarmResult: Alarm? = AlarmMockFactory.makeAlarm(),
-        insertResult: Result<Long> = Result.success(45L),
+        alarmResult: Result<Alarm?> = Result.success(AlarmMockFactory.makeAlarm()),
+        insertResult: Result<Long> = Result.success(42L),
         updateResult: Result<Unit?> = Result.success(Unit),
     ) {
         coEvery { taskLocalDataSource.getTask(any()) } returns taskDataResult
