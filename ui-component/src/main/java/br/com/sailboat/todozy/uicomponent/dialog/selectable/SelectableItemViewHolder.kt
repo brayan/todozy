@@ -12,29 +12,24 @@ class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback
         VhSelectableItemBinding.inflate(getInflater(parent), parent, false)
     ) {
 
-
-    init {
-        itemView.setOnClickListener { callback.onClickItem(adapterPosition) }
-    }
-
-
-    override fun bind(item: SelectableItem) = with(binding) {
-        vhSelectableItemTvName.setText(item.getName())
-
-        val selectedItem = callback.selectedItem
-        if (selectedItem != null && selectedItem === item) {
-            vhSelectableItemImgSelected.visible()
-        } else {
-            vhSelectableItemImgSelected.gone()
-        }
-
-    }
-
-
     interface Callback {
         val selectedItem: SelectableItem?
         fun onClickItem(position: Int)
     }
 
+    init {
+        itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
+    }
+
+    override fun bind(item: SelectableItem) = with(binding) {
+        tvSelectableItemName.setText(item.getName())
+
+        val selectedItem = callback.selectedItem
+        if (selectedItem != null && selectedItem === item) {
+            ivSelectableItemSelected.visible()
+        } else {
+            ivSelectableItemSelected.gone()
+        }
+    }
 
 }

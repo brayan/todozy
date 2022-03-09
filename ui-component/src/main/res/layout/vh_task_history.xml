@@ -15,23 +15,40 @@
         android:minHeight="64dp"
         android:orientation="vertical">
 
-
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/ivStatus"
+                android:id="@+id/ivTaskHistoryStatus"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="@dimen/spacing_medium"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_circle_done_task"
                 android:padding="@dimen/spacing_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp" />
 
             <TextView
-                android:id="@+id/tvShortDateTime"
+                android:id="@+id/tvTaskHistoryName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:maxLines="3"
+                android:paddingTop="10dp"
+                android:paddingBottom="18dp"
+                android:text="@{history.taskName}"
+                android:textColor="@color/md_blue_grey_700"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toStartOf="@id/tvTaskHistoryShortDateTime"
+                app:layout_constraintStart_toEndOf="@id/ivTaskHistoryStatus"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Work 2 sprints on Todozy" />
+
+            <TextView
+                android:id="@+id/tvTaskHistoryShortDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -42,64 +59,50 @@
                 android:textColor="@color/md_grey_500"
                 android:textSize="@dimen/text_size_xxsmall"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="11/10/2018" />
 
             <TextView
-                android:id="@+id/tvTaskName"
-                android:layout_width="match_parent"
+                android:id="@+id/tvTaskHistoryLongDateTime"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="72dp"
-                android:layout_toLeftOf="@id/tvShortDateTime"
-                android:maxLines="3"
-                android:paddingTop="10dp"
-                android:paddingEnd="@dimen/spacing_medium"
-                android:paddingBottom="18dp"
-                android:text="@{history.taskName}"
-                android:textColor="@color/md_blue_grey_700"
-                android:textSize="@dimen/text_size_small"
-                tools:text="Work 2 sprints on Todozy" />
+                android:layout_marginEnd="@dimen/spacing_medium"
+                android:textSize="@dimen/text_size_xsmall"
+                app:layout_constraintEnd_toEndOf="@id/tvTaskHistoryName"
+                app:layout_constraintStart_toStartOf="@id/tvTaskHistoryName"
+                app:layout_constraintTop_toBottomOf="@id/tvTaskHistoryName"
+                tools:text="Date/time" />
 
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tvLongDateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="72dp"
-            android:layout_marginEnd="@dimen/spacing_medium"
-            android:textSize="@dimen/text_size_xsmall"
-            tools:text="Date/time" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/llTaskHistoryActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="64dp">
+            android:paddingLeft="52dp">
 
             <TextView
-                android:id="@+id/tvMarkAsDone"
+                android:id="@+id/tvTaskHistoryMarkAsDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_medium"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:layout_marginVertical="@dimen/spacing_medium"
-                android:paddingHorizontal="@dimen/spacing_small"
                 android:text="@string/mark_as_done"
                 android:textAllCaps="true"
                 android:textColor="@color/md_blue_500"
                 android:textSize="@dimen/text_size_xxsmall"
                 android:textStyle="bold" />
 
-
             <TextView
-                android:id="@+id/tvMarkAsNotDone"
+                android:id="@+id/tvTaskHistoryMarkAsNotDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/spacing_medium"
                 android:gravity="center"
-                android:paddingHorizontal="@dimen/spacing_small"
-                android:layout_marginVertical="@dimen/spacing_medium"
                 android:text="@string/mark_as_not_done"
                 android:textAllCaps="true"
                 android:textColor="@color/md_blue_500"
@@ -107,16 +110,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvDelete"
+                android:id="@+id/tvTaskHistoryDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:paddingHorizontal="@dimen/spacing_small"
-                android:layout_marginVertical="@dimen/spacing_medium"
                 android:text="@string/delete"
                 android:textAllCaps="true"
+                android:padding="@dimen/spacing_medium"
                 android:textColor="@color/md_red_300"
                 android:textSize="@dimen/text_size_xxsmall"
                 android:textStyle="bold" />

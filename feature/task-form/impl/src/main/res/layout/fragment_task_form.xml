@@ -125,7 +125,6 @@
                                 android:textSize="@dimen/text_size_xsmall" />
 
                         </RelativeLayout>
-
                     </FrameLayout>
 
                     <include

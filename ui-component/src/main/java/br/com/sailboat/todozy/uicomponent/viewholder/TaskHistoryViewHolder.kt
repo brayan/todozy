@@ -26,11 +26,13 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     init {
         binding.root.setOnClickListener { callback.onClickHistory(bindingAdapterPosition) }
-        binding.tvDelete.setOnClickListener { callback.onClickDelete(bindingAdapterPosition) }
+        binding.tvTaskHistoryDelete.setOnClickListener {
+            callback.onClickDelete(bindingAdapterPosition)
+        }
     }
 
     override fun bind(item: TaskHistoryUiModel) = with(binding) {
-        tvTaskName.text = item.taskName
+        tvTaskHistoryName.text = item.taskName
         setStatus(item)
         setOptions(item)
         setDateTimeTask(item)
@@ -38,23 +40,23 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     private fun setStatus(history: TaskHistoryUiModel) = with(binding) {
         if (history.done) {
-            ivStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
-            ivStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
+            ivTaskHistoryStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
+            ivTaskHistoryStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
 
         } else {
-            ivStatus.setImageResource(R.drawable.ic_vect_thumb_down_white_24dp)
-            ivStatus.setBackgroundResource(R.drawable.shape_circle_not_done)
+            ivTaskHistoryStatus.setImageResource(R.drawable.ic_vect_thumb_down_white_24dp)
+            ivTaskHistoryStatus.setBackgroundResource(R.drawable.shape_circle_not_done)
         }
     }
 
     private fun setDateTimeTask(history: TaskHistoryUiModel) = with(binding) {
         try {
             val calendar = history.insertingDate.toDateTimeCalendar()
-            tvLongDateTime.text = getFullDateTime(calendar)
-            tvShortDateTime.text = getShortDateTime(calendar)
+            tvTaskHistoryLongDateTime.text = getFullDateTime(calendar)
+            tvTaskHistoryShortDateTime.text = getShortDateTime(calendar)
         } catch (e: ParseException) {
             e.printStackTrace()
-            tvShortDateTime.gone()
+            tvTaskHistoryShortDateTime.gone()
         }
     }
 
@@ -79,11 +81,11 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
 
     private fun setOptions(history: TaskHistoryUiModel) = with(binding) {
         if (callback.isShowingOptions(bindingAdapterPosition)) {
-            tvShortDateTime.gone()
-            tvLongDateTime.visible()
+            tvTaskHistoryShortDateTime.gone()
+            tvTaskHistoryLongDateTime.visible()
             llTaskHistoryActions.visible()
-            tvTaskName.maxLines = Integer.MAX_VALUE
-            tvTaskName.ellipsize = null
+            tvTaskHistoryName.maxLines = Integer.MAX_VALUE
+            tvTaskHistoryName.ellipsize = null
             (itemView as CardView).cardElevation = 6f
 
             if (history.done) {
@@ -93,27 +95,27 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             }
 
         } else {
-            tvShortDateTime.visible()
-            tvLongDateTime.gone()
+            tvTaskHistoryShortDateTime.visible()
+            tvTaskHistoryLongDateTime.gone()
             llTaskHistoryActions.gone()
-            tvTaskName.maxLines = 3
-            tvTaskName.ellipsize = TextUtils.TruncateAt.END
+            tvTaskHistoryName.maxLines = 3
+            tvTaskHistoryName.ellipsize = TextUtils.TruncateAt.END
             (itemView as CardView).cardElevation = 0f
         }
     }
 
     private fun initViewMarkAsNotDone() = with(binding) {
-        tvMarkAsDone.gone()
-        tvMarkAsNotDone.visible()
-        tvMarkAsNotDone.setOnClickListener {
+        tvTaskHistoryMarkAsDone.gone()
+        tvTaskHistoryMarkAsNotDone.visible()
+        tvTaskHistoryMarkAsNotDone.setOnClickListener {
             callback.onClickMarkTaskAsNotDone(bindingAdapterPosition)
         }
     }
 
     private fun initViewMarkAsDone() = with(binding) {
-        tvMarkAsNotDone.gone()
-        tvMarkAsDone.visible()
-        tvMarkAsDone.setOnClickListener {
+        tvTaskHistoryMarkAsNotDone.gone()
+        tvTaskHistoryMarkAsDone.visible()
+        tvTaskHistoryMarkAsDone.setOnClickListener {
             callback.onClickMarkTaskAsDone(bindingAdapterPosition)
         }
     }
