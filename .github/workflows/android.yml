@@ -25,9 +25,3 @@ jobs:
 
     - name: Unit tests
       run: ./gradlew test --stacktrace
-
-    - name: Upload test report
-      uses: actions/upload-artifact@v2
-      with:
-        name: unit_test_report
-        path: app/build/reports/tests/testDebugUnitTest/
