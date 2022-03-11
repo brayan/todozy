@@ -6,14 +6,14 @@ import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
 
 interface TaskHistoryRepository {
-    suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int
-    suspend fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int
-    suspend fun getTaskHistory(taskId: Long): List<TaskHistory>
-    suspend fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistory>
-    suspend fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistory>
-    suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistory>
-    suspend fun insert(task: Task, status: TaskStatus)
-    suspend fun update(taskHistory: TaskHistory)
-    suspend fun delete(taskHistory: TaskHistory)
-    suspend fun deleteAll()
+    suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int>
+    suspend fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int>
+    suspend fun getTaskHistory(taskId: Long): Result<List<TaskHistory>>
+    suspend fun getTodayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
+    suspend fun getYesterdayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
+    suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
+    suspend fun insert(task: Task, status: TaskStatus): Result<Unit?>
+    suspend fun update(taskHistory: TaskHistory): Result<Unit?>
+    suspend fun delete(taskHistory: TaskHistory): Result<Unit?>
+    suspend fun deleteAll(): Result<Unit?>
 }

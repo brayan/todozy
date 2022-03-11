@@ -6,8 +6,8 @@ class DeleteAllHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : DeleteAllHistoryUseCase {
 
-    override suspend operator fun invoke() {
-        taskHistoryRepository.deleteAll()
+    override suspend operator fun invoke(): Result<Unit?> {
+        return taskHistoryRepository.deleteAll()
     }
 
 }

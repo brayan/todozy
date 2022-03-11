@@ -23,20 +23,22 @@ class GetHistoryView(
         TaskHistoryCategory.PREVIOUS_DAYS to R.string.previous_days,
     )
 
-    override suspend operator fun invoke(filter: TaskHistoryFilter) = coroutineScope {
-        historyCategories.map { category ->
-            async {
-                filter.category = category.key
-                getTaskHistoryView(filter.copyFilter(), category.value)
-            }
-        }.awaitAll().flatten()
+    override suspend operator fun invoke(filter: TaskHistoryFilter) = runCatching {
+        coroutineScope {
+            historyCategories.map { category ->
+                async {
+                    filter.category = category.key
+                    getTaskHistoryView(filter.copyFilter(), category.value)
+                }
+            }.awaitAll().flatten()
+        }
     }
 
     private suspend fun getTaskHistoryView(
         filter: TaskHistoryFilter,
         subhead: Int
     ): List<UiModel> {
-        val history = getTasksHistoryUseCase(filter)
+        val history = getTasksHistoryUseCase(filter).getOrThrow()
         val historyView = mutableListOf<UiModel>()
 
         if (history.isNotEmpty()) {

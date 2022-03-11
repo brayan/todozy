@@ -27,7 +27,7 @@ class TaskHistoryLocalDataSourceSQLite(
         .toString()
 
 
-    override fun save(taskId: Long, taskStatus: Int): Long {
+    override fun save(taskId: Long, taskStatus: Int): Result<Long> = runCatching {
         val sql = StringBuilder()
 
         sql.append(" INSERT INTO TaskHistory ")
@@ -40,10 +40,10 @@ class TaskHistoryLocalDataSourceSQLite(
         statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
         statement.bindLong(4, parseBooleanToInt(true).toLong())
 
-        return insert(statement)
+        return@runCatching insert(statement)
     }
 
-    override fun update(taskHistoryData: TaskHistoryData) {
+    override fun update(taskHistoryData: TaskHistoryData) = runCatching {
         val sql = StringBuilder()
         sql.append(" UPDATE TaskHistory SET ")
         sql.append(" status = ?, ")
@@ -58,7 +58,7 @@ class TaskHistoryLocalDataSourceSQLite(
         update(statement)
     }
 
-    override fun delete(taskHistoryId: Long) {
+    override fun delete(taskHistoryId: Long) = runCatching {
         val sql = StringBuilder()
         sql.append(" DELETE FROM TaskHistory WHERE TaskHistory.id = ?")
 
@@ -68,12 +68,12 @@ class TaskHistoryLocalDataSourceSQLite(
         delete(statement)
     }
 
-    override fun deleteAllHistory() {
+    override fun deleteAllHistory() = runCatching {
         val delete = " DELETE FROM TaskHistory"
         delete(compileStatement(delete))
     }
 
-    override fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getTodayHistory(filter: TaskHistoryFilter) = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -84,10 +84,10 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
-        return getTaskHistoryList(query.toString(), filter)
+        return@runCatching getTaskHistoryList(query.toString(), filter)
     }
 
-    override fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getYesterdayHistory(filter: TaskHistoryFilter) = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -98,10 +98,10 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
-        return getTaskHistoryList(query.toString(), filter)
+        return@runCatching getTaskHistoryList(query.toString(), filter)
     }
 
-    override fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistoryData> {
+    override fun getPreviousDaysHistory(filter: TaskHistoryFilter) = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -112,10 +112,10 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereDateRange(filter)
         query.bindDefaultOrderBy()
 
-        return getTaskHistoryList(query.toString(), filter)
+        return@runCatching getTaskHistoryList(query.toString(), filter)
     }
 
-    override fun getTaskHistoryByTask(taskId: Long): List<TaskHistoryData> {
+    override fun getTaskHistoryByTask(taskId: Long) = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindDefaultSelect()
         query.bindDefaultInnerJoin()
@@ -123,7 +123,7 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereTaskId(taskId)
         query.bindDefaultOrderBy()
 
-        return getTaskHistoryList(query.toString(), null)
+        return@runCatching getTaskHistoryList(query.toString(), null)
     }
 
     fun getPreviousDaysHistoryFromDate(
@@ -143,7 +143,7 @@ class TaskHistoryLocalDataSourceSQLite(
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    override fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int {
+    override fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindSelectCount()
         query.bindDefaultInnerJoin()
@@ -152,10 +152,10 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereTaskDone()
         query.bindWhereFilter(filter)
 
-        return getCountFromQuery(query.toString(), filter)
+        return@runCatching getCountFromQuery(query.toString(), filter)
     }
 
-    override fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int {
+    override fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindSelectCount()
         query.bindDefaultInnerJoin()
@@ -164,10 +164,10 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereTaskNotDone()
         query.bindWhereFilter(filter)
 
-        return getCountFromQuery(query.toString(), filter)
+        return@runCatching getCountFromQuery(query.toString(), filter)
     }
 
-    fun getTotalOfDoneTasks(taskId: Long): Int {
+    fun getTotalOfDoneTasks(taskId: Long): Result<Int> = runCatching {
         val query = TaskHistoryQueryBuilder()
         query.bindSelectCount()
         query.bindDefaultInnerJoin()
@@ -175,7 +175,7 @@ class TaskHistoryLocalDataSourceSQLite(
         query.bindWhereTaskId(taskId)
         query.bindWhereTaskDone()
 
-        return getCountFromQuery(query.toString())
+        return@runCatching getCountFromQuery(query.toString())
     }
 
     fun getTotalOfNotDoneTasks(taskId: Long): Int {

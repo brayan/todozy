@@ -75,7 +75,7 @@ class TaskDetailsViewModel(
                 if (RepeatType.isAlarmRepeating(this)) {
                     val filter = TaskHistoryFilter(taskId = viewState.taskId)
                     val taskMetrics = getTaskMetricsUseCase(filter)
-                    viewState.taskMetrics.postValue(taskMetrics)
+                    viewState.taskMetrics.postValue(taskMetrics.getOrNull())
                 }
             }
         } catch (e: Exception) {

@@ -137,6 +137,8 @@ class CompleteTaskTest {
     ) {
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { getNextAlarmUseCase(any()) } returns alarmResult
+        coEvery { disableTaskUseCase(any()) } returns taskResult
+        coEvery { saveTaskUseCase(any()) } returns taskResult
     }
 
 }

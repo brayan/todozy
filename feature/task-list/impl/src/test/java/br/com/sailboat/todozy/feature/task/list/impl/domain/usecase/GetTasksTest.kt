@@ -31,7 +31,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasksResult)
+        assertEquals(tasksResult, result)
     }
 
     @Test
@@ -47,7 +47,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasksResult)
+        assertEquals(tasksResult, result)
     }
 
     @Test
@@ -64,7 +64,7 @@ class GetTasksTest {
             coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
             coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
             confirmVerified(repository)
-            assertEquals(result, tasksResult)
+            assertEquals(tasksResult, result)
         }
 
     @Test
@@ -80,7 +80,7 @@ class GetTasksTest {
         coVerify(exactly = 1) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 0) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasksResult)
+        assertEquals(tasksResult, result)
     }
 
     @Test
@@ -96,7 +96,7 @@ class GetTasksTest {
         coVerify(exactly = 0) { repository.getTomorrowTasks(any()) }
         coVerify(exactly = 1) { repository.getNextDaysTasks(any()) }
         confirmVerified(repository)
-        assertEquals(result, tasksResult)
+        assertEquals(tasksResult, result)
     }
 
     private fun prepareScenario(

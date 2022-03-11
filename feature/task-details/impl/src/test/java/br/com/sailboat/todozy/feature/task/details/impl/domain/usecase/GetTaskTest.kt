@@ -32,7 +32,7 @@ class GetTaskTest {
 
         coVerify { repository.getTask(taskId) }
         confirmVerified(repository)
-        assertEquals(result, taskResult)
+        assertEquals(taskResult, result)
     }
 
     private fun prepareScenario(

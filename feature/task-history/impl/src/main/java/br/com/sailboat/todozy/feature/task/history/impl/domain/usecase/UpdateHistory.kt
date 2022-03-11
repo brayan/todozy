@@ -7,8 +7,8 @@ class UpdateHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : UpdateHistoryUseCase {
 
-    override suspend operator fun invoke(taskHistory: TaskHistory) {
-        taskHistoryRepository.update(taskHistory)
+    override suspend operator fun invoke(taskHistory: TaskHistory): Result<Unit?> {
+        return taskHistoryRepository.update(taskHistory)
     }
 
 }

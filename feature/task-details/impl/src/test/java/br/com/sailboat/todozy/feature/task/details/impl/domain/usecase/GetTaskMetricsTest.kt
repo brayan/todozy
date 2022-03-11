@@ -19,37 +19,12 @@ class GetTaskMetricsTest {
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
     private val getTaskMetrics = GetTaskMetrics(repository)
 
-    private val history = listOf(
-        TaskHistory(
-            id = 2,
-            taskId = 22,
-            taskName = "Task 1",
-            status = TaskStatus.DONE,
-            insertingDate = "2020-08-29-13-26-56"
-        ),
-        TaskHistory(
-            id = 2,
-            taskId = 22,
-            taskName = "Task 1",
-            status = TaskStatus.DONE,
-            insertingDate = "2020-08-29-13-26-58"
-        ),
-        TaskHistory(
-            id = 3,
-            taskId = 22,
-            taskName = "Task 1",
-            status = TaskStatus.NOT_DONE,
-            insertingDate = "2020-08-29-13-27-39"
-        )
-    )
 
     @Test
     fun `should get task metrics from repository`() = runBlocking {
-        coEvery { repository.getTaskHistory(any()) } returns history
-        coEvery { repository.getTotalOfDoneTasks(any()) } returns 10
-        coEvery { repository.getTotalOfNotDoneTasks(any()) } returns 5
+        prepareScenario()
 
-        val result = getTaskMetrics(TaskHistoryFilter(taskId = 22))
+        val result = getTaskMetrics(TaskHistoryFilter(taskId = 22)).getOrNull()
 
         coVerify { repository.getTaskHistory(any()) }
         coVerify { repository.getTotalOfDoneTasks(any()) }
@@ -61,11 +36,9 @@ class GetTaskMetricsTest {
 
     @Test
     fun `should return consecutiveDone 0 from repository when taskId has NO_ID`() = runBlocking {
-        coEvery { repository.getTaskHistory(any()) } returns history
-        coEvery { repository.getTotalOfDoneTasks(any()) } returns 10
-        coEvery { repository.getTotalOfNotDoneTasks(any()) } returns 5
+        prepareScenario()
 
-        val result = getTaskMetrics(TaskHistoryFilter(taskId = Entity.NO_ID))
+        val result = getTaskMetrics(TaskHistoryFilter(taskId = Entity.NO_ID)).getOrNull()
 
         coVerify(exactly = 0) { repository.getTaskHistory(any()) }
         coVerify { repository.getTotalOfDoneTasks(any()) }
@@ -73,6 +46,40 @@ class GetTaskMetricsTest {
 
         confirmVerified(repository)
         assertEquals(TaskMetrics(doneTasks = 10, notDoneTasks = 5, consecutiveDone = 0), result)
+    }
+
+    private fun prepareScenario(
+        taskHistoryListResult: Result<List<TaskHistory>> = Result.success(
+            listOf(
+                TaskHistory(
+                    id = 2,
+                    taskId = 22,
+                    taskName = "Task 1",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2020-08-29-13-26-56"
+                ),
+                TaskHistory(
+                    id = 2,
+                    taskId = 22,
+                    taskName = "Task 1",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2020-08-29-13-26-58"
+                ),
+                TaskHistory(
+                    id = 3,
+                    taskId = 22,
+                    taskName = "Task 1",
+                    status = TaskStatus.NOT_DONE,
+                    insertingDate = "2020-08-29-13-27-39"
+                )
+            )
+        ),
+        totalOfDoneTasksResult: Result<Int> = Result.success(10),
+        totalOfNotDoneTasksResult: Result<Int> = Result.success(5),
+    ) {
+        coEvery { repository.getTaskHistory(any()) } returns taskHistoryListResult
+        coEvery { repository.getTotalOfDoneTasks(any()) } returns totalOfDoneTasksResult
+        coEvery { repository.getTotalOfNotDoneTasks(any()) } returns totalOfNotDoneTasksResult
     }
 
 }

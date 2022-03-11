@@ -29,9 +29,9 @@ class TaskHistoryRepositoryImplTest {
         runBlocking {
             val taskHistoryFilter = TaskHistoryFilter()
             val totalOfNotDoneTasks = 25
-            prepareScenario(totalOfNotDoneTasks = totalOfNotDoneTasks)
+            prepareScenario(totalOfNotDoneTasks = Result.success(totalOfNotDoneTasks))
 
-            val result = taskHistoryRepository.getTotalOfNotDoneTasks(taskHistoryFilter)
+            val result = taskHistoryRepository.getTotalOfNotDoneTasks(taskHistoryFilter).getOrNull()
 
             assertEquals(totalOfNotDoneTasks, result)
             coVerify { taskHistoryLocalDataSource.getTotalOfNotDoneTasks(taskHistoryFilter) }
@@ -42,9 +42,9 @@ class TaskHistoryRepositoryImplTest {
         runBlocking {
             val taskHistoryFilter = TaskHistoryFilter()
             val totalOfDoneTasks = 25
-            prepareScenario(totalOfDoneTasks = totalOfDoneTasks)
+            prepareScenario(totalOfDoneTasks = Result.success(totalOfDoneTasks))
 
-            val result = taskHistoryRepository.getTotalOfDoneTasks(taskHistoryFilter)
+            val result = taskHistoryRepository.getTotalOfDoneTasks(taskHistoryFilter).getOrNull()
 
             assertEquals(totalOfDoneTasks, result)
             coVerify { taskHistoryLocalDataSource.getTotalOfDoneTasks(taskHistoryFilter) }
@@ -55,9 +55,9 @@ class TaskHistoryRepositoryImplTest {
         runBlocking {
             val taskHistoryData = makeTaskHistoryData()
             val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = listOf(taskHistoryData))
+            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getTodayHistory(taskHistoryFilter)
+            val result = taskHistoryRepository.getTodayHistory(taskHistoryFilter).getOrNull()
 
             val expected = listOf(
                 TaskHistory(
@@ -77,9 +77,9 @@ class TaskHistoryRepositoryImplTest {
         runBlocking {
             val taskHistoryData = makeTaskHistoryData()
             val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = listOf(taskHistoryData))
+            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getYesterdayHistory(taskHistoryFilter)
+            val result = taskHistoryRepository.getYesterdayHistory(taskHistoryFilter).getOrNull()
 
             val expected = listOf(
                 TaskHistory(
@@ -99,9 +99,9 @@ class TaskHistoryRepositoryImplTest {
         runBlocking {
             val taskHistoryData = makeTaskHistoryData()
             val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = listOf(taskHistoryData))
+            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getPreviousDaysHistory(taskHistoryFilter)
+            val result = taskHistoryRepository.getPreviousDaysHistory(taskHistoryFilter).getOrNull()
 
             val expected = listOf(
                 TaskHistory(
@@ -120,9 +120,9 @@ class TaskHistoryRepositoryImplTest {
     fun `should call getTaskHistoryByTask from local data source when getTaskHistory is called from repository`() =
         runBlocking {
             val taskHistoryData = makeTaskHistoryData()
-            prepareScenario(taskHistoryDataList = listOf(taskHistoryData))
+            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getTaskHistory(taskHistoryData.taskId)
+            val result = taskHistoryRepository.getTaskHistory(taskHistoryData.taskId).getOrNull()
 
             val expected = listOf(
                 TaskHistory(
@@ -190,10 +190,11 @@ class TaskHistoryRepositoryImplTest {
         }
 
     private fun prepareScenario(
-        totalOfNotDoneTasks: Int = 10,
-        totalOfDoneTasks: Int = 10,
-        taskHistoryId: Long = 45,
-        taskHistoryDataList: List<TaskHistoryData> = makeTaskHistoryDataList(),
+        totalOfNotDoneTasks: Result<Int> = Result.success(10),
+        totalOfDoneTasks: Result<Int> = Result.success(10),
+        taskHistoryId: Result<Long> = Result.success(45),
+        taskHistoryDataList: Result<List<TaskHistoryData>> =
+            Result.success(makeTaskHistoryDataList()),
     ) {
         coEvery { taskHistoryLocalDataSource.getTotalOfNotDoneTasks(any()) } returns totalOfNotDoneTasks
         coEvery { taskHistoryLocalDataSource.getTotalOfDoneTasks(any()) } returns totalOfDoneTasks

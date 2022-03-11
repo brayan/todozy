@@ -4,5 +4,5 @@ import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 
 interface GetTaskMetricsUseCase {
-    suspend operator fun invoke(filter: TaskHistoryFilter): TaskMetrics
+    suspend operator fun invoke(filter: TaskHistoryFilter): Result<TaskMetrics>
 }

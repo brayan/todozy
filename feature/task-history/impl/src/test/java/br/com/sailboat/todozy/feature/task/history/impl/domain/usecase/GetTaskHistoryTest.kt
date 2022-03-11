@@ -19,63 +19,96 @@ class GetTaskHistoryTest {
 
     private val getTaskHistory = GetTaskHistory(repository)
 
-    private val history = listOf(
-        TaskHistory(
-            id = 2,
-            taskId = 22,
-            taskName = "Task 1",
-            status = TaskStatus.DONE,
-            insertingDate = "2020-08-29-13-26-56"
-        ),
-        TaskHistory(
-            id = 3,
-            taskId = 23,
-            taskName = "Task 2",
-            status = TaskStatus.NOT_DONE,
-            insertingDate = "2020-08-29-13-27-39"
-        )
-    )
-
     @Test
     fun `should get task history from previous days from repository`() = runBlocking {
-        coEvery { repository.getPreviousDaysHistory(any()) } returns history
+        val filter = TaskHistoryFilter(category = TaskHistoryCategory.PREVIOUS_DAYS)
+        val taskHistoryListResult = Result.success(
+            listOf(
+                TaskHistory(
+                    id = 2,
+                    taskId = 22,
+                    taskName = "Task 1",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2020-08-29-13-26-56",
+                )
+            )
+        )
+        prepareScenario(taskHistoryListResult = taskHistoryListResult)
 
-        val result = getTaskHistory(TaskHistoryFilter(category = TaskHistoryCategory.PREVIOUS_DAYS))
+        val result: Result<List<TaskHistory>> = getTaskHistory(filter)
 
         coVerify(exactly = 1) { repository.getPreviousDaysHistory(any()) }
         coVerify(exactly = 0) { repository.getYesterdayHistory(any()) }
         coVerify(exactly = 0) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(result, history)
+        assertEquals(taskHistoryListResult, result)
     }
 
     @Test
     fun `should get task history from yesterday from repository`() = runBlocking {
-        coEvery { repository.getYesterdayHistory(any()) } returns history
+        val filter = TaskHistoryFilter(category = TaskHistoryCategory.YESTERDAY)
+        val taskHistoryList = listOf(
+            TaskHistory(
+                id = 2,
+                taskId = 22,
+                taskName = "Task 1",
+                status = TaskStatus.DONE,
+                insertingDate = "2020-08-29-13-26-56",
+            )
+        )
+        prepareScenario(taskHistoryListResult = Result.success(taskHistoryList))
 
-        val result = getTaskHistory(TaskHistoryFilter(category = TaskHistoryCategory.YESTERDAY))
+        val result = getTaskHistory(filter).getOrNull()
 
         coVerify(exactly = 0) { repository.getPreviousDaysHistory(any()) }
         coVerify(exactly = 1) { repository.getYesterdayHistory(any()) }
         coVerify(exactly = 0) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(result, history)
+        assertEquals(taskHistoryList, result)
     }
 
     @Test
     fun `should get task history from today from repository`() = runBlocking {
-        coEvery { repository.getTodayHistory(any()) } returns history
+        val filter = TaskHistoryFilter(category = TaskHistoryCategory.TODAY)
+        val taskHistoryList = listOf(
+            TaskHistory(
+                id = 2,
+                taskId = 22,
+                taskName = "Task 1",
+                status = TaskStatus.DONE,
+                insertingDate = "2020-08-29-13-26-56",
+            )
+        )
+        prepareScenario(taskHistoryListResult = Result.success(taskHistoryList))
 
-        val result = getTaskHistory(TaskHistoryFilter(category = TaskHistoryCategory.TODAY))
+        val result = getTaskHistory(filter).getOrNull()
 
         coVerify(exactly = 0) { repository.getPreviousDaysHistory(any()) }
         coVerify(exactly = 0) { repository.getYesterdayHistory(any()) }
         coVerify(exactly = 1) { repository.getTodayHistory(any()) }
 
         confirmVerified(repository)
-        assertEquals(result, history)
+        assertEquals(taskHistoryList, result)
+    }
+
+    private fun prepareScenario(
+        taskHistoryListResult: Result<List<TaskHistory>> = Result.success(
+            listOf(
+                TaskHistory(
+                    id = 2,
+                    taskId = 22,
+                    taskName = "Task 1",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2020-08-29-13-26-56"
+                ),
+            )
+        )
+    ) {
+        coEvery { repository.getTodayHistory(any()) } returns taskHistoryListResult
+        coEvery { repository.getPreviousDaysHistory(any()) } returns taskHistoryListResult
+        coEvery { repository.getYesterdayHistory(any()) } returns taskHistoryListResult
     }
 
 }

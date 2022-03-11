@@ -107,8 +107,8 @@ class TaskListViewModel(
 
             alarm?.run {
                 if (RepeatType.isAlarmRepeating(alarm)) {
-                    viewState.taskMetrics.value =
-                        getTaskMetricsUseCase(TaskHistoryFilter(taskId = taskId))
+                    val filter = TaskHistoryFilter(taskId = taskId)
+                    viewState.taskMetrics.value = getTaskMetricsUseCase(filter).getOrNull()
                 }
             }
 

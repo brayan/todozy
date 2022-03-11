@@ -4,14 +4,14 @@ import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryData
 
 interface TaskHistoryLocalDataSource {
-    fun getTodayHistory(filter: TaskHistoryFilter): List<TaskHistoryData>
-    fun getYesterdayHistory(filter: TaskHistoryFilter): List<TaskHistoryData>
-    fun getPreviousDaysHistory(filter: TaskHistoryFilter): List<TaskHistoryData>
-    fun save(taskId: Long, taskStatus: Int): Long
-    fun update(taskHistoryData: TaskHistoryData)
-    fun delete(taskHistoryId: Long)
-    fun deleteAllHistory()
-    fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Int
-    fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Int
-    fun getTaskHistoryByTask(taskId: Long): List<TaskHistoryData>
+    fun getTodayHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>
+    fun getYesterdayHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>
+    fun getPreviousDaysHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>
+    fun getTaskHistoryByTask(taskId: Long): Result<List<TaskHistoryData>>
+    fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int>
+    fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int>
+    fun save(taskId: Long, taskStatus: Int): Result<Long>
+    fun update(taskHistoryData: TaskHistoryData): Result<Unit?>
+    fun delete(taskHistoryId: Long): Result<Unit?>
+    fun deleteAllHistory(): Result<Unit?>
 }

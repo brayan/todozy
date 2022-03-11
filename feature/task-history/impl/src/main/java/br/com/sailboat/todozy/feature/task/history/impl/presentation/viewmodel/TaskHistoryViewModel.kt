@@ -141,7 +141,7 @@ class TaskHistoryViewModel(
                 val taskHistory = taskHistoryList[viewAction.position] as TaskHistoryUiModel
 
                 val history = taskHistoryUiModelToTaskHistoryMapper.map(taskHistory)
-                deleteHistoryUseCase(history)
+                deleteHistoryUseCase(history).getOrThrow()
                 loadHistoryTasks()
             } catch (e: Exception) {
                 logService.error(e)
@@ -265,8 +265,8 @@ class TaskHistoryViewModel(
 
     private fun loadHistoryTasks() = viewModelScope.launch {
         try {
-            val taskMetrics = async { getTaskMetricsUseCase(filter) }
-            val taskHistoryList = async { getHistoryViewUseCase(filter) }
+            val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
+            val taskHistoryList = async { getHistoryViewUseCase(filter).getOrThrow() }
 
             viewState.taskMetrics.postValue(taskMetrics.await())
             viewState.taskHistoryList.postValue(taskHistoryList.await())
@@ -299,10 +299,10 @@ class TaskHistoryViewModel(
 
             refreshHistoryItem(position)
             val history = taskHistoryUiModelToTaskHistoryMapper.map(historyView)
-            updateHistoryUseCase(history)
+            updateHistoryUseCase(history).getOrThrow()
 
             val taskMetrics = getTaskMetricsUseCase(filter)
-            viewState.taskMetrics.postValue(taskMetrics)
+            viewState.taskMetrics.postValue(taskMetrics.getOrNull())
 
         } catch (e: Exception) {
             logService.error(e)

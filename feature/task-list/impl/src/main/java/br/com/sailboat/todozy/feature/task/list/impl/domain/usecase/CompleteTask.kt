@@ -21,11 +21,11 @@ class CompleteTask(
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
 
             task.alarm = getNextAlarmUseCase(this)
-            saveTaskUseCase(task)
+            saveTaskUseCase(task).getOrThrow()
 
-        } ?: disableTaskUseCase(task)
+        } ?: disableTaskUseCase(task).getOrThrow()
 
-        addHistoryUseCase(task, status)
+        addHistoryUseCase(task, status).getOrThrow()
     }
 
 }

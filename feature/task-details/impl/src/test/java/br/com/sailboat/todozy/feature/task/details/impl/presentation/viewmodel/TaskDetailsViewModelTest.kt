@@ -12,7 +12,6 @@ import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.G
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.uicomponent.helper.CoroutinesTestRule
 import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.TitleUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 import io.mockk.*
@@ -96,7 +95,7 @@ class TaskDetailsViewModelTest {
             notDoneTasks = 2,
             consecutiveDone = 5,
         )
-        prepareScenario(taskMetrics = taskMetrics)
+        prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
 
@@ -245,7 +244,7 @@ class TaskDetailsViewModelTest {
             consecutiveDone = 5,
         )
         viewModel.viewState.taskId = taskId
-        prepareScenario(taskMetrics = taskMetrics)
+        prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
 
@@ -286,16 +285,18 @@ class TaskDetailsViewModelTest {
                 repeatType = RepeatType.WEEK,
             )
         ),
-        taskMetrics: TaskMetrics = TaskMetrics(
-            doneTasks = 15,
-            notDoneTasks = 2,
-            consecutiveDone = 5,
+        taskMetricsResult: Result<TaskMetrics> = Result.success(
+            TaskMetrics(
+                doneTasks = 15,
+                notDoneTasks = 2,
+                consecutiveDone = 5,
+            )
         )
     ) {
         coEvery { getTaskDetailsViewUseCase(any()) } returns taskDetailsResult
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult
-        coEvery { getTaskMetricsUseCase(any()) } returns taskMetrics
+        coEvery { getTaskMetricsUseCase(any()) } returns taskMetricsResult
     }
 
 }

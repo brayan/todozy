@@ -9,8 +9,8 @@ class AddHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : AddHistoryUseCase {
 
-    override suspend operator fun invoke(task: Task, status: TaskStatus) {
-        taskHistoryRepository.insert(task, status)
+    override suspend operator fun invoke(task: Task, status: TaskStatus): Result<Unit?> {
+        return taskHistoryRepository.insert(task, status)
     }
 
 }

@@ -9,14 +9,15 @@ class GetTaskHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskHistoryUseCase {
 
-    override suspend operator fun invoke(filter: TaskHistoryFilter): List<TaskHistory> =
+    override suspend operator fun invoke(filter: TaskHistoryFilter): Result<List<TaskHistory>> {
         with(taskHistoryRepository) {
             return when (filter.category) {
                 TaskHistoryCategory.TODAY -> getTodayHistory(filter)
                 TaskHistoryCategory.YESTERDAY -> getYesterdayHistory(filter)
                 TaskHistoryCategory.PREVIOUS_DAYS -> getPreviousDaysHistory(filter)
-                else -> emptyList()
+                else -> Result.success(emptyList())
             }
         }
+    }
 
 }
