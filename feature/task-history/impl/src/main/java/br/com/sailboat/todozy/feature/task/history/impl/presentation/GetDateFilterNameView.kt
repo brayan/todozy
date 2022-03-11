@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTask
 class GetDateFilterNameView(private val context: Context) : GetDateFilterNameViewUseCase {
 
     override operator fun invoke(dateRangeType: DateFilterTaskHistorySelectableItem): String {
-        return context.getString(dateRangeType.getName())
+        return context.getString(dateRangeType.getName()).uppercase()
     }
 
 }

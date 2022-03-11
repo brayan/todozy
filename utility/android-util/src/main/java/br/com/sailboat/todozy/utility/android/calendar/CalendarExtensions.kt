@@ -66,3 +66,8 @@ fun Calendar.getMonthAndDayLong(ctx: Context): String {
     val pattern = ctx.getString(R.string.pattern_month_day_long)
     return SimpleDateFormat(pattern).format(time)
 }
+
+fun Calendar.getMonthDayAndYearShort(ctx: Context): String {
+    val pattern = ctx.getString(R.string.pattern_month_day_year_short)
+    return SimpleDateFormat(pattern).format(time)
+}

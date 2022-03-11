@@ -5,4 +5,5 @@
     <string name="yesterday">Ontem</string>
     <string name="pattern_month_day_short">dd \'de\' MMM</string>
     <string name="pattern_month_day_long">dd \'de\' MMMM</string>
+    <string name="pattern_month_day_year_short">dd \'de\' MMM, yyyy</string>
 </resources>

@@ -137,7 +137,7 @@ class TaskListViewModelTest {
             )
             prepareScenario(tasksResult = Result.success(tasks))
 
-            viewModel.dispatchViewAction(TaskListViewAction.OnInputSearchTerm(term = term))
+            viewModel.dispatchViewAction(TaskListViewAction.OnSubmitSearchTerm(term = term))
 
             coVerify(exactly = 1) { getTasksViewUseCase(search = term) }
             assertEquals(tasks, viewModel.viewState.itemsView.value)

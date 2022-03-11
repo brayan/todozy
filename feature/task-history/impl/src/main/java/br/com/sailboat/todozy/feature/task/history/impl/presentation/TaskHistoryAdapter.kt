@@ -1,6 +1,9 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
@@ -11,11 +14,9 @@ import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskHistoryViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskHistoryAdapterDiffUtilCallback()) {
 
-    interface Callback : TaskHistoryViewHolder.Callback {
-        val history: List<UiModel>
-    }
+    interface Callback : TaskHistoryViewHolder.Callback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, callback)
@@ -24,7 +25,7 @@ class TaskHistoryAdapter(private val callback: Callback) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = callback.history[position]
+        val item = getItem(position)
 
         when (item.uiModelId) {
             UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryUiModel)
@@ -32,8 +33,19 @@ class TaskHistoryAdapter(private val callback: Callback) :
         }
     }
 
-    override fun getItemCount() = callback.history.size
+    override fun getItemViewType(position: Int) = getItem(position).uiModelId
 
-    override fun getItemViewType(position: Int) = callback.history[position].uiModelId
+    private class TaskHistoryAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
+        override fun areItemsTheSame(
+            oldItem: UiModel,
+            newItem: UiModel,
+        ) = oldItem.uiModelId == newItem.uiModelId
+
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(
+            oldItem: UiModel,
+            newItem: UiModel,
+        ) = oldItem == newItem
+    }
 
 }

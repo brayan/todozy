@@ -15,7 +15,7 @@
         android:textColor="@color/md_blue_grey_700"
         android:textSize="@dimen/text_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_selectable_item_selected"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Selectable item" />
@@ -30,6 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_check_white_36dp"
-        app:tint="?colorAccent" />
+        app:tint="?colorAccent"
+        tools:tint="@color/md_teal_500" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
+import br.com.sailboat.todozy.utility.android.calendar.getMonthDayAndYearShort
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -75,7 +76,7 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             insertingDate.getMonthAndDayShort(itemView.context)
 
         } else {
-            insertingDate.getFullDateName(itemView.context)
+            insertingDate.getMonthDayAndYearShort(itemView.context)
         }
     }
 

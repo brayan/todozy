@@ -24,7 +24,6 @@ import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
 import br.com.sailboat.todozy.uicomponent.helper.SwipeTaskLeftRight
 import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
-import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -138,8 +137,7 @@ class TaskListFragment : BaseFragment() {
     }
 
     override fun onSubmitSearch(search: String) {
-        viewModel.dispatchViewAction(TaskListViewAction.OnInputSearchTerm(term = search))
-        "onSubmitSearch: $search".logDebug()
+        viewModel.dispatchViewAction(TaskListViewAction.OnSubmitSearchTerm(term = search))
     }
 
     private fun closeNotifications() {

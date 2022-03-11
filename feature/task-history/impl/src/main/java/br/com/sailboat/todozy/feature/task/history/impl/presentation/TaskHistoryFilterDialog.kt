@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import br.com.sailboat.todozy.feature.task.history.impl.databinding.DlgFilterTaskHistoryBinding
+import br.com.sailboat.todozy.feature.task.history.impl.databinding.DialogFilterTaskHistoryBinding
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
 
@@ -15,7 +15,7 @@ class TaskHistoryFilterDialog : DialogFragment() {
     var status: TaskStatusSelectableItem? = null
     var date: DateFilterTaskHistorySelectableItem? = null
     private var callback: Callback? = null
-    private lateinit var binding: DlgFilterTaskHistoryBinding
+    private lateinit var binding: DialogFilterTaskHistoryBinding
 
     interface Callback {
         fun onClickFilterDate()
@@ -23,27 +23,27 @@ class TaskHistoryFilterDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DlgFilterTaskHistoryBinding.inflate(LayoutInflater.from(requireContext()))
+        binding = DialogFilterTaskHistoryBinding.inflate(LayoutInflater.from(requireContext()))
         initViews()
         updateViews()
         return buildDialog()
     }
 
     private fun initViews() = with(binding) {
-        tvDate.setOnClickListener {
+        llDialogFilterTaskHistoryDate.setOnClickListener {
             callback?.onClickFilterDate()
             dialog?.dismiss()
         }
 
-        tvStatus.setOnClickListener {
+        llDialogFilterTaskHistoryStatus.setOnClickListener {
             callback?.onClickFilterStatus()
             dialog?.dismiss()
         }
     }
 
     private fun updateViews() = with(binding) {
-        date?.run { tvDate.setText(getName()) }
-        status?.run { tvStatus.setText(getName()) }
+        date?.run { tvDialogFilterTaskHistoryDate.setText(getName()) }
+        status?.run { tvDialogFilterTaskHistoryStatus.setText(getName()) }
     }
 
     private fun buildDialog() =

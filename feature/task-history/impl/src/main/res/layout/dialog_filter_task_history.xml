@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingBottom="@dimen/spacing_medium"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dlg_filter_task_history__tv__title"
+        android:id="@+id/tv_dialog_filter_task_history_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
@@ -20,21 +19,21 @@
         tools:background="@color/md_blue_500" />
 
     <LinearLayout
-        android:id="@+id/dlg_filter_task_history__ll__date"
+        android:id="@+id/ll_dialog_filter_task_history_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:minHeight="52dp"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/spacing_medium"
-        android:paddingVertical="@dimen/spacing_small">
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:paddingHorizontal="@dimen/spacing_medium">
 
         <TextView
             style="@style/TextViewLabel"
             android:text="@string/label_date" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tv_dialog_filter_task_history_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"
@@ -44,21 +43,21 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/dlg_filter_task_history__ll__status"
+        android:id="@+id/ll_dialog_filter_task_history_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:minHeight="52dp"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/spacing_medium"
-        android:paddingVertical="@dimen/spacing_small">
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:paddingHorizontal="@dimen/spacing_medium">
 
         <TextView
             style="@style/TextViewLabel"
             android:text="@string/label_status" />
 
         <TextView
-            android:id="@+id/tvStatus"
+            android:id="@+id/tv_dialog_filter_task_history_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_500"
@@ -66,6 +65,4 @@
             tools:text="@string/no_filter" />
 
     </LinearLayout>
-
-
 </LinearLayout>

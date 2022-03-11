@@ -5,6 +5,8 @@ import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistory
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.feature.task.history.impl.data.repository.TaskHistoryRepositoryImpl
+import br.com.sailboat.todozy.feature.task.history.impl.data.service.CalendarServiceImpl
+import br.com.sailboat.todozy.feature.task.history.impl.domain.service.CalendarService
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.*
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.*
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
@@ -17,26 +19,27 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private val presentation = module {
-    factory<TaskHistoryContract.Presenter> {
-        TaskHistoryPresenter(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-        )
-    }
-
+    factory<CalendarService> { CalendarServiceImpl(get()) }
     factory<GetHistoryViewUseCase> { GetHistoryView(get(), get()) }
-    factory<GetShortDateViewUseCase> { GetShortDateView(get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     single<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
     single { TaskHistoryToTaskHistoryUiModelMapper() }
     single { TaskHistoryUiModelToTaskHistoryMapper() }
 
-    viewModel { TaskHistoryViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        TaskHistoryViewModel(
+            getTaskMetricsUseCase = get(),
+            getHistoryViewUseCase = get(),
+            getDateFilterNameViewUseCase = get(),
+            updateHistoryUseCase = get(),
+            deleteHistoryUseCase = get(),
+            deleteAllHistoryUseCase = get(),
+            taskHistoryUiModelToTaskHistoryMapper = get(),
+            logService = get(),
+            calendarService = get(),
+        )
+    }
 }
 
 private val domain = module {

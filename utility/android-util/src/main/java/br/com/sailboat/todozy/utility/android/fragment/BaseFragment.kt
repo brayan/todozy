@@ -49,7 +49,7 @@ abstract class BaseFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             private var timer = Timer()
-            private val DELAY: Long = 500
+            private val DELAY: Long = 300
 
             override fun onQueryTextChange(text: String): Boolean {
                 timer.cancel()

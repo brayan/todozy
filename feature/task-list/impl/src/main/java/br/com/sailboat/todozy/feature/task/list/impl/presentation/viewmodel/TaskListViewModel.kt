@@ -35,7 +35,7 @@ class TaskListViewModel(
             is OnClickMenuHistory -> onClickMenuHistory()
             is OnClickNewTask -> onClickNewTask()
             is OnClickTask -> onClickTask(viewAction.taskId)
-            is OnInputSearchTerm -> onInputSearchTerm(viewAction.term)
+            is OnSubmitSearchTerm -> onSubmitSearchTerm(viewAction.term)
             is OnSwipeTask -> onSwipeTask(viewAction.position, viewAction.status)
         }
     }
@@ -71,7 +71,7 @@ class TaskListViewModel(
         viewState.action.value = NavigateToTaskDetails(taskId = taskId)
     }
 
-    private fun onInputSearchTerm(term: String) = viewModelScope.launch {
+    private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
         try {
             filter.text = term
             loadTasks()
