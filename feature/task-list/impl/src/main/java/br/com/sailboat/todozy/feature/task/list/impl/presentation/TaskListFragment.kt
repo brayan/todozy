@@ -60,7 +60,6 @@ class TaskListFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
-        initMenusVisibility(menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -71,9 +70,6 @@ class TaskListFragment : BaseFragment() {
             }
             R.id.menu_fragments_settings -> {
                 viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuSettings)
-            }
-            R.id.menu_fragments_about -> {
-                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuAbout)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -250,19 +246,6 @@ class TaskListFragment : BaseFragment() {
         itemTouchHelper.attachToRecyclerView(binding.recycler)
 
         binding.recycler.hideFabWhenScrolling(binding.fab)
-    }
-
-    private fun initMenusVisibility(menu: Menu) {
-        val settings = menu.findItem(R.id.menu_fragments_settings)
-        val about = menu.findItem(R.id.menu_fragments_about)
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            settings.isVisible = true
-            about.isVisible = false
-        } else {
-            settings.isVisible = false
-            about.isVisible = true
-        }
     }
 
     private fun showProgress() {

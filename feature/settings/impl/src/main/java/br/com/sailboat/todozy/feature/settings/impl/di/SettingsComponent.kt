@@ -5,15 +5,22 @@ import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLoca
 import br.com.sailboat.todozy.feature.settings.impl.data.repository.SettingsRepositoryImpl
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.*
-import br.com.sailboat.todozy.feature.settings.impl.presentation.SettingsContract
-import br.com.sailboat.todozy.feature.settings.impl.presentation.SettingsPresenter
 import br.com.sailboat.todozy.feature.settings.impl.presentation.navigator.SettingsNavigatorImpl
+import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
 import br.com.sailboat.todozy.feature.settings.presentation.navigator.SettingsNavigator
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private val presentation = module {
-    factory<SettingsContract.Presenter> { SettingsPresenter(get(), get(), get(), get()) }
+    viewModel {
+        SettingsViewModel(
+            getAlarmSoundSettingUseCase = get(),
+            setAlarmSoundSettingUseCase = get(),
+            getAlarmVibrateSettingUseCase = get(),
+            setAlarmVibrateSettingUseCase = get(),
+        )
+    }
     single<SettingsNavigator> { SettingsNavigatorImpl() }
 }
 

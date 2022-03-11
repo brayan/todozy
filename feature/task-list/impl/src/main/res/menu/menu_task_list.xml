@@ -19,10 +19,4 @@
         android:title="@string/settings"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_fragments_about"
-        android:title="@string/about"
-        app:showAsAction="never" />
-
-
 </menu>
