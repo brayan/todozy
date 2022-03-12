@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +43,11 @@ class TaskListFragment : BaseFragment() {
     private lateinit var binding: FrgTaskListBinding
     private var progress: ProgressDialog? = null
     private var taskListAdapter: TaskListAdapter? = null
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            viewModel.dispatchViewAction(TaskListViewAction.OnStart)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -151,6 +157,10 @@ class TaskListFragment : BaseFragment() {
         binding.recycler.gone()
     }
 
+    private fun showTasks() {
+        binding.recycler.visible()
+    }
+
     private fun showEmptyView() {
         binding.eptView.root.visible()
     }
@@ -171,19 +181,15 @@ class TaskListFragment : BaseFragment() {
     }
 
     private fun navigateToTaskForm() {
-        taskFormNavigator.navigateToAddTaskForm(this)
+        taskFormNavigator.navigateToAddTask(requireContext(), launcher)
     }
 
     private fun navigateToSettings() {
-        settingsNavigator.navigateToSettings(this)
-    }
-
-    private fun showTasks() {
-        binding.recycler.visible()
+        settingsNavigator.navigateToSettings(requireContext(), launcher)
     }
 
     private fun navigateToTaskDetails(taskId: Long) {
-        taskDetailsNavigator.navigateToTaskDetails(this, taskId)
+        taskDetailsNavigator.navigateToTaskDetails(requireContext(), taskId, launcher)
     }
 
     private fun navigateToHistory() {

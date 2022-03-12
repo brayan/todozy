@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -31,6 +32,11 @@ class TaskDetailsFragment : BaseFragment() {
     private val taskFormNavigator: TaskFormNavigator by inject()
 
     private var taskDetailsAdapter: TaskDetailsAdapter? = null
+
+    private val editTaskLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
+        }
 
     companion object {
         fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
@@ -131,7 +137,7 @@ class TaskDetailsFragment : BaseFragment() {
     }
 
     private fun navigateToTaskForm(action: NavigateToTaskForm) {
-        taskFormNavigator.navigateToEditTaskForm(this, action.taskId)
+        taskFormNavigator.navigateToEditTask(requireContext(), action.taskId, editTaskLauncher)
     }
 
     private fun showErrorLoadingTaskDetails() {

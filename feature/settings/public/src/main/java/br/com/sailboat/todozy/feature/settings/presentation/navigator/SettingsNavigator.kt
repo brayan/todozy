@@ -1,7 +1,9 @@
 package br.com.sailboat.todozy.feature.settings.presentation.navigator
 
-import androidx.fragment.app.Fragment
+import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 
 interface SettingsNavigator {
-    fun navigateToSettings(fragment: Fragment)
+    fun navigateToSettings(context: Context, launcher: ActivityResultLauncher<Intent>)
 }
