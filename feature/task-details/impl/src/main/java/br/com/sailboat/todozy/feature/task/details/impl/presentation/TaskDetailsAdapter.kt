@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
 import br.com.sailboat.todozy.uicomponent.model.*
 import br.com.sailboat.todozy.uicomponent.viewholder.*
 
 class TaskDetailsAdapter :
-    ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskDetailsAdapterDiffUtilCallback()) {
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.TITLE.ordinal -> TitleViewHolder(parent)
@@ -31,18 +32,5 @@ class TaskDetailsAdapter :
     }
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
-
-    private class TaskDetailsAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
-        override fun areItemsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem.uiModelId == newItem.uiModelId
-
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem == newItem
-    }
 
 }

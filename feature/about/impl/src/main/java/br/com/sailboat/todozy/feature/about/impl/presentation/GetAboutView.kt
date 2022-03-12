@@ -6,16 +6,16 @@ import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
 
-class AboutHelper(private val context: Context) {
+class GetAboutView(private val context: Context): GetAboutViewUseCase {
 
-    fun getInfo(): ArrayList<UiModel> {
+    override suspend fun invoke(): Result<List<UiModel>> = runCatching {
         val items = ArrayList<UiModel>()
         items.add(getImageWithTitle())
         items.add(getAppDescription())
         items.add(getVersion())
         items.add(getDevelopedBy())
 
-        return items
+        return@runCatching items
     }
 
     private fun getImageWithTitle(): ImageTitleDividerUiModel {

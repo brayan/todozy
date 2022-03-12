@@ -1,7 +1,9 @@
 package br.com.sailboat.todozy.feature.about.impl.presentation
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
 import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
@@ -10,12 +12,8 @@ import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.ImageTitleDividerViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.LabelValueViewHolder
 
-class AboutAdapter(private val callback: Callback) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    interface Callback {
-        fun getAbout(): List<UiModel>
-    }
+class AboutAdapter :
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
@@ -24,7 +22,7 @@ class AboutAdapter(private val callback: Callback) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = callback.getAbout()[position]
+        val item = getItem(position)
 
         when (item.uiModelId) {
             UiModelType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
@@ -32,8 +30,6 @@ class AboutAdapter(private val callback: Callback) :
         }
     }
 
-    override fun getItemCount() = callback.getAbout().size
-
-    override fun getItemViewType(position: Int) = callback.getAbout()[position].uiModelId
+    override fun getItemViewType(position: Int) = getItem(position).uiModelId
 
 }

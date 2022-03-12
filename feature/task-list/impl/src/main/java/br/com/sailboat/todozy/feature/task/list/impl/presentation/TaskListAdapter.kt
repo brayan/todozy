@@ -1,10 +1,9 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
@@ -14,7 +13,7 @@ import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
 
 class TaskListAdapter(private val callback: Callback) :
-    ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskListAdapterDiffUtilCallback()) {
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     interface Callback : TaskViewHolder.Callback
 
@@ -35,16 +34,4 @@ class TaskListAdapter(private val callback: Callback) :
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
 
-    private class TaskListAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
-        override fun areItemsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem.uiModelId == newItem.uiModelId
-
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem == newItem
-    }
 }

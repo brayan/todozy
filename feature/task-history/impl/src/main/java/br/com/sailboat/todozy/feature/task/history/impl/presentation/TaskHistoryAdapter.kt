@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
 import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
 import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.uicomponent.model.UiModel
@@ -14,7 +15,7 @@ import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
 import br.com.sailboat.todozy.uicomponent.viewholder.TaskHistoryViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) :
-    ListAdapter<UiModel, RecyclerView.ViewHolder>(TaskHistoryAdapterDiffUtilCallback()) {
+    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     interface Callback : TaskHistoryViewHolder.Callback
 
@@ -34,18 +35,5 @@ class TaskHistoryAdapter(private val callback: Callback) :
     }
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
-
-    private class TaskHistoryAdapterDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
-        override fun areItemsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem.uiModelId == newItem.uiModelId
-
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(
-            oldItem: UiModel,
-            newItem: UiModel,
-        ) = oldItem == newItem
-    }
 
 }
