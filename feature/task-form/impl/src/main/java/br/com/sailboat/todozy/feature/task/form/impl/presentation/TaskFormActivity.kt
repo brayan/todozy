@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.uicomponent.helper.*
-import br.com.sailboat.todozy.uicomponent.model.RequestCode
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.utility.kotlin.extension.orZero
