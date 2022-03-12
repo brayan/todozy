@@ -3,6 +3,8 @@
     package="br.com.sailboat.todozy.feature.task.form.impl">
 
     <application>
-        <activity android:name=".presentation.TaskFormActivity" />
+        <activity
+            android:name=".presentation.TaskFormActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
