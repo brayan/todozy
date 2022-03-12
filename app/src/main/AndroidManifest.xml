@@ -38,8 +38,8 @@
 
         <activity
             android:name=".LauncherActivity"
-            android:theme="@style/AppTheme.SplashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />

@@ -1,8 +1,6 @@
 package br.com.sailboat.todozy.feature.task.details.impl.presentation
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback

@@ -22,8 +22,6 @@ import br.com.sailboat.todozy.utility.android.activity.showKeyboard
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
-import br.com.sailboat.todozy.utility.android.view.gone
-import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import org.koin.android.ext.android.inject
 import java.util.*

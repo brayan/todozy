@@ -25,23 +25,24 @@ class GetTaskMetrics(
         }
     }
 
-    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int>  = runCatching {
-        if (filter.taskId == Entity.NO_ID) {
-            return@runCatching 0
-        }
-
-        val history = taskHistoryRepository.getTaskHistory(filter.taskId).getOrThrow()
-
-        var cont = 0
-
-        history.forEach {
-            if (it.status == TaskStatus.NOT_DONE) {
-                return@runCatching cont
+    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> =
+        runCatching {
+            if (filter.taskId == Entity.NO_ID) {
+                return@runCatching 0
             }
-            cont++
-        }
 
-        return@runCatching cont
-    }
+            val history = taskHistoryRepository.getTaskHistory(filter.taskId).getOrThrow()
+
+            var cont = 0
+
+            history.forEach {
+                if (it.status == TaskStatus.NOT_DONE) {
+                    return@runCatching cont
+                }
+                cont++
+            }
+
+            return@runCatching cont
+        }
 
 }

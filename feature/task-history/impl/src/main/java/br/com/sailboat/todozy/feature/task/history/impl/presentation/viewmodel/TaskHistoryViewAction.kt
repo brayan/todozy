@@ -13,8 +13,10 @@ sealed class TaskHistoryViewAction {
     object OnClickConfirmClearAllHistory : TaskHistoryViewAction()
     data class OnSelectDateFromFilter(val date: DateFilterTaskHistorySelectableItem) :
         TaskHistoryViewAction()
+
     data class OnSelectStatusFromFilter(val status: TaskStatusSelectableItem) :
         TaskHistoryViewAction()
+
     data class OnClickDeleteTaskHistoryItem(val position: Int) : TaskHistoryViewAction()
     data class OnClickConfirmDeleteTaskHistory(val position: Int) : TaskHistoryViewAction()
     data class OnClickMarkTaskAsDone(val position: Int) : TaskHistoryViewAction()
@@ -22,5 +24,6 @@ sealed class TaskHistoryViewAction {
     data class OnClickTaskHistory(val position: Int) : TaskHistoryViewAction()
     data class OnSelectDateRange(val initialDate: Calendar, val finalDate: Calendar) :
         TaskHistoryViewAction()
+
     data class OnSubmitSearchTerm(val searchTerm: String) : TaskHistoryViewAction()
 }

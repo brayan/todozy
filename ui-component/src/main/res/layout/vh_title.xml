@@ -9,11 +9,11 @@
         android:id="@+id/vh_title__tv__name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
         android:ellipsize="end"
         android:gravity="center"
-        android:paddingBottom="@dimen/spacing_medium"
-        android:layout_marginHorizontal="@dimen/spacing_medium"
         android:paddingTop="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_medium"
         android:scrollbars="vertical"
         android:textColor="@color/md_blue_grey_500"
         android:textSize="@dimen/text_size_xlarge"
@@ -22,8 +22,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
-        android:layout_marginHorizontal="@dimen/spacing_medium">
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_medium">
 
         <include layout="@layout/diamond_divider" />
 

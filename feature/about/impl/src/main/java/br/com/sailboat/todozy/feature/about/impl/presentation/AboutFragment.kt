@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.feature.about.impl.databinding.FragmentAboutBinding
-import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewAction
+import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewState
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel

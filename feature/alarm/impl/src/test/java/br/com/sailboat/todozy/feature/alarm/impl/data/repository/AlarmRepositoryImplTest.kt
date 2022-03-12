@@ -8,7 +8,9 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.factory.AlarmDataMockFacto
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.*

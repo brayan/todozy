@@ -39,8 +39,8 @@
             android:id="@+id/tvSettingsCurrentTone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/spacing_small"
             android:paddingStart="@dimen/spacing_medium"
+            android:paddingBottom="@dimen/spacing_small"
             android:textColor="@color/md_blue_grey_500"
             android:textSize="@dimen/text_size_xsmall"
             tools:text="Default ringtone (Hello)" />

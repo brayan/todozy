@@ -8,7 +8,10 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.repository.TaskHist
 import br.com.sailboat.todozy.feature.task.history.impl.data.service.CalendarServiceImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.service.CalendarService
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.*
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.*
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameView
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameViewUseCase
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryView
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryViewUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.navigator.TaskHistoryNavigatorImpl

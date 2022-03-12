@@ -12,7 +12,6 @@ import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.D
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 

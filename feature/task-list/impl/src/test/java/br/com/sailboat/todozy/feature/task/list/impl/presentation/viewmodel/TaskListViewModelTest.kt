@@ -202,7 +202,7 @@ class TaskListViewModelTest {
             viewModel.dispatchViewAction(TaskListViewAction.OnSwipeTask(position, status))
 
             coVerify { getAlarmUseCase(taskId = 978L) }
-    }
+        }
 
     @Test
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnSwipeTask on a task with repetitive alarm`() {

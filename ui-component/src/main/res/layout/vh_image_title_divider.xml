@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/white"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/vh_image_title_divider__img"
-            tools:tint="@android:color/black"
-            app:srcCompat="@drawable/ic_diamond_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/ic_diamond_white_24dp"
+            tools:tint="@android:color/black" />
 
         <TextView
             android:id="@+id/vh_image_title_divider__tv__title"
@@ -29,17 +29,17 @@
             android:gravity="center"
             android:padding="@dimen/spacing_medium"
             android:scrollbars="vertical"
-            tools:text="Title"
             android:textColor="@color/md_blue_grey_500"
-            android:textSize="@dimen/text_size_xxxxlarge" />
+            android:textSize="@dimen/text_size_xxxxlarge"
+            tools:text="Title" />
 
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
-        android:layout_marginHorizontal="@dimen/spacing_medium">
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_medium">
 
         <include layout="@layout/diamond_divider" />
 

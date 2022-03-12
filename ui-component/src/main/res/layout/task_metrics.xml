@@ -14,22 +14,22 @@
 
         <LinearLayout
             android:id="@+id/task_metrics__ll__fire"
-            android:paddingEnd="@dimen/spacing_small"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/spacing_small"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:padding="@dimen/spacing_xxsmall"
                 android:background="@drawable/shape_circle"
-                app:tint="@color/md_orange_500"
-                app:srcCompat="@drawable/ic_fire_black_24dp" />
+                android:padding="@dimen/spacing_xxsmall"
+                app:srcCompat="@drawable/ic_fire_black_24dp"
+                app:tint="@color/md_orange_500" />
 
             <TextView
                 android:id="@+id/tvMetricsFire"
@@ -39,27 +39,27 @@
                 android:maxLines="2"
                 android:paddingStart="@dimen/spacing_xsmall"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
                 tools:text="100000000000000000000000000000000000000000000000" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:paddingEnd="@dimen/spacing_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/spacing_small">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@drawable/shape_circle"
                 android:padding="@dimen/spacing_xsmall"
-                app:tint="@color/md_teal_300"
-                app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp" />
+                app:srcCompat="@drawable/ic_vec_thumb_up_white_24dp"
+                app:tint="@color/md_teal_300" />
 
             <TextView
                 android:id="@+id/tvMetricsDone"
@@ -69,8 +69,8 @@
                 android:maxLines="2"
                 android:paddingStart="@dimen/spacing_xsmall"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
                 tools:text="100000000000000000000000000000000000000000000000" />
 
         </LinearLayout>
@@ -78,8 +78,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -97,9 +97,9 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:paddingStart="@dimen/spacing_xsmall"
-                android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
                 tools:text="100000000000000000000000000000000000000000000000" />
 
         </LinearLayout>

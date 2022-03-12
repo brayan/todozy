@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.settings.impl.presentation
 
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

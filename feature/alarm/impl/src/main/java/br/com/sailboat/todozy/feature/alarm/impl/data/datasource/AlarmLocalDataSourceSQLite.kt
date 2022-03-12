@@ -74,7 +74,7 @@ class AlarmLocalDataSourceSQLite(
         insert(statement)
     }
 
-    override fun update(alarmData: AlarmData): Result<Unit?> = runCatching  {
+    override fun update(alarmData: AlarmData): Result<Unit?> = runCatching {
         val sql = StringBuilder()
         sql.append(" UPDATE Alarm SET ")
         sql.append(" repeatType = ?, ")

@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast

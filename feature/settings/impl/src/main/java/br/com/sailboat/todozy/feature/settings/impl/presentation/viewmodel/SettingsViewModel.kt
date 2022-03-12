@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase

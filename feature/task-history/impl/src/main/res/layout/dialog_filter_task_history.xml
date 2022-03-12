@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_medium"
         android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_medium"
-        android:paddingHorizontal="@dimen/spacing_medium">
+        android:paddingBottom="@dimen/spacing_medium">
 
         <TextView
             style="@style/TextViewLabel"
@@ -48,9 +48,9 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_medium"
         android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_medium"
-        android:paddingHorizontal="@dimen/spacing_medium">
+        android:paddingBottom="@dimen/spacing_medium">
 
         <TextView
             style="@style/TextViewLabel"

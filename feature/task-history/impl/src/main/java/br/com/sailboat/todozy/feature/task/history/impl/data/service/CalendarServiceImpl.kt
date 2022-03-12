@@ -7,7 +7,7 @@ import java.util.*
 
 class CalendarServiceImpl(
     private val context: Context
-): CalendarService {
+) : CalendarService {
 
     override fun getShortDate(calendar: Calendar): String {
         return calendar.toShortDateView(context)
