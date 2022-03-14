@@ -2,10 +2,11 @@ package br.com.sailboat.todozy.feature.alarm.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.*
 
-class GetNextAlarm : br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase {
+class GetNextAlarm : GetNextAlarmUseCase {
 
     override operator fun invoke(alarm: Alarm): Alarm {
         if (alarm.repeatType == RepeatType.NOT_REPEAT) {

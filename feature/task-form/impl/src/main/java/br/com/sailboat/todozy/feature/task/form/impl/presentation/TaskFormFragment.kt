@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -7,31 +8,30 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.*
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.*
 import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.TimeSelectorDialog
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.SelectItemDialog
 import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
 import br.com.sailboat.todozy.uicomponent.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.todozy.uicomponent.helper.AnimationHelper
-import br.com.sailboat.todozy.uicomponent.helper.WeekDaysHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId
 import br.com.sailboat.todozy.uicomponent.helper.putTaskId
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
-import br.com.sailboat.todozy.utility.android.activity.setActivityToHideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
-import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
-import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
-import br.com.sailboat.todozy.utility.android.mvp.BaseMVPFragment
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import org.koin.android.ext.android.inject
-import java.util.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class TaskFormFragment : BaseFragment() {
 
-class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskFormContract.View {
+    private val viewModel: TaskFormViewModel by viewModel()
 
-    override val presenter: TaskFormContract.Presenter by inject()
+    private lateinit var binding: FragmentTaskFormBinding
 
     companion object {
         fun newInstance() = TaskFormFragment()
@@ -42,20 +42,27 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
             arguments = bundle
             return this
         }
-
     }
-
-    private lateinit var binding: FragmentTaskFormBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentTaskFormBinding.inflate(inflater, container, false)
-        return binding.root
+    ) = FragmentTaskFormBinding.inflate(inflater, container, false).apply {
+        binding = this
+    }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+
+        val taskId = arguments?.getTaskId() ?: Entity.NO_ID
+        viewModel.dispatchViewAction(OnStart(taskId))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_insert, menu)
+    }
 
     override fun initViews() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarTaskForm)
@@ -66,146 +73,180 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
         initAlarmViews()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_insert, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_save -> presenter.onClickSaveTask()
+            R.id.menu_save -> {
+                val action = OnClickSaveTask(
+                    taskName = binding.etTaskFormName.text.toString(),
+                    taskNotes = binding.etTaskFormNotes.text.toString(),
+                )
+                viewModel.dispatchViewAction(action)
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
-    override fun getTaskId(): Long {
-        return arguments?.getTaskId() ?: Entity.NO_ID
-    }
+    private fun observeViewModel() {
+        observeActions()
+        viewModel.viewState.alarmForm.observe(viewLifecycleOwner) { alarmForm ->
+            binding.alarmDetails.tvAlarmDate.text = alarmForm.date
+            binding.alarmDetails.tvAlarmTime.text = alarmForm.time
+            binding.alarmDetails.tvAlarmRepeat.text = alarmForm.repeatType
 
-    override fun showNewTaskTitle() = binding.toolbarTaskForm.setTitle(R.string.new_task)
+            updateAlarmVisibility(alarmForm.visible, alarmForm.animate)
+        }
 
-    override fun showEditTaskTitle() = binding.toolbarTaskForm.setTitle(R.string.edit_task)
-
-    override fun showAlarmDatePickerDialog(alarm: Calendar) {
-        DateSelectorDialog.show(childFragmentManager, alarm, object : DateSelectorDialog.Callback {
-            override fun onDateSet(year: Int, month: Int, day: Int) {
-                presenter.onAlarmDateSelected(year, month, day)
+        viewModel.viewState.isEditingTask.observe(viewLifecycleOwner) { isEditingTask ->
+            if (isEditingTask) {
+                binding.toolbarTaskForm.setTitle(R.string.edit_task)
+            } else {
+                binding.toolbarTaskForm.setTitle(R.string.new_task)
             }
-        })
+        }
     }
 
-    override fun showAlarmTimePickerDialog(alarm: Calendar) {
-        TimeSelectorDialog.show(childFragmentManager, alarm, object : TimeSelectorDialog.Callback {
-            override fun onTimeSet(hourOfDay: Int, minute: Int) {
-                presenter.onAlarmTimeSelected(hourOfDay, minute)
+    private fun observeActions() {
+        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+            when (action) {
+                is CloseTaskForm -> closeTaskForm(action)
+                is SetFocusOnInputTaskName -> setFocusOnInputTaskName()
+                is SetTaskDetails -> setTaskDetails(action)
+                is ShowErrorSavingTask -> showErrorSavingTask()
+                is HideKeyboard -> hideKeyboard()
+                is ShowErrorAlarmNotValid -> showErrorAlarmNotValid()
+                is ShowErrorTaskNameCantBeEmpty -> showErrorTaskNameCantBeBlank()
+                is NavigateToAlarmDateSelector -> navigateToAlarmDateSelector(action)
+                is NavigateToAlarmTimeSelector -> navigateToAlarmTimeSelector(action)
+                is NavigateToRepeatAlarmSelector -> navigateToRepeatAlarmSelector(action)
+                is NavigateToCustomRepeatAlarmSelector -> navigateToCustomRepeatAlarmSelector(action)
             }
-        })
+        }
     }
 
-    override fun showRepeatAlarmOptions(repeatAlarmItem: RepeatType) {
+    private fun closeTaskForm(action: CloseTaskForm) {
+        val result = if (action.success) {
+            Activity.RESULT_OK
+        } else {
+            Activity.RESULT_CANCELED
+        }
+        activity?.setResult(result)
+        activity?.finish()
+    }
+
+    private fun setFocusOnInputTaskName() {
+        binding.etTaskFormName.requestFocus()
+        activity?.showKeyboard(binding.etTaskFormName)
+    }
+
+    private fun setTaskDetails(action: SetTaskDetails) = with(binding) {
+        etTaskFormNotes.setText(action.taskNotes)
+
+        etTaskFormName.setText(action.taskName)
+        etTaskFormName.setSelection(etTaskFormName.length())
+    }
+
+    private fun showErrorSavingTask() {
+        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideKeyboard() {
+        activity?.hideKeyboard()
+    }
+
+    private fun navigateToAlarmDateSelector(action: NavigateToAlarmDateSelector) {
+        DateSelectorDialog.show(
+            childFragmentManager,
+            action.currentDate,
+            object : DateSelectorDialog.Callback {
+                override fun onDateSet(year: Int, month: Int, day: Int) {
+                    val onSelectAlarmDateAction = OnSelectAlarmDate(
+                        year = year,
+                        month = month,
+                        day = day,
+                    )
+                    viewModel.dispatchViewAction(onSelectAlarmDateAction)
+                }
+            })
+    }
+
+    private fun navigateToAlarmTimeSelector(action: NavigateToAlarmTimeSelector) {
+        TimeSelectorDialog.show(
+            childFragmentManager,
+            action.currentTime,
+            object : TimeSelectorDialog.Callback {
+                override fun onTimeSet(hourOfDay: Int, minute: Int) {
+                    val onSelectAlarmTimeAction = OnSelectAlarmTime(
+                        hourOfDay = hourOfDay,
+                        minute = minute,
+                    )
+                    viewModel.dispatchViewAction(onSelectAlarmTimeAction)
+                }
+            })
+    }
+
+    private fun navigateToRepeatAlarmSelector(action: NavigateToRepeatAlarmSelector) {
         SelectItemDialog.show(childFragmentManager,
             getString(R.string.repeat_alarm),
             RepeatAlarmSelectableItem.getItems(),
-            RepeatAlarmSelectableItem.getFromId(repeatAlarmItem.ordinal),
+            RepeatAlarmSelectableItem.getFromId(action.repeatType.ordinal),
             object : SelectItemDialog.Callback {
                 override fun onClickItem(item: SelectableItem) = onSelectItemRepeatAlarm(item)
             })
     }
 
-    override fun showWeekDaysSelector(days: String?) {
+    private fun navigateToCustomRepeatAlarmSelector(action: NavigateToCustomRepeatAlarmSelector) {
         WeekDaysSelectorDialog.show(
             childFragmentManager,
-            days,
+            action.days,
             object : WeekDaysSelectorDialog.Callback {
                 override fun onClickOk(selectedDays: String) {
                     if (selectedDays.isNotEmpty()) {
-                        presenter.onSelectRepeatAlarmCustom(selectedDays)
+                        viewModel.dispatchViewAction(OnSelectCustomAlarmType(selectedDays))
                     } else {
-                        presenter.onSelectAlarmType(RepeatType.NOT_REPEAT)
+                        viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.NOT_REPEAT))
                     }
                 }
             })
     }
 
-    override fun setName(name: String) = with(binding) {
-        etTaskFormName.setText(name)
-        etTaskFormName.setSelection(etTaskFormName.length())
-    }
-
-    override fun setNotes(notes: String) {
-        binding.etTaskFormNotes.setText(notes)
-    }
-
-    override fun showAlarm() {
+    private fun showAlarm() {
         binding.alarmDetails.llAlarmOptions.visible()
     }
 
-    override fun showAlarmWithAnimation() {
+    private fun showAlarmWithAnimation() {
         AnimationHelper().expand(binding.alarmDetails.llAlarmOptions)
     }
 
-    override fun hideAlarm() {
+    private fun hideAlarm() {
         binding.alarmDetails.llAlarmOptions.gone()
     }
 
-    override fun hideAlarmWithAnimation() {
+    private fun hideAlarmWithAnimation() {
         AnimationHelper().collapse(binding.alarmDetails.llAlarmOptions)
     }
 
-    override fun setAlarmDate(date: Calendar) {
-        activity?.run { binding.alarmDetails.tvAlarmDate.text = date.getFullDateName(this) }
-    }
-
-    override fun setAlarmTime(time: Calendar) {
-        activity?.run {
-            binding.alarmDetails.tvAlarmTime.text = time.formatTimeWithAndroidFormat(this)
-        }
-    }
-
-    override fun setRepeatType(repeatType: RepeatType) {
-        binding.alarmDetails.tvAlarmRepeat.setText(RepeatTypeUiModel.getFromRepeatType(repeatType).description)
-    }
-
-    override fun getName(): String {
-        return binding.etTaskFormName.text.toString()
-    }
-
-    override fun getNotes(): String {
-        return binding.etTaskFormNotes.text.toString()
-    }
-
-    override fun showErrorOnSave() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setScreenToHideKeyboard() {
-        activity?.run { setActivityToHideKeyboard() }
-    }
-
-    override fun setCustomRepeatType(custom: String?) {
-        activity?.run {
-            binding.alarmDetails.tvAlarmRepeat.text = WeekDaysHelper().getCustomRepeat(this, custom)
-        }
-    }
-
-    override fun setFocusOnInputTaskName() {
-        binding.etTaskFormName.requestFocus()
-        activity?.showKeyboard(binding.etTaskFormName)
-    }
-
-    override fun showErrorTaskNameCantBeBlank() {
+    private fun showErrorTaskNameCantBeBlank() {
         binding.etTaskFormName.error = getString(R.string.exception_task_name)
     }
 
-    override fun showErrorAlarmNotValid() {
-        Toast.makeText(activity, "Alarm not valid", Toast.LENGTH_SHORT).show()
+    private fun showErrorAlarmNotValid() {
+        Toast.makeText(activity, getString(R.string.alarm_not_valid), Toast.LENGTH_SHORT).show()
     }
 
     private fun initAlarmViews() = with(binding) {
-        rlTaskFormAddAlarm.setOnClickListener { presenter.onClickAddAlarm() }
-        alarmDetails.tvAlarmDate.setOnClickListener { presenter.onClickAlarmDate() }
-        alarmDetails.tvAlarmTime.setOnClickListener { presenter.onClickAlarmTime() }
-        alarmDetails.tvAlarmRepeat.setOnClickListener { presenter.onClickRepeatAlarm() }
+        rlTaskFormAddAlarm.setOnClickListener {
+            viewModel.dispatchViewAction(OnClickAddAlarm)
+        }
+        alarmDetails.tvAlarmDate.setOnClickListener {
+            viewModel.dispatchViewAction(OnClickAlarmDate)
+        }
+        alarmDetails.tvAlarmTime.setOnClickListener {
+            viewModel.dispatchViewAction(OnClickAlarmTime)
+        }
+        alarmDetails.tvAlarmRepeat.setOnClickListener {
+            viewModel.dispatchViewAction(OnClickRepeatAlarm)
+        }
     }
 
     private fun initEditTexts() {
@@ -218,14 +259,34 @@ class TaskFormFragment : BaseMVPFragment<TaskFormContract.Presenter>(), TaskForm
         })
     }
 
-    private fun onSelectItemRepeatAlarm(item: SelectableItem) = with(presenter) {
+    private fun onSelectItemRepeatAlarm(item: SelectableItem) {
         when (item as RepeatAlarmSelectableItem) {
-            RepeatAlarmSelectableItem.NOT_REPEAT -> onSelectAlarmType(RepeatType.NOT_REPEAT)
-            RepeatAlarmSelectableItem.DAY -> onSelectAlarmType(RepeatType.DAY)
-            RepeatAlarmSelectableItem.WEEK -> onSelectAlarmType(RepeatType.WEEK)
-            RepeatAlarmSelectableItem.MONTH -> onSelectAlarmType(RepeatType.MONTH)
-            RepeatAlarmSelectableItem.YEAR -> onSelectAlarmType(RepeatType.YEAR)
-            RepeatAlarmSelectableItem.CUSTOM -> onClickItemCustomRepeatAlarm()
+            RepeatAlarmSelectableItem.NOT_REPEAT -> {
+                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.NOT_REPEAT))
+            }
+            RepeatAlarmSelectableItem.DAY -> {
+                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.DAY))
+            }
+            RepeatAlarmSelectableItem.WEEK -> {
+                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.WEEK))
+            }
+            RepeatAlarmSelectableItem.MONTH -> {
+                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.MONTH))
+            }
+            RepeatAlarmSelectableItem.YEAR -> {
+                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.YEAR))
+            }
+            RepeatAlarmSelectableItem.CUSTOM -> {
+                viewModel.dispatchViewAction(OnClickCustomRepeatAlarm)
+            }
+        }
+    }
+
+    private fun updateAlarmVisibility(visible: Boolean, animate: Boolean) {
+        if (visible) {
+            if (animate) showAlarmWithAnimation() else showAlarm()
+        } else {
+            if (animate) hideAlarmWithAnimation() else hideAlarm()
         }
     }
 

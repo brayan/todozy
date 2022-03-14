@@ -117,10 +117,6 @@ class TaskListFragment : BaseFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
-    }
-
     private fun observeActions() {
         viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
             when (action) {

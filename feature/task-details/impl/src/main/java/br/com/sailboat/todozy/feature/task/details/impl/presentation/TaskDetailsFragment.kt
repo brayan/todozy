@@ -69,10 +69,6 @@ class TaskDetailsFragment : BaseFragment() {
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
-    }
-
     override fun initViews() {
         binding.toolbar.setTitle(R.string.task_details)
         binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
