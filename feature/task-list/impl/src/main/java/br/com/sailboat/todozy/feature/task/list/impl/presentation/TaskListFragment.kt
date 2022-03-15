@@ -59,7 +59,6 @@ class TaskListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -78,6 +77,11 @@ class TaskListFragment : BaseFragment() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
     }
 
     override fun initViews() {
