@@ -18,6 +18,8 @@ import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 
+private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
+
 class TaskListViewModel(
     override val viewState: TaskListViewState = TaskListViewState(),
     private val getTasksViewUseCase: GetTasksViewUseCase,
@@ -116,7 +118,7 @@ class TaskListViewModel(
                 }
             }
 
-            delay(4000)
+            delay(TASK_SWIPE_DELAY_IN_MILLIS)
 
             if (swipeTaskAsyncJobs.size == 1) {
                 loadTasks()
