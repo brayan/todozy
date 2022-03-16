@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation(project(Module.domain))
+    implementation(project(Module.taskHistoryPublic))
 
     implementation(AndroidX.ktx)
     implementation(AndroidX.appcompat)

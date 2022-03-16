@@ -10,7 +10,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-// TODO: Add unit tests
 class GetTasksView(
     private val getTasksUseCase: GetTasksUseCase,
     private val taskToTaskUiModelMapper: TaskToTaskUiModelMapper,

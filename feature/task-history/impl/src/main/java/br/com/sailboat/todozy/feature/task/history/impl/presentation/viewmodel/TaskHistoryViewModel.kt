@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase

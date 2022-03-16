@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase

@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.uicomponent.model.*
 
-// TODO: Add unit tests
 class GetTaskDetailsView(
     private val context: Context,
     private val getTaskUseCase: GetTaskUseCase,

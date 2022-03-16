@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation(project(Module.kotlinUtil))
     implementation(project(Module.domain))
 
     implementation(AndroidX.ktx)

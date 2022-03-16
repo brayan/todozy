@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.data.repository
 
-import br.com.sailboat.todozy.domain.model.TaskHistory
-import br.com.sailboat.todozy.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory.makeTask
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSource
