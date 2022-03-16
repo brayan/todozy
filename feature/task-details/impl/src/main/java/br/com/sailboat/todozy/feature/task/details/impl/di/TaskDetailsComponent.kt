@@ -28,7 +28,7 @@ private val presentation = module {
     }
 
     factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }
-    single<TaskDetailsNavigator> { TaskDetailsNavigatorImpl() }
+    factory<TaskDetailsNavigator> { TaskDetailsNavigatorImpl() }
 }
 
 private val domain = module {

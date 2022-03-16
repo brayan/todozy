@@ -17,8 +17,7 @@ private val presentation = module {
         )
     }
     factory<GetAboutViewUseCase> { GetAboutView(get()) }
-
-    single<AboutNavigator> { AboutNavigatorImpl() }
+    factory<AboutNavigator> { AboutNavigatorImpl() }
 }
 
 val aboutComponent: List<Module> = listOf(presentation)

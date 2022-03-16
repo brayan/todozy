@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.feature.task.history.impl.data.datasource
 
 import android.database.Cursor
-import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryData
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService

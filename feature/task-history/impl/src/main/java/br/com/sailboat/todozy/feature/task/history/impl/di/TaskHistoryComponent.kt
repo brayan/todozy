@@ -26,9 +26,9 @@ private val presentation = module {
     factory<GetHistoryViewUseCase> { GetHistoryView(get(), get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
-    single<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
-    single { TaskHistoryToTaskHistoryUiModelMapper() }
-    single { TaskHistoryUiModelToTaskHistoryMapper() }
+    factory<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
+    factory { TaskHistoryToTaskHistoryUiModelMapper() }
+    factory { TaskHistoryUiModelToTaskHistoryMapper() }
 
     viewModel {
         TaskHistoryViewModel(
@@ -54,8 +54,8 @@ private val domain = module {
 }
 
 private val data = module {
-    single<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
-    single<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
+    factory<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
+    factory<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
 }
 
 val taskHistoryComponent: List<Module> = listOf(presentation, domain, data)

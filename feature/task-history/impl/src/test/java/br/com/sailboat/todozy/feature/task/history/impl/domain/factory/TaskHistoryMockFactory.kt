@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.domain.factory
 
-import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
 
 object TaskHistoryMockFactory {
 

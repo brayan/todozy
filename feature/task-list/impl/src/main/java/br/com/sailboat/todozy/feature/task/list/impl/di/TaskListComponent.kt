@@ -22,7 +22,7 @@ private val presentation = module {
     factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
     factory<TaskListNavigator> { TaskListNavigatorImpl() }
 
-    single { TaskToTaskUiModelMapper() }
+    factory { TaskToTaskUiModelMapper() }
 
     viewModel {
         TaskListViewModel(
@@ -42,8 +42,8 @@ private val domain = module {
 }
 
 private val data = module {
-    single<TaskRepository> { TaskRepositoryImpl(get(), get()) }
-    single<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
+    factory<TaskRepository> { TaskRepositoryImpl(get(), get()) }
+    factory<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
 }
 
 val taskListComponent: List<Module> = listOf(presentation, domain, data)

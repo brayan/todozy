@@ -9,8 +9,8 @@ import org.koin.dsl.module
 
 private val dataModule = module {
     single<DatabaseOpenHelperService> { DatabaseOpenHelper(get(), get()) }
-    single<DatabaseService> { DatabaseServiceImpl() }
-    single<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
+    factory<DatabaseService> { DatabaseServiceImpl() }
+    factory<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
 }
 
 private val platformModule = module {

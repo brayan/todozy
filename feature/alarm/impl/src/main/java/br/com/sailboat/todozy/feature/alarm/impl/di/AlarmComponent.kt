@@ -14,7 +14,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private val presentation = module {
-    single<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get()) }
+    factory<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get()) }
 }
 
 private val domain = module {
@@ -29,10 +29,10 @@ private val domain = module {
 }
 
 private val data = module {
-    single<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
-    single<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
-    single { AlarmDataToAlarmMapper() }
-    single { AlarmToAlarmDataMapper() }
+    factory<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
+    factory<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
+    factory { AlarmDataToAlarmMapper() }
+    factory { AlarmToAlarmDataMapper() }
 }
 
 val alarmComponent: List<Module> = listOf(presentation, domain, data)

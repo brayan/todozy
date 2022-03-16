@@ -21,7 +21,7 @@ private val presentation = module {
             setAlarmVibrateSettingUseCase = get(),
         )
     }
-    single<SettingsNavigator> { SettingsNavigatorImpl() }
+    factory<SettingsNavigator> { SettingsNavigatorImpl() }
 }
 
 private val domain = module {
@@ -33,8 +33,8 @@ private val domain = module {
 }
 
 private val data = module {
-    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
-    single<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
+    factory<SettingsRepository> { SettingsRepositoryImpl(get()) }
+    factory<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
 }
 
 val settingsComponent: List<Module> = listOf(presentation, domain, data)

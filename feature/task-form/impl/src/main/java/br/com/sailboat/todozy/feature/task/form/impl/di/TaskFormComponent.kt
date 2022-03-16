@@ -24,8 +24,8 @@ private val presentation = module {
             alarmService = get(),
         )
     }
-    single<TaskFormNavigator> { TaskFormNavigatorImpl() }
-    single<AlarmService> { AlarmServiceImpl(get()) }
+    factory<TaskFormNavigator> { TaskFormNavigatorImpl() }
+    factory<AlarmService> { AlarmServiceImpl(get()) }
 }
 
 private val domain = module {
