@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
@@ -70,13 +71,17 @@ class TaskDetailsViewModel(
 
             viewState.taskDetails.postValue(taskDetails.await().getOrThrow())
 
-            alarm.await().getOrNull()?.run {
+            val taskMetrics: TaskMetrics? = alarm.await().getOrNull()?.run {
                 if (RepeatType.isAlarmRepeating(this)) {
                     val filter = TaskHistoryFilter(taskId = viewState.taskId)
                     val taskMetrics = getTaskMetricsUseCase(filter)
-                    viewState.taskMetrics.postValue(taskMetrics.getOrNull())
+                    return@run taskMetrics.getOrNull()
+                } else {
+                    return@run null
                 }
             }
+
+            viewState.taskMetrics.postValue(taskMetrics)
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = ShowErrorLoadingTaskDetails
