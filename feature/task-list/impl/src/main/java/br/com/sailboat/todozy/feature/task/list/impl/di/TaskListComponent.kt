@@ -22,7 +22,7 @@ private val presentation = module {
     factory<GetTasksViewUseCase> { GetTasksView(get(), get()) }
     factory<TaskListNavigator> { TaskListNavigatorImpl() }
 
-    factory { TaskToTaskUiModelMapper() }
+    factory { TaskToTaskUiModelMapper(get()) }
 
     viewModel {
         TaskListViewModel(

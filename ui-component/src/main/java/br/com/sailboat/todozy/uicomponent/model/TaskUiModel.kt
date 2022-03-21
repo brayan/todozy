@@ -3,8 +3,9 @@ package br.com.sailboat.todozy.uicomponent.model
 import java.util.*
 
 data class TaskUiModel(
-    var taskId: Long,
-    var taskName: String,
-    var alarm: Calendar? = null,
+    val taskId: Long,
+    val taskName: String,
+    val alarm: Calendar? = null,
+    val alarmColor: Int,
     override val uiModelId: Int = UiModelType.TASK.ordinal,
 ) : UiModel

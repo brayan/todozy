@@ -3,7 +3,6 @@ package br.com.sailboat.todozy.uicomponent.viewholder
 import android.util.Log
 import android.view.ViewGroup
 import br.com.sailboat.todozy.uicomponent.databinding.VhTaskBinding
-import br.com.sailboat.todozy.uicomponent.model.AlarmColor
 import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
@@ -27,16 +26,16 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
 
     override fun bind(item: TaskUiModel) = with(binding) {
         task.tvTaskName.text = item.taskName
-        bindTaskAlarm(item.alarm)
+        bindTaskAlarm(item)
         root.setOnClickListener { callback.onClickTask(item.taskId) }
     }
 
-    private fun bindTaskAlarm(alarm: Calendar?) {
+    private fun bindTaskAlarm(item: TaskUiModel) {
         try {
-            updateVisibilityOfAlarmViews(alarm)
-            alarm?.run {
+            updateVisibilityOfAlarmViews(item.alarm)
+            item.alarm?.run {
                 updateAlarmText(this)
-                updateAlarmColor(this)
+                updateAlarmColor(item.alarmColor)
             }
         } catch (e: Exception) {
             Log.e("TASK_VIEW_HOLDER", "Error binding alarm", e)
@@ -58,9 +57,9 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         }
     }
 
-    private fun updateAlarmColor(alarm: Calendar) = with(binding) {
-        task.tvTaskDate.setTextColor(AlarmColor().getAlarmColor(context, alarm))
-        task.tvTaskTime.setTextColor(AlarmColor().getAlarmColor(context, alarm))
+    private fun updateAlarmColor(alarmColor: Int) = with(binding) {
+        task.tvTaskDate.setTextColor(alarmColor)
+        task.tvTaskTime.setTextColor(alarmColor)
     }
 
     private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(binding) {
