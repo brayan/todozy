@@ -6,6 +6,6 @@ data class TaskUiModel(
     val taskId: Long,
     val taskName: String,
     val alarm: Calendar? = null,
-    val alarmColor: Int,
+    val alarmColor: Int? = null,
     override val uiModelId: Int = UiModelType.TASK.ordinal,
 ) : UiModel

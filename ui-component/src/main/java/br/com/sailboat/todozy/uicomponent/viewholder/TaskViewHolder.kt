@@ -57,9 +57,11 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         }
     }
 
-    private fun updateAlarmColor(alarmColor: Int) = with(binding) {
-        task.tvTaskDate.setTextColor(alarmColor)
-        task.tvTaskTime.setTextColor(alarmColor)
+    private fun updateAlarmColor(alarmColor: Int?) = with(binding) {
+        alarmColor?.let {
+            task.tvTaskDate.setTextColor(alarmColor)
+            task.tvTaskTime.setTextColor(alarmColor)
+        }
     }
 
     private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(binding) {
