@@ -19,9 +19,6 @@ class SettingsRepositoryImpl(
         localDataSource.setFirstTimeLaunchingApp(firstTime)
 
     override suspend fun isFirstTimeLaunchingApp() = localDataSource.isFirstTimeLaunchingApp()
-    override suspend fun setDefaultAlarmTone() {
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        setAlarmTone(uri)
-    }
+    override suspend fun setDefaultAlarmTone() = localDataSource.setDefaultAlarmTone()
 
 }

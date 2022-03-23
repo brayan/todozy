@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.feature.settings.impl.data.datasource
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.RingtoneManager
 import android.net.Uri
 
 class SettingsLocalDataSourceImpl(context: Context) : SettingsLocalDataSource {
@@ -33,6 +34,11 @@ class SettingsLocalDataSourceImpl(context: Context) : SettingsLocalDataSource {
 
     override fun isFirstTimeLaunchingApp(): Boolean {
         return sharedPreferences.getBoolean(FIRST_TIME_LAUNCHING_APP, true)
+    }
+
+    override fun setDefaultAlarmTone() {
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        setAlarmTone(uri)
     }
 
     private fun getEditor(): SharedPreferences.Editor {

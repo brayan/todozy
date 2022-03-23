@@ -9,4 +9,5 @@ interface SettingsLocalDataSource {
     fun setAlarmVibrate(vibrate: Boolean)
     fun setFirstTimeLaunchingApp(firstTimeLaunching: Boolean)
     fun isFirstTimeLaunchingApp(): Boolean
+    fun setDefaultAlarmTone()
 }
