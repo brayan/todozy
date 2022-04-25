@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.feature.settings.impl.data.repository
 
-import android.media.RingtoneManager
 import android.net.Uri
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSource
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
