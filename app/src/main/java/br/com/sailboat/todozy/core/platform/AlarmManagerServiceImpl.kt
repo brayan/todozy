@@ -20,8 +20,10 @@ class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerServic
         intent.putExtra(AlarmReceiver.EXTRA_TASK_ID, taskId)
 
         val pending = PendingIntent.getBroadcast(
-            context, taskId.toInt(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            context,
+            taskId.toInt(),
+            intent,
+            getPendingIntentFlags()
         )
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -45,7 +47,7 @@ class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerServic
         val intent = Intent(context, ScheduleAlarmsReceiver::class.java)
         val alarmIntent = PendingIntent.getBroadcast(
             context, 999999999, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+           getPendingIntentFlags()
         )
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
@@ -59,11 +61,18 @@ class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerServic
 
         val alarmIntent = PendingIntent.getBroadcast(
             context, taskId.toInt(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            getPendingIntentFlags()
         )
         alarmIntent.cancel()
 
         alarmManager.cancel(alarmIntent)
     }
 
+    override fun getPendingIntentFlags(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+    }
 }

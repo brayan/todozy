@@ -15,6 +15,7 @@ import br.com.sailboat.todozy.LauncherActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
@@ -35,6 +36,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     val getTasksUseCase: GetTasksUseCase by inject()
     val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
     val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
+    val alarmManagerService: AlarmManagerService by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         "${javaClass.simpleName}.onReceive()".logDebug()
@@ -62,8 +64,12 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         intent: Intent
     ): NotificationCompat.Builder {
         val resultIntent = Intent(context, LauncherActivity::class.java)
-        val resultPendingIntent =
-            PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val resultPendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            resultIntent,
+            alarmManagerService.getPendingIntentFlags()
+        )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
             .setSmallIcon(R.drawable.ic_vec_notification_icon)
