@@ -252,6 +252,26 @@ class TaskRepositoryImplTest {
             }
         }
 
+    @Test
+    fun `should call update from taskLocalDataSource with enabled false when disableTask is called from taskRepository`() =
+        runBlocking {
+            val task = TaskMockFactory.makeTask()
+            prepareScenario()
+
+            taskRepository.disableTask(task)
+
+            coVerify {
+                taskLocalDataSource.update(
+                    taskData = TaskData(
+                        id = task.id,
+                        name = task.name,
+                        notes = task.notes,
+                    ),
+                    enabled = false,
+                )
+            }
+        }
+
     private fun prepareScenario(
         taskDataResult: Result<TaskData> = Result.success(TaskDataMockFactory.makeTaskData()),
         taskDataListResult: Result<List<TaskData>> = Result.success(
