@@ -108,10 +108,11 @@ object MockK {
 
 object Koin {
     object Version {
-        const val android = "3.0.2"
+        const val koin = "3.0.2"
     }
 
-    const val android = "io.insert-koin:koin-android:${Version.android}"
+    const val android = "io.insert-koin:koin-android:${Version.koin}"
+    const val test = "io.insert-koin:koin-test:${Version.koin}"
 }
 
 object Junit {

@@ -98,4 +98,11 @@ dependencies {
     implementation(Firebase.crashlytics)
     implementation(Firebase.analytics)
     implementation(Timber.timber)
+
+    testImplementation(Junit.junit)
+    testImplementation(MockK.core)
+    testImplementation(Kotlin.test)
+    testImplementation(Coroutines.test)
+    testImplementation(Lifecycle.test)
+    testImplementation(Koin.test)
 }
