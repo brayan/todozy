@@ -51,6 +51,17 @@ class TaskListViewModelTest {
     )
 
     @Test
+    fun `should send CloseNotifications when dispatchViewAction is called with OnStart`() {
+        runBlocking {
+            prepareScenario()
+
+            viewModel.dispatchViewAction(TaskListViewAction.OnStart)
+
+            assertEquals(TaskListViewState.Action.CloseNotifications, viewModel.viewState.action.value)
+        }
+    }
+
+    @Test
     fun `should call getTasksViewUseCase when dispatchViewAction is called with OnStart`() {
         runBlocking {
             val tasks = mutableListOf<UiModel>(
