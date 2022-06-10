@@ -6,4 +6,5 @@
     <string name="pattern_month_day_short">MMM dd</string>
     <string name="pattern_month_day_long">MMMM dd</string>
     <string name="pattern_month_day_year_short">MMM dd, yyyy</string>
+    <string name="search">Search</string>
 </resources>
