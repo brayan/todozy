@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.about.presentation.navigator.AboutNavigator
-import br.com.sailboat.todozy.feature.settings.presentation.navigator.SettingsNavigator
-import br.com.sailboat.todozy.feature.task.details.presentation.navigator.TaskDetailsNavigator
-import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
-import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
+import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
+import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
 import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction

@@ -16,7 +16,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.Task
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.navigator.TaskHistoryNavigatorImpl
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
-import br.com.sailboat.todozy.feature.task.history.presentation.navigator.TaskHistoryNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

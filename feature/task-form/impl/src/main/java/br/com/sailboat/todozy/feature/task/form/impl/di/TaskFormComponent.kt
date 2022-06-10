@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFie
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.SaveTask
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.navigator.TaskFormNavigatorImpl
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
-import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

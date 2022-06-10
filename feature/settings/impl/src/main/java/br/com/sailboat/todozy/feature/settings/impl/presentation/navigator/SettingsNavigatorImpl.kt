@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import br.com.sailboat.todozy.feature.settings.impl.presentation.startSettingsActivity
-import br.com.sailboat.todozy.feature.settings.presentation.navigator.SettingsNavigator
+import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
 
 class SettingsNavigatorImpl : SettingsNavigator {
 

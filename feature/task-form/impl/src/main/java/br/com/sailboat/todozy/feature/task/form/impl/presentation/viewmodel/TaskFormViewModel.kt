@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskFieldsConditions
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.domain.service.AlarmService
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFieldsUseCase

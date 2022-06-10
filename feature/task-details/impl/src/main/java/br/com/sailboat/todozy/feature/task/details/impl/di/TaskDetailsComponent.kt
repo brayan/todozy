@@ -7,10 +7,10 @@ import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDeta
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.navigator.TaskDetailsNavigatorImpl
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.DisableTaskUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.navigator.TaskDetailsNavigator
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

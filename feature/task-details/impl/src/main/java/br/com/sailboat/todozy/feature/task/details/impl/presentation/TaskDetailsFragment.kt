@@ -13,7 +13,7 @@ import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetai
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
-import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
 import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
 import br.com.sailboat.todozy.uicomponent.helper.getTaskId

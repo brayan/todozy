@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.startTaskFormActivity
-import br.com.sailboat.todozy.feature.task.form.presentation.navigator.TaskFormNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 
 class TaskFormNavigatorImpl : TaskFormNavigator {
 

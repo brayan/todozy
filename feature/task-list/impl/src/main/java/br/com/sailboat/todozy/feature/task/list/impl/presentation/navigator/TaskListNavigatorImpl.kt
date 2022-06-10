@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.navigator
 
 import android.content.Context
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.startTaskListActivity
-import br.com.sailboat.todozy.feature.task.list.presentation.navigator.TaskListNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskListNavigator
 
 class TaskListNavigatorImpl : TaskListNavigator {
 

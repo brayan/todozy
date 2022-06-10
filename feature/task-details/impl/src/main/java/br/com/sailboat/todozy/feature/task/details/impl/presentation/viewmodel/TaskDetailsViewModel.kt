@@ -8,9 +8,9 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.*
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.DisableTaskUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskMetricsUseCase
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.async

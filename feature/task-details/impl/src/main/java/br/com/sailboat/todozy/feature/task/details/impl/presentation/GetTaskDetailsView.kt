@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
 import br.com.sailboat.todozy.feature.task.details.impl.R
-import br.com.sailboat.todozy.feature.task.details.presentation.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.uicomponent.model.*
 
 class GetTaskDetailsView(

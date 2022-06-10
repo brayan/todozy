@@ -13,7 +13,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUs
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.TaskToTaskUiModelMapper
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.navigator.TaskListNavigatorImpl
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.feature.task.list.presentation.navigator.TaskListNavigator
+import br.com.sailboat.todozy.feature.navigation.android.TaskListNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

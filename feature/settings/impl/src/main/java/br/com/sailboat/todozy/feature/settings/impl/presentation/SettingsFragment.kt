@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import br.com.sailboat.todozy.feature.about.presentation.navigator.AboutNavigator
+import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.impl.R
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction

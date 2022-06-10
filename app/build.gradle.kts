@@ -69,6 +69,7 @@ dependencies {
     implementation(project(Module.androidUtil))
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
+    implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.aboutPublic))
     implementation(project(Module.aboutImpl))
     implementation(project(Module.settingsPublic))

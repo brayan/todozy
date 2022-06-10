@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRe
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.*
 import br.com.sailboat.todozy.feature.settings.impl.presentation.navigator.SettingsNavigatorImpl
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
-import br.com.sailboat.todozy.feature.settings.presentation.navigator.SettingsNavigator
+import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
