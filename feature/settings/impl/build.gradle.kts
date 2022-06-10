@@ -40,7 +40,6 @@ dependencies {
     implementation(project(Module.uiComponent))
     implementation(project(Module.domain))
     implementation(project(Module.navigationPublicAndroid))
-    implementation(project(Module.settingsPublic))
     implementation(project(Module.alarmPublic))
 
     implementation(Kotlin.stdlib)

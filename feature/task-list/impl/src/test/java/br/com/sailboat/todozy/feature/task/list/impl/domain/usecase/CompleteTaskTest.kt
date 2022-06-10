@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.AddHistoryUseCase
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
@@ -23,7 +23,7 @@ class CompleteTaskTest {
     private val getNextAlarmUseCase: GetNextAlarmUseCase = mockk(relaxed = true)
     private val saveTaskUseCase: SaveTaskUseCase = mockk(relaxed = true)
     private val disableTaskUseCase: DisableTaskUseCase = mockk(relaxed = true)
-    private val addHistoryUseCase: AddHistoryUseCase = mockk(relaxed = true)
+    private val addHistoryUseCase: br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase = mockk(relaxed = true)
 
     private val completeTask = CompleteTask(
         getTaskUseCase = getTaskUseCase,

@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.feature.task.history.impl.di
 
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSourceSQLite
@@ -17,6 +16,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.Task
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.navigator.TaskHistoryNavigatorImpl
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
 import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

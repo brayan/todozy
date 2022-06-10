@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.alarm.domain.usecase
+package br.com.sailboat.todozy.feature.task.history.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus

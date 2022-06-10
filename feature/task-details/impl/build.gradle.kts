@@ -42,7 +42,6 @@ dependencies {
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.alarmPublic))
     implementation(project(Module.taskHistoryPublic))
-    implementation(project(Module.taskFormPublic))
     implementation(project(Module.taskDetailsPublic))
 
     implementation(Kotlin.stdlib)

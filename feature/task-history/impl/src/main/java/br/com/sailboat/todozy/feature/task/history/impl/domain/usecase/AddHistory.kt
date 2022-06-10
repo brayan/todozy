@@ -2,8 +2,8 @@ package br.com.sailboat.todozy.feature.task.history.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.AddHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 
 class AddHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
