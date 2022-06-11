@@ -14,10 +14,10 @@ import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
-import br.com.sailboat.todozy.uicomponent.dialog.TwoOptionsDialog
-import br.com.sailboat.todozy.uicomponent.helper.DialogHelper
-import br.com.sailboat.todozy.uicomponent.helper.getTaskId
-import br.com.sailboat.todozy.uicomponent.helper.putTaskId
+import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
+import br.com.sailboat.uicomponent.impl.helper.DialogHelper
+import br.com.sailboat.uicomponent.impl.helper.getTaskId
+import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible

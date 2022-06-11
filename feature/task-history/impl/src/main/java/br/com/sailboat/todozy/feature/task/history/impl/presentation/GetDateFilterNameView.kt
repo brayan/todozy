@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation
 
 import android.content.Context
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 
 class GetDateFilterNameView(private val context: Context) : GetDateFilterNameViewUseCase {
 

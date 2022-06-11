@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.model.AlarmForm
-import br.com.sailboat.todozy.uicomponent.helper.Event
+import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.*
 

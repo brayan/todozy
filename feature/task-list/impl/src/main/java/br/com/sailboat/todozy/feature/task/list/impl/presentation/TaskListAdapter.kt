@@ -3,14 +3,14 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
-import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModelType
-import br.com.sailboat.todozy.uicomponent.viewholder.EmptyViewHolder
-import br.com.sailboat.todozy.uicomponent.viewholder.SubheadViewHolder
-import br.com.sailboat.todozy.uicomponent.viewholder.TaskViewHolder
+import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
+import br.com.sailboat.uicomponent.model.SubheadUiModel
+import br.com.sailboat.uicomponent.model.TaskUiModel
+import br.com.sailboat.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.UiModelType
+import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.SubheadViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.TaskViewHolder
 
 class TaskListAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {

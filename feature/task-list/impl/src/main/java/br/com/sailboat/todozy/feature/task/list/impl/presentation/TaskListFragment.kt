@@ -19,8 +19,8 @@ import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBind
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
-import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
-import br.com.sailboat.todozy.uicomponent.helper.SwipeTaskLeftRight
+import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
+import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone

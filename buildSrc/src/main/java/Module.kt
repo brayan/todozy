@@ -1,7 +1,8 @@
 object Module {
     const val kotlinUtil = ":utility:kotlin-util"
     const val androidUtil = ":utility:android-util"
-    const val uiComponent = ":ui-component"
+    const val uiComponentPublic = ":ui-component:public"
+    const val uiComponentImpl = ":ui-component:impl"
     const val domain = ":domain"
     const val aboutImpl = ":feature:about:impl"
     const val settings = ":feature:settings"

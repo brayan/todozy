@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.SelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import java.util.*
 
 enum class RepeatAlarmSelectableItem : SelectableItem {

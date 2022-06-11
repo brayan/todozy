@@ -4,8 +4,8 @@ import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.R
-import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.SubheadUiModel
+import br.com.sailboat.uicomponent.model.UiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

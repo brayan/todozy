@@ -12,9 +12,9 @@ import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetrics
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
-import br.com.sailboat.todozy.uicomponent.helper.CoroutinesTestRule
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
+import br.com.sailboat.uicomponent.model.TaskUiModel
+import br.com.sailboat.uicomponent.model.UiModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

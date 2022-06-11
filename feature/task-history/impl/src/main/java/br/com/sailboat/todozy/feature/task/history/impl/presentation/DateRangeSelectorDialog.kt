@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
-import br.com.sailboat.todozy.uicomponent.databinding.DialogDateRangeSelectorBinding
-import br.com.sailboat.todozy.uicomponent.dialog.DateSelectorDialog
-import br.com.sailboat.todozy.uicomponent.dialog.MessageDialog
+import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
+import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.utility.kotlin.extension.*
+import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding
 import java.util.*
 
 class DateRangeSelectorDialog : BaseDialogFragment() {

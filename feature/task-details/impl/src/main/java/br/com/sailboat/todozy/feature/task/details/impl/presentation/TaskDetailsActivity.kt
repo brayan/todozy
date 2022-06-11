@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
-import br.com.sailboat.todozy.uicomponent.helper.getBundle
-import br.com.sailboat.todozy.uicomponent.helper.getTaskId
-import br.com.sailboat.todozy.uicomponent.helper.putBundle
-import br.com.sailboat.todozy.uicomponent.helper.putTaskId
+import br.com.sailboat.uicomponent.impl.helper.getBundle
+import br.com.sailboat.uicomponent.impl.helper.getTaskId
+import br.com.sailboat.uicomponent.impl.helper.putBundle
+import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 fun Context.startTaskDetailsActivity(

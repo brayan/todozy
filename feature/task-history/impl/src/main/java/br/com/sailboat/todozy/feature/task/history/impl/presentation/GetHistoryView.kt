@@ -5,8 +5,8 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilte
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
-import br.com.sailboat.todozy.uicomponent.model.SubheadUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.SubheadUiModel
+import br.com.sailboat.uicomponent.model.UiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

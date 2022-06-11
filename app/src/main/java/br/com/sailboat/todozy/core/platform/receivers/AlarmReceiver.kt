@@ -20,7 +20,7 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSound
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
-import br.com.sailboat.todozy.uicomponent.helper.NotificationHelper
+import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue

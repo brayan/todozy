@@ -37,7 +37,8 @@ android {
 dependencies {
     implementation(project(Module.kotlinUtil))
     implementation(project(Module.androidUtil))
-    implementation(project(Module.uiComponent))
+    implementation(project(Module.uiComponentPublic))
+    implementation(project(Module.uiComponentImpl))
     implementation(project(Module.domain))
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.taskHistoryPublic))

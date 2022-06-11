@@ -2,9 +2,9 @@ package br.com.sailboat.todozy.feature.about.impl.presentation
 
 import android.content.Context
 import br.com.sailboat.todozy.feature.about.impl.R
-import br.com.sailboat.todozy.uicomponent.model.ImageTitleDividerUiModel
-import br.com.sailboat.todozy.uicomponent.model.LabelValueUiModel
-import br.com.sailboat.todozy.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
+import br.com.sailboat.uicomponent.model.LabelValueUiModel
+import br.com.sailboat.uicomponent.model.UiModel
 
 class GetAboutView(private val context: Context) : GetAboutViewUseCase {
 

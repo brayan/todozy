@@ -14,9 +14,9 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryV
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.*
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.*
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
-import br.com.sailboat.todozy.uicomponent.model.TaskHistoryUiModel
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar

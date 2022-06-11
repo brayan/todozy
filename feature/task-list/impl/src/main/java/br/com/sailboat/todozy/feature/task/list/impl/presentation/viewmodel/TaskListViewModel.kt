@@ -14,7 +14,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.*
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
-import br.com.sailboat.todozy.uicomponent.model.TaskUiModel
+import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 

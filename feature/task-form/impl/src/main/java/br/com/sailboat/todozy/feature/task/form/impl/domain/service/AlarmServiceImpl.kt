@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.domain.service
 import android.content.Context
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.RepeatTypeUiModel
-import br.com.sailboat.todozy.uicomponent.helper.WeekDaysHelper
+import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import java.util.*

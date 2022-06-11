@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.alarm.impl.R
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
-import br.com.sailboat.todozy.uicomponent.model.AlarmUiModel
+import br.com.sailboat.uicomponent.model.AlarmUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 

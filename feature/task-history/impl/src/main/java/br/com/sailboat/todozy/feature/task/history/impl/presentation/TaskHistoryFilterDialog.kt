@@ -7,8 +7,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.DialogFilterTaskHistoryBinding
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 
 class TaskHistoryFilterDialog : DialogFragment() {
 

@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel
 
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.DateFilterTaskHistorySelectableItem
-import br.com.sailboat.todozy.uicomponent.dialog.selectable.model.TaskStatusSelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
+import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import java.util.*
 
 sealed class TaskHistoryViewAction {

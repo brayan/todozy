@@ -3,9 +3,9 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.com.sailboat.todozy.uicomponent.helper.UiModelDiffUtilCallback
-import br.com.sailboat.todozy.uicomponent.model.*
-import br.com.sailboat.todozy.uicomponent.viewholder.*
+import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
+import br.com.sailboat.uicomponent.impl.viewholder.*
+import br.com.sailboat.uicomponent.model.*
 
 class TaskDetailsAdapter :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
