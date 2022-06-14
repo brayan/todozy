@@ -10,23 +10,25 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.*
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
-import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
+import br.com.sailboat.uicomponent.model.TaskUiModel
 import kotlinx.coroutines.*
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
 class TaskListViewModel(
     override val viewState: TaskListViewState = TaskListViewState(),
-    private val getTasksViewUseCase: GetTasksViewUseCase,
+    private val getTasksUseCase: GetTasksUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
+    private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
 
@@ -87,9 +89,25 @@ class TaskListViewModel(
         }
     }
 
-    private suspend fun loadTasks() {
+    private fun loadTasks() = viewModelScope.launch {
         viewState.loading.postValue(true)
-        val tasks = getTasksViewUseCase(filter.text).getOrThrow()
+
+        val taskCategories = listOf(
+            TaskCategory.BEFORE_TODAY,
+            TaskCategory.TODAY,
+            TaskCategory.TOMORROW,
+            TaskCategory.NEXT_DAYS,
+        )
+
+        val tasks = taskCategories.map { category ->
+            async {
+                val filter = TaskFilter(category).apply { text = filter.text }
+                val tasks = getTasksUseCase(filter).getOrThrow()
+
+                taskListUiModelFactory.create(tasks, category)
+            }
+        }.awaitAll().flatten()
+
         viewState.itemsView.postValue(tasks.toMutableList())
         viewState.loading.postValue(false)
     }

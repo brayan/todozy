@@ -146,4 +146,5 @@
     <string name="apply">Apply</string>
     <string name="notification_title_task_alarms">Task alarms</string>
     <string name="alarm_not_valid">Alarm not valid</string>
+    <string name="empty" translatable="false" />
 </resources>

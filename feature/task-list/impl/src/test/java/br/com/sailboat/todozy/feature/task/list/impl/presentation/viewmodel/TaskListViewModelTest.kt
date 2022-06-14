@@ -2,16 +2,15 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import br.com.sailboat.todozy.domain.model.Alarm
-import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.model.*
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.GetTasksViewUseCase
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
@@ -34,19 +33,21 @@ class TaskListViewModelTest {
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
 
-    private val getTasksViewUseCase: GetTasksViewUseCase = mockk(relaxed = true)
+    private val getTasksUseCase: GetTasksUseCase = mockk(relaxed = true)
     private val getAlarmUseCase: GetAlarmUseCase = mockk(relaxed = true)
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase = mockk(relaxed = true)
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase = mockk(relaxed = true)
     private val completeTaskUseCase: CompleteTaskUseCase = mockk(relaxed = true)
+    private val taskListUiModelFactory: TaskListUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
 
     private val viewModel = TaskListViewModel(
-        getTasksViewUseCase = getTasksViewUseCase,
+        getTasksUseCase = getTasksUseCase,
         getAlarmUseCase = getAlarmUseCase,
         scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
         getTaskMetricsUseCase = getTaskMetricsUseCase,
         completeTaskUseCase = completeTaskUseCase,
+        taskListUiModelFactory = taskListUiModelFactory,
         logService = logService,
     )
 
@@ -62,20 +63,26 @@ class TaskListViewModelTest {
     }
 
     @Test
-    fun `should call getTasksViewUseCase when dispatchViewAction is called with OnStart`() {
+    fun `should call getTasksUseCase when dispatchViewAction is called with OnStart`() {
         runBlocking {
-            val tasks = mutableListOf<UiModel>(
-                TaskUiModel(
-                    taskId = 543L,
-                    taskName = "Task 543",
-                )
-            )
-            prepareScenario(tasksResult = Result.success(tasks))
+            val tasksView = mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
+            prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewAction(TaskListViewAction.OnStart)
 
-            coVerify(exactly = 1) { getTasksViewUseCase(search = "") }
-            assertEquals(tasks, viewModel.viewState.itemsView.value)
+            coVerifyOrder {
+                getTasksUseCase(TaskFilter(TaskCategory.BEFORE_TODAY))
+                getTasksUseCase(TaskFilter(TaskCategory.TODAY))
+                getTasksUseCase(TaskFilter(TaskCategory.TOMORROW))
+                getTasksUseCase(TaskFilter(TaskCategory.NEXT_DAYS))
+            }
+            val expected = mutableListOf<UiModel>(
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+            )
+            assertEquals(expected, viewModel.viewState.itemsView.value)
         }
     }
 
@@ -137,21 +144,32 @@ class TaskListViewModelTest {
     }
 
     @Test
-    fun `should call getTasksViewUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
+    fun `should call getTasksUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
         runBlocking {
             val term = "Term"
-            val tasks = mutableListOf<UiModel>(
+            val tasksView = mutableListOf<UiModel>(
                 TaskUiModel(
                     taskId = 543L,
                     taskName = "Task 543",
                 )
             )
-            prepareScenario(tasksResult = Result.success(tasks))
+            prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewAction(TaskListViewAction.OnSubmitSearchTerm(term = term))
 
-            coVerify(exactly = 1) { getTasksViewUseCase(search = term) }
-            assertEquals(tasks, viewModel.viewState.itemsView.value)
+            coVerifyOrder {
+                getTasksUseCase(TaskFilter(TaskCategory.BEFORE_TODAY))
+                getTasksUseCase(TaskFilter(TaskCategory.TODAY))
+                getTasksUseCase(TaskFilter(TaskCategory.TOMORROW))
+                getTasksUseCase(TaskFilter(TaskCategory.NEXT_DAYS))
+            }
+            val expected = mutableListOf<UiModel>(
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                TaskUiModel(taskId = 543L, taskName = "Task 543"),
+            )
+            assertEquals(expected, viewModel.viewState.itemsView.value)
         }
     }
 
@@ -241,11 +259,18 @@ class TaskListViewModelTest {
     }
 
     private fun prepareScenario(
-        tasksResult: Result<List<UiModel>> = Result.success(
+        tasksView: List<UiModel> = listOf(
+            TaskUiModel(
+                taskName = "Task Name",
+                taskId = 42L,
+            )
+        ),
+        tasksResult: Result<List<Task>> = Result.success(
             listOf(
-                TaskUiModel(
-                    taskName = "Task Name",
-                    taskId = 42L,
+                Task(
+                    id = 42L,
+                    name = "Task Name",
+                    notes = null,
                 )
             )
         ),
@@ -256,8 +281,9 @@ class TaskListViewModelTest {
             )
         )
     ) {
-        coEvery { getTasksViewUseCase(any()) } returns tasksResult
+        coEvery { getTasksUseCase(any()) } returns tasksResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult
+        coEvery { taskListUiModelFactory.create(any(), any()) } returns tasksView
     }
 
 }
