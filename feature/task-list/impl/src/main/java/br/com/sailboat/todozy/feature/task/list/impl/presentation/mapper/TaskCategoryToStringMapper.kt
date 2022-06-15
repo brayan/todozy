@@ -1,18 +1,10 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper
 
-import android.content.Context
-import androidx.core.content.ContextCompat
-import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.feature.task.list.impl.R
-import br.com.sailboat.uicomponent.model.TaskUiModel
-import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
-import br.com.sailboat.todozy.utility.kotlin.extension.isToday
-import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
-import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
-import java.util.*
+import br.com.sailboat.todozy.utility.android.string.StringProvider
 
-class TaskCategoryToStringMapper(private val context: Context) {
+class TaskCategoryToStringMapper(private val stringProvider: StringProvider) {
 
     fun map(taskCategory: TaskCategory): String {
         val category = when (taskCategory) {
@@ -22,6 +14,6 @@ class TaskCategoryToStringMapper(private val context: Context) {
             TaskCategory.NEXT_DAYS -> R.string.next_days
             else -> R.string.empty
         }
-        return context.getString(category)
+        return stringProvider.getString(category)
     }
 }
