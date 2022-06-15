@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.android.string.StringProvider
-import br.com.sailboat.todozy.utility.android.string.StringProviderImpl
+import br.com.sailboat.todozy.core.platform.StringProviderImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
