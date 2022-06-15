@@ -11,7 +11,7 @@ class SubheadViewHolder(parent: ViewGroup) :
     ) {
 
     override fun bind(item: SubheadUiModel) = with(binding) {
-        vhSubheaderTvName.text = context.getText(item.subheadRes)
+        vhSubheaderTvName.text = item.subhead
     }
 
 }

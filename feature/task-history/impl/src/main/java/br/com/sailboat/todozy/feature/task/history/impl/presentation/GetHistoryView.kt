@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation
 
+import android.content.Context
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.impl.R
@@ -12,8 +13,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 class GetHistoryView(
+    private val context: Context,
     private val getTasksHistoryUseCase: GetTaskHistoryUseCase,
-    private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper
+    private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper,
 ) : GetHistoryViewUseCase {
 
     private val historyCategories = mapOf(
@@ -27,7 +29,7 @@ class GetHistoryView(
             historyCategories.map { category ->
                 async {
                     filter.category = category.key
-                    getTaskHistoryView(filter.copyFilter(), category.value)
+                    getTaskHistoryView(filter.copyFilter(), context.getString(category.value))
                 }
             }.awaitAll().flatten()
         }
@@ -35,7 +37,7 @@ class GetHistoryView(
 
     private suspend fun getTaskHistoryView(
         filter: TaskHistoryFilter,
-        subhead: Int
+        subhead: String
     ): List<UiModel> {
         val history = getTasksHistoryUseCase(filter).getOrThrow()
         val historyView = mutableListOf<UiModel>()

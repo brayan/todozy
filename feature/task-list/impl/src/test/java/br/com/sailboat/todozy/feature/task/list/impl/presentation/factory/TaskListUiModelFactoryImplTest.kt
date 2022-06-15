@@ -37,13 +37,13 @@ class TaskListUiModelFactoryImplTest {
         )
         prepareScenario(
             taskListUiModel = listOf(taskUiModel),
-            subhead = 82,
+            subhead = "Today",
         )
 
         val result = taskListUiModelFactory.create(taskList, TaskCategory.TODAY)
 
         val expected = listOf(
-            SubheadUiModel(82),
+            SubheadUiModel("Today"),
             taskUiModel,
         )
         assertEquals(expected, result)
@@ -60,7 +60,7 @@ class TaskListUiModelFactoryImplTest {
 
     private fun prepareScenario(
         taskListUiModel: List<TaskUiModel> = emptyList(),
-        subhead: Int = 0,
+        subhead: String = "Today",
     ) {
         coEvery { taskToTaskUiModelMapper.map(any()) } returns taskListUiModel
         coEvery { taskCategoryToStringMapper.map(any()) } returns subhead

@@ -23,7 +23,7 @@ import org.koin.dsl.module
 
 private val presentation = module {
     factory<CalendarService> { CalendarServiceImpl(get()) }
-    factory<GetHistoryViewUseCase> { GetHistoryView(get(), get()) }
+    factory<GetHistoryViewUseCase> { GetHistoryView(get(), get(), get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     factory<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }

@@ -14,8 +14,7 @@ import java.util.*
 
 class TaskCategoryToStringMapper(private val context: Context) {
 
-    // TODO: MOVE TO STRING
-    fun map(taskCategory: TaskCategory): Int {
+    fun map(taskCategory: TaskCategory): String {
         val category = when (taskCategory) {
             TaskCategory.BEFORE_TODAY -> R.string.previous_days
             TaskCategory.TODAY -> R.string.today
@@ -23,7 +22,6 @@ class TaskCategoryToStringMapper(private val context: Context) {
             TaskCategory.NEXT_DAYS -> R.string.next_days
             else -> R.string.empty
         }
-//        return context.getString(category)
-        return category
+        return context.getString(category)
     }
 }
