@@ -1,16 +1,16 @@
 package br.com.sailboat.todozy.feature.task.details.impl.di
 
-import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.DisableTask
-import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.GetTask
-import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.GetTaskMetrics
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsView
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.navigator.TaskDetailsNavigatorImpl
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
+import br.com.sailboat.todozy.domain.service.LogService
+import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
-import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
+import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.DisableTask
+import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.GetTask
+import br.com.sailboat.todozy.feature.task.details.impl.domain.usecase.GetTaskMetrics
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.navigator.TaskDetailsNavigatorImpl
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -18,16 +18,15 @@ import org.koin.dsl.module
 private val presentation = module {
     viewModel {
         TaskDetailsViewModel(
-            getTaskDetailsViewUseCase = get(),
             getTaskMetricsUseCase = get(),
-            getAlarmUseCase = get(),
             getTaskUseCase = get(),
             disableTaskUseCase = get(),
+            taskDetailsUiModelFactory = get(),
             logService = get(),
         )
     }
 
-    factory<GetTaskDetailsViewUseCase> { GetTaskDetailsView(get(), get(), get()) }
+    factory { TaskDetailsUiModelFactory(get(), get()) }
     factory<TaskDetailsNavigator> { TaskDetailsNavigatorImpl() }
 }
 

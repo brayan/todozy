@@ -9,5 +9,4 @@ class GetTask(private val taskRepository: TaskRepository) : GetTaskUseCase {
     override suspend operator fun invoke(taskId: Long): Result<Task> {
         return taskRepository.getTask(taskId)
     }
-
 }

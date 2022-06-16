@@ -23,7 +23,7 @@ class TaskListUiModelFactoryImplTest {
     )
 
     @Test
-    fun `should create an subhead and a task when create is called from tasksUiModelFactory`() = runBlocking {
+    fun `should create a subhead and a task when create is called from tasksUiModelFactory`() = runBlocking {
         val taskList = listOf(
             Task(
                 id = 42L,
@@ -50,7 +50,7 @@ class TaskListUiModelFactoryImplTest {
     }
 
     @Test
-    fun `should not create an subhead and a task when task list is empty`() = runBlocking {
+    fun `should not create a subhead and a task when task list is empty`() = runBlocking {
         prepareScenario()
 
         val result = taskListUiModelFactory.create(emptyList(), TaskCategory.TODAY)

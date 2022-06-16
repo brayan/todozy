@@ -4,25 +4,22 @@ import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.service.LogService
-import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.GetTaskDetailsViewUseCase
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.*
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.*
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TaskDetailsViewModel(
     override val viewState: TaskDetailsViewState = TaskDetailsViewState(),
-    private val getTaskDetailsViewUseCase: GetTaskDetailsViewUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
-    private val getAlarmUseCase: GetAlarmUseCase,
     private val getTaskUseCase: GetTaskUseCase,
     private val disableTaskUseCase: DisableTaskUseCase,
+    private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewAction>() {
 
@@ -66,12 +63,12 @@ class TaskDetailsViewModel(
 
     private fun loadDetails() = viewModelScope.launch {
         try {
-            val taskDetails = async { getTaskDetailsViewUseCase(viewState.taskId) }
-            val alarm = async { getAlarmUseCase(viewState.taskId) }
+            val task = getTaskUseCase(viewState.taskId).getOrThrow()
+            val taskDetails = taskDetailsUiModelFactory.create(task)
 
-            viewState.taskDetails.postValue(taskDetails.await().getOrThrow())
+            viewState.taskDetails.postValue(taskDetails)
 
-            val taskMetrics: TaskMetrics? = alarm.await().getOrNull()?.run {
+            val taskMetrics: TaskMetrics? = task.alarm?.run {
                 if (RepeatType.isAlarmRepeating(this)) {
                     val filter = TaskHistoryFilter(taskId = viewState.taskId)
                     val taskMetrics = getTaskMetricsUseCase(filter)
@@ -88,5 +85,4 @@ class TaskDetailsViewModel(
             viewState.action.value = CloseTaskDetails(success = false)
         }
     }
-
 }
