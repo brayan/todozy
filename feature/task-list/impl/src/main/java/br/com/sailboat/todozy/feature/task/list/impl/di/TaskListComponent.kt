@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.feature.task.list.impl.di
 
 import br.com.sailboat.todozy.domain.repository.TaskRepository
+import br.com.sailboat.todozy.feature.navigation.android.TaskListNavigator
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.data.datasource.TaskLocalDataSource
 import br.com.sailboat.todozy.feature.task.list.impl.data.datasource.TaskLocalDataSourceSQLite
@@ -8,20 +9,18 @@ import br.com.sailboat.todozy.feature.task.list.impl.data.repository.TaskReposit
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTask
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasks
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskCategoryToStringMapper
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskToTaskUiModelMapper
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.navigator.TaskListNavigatorImpl
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.feature.navigation.android.TaskListNavigator
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactoryImpl
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskCategoryToStringMapper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private val presentation = module {
     factory<TaskListNavigator> { TaskListNavigatorImpl() }
-    factory<TaskListUiModelFactory> { TaskListUiModelFactoryImpl(get(), get()) }
+    factory { TaskListUiModelFactory(get(), get()) }
 
     factory { TaskToTaskUiModelMapper(get()) }
     factory { TaskCategoryToStringMapper(get()) }
