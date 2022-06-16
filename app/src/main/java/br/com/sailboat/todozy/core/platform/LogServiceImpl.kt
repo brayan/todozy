@@ -12,5 +12,4 @@ class LogServiceImpl : LogService {
     override fun debug(text: String) {
         Timber.d(text)
     }
-
 }

@@ -10,5 +10,4 @@ class DatabaseServiceImpl : DatabaseService {
             database.execSQL(table.createTableStatement)
         }
     }
-
 }

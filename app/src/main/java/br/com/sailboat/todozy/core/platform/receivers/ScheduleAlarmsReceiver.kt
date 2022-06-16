@@ -26,5 +26,4 @@ class ScheduleAlarmsReceiver : BroadcastReceiver(), KoinComponent {
             }
         }
     }
-
 }

@@ -17,5 +17,4 @@ class CrashlyticsReportingTree : Timber.Tree() {
             }
         }
     }
-
 }

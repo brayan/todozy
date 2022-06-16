@@ -35,5 +35,4 @@ class BootReceiver : BroadcastReceiver(), KoinComponent {
             }
         }
     }
-
 }

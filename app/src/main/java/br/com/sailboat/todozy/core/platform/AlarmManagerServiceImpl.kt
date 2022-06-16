@@ -9,7 +9,7 @@ import android.os.Build
 import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
 import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
-import java.util.*
+import java.util.Calendar
 
 class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {
 
@@ -40,14 +40,15 @@ class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerServic
                 pending
             )
         }
-
     }
 
     override fun scheduleAlarmUpdates(calendar: Calendar) {
         val intent = Intent(context, ScheduleAlarmsReceiver::class.java)
         val alarmIntent = PendingIntent.getBroadcast(
-            context, 999999999, intent,
-           getPendingIntentFlags()
+            context,
+            999999999,
+            intent,
+            getPendingIntentFlags(),
         )
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP, calendar.timeInMillis,

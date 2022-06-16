@@ -44,6 +44,4 @@ class App : Application() {
             Timber.plant(CrashlyticsReportingTree())
         }
     }
-
-
 }

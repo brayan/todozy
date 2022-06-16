@@ -26,5 +26,4 @@ class LauncherActivity : AppCompatActivity() {
             }
         }
     }
-
 }
