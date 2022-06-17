@@ -57,5 +57,4 @@ class TaskHistoryRepositoryImpl(
     override suspend fun deleteAll(): Result<Unit?> {
         return taskHistoryLocalDataSource.deleteAllHistory()
     }
-
 }
