@@ -28,3 +28,7 @@ jobs:
 
       - name: Run unit tests
         run: ./gradlew test --stacktrace
+        
+      - name: Android Test Report
+        uses: asadmansr/android-test-report-action@v1.2.0
+        if: ${{ always() }}
