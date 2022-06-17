@@ -55,21 +55,24 @@ allprojects {
                 override fun afterSuite(suite: TestDescriptor, result: TestResult) {
                     if (suite.parent == null) {
                         println("\nTest result: ${result.resultType}")
-                        println("Test summary: ${result.testCount} tests, " +
+                        println(
+                            "Test summary: ${result.testCount} tests, " +
                                 "${result.successfulTestCount} succeeded, " +
                                 "${result.failedTestCount} failed, " +
-                                "${result.skippedTestCount} skipped")
+                                "${result.skippedTestCount} skipped"
+                        )
 
                         testsTotal += result.testCount
                         testsSuccess += result.successfulTestCount
                         testsFailed += result.failedTestCount
                         testsSkipped += result.skippedTestCount
 
-                        println("Total: $testsTotal tests, " +
+                        println(
+                            "Total: $testsTotal tests, " +
                                 "$testsSuccess succeeded, " +
                                 "$testsFailed failed, " +
-                                "$testsSkipped skipped")
-
+                                "$testsSkipped skipped"
+                        )
                     }
                 }
             })
