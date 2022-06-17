@@ -3,8 +3,8 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation.navigator
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.startTaskFormActivity
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.startTaskFormActivity
 
 class TaskFormNavigatorImpl : TaskFormNavigator {
 

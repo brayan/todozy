@@ -19,5 +19,4 @@ class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {
                 TaskCategory.WITH_ALARMS -> getTasksWithAlarms()
             }
         }
-
 }

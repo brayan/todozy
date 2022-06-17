@@ -79,5 +79,4 @@ class AboutFragment : BaseFragment() {
     private fun showErrorLoadingAbout() {
         Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
     }
-
 }

@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import java.util.*
+import java.util.Calendar
 
 class AlarmLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
@@ -99,5 +99,4 @@ class AlarmLocalDataSourceSQLite(
         insertingDate = getString(cursor, "insertingDate"),
         days = getString(cursor, "days")
     )
-
 }

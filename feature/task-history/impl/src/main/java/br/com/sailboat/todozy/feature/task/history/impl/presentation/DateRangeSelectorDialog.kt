@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
-import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
-import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
-import br.com.sailboat.todozy.utility.kotlin.extension.*
+import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
+import br.com.sailboat.todozy.utility.kotlin.extension.isAfterToday
+import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding
-import java.util.*
+import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
+import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
+import java.util.Calendar
 
 class DateRangeSelectorDialog : BaseDialogFragment() {
 
@@ -73,7 +76,8 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
 
                         updateViews()
                     }
-                })
+                }
+            )
         }
 
         llDateRangeSelectorFinalDate.setOnClickListener {
@@ -112,7 +116,8 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
 
                         updateViews()
                     }
-                })
+                }
+            )
         }
     }
 
@@ -154,8 +159,7 @@ class DateRangeSelectorDialog : BaseDialogFragment() {
             dialog.finalDate = finalDate.orNewCalendar()
             dialog.show(manager, DateRangeSelectorDialog::class.java.name)
 
-            true.orFalse()
+            true
         }
     }
-
 }

@@ -14,7 +14,6 @@ import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
-import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 
 internal class AppComponentTest {

@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import java.util.*
+import java.util.Calendar
 
-class DateSelectorDialog(private val callback: Callback) : DialogFragment(),
-    DatePickerDialog.OnDateSetListener {
+class DateSelectorDialog(private val callback: Callback) :
+    DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var calendar: Calendar
 

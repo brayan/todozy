@@ -23,7 +23,6 @@ class SettingsViewModel(
             is SettingsViewAction.OnClickAbout -> onClickAbout()
             is SettingsViewAction.OnClickVibrateAlarm -> onClickVibrateAlarm(viewAction)
             is SettingsViewAction.OnSelectAlarmTone -> onSelectAlarmTone(viewAction)
-
         }
     }
 
@@ -54,5 +53,4 @@ class SettingsViewModel(
             setAlarmSoundSettingUseCase(viewAction.uri)
         }
     }
-
 }

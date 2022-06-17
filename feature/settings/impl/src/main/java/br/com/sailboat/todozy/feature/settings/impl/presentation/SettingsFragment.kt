@@ -110,5 +110,4 @@ class SettingsFragment : BaseFragment() {
     private fun initToneVibrate() = with(binding) {
         flSettingsVibrate.setOnClickListener { cbSettingsVibrate.performClick() }
     }
-
 }

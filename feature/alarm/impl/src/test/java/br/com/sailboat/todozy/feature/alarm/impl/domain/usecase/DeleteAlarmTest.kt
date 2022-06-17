@@ -32,5 +32,4 @@ class DeleteAlarmTest {
         coVerify { cancelAlarmScheduleUseCase(45) }
         confirmVerified(cancelAlarmScheduleUseCase)
     }
-
 }

@@ -2,7 +2,12 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import br.com.sailboat.todozy.domain.model.*
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskCategory
+import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
@@ -14,13 +19,18 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskLi
 import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -285,5 +295,4 @@ class TaskListViewModelTest {
         coEvery { getAlarmUseCase(any()) } returns alarmResult
         coEvery { taskListUiModelFactory.create(any(), any()) } returns tasksView
     }
-
 }

@@ -1,6 +1,6 @@
 package br.com.sailboat.uicomponent.model
 
-import java.util.*
+import java.util.Calendar
 
 data class TaskUiModel(
     val taskId: Long,

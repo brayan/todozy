@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.feature.task.list.impl.R
-import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
-import java.util.*
+import br.com.sailboat.uicomponent.model.TaskUiModel
+import java.util.Calendar
 
 class TaskToTaskUiModelMapper(private val context: Context) {
 
@@ -34,5 +34,4 @@ class TaskToTaskUiModelMapper(private val context: Context) {
 
         return ContextCompat.getColor(context, colorRes)
     }
-
 }

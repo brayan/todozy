@@ -204,5 +204,4 @@ class TaskHistoryRepositoryImplTest {
         coEvery { taskHistoryLocalDataSource.getTaskHistoryByTask(any()) } returns taskHistoryDataList
         coEvery { taskHistoryLocalDataSource.save(any(), any()) } returns taskHistoryId
     }
-
 }

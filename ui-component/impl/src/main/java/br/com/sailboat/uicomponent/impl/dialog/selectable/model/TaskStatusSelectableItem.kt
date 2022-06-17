@@ -1,7 +1,7 @@
 package br.com.sailboat.uicomponent.impl.dialog.selectable.model
 
 import br.com.sailboat.uicomponent.impl.R
-import java.util.*
+import java.util.Arrays
 
 enum class TaskStatusSelectableItem : SelectableItem {
 
@@ -26,5 +26,4 @@ enum class TaskStatusSelectableItem : SelectableItem {
             return ArrayList<SelectableItem>(Arrays.asList(*values()))
         }
     }
-
 }

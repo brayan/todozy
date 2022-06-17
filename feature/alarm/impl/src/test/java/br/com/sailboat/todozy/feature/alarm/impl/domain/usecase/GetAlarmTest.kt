@@ -9,7 +9,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 import kotlin.test.assertEquals
 
 class GetAlarmTest {
@@ -35,5 +35,4 @@ class GetAlarmTest {
         confirmVerified(repository)
         assertEquals(result, alarmResult)
     }
-
 }

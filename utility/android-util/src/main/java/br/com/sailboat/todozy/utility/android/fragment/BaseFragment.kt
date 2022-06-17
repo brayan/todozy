@@ -8,7 +8,8 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.utility.android.R
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
 abstract class BaseFragment : Fragment() {
 
@@ -54,15 +55,16 @@ abstract class BaseFragment : Fragment() {
             override fun onQueryTextChange(text: String): Boolean {
                 timer.cancel()
                 timer = Timer()
-                timer.schedule(object : TimerTask() {
-                    override fun run() {
-                        search = text
-                        onSubmitSearch(search)
-                    }
-                }, DELAY)
-
+                timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            search = text
+                            onSubmitSearch(search)
+                        }
+                    },
+                    DELAY
+                )
                 return true
-
             }
 
             override fun onQueryTextSubmit(text: String): Boolean {
@@ -86,5 +88,4 @@ abstract class BaseFragment : Fragment() {
     protected open fun initViews() {}
 
     protected open fun onSubmitSearch(search: String) {}
-
 }

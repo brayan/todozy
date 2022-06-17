@@ -3,10 +3,10 @@ package br.com.sailboat.todozy.feature.task.form.impl.domain.service
 import android.content.Context
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.RepeatTypeUiModel
-import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
-import java.util.*
+import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
+import java.util.Calendar
 
 class AlarmServiceImpl(private val context: Context) : AlarmService {
 
@@ -26,5 +26,4 @@ class AlarmServiceImpl(private val context: Context) : AlarmService {
     override fun getFullTime(calendar: Calendar): String {
         return calendar.formatTimeWithAndroidFormat(context)
     }
-
 }

@@ -26,5 +26,4 @@ class ImageViewColorHelper {
     fun setBackgroundTint(context: Context, imageView: ImageView, colorId: Int) {
         imageView.backgroundTintList = ContextCompat.getColorStateList(context, colorId)
     }
-
 }

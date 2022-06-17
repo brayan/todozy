@@ -51,5 +51,4 @@ class SettingsLocalDataSourceImpl(context: Context) : SettingsLocalDataSource {
         const val CURRENT_SOUND = "CURRENT_SOUND"
         const val ALLOW_VIBRATION = "ALLOW_VIBRATION"
     }
-
 }

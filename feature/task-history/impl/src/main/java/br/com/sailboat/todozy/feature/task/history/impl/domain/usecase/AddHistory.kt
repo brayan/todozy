@@ -12,5 +12,4 @@ class AddHistory(
     override suspend operator fun invoke(task: Task, status: TaskStatus): Result<Unit?> {
         return taskHistoryRepository.insert(task, status)
     }
-
 }

@@ -108,5 +108,4 @@ class GetTasksTest {
         coEvery { repository.getTomorrowTasks(any()) } returns tasksResult
         coEvery { repository.getNextDaysTasks(any()) } returns tasksResult
     }
-
 }

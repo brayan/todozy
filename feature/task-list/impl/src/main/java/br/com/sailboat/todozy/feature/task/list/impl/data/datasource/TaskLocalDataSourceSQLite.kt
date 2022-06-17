@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToda
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import java.util.*
+import java.util.Calendar
 
 class TaskLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
@@ -133,7 +133,6 @@ class TaskLocalDataSourceSQLite(
         update(statement)
     }
 
-
     override suspend fun getTasksWithAlarms(): Result<List<TaskData>> = runCatching {
         val sb = StringBuilder()
         sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
@@ -164,7 +163,6 @@ class TaskLocalDataSourceSQLite(
         notes = getString(this, "taskNotes"),
         insertingDate = null
     )
-
 
     private fun bindSelect(sb: StringBuilder) {
         sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
@@ -206,7 +204,6 @@ class TaskLocalDataSourceSQLite(
         sb.append(" '" + parseCalendarToString(getFinalCalendarForTomorrow()) + "' ")
         sb.append(" AND Task.enabled = 1 ")
     }
-
 
     private fun bindWhereFilter(sb: StringBuilder, filter: TaskFilter?) {
         if (filter == null) {

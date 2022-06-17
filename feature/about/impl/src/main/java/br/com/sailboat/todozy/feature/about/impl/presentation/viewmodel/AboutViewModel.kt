@@ -26,5 +26,4 @@ class AboutViewModel(
             viewState.action.value = AboutViewState.Action.ShowErrorLoadingAbout
         }
     }
-
 }

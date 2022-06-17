@@ -1,15 +1,49 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.*
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickClearAllHistory
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmClearAllHistory
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickDateFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickDeleteTaskHistoryItem
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickMarkTaskAsDone
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickMarkTaskAsNotDone
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickStatusFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickTaskHistory
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnSelectDateFromFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnSelectDateRange
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnSelectStatusFromFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnStart
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnSubmitSearchTerm
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.*
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToClearAllHistoryConfirmation
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToDateFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToDateRangeFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToDeleteTaskHistoryConfirmation
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToMenuFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.NavigateToStatusFilter
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.RefreshHistoryItem
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ScrollToPosition
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ScrollToTop
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ShowGenericError
+import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
+import br.com.sailboat.todozy.utility.android.view.scrollToTop
+import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
@@ -17,14 +51,8 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.impl.helper.DialogHelper
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
-import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
-import br.com.sailboat.todozy.utility.android.view.gone
-import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
-import br.com.sailboat.todozy.utility.android.view.scrollToTop
-import br.com.sailboat.todozy.utility.android.view.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryFragment : BaseFragment() {
 
@@ -148,7 +176,8 @@ class TaskHistoryFragment : BaseFragment() {
                 override fun onClickFilterStatus() {
                     viewModel.dispatchViewAction(OnClickStatusFilter)
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToDateFilter(action: NavigateToDateFilter) {
@@ -162,7 +191,8 @@ class TaskHistoryFragment : BaseFragment() {
                     val date = item as DateFilterTaskHistorySelectableItem
                     viewModel.dispatchViewAction(OnSelectDateFromFilter(date))
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToDateRangeFilter(action: NavigateToDateRangeFilter) {
@@ -174,7 +204,8 @@ class TaskHistoryFragment : BaseFragment() {
                 override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
                     viewModel.dispatchViewAction(OnSelectDateRange(initialDate, finalDate))
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToStatusFilter(action: NavigateToStatusFilter) {
@@ -188,7 +219,8 @@ class TaskHistoryFragment : BaseFragment() {
                     val status = item as TaskStatusSelectableItem
                     viewModel.dispatchViewAction(OnSelectStatusFromFilter(status))
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToClearAllHistoryConfirmation() {
@@ -212,7 +244,8 @@ class TaskHistoryFragment : BaseFragment() {
                     override fun onClickPositiveOption() {
                         viewModel.dispatchViewAction(OnClickConfirmDeleteTaskHistory(action.position))
                     }
-                })
+                }
+            )
         }
     }
 
@@ -306,5 +339,4 @@ class TaskHistoryFragment : BaseFragment() {
         binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle =
             getString(dateRangeType.getName()).uppercase()
     }
-
 }

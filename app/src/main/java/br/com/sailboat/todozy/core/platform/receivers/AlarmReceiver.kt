@@ -20,10 +20,10 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSound
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
-import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
+import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -103,7 +103,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             } else {
                 setTextAndTitleFromList(context, builder, tasks.size)
             }
-
         } catch (e: Exception) {
             e.log()
             builder.setContentTitle(context.getString(R.string.new_task))

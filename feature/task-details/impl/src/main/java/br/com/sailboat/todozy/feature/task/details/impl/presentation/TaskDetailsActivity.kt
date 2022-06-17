@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
+import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 import br.com.sailboat.uicomponent.impl.helper.getBundle
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putBundle
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
-import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
 fun Context.startTaskDetailsActivity(
     taskId: Long,
@@ -29,5 +29,4 @@ class TaskDetailsActivity : BaseActivity() {
         val taskId = intent.getBundle()?.getTaskId() ?: throw NullPointerException()
         return TaskDetailsFragment.newInstance(taskId)
     }
-
 }

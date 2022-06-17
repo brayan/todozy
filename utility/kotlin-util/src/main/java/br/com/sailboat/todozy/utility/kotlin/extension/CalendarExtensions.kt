@@ -1,8 +1,7 @@
 package br.com.sailboat.todozy.utility.kotlin.extension
 
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Calendar
 
 private const val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
@@ -62,9 +61,7 @@ fun getInitialAlarm(): Calendar {
 
     if (minute >= 0 && minute < 30) {
         currentTime.set(Calendar.MINUTE, 30)
-
     } else if (minute >= 30 && minute <= 59) {
-
         currentTime.set(Calendar.MINUTE, 0)
 
         if (hour == 23) {
@@ -74,7 +71,6 @@ fun getInitialAlarm(): Calendar {
             hour++
             currentTime.set(Calendar.HOUR_OF_DAY, hour)
         }
-
     }
 
     return currentTime

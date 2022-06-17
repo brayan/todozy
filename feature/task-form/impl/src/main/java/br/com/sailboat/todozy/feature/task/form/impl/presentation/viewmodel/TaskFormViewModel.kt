@@ -18,7 +18,7 @@ import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialAlarm
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 
 class TaskFormViewModel(
     override val viewState: TaskFormViewState = TaskFormViewState(),
@@ -237,7 +237,6 @@ class TaskFormViewModel(
 
                 saveTaskUseCase(task)
                 viewState.action.value = TaskFormViewState.Action.CloseTaskForm(success = true)
-
             } catch (e: Exception) {
                 logService.error(e)
                 viewState.action.value = TaskFormViewState.Action.ShowErrorSavingTask
@@ -262,5 +261,4 @@ class TaskFormViewModel(
             )
         }
     }
-
 }

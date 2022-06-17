@@ -45,5 +45,4 @@ class GetAboutView(private val context: Context) : GetAboutViewUseCase {
             value = "Brayan Bedritchuk"
         )
     }
-
 }

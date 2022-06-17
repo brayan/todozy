@@ -4,13 +4,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
+import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.SubheadViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.TaskHistoryViewHolder
 import br.com.sailboat.uicomponent.model.SubheadUiModel
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
-import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
-import br.com.sailboat.uicomponent.impl.viewholder.SubheadViewHolder
-import br.com.sailboat.uicomponent.impl.viewholder.TaskHistoryViewHolder
 
 class TaskHistoryAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
@@ -33,5 +33,4 @@ class TaskHistoryAdapter(private val callback: Callback) :
     }
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
-
 }

@@ -16,5 +16,4 @@ class AlarmToAlarmDataMapper {
             insertingDate = null,
             days = from.customDays,
         )
-
 }

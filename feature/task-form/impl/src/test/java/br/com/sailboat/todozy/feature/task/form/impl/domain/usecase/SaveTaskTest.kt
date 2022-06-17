@@ -14,7 +14,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class SaveTaskTest {
 
@@ -121,5 +121,4 @@ class SaveTaskTest {
         coEvery { repository.insert(any()) } returns insertTaskResult
         coEvery { repository.update(any()) } returns updateTaskResult
     }
-
 }

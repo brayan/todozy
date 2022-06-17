@@ -12,5 +12,4 @@ class ScheduleAlarmUpdates(
         val calendar = getInitialCalendarForTomorrow()
         alarmManagerService.scheduleAlarmUpdates(calendar)
     }
-
 }

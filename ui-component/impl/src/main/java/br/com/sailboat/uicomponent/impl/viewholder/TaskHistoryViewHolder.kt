@@ -3,7 +3,6 @@ package br.com.sailboat.uicomponent.impl.viewholder
 import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
@@ -17,8 +16,9 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isYesterday
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.databinding.VhTaskHistoryBinding
+import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import java.text.ParseException
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     BaseViewHolder<TaskHistoryUiModel, VhTaskHistoryBinding>(
@@ -43,7 +43,6 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         if (history.done) {
             ivTaskHistoryStatus.setImageResource(R.drawable.ic_vec_thumb_up_white_24dp)
             ivTaskHistoryStatus.setBackgroundResource(R.drawable.shape_circle_done_task)
-
         } else {
             ivTaskHistoryStatus.setImageResource(R.drawable.ic_vect_thumb_down_white_24dp)
             ivTaskHistoryStatus.setBackgroundResource(R.drawable.shape_circle_not_done)
@@ -71,10 +70,8 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     private fun getShortDateTime(insertingDate: Calendar): String {
         return if (insertingDate.isToday() || insertingDate.isYesterday()) {
             insertingDate.formatTimeWithAndroidFormat(itemView.context)
-
         } else if (insertingDate.isCurrentYear()) {
             insertingDate.getMonthAndDayShort(itemView.context)
-
         } else {
             insertingDate.getMonthDayAndYearShort(itemView.context)
         }
@@ -94,7 +91,6 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
             } else {
                 initViewMarkAsDone()
             }
-
         } else {
             tvTaskHistoryShortDateTime.visible()
             tvTaskHistoryLongDateTime.gone()
@@ -128,5 +124,4 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
         fun isShowingOptions(position: Int): Boolean
         fun onClickDelete(position: Int)
     }
-
 }

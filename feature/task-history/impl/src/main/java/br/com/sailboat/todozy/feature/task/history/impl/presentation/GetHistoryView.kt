@@ -57,5 +57,4 @@ class GetHistoryView(
         category = category,
         taskId = taskId
     ).apply { text = this@copyFilter.text }
-
 }

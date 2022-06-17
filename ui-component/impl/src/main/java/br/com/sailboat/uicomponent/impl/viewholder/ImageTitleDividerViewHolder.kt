@@ -1,9 +1,9 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.uicomponent.impl.databinding.VhImageTitleDividerBinding
+import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 
 class ImageTitleDividerViewHolder(parent: ViewGroup) :
     BaseViewHolder<ImageTitleDividerUiModel, VhImageTitleDividerBinding>(
@@ -14,5 +14,4 @@ class ImageTitleDividerViewHolder(parent: ViewGroup) :
         vhImageTitleDividerImg.setImageResource(item.imageRes)
         vhImageTitleDividerTvTitle.text = item.title
     }
-
 }

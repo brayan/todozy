@@ -10,5 +10,4 @@ class ScheduleAlarm(
     override suspend operator fun invoke(alarm: Alarm, taskId: Long) {
         alarmManagerService.scheduleAlarm(alarm.dateTime, taskId)
     }
-
 }

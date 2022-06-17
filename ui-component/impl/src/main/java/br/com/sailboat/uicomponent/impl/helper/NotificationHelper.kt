@@ -14,5 +14,4 @@ class NotificationHelper {
         ) as NotificationManager
         mNotificationManager.cancel(TASK_NOTIFICATION_ID)
     }
-
 }

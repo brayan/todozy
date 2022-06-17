@@ -19,5 +19,4 @@ class SettingsRepositoryImpl(
 
     override suspend fun isFirstTimeLaunchingApp() = localDataSource.isFirstTimeLaunchingApp()
     override suspend fun setDefaultAlarmTone() = localDataSource.setDefaultAlarmTone()
-
 }

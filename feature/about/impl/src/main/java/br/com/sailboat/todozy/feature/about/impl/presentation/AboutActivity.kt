@@ -15,5 +15,4 @@ class AboutActivity : BaseActivity() {
     override fun newFragmentInstance(): Fragment {
         return AboutFragment.newInstance()
     }
-
 }

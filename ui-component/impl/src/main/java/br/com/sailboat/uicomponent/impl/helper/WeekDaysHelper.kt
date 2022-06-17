@@ -3,10 +3,9 @@ package br.com.sailboat.uicomponent.impl.helper
 import android.content.Context
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.model.DayUiModel
-import java.util.*
+import java.util.Calendar
 
 class WeekDaysHelper {
-
 
     fun getCustomRepeat(ctx: Context, days: String?): String {
         var days = days
@@ -35,7 +34,6 @@ class WeekDaysHelper {
 
             return sb.toString()
         }
-
     }
 
     fun getDayViewFromId(ctx: Context, id: Int): DayUiModel {
@@ -99,6 +97,5 @@ class WeekDaysHelper {
         }
 
         return sb.toString()
-
     }
 }

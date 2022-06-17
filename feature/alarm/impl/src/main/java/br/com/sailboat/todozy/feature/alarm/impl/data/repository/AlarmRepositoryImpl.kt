@@ -26,5 +26,4 @@ class AlarmRepositoryImpl(
         alarmLocalDataSource.save(alarmData).getOrThrow()
         return@runCatching
     }
-
 }

@@ -20,5 +20,4 @@ class DeleteAllHistoryTest {
         coVerify { repository.deleteAll() }
         confirmVerified(repository)
     }
-
 }

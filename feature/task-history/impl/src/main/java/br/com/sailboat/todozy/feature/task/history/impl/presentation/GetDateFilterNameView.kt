@@ -8,5 +8,4 @@ class GetDateFilterNameView(private val context: Context) : GetDateFilterNameVie
     override operator fun invoke(dateRangeType: DateFilterTaskHistorySelectableItem): String {
         return context.getString(dateRangeType.getName()).uppercase()
     }
-
 }

@@ -23,5 +23,4 @@ class TaskListViewState {
         data class NavigateToTaskDetails(val taskId: Long) : Action()
         data class UpdateRemovedTask(val position: Int) : Action()
     }
-
 }

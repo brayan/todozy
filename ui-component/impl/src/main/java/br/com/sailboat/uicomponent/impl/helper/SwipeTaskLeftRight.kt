@@ -12,7 +12,6 @@ import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.viewholder.TaskViewHolder
 import kotlin.math.roundToInt
 
-
 class SwipeTaskLeftRight(private val context: Context, private val callback: Callback) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
@@ -24,12 +23,15 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
     }
 
     override fun onChildDraw(
-        canvas: Canvas, recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
-        actionState: Int, isCurrentlyActive: Boolean
+        canvas: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean,
     ) {
-
-        var icon: Bitmap
+        val icon: Bitmap
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
@@ -59,10 +61,8 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
                     paint
                 )
-
             } else {
                 paint.color = ContextCompat.getColor(context, R.color.md_red_200)
-
 
                 var leftValue = itemView.left.toFloat()
 
@@ -85,7 +85,6 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
                     paint
                 )
-
             }
 
             super.onChildDraw(
@@ -98,7 +97,6 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                 isCurrentlyActive
             )
         }
-
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -112,7 +110,6 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                 callback.onSwipeRight(view.bindingAdapterPosition)
             }
         }
-
     }
 
     override fun getSwipeDirs(
@@ -153,7 +150,7 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
     }
 
     private fun getBitmapFromVectorDrawable(drawableId: Int): Bitmap {
-        var drawable = ContextCompat.getDrawable(context, drawableId)
+        val drawable = ContextCompat.getDrawable(context, drawableId)
         val bitmap = Bitmap.createBitmap(
             drawable!!.intrinsicWidth,
             drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
@@ -164,5 +161,4 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
 
         return bitmap
     }
-
 }

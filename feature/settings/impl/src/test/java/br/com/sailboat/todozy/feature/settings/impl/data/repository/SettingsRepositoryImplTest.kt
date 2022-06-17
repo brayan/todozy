@@ -2,7 +2,11 @@ package br.com.sailboat.todozy.feature.settings.impl.data.repository
 
 import android.net.Uri
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSource
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -101,5 +105,4 @@ class SettingsRepositoryImplTest {
         coEvery { settingsLocalDataSource.setFirstTimeLaunchingApp(any()) } just runs
         coEvery { settingsLocalDataSource.isFirstTimeLaunchingApp() } returns isFirstTimeLaunchingApp
     }
-
 }

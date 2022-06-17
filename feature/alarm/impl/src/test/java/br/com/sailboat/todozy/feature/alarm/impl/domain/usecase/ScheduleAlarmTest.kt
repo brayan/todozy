@@ -8,7 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class ScheduleAlarmTest {
 
@@ -26,5 +26,4 @@ class ScheduleAlarmTest {
         coVerify { alarmManagerService.scheduleAlarm(alarm.dateTime, taskId) }
         confirmVerified(alarmManagerService)
     }
-
 }

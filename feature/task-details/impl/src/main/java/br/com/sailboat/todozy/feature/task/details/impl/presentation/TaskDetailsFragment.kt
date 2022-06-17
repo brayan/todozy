@@ -2,26 +2,34 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
-import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
-import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
-import br.com.sailboat.uicomponent.impl.helper.DialogHelper
-import br.com.sailboat.uicomponent.impl.helper.getTaskId
-import br.com.sailboat.uicomponent.impl.helper.putTaskId
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.CloseTaskDetails
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ConfirmDeleteTask
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.NavigateToTaskForm
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
+import br.com.sailboat.uicomponent.impl.helper.DialogHelper
+import br.com.sailboat.uicomponent.impl.helper.getTaskId
+import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -117,7 +125,8 @@ class TaskDetailsFragment : BaseFragment() {
                     override fun onClickPositiveOption() {
                         viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
                     }
-                })
+                }
+            )
         }
     }
 
@@ -167,5 +176,4 @@ class TaskDetailsFragment : BaseFragment() {
         }
         return true
     }
-
 }

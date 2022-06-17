@@ -19,7 +19,6 @@ class GetTaskMetricsTest {
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
     private val getTaskMetrics = GetTaskMetrics(repository)
 
-
     @Test
     fun `should get task metrics from repository`() = runBlocking {
         prepareScenario()
@@ -81,5 +80,4 @@ class GetTaskMetricsTest {
         coEvery { repository.getTotalOfDoneTasks(any()) } returns totalOfDoneTasksResult
         coEvery { repository.getTotalOfNotDoneTasks(any()) } returns totalOfNotDoneTasksResult
     }
-
 }

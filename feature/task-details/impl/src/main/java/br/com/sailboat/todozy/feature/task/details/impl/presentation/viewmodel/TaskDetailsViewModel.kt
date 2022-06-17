@@ -8,8 +8,6 @@ import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUse
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.*
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.*
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
@@ -25,36 +23,36 @@ class TaskDetailsViewModel(
 
     override fun dispatchViewAction(viewAction: TaskDetailsViewAction) {
         when (viewAction) {
-            is OnStart -> onStart(viewAction)
-            is OnClickMenuDelete -> onClickMenuDelete()
-            is OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
-            is OnClickEditTask -> onClickEditTask()
-            is OnReturnToDetails -> onReturnToDetails()
+            is TaskDetailsViewAction.OnStart -> onStart(viewAction)
+            is TaskDetailsViewAction.OnClickMenuDelete -> onClickMenuDelete()
+            is TaskDetailsViewAction.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
+            is TaskDetailsViewAction.OnClickEditTask -> onClickEditTask()
+            is TaskDetailsViewAction.OnReturnToDetails -> onReturnToDetails()
         }
     }
 
-    private fun onStart(viewAction: OnStart) {
+    private fun onStart(viewAction: TaskDetailsViewAction.OnStart) {
         viewState.taskId = viewAction.taskId
         loadDetails()
     }
 
     private fun onClickMenuDelete() {
-        viewState.action.value = ConfirmDeleteTask
+        viewState.action.value = TaskDetailsViewState.Action.ConfirmDeleteTask
     }
 
     private fun onClickConfirmDeleteTask() = viewModelScope.launch {
         try {
             val task = getTaskUseCase(viewState.taskId).getOrThrow()
             disableTaskUseCase(task).getOrThrow()
-            viewState.action.value = CloseTaskDetails(success = true)
+            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails(success = true)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = ShowErrorLoadingTaskDetails
+            viewState.action.value = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
         }
     }
 
     private fun onClickEditTask() {
-        viewState.action.value = NavigateToTaskForm(viewState.taskId)
+        viewState.action.value = TaskDetailsViewState.Action.NavigateToTaskForm(viewState.taskId)
     }
 
     private fun onReturnToDetails() {
@@ -81,8 +79,8 @@ class TaskDetailsViewModel(
             viewState.taskMetrics.postValue(taskMetrics)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = ShowErrorLoadingTaskDetails
-            viewState.action.value = CloseTaskDetails(success = false)
+            viewState.action.value = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
+            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
         }
     }
 }

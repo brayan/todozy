@@ -1,6 +1,5 @@
 package br.com.sailboat.todozy.feature.task.details.impl.di
 
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase

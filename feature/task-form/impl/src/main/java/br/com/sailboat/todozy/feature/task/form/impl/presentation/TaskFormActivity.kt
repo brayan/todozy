@@ -7,7 +7,11 @@ import androidx.activity.result.ActivityResultLauncher
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.utility.kotlin.extension.orZero
-import br.com.sailboat.uicomponent.impl.helper.*
+import br.com.sailboat.uicomponent.impl.helper.getBundle
+import br.com.sailboat.uicomponent.impl.helper.getTaskId
+import br.com.sailboat.uicomponent.impl.helper.hasTaskId
+import br.com.sailboat.uicomponent.impl.helper.putBundle
+import br.com.sailboat.uicomponent.impl.helper.putTaskId
 
 fun Context.startTaskFormActivity(launcher: ActivityResultLauncher<Intent>) {
     val intent = Intent(this, TaskFormActivity::class.java)
@@ -39,5 +43,4 @@ class TaskFormActivity : BaseActivity() {
             TaskFormFragment.newInstance()
         }
     }
-
 }

@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.history.domain.model
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import java.util.*
+import java.util.Calendar
 
 data class TaskHistoryFilter(
     var initialDate: Calendar? = null,
@@ -12,4 +12,3 @@ data class TaskHistoryFilter(
     var category: TaskHistoryCategory? = null,
     var taskId: Long = Entity.NO_ID,
 ) : BaseFilter()
-

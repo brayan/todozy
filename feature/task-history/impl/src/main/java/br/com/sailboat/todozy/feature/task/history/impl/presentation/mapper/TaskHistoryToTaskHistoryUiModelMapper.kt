@@ -16,5 +16,4 @@ class TaskHistoryToTaskHistoryUiModelMapper {
             insertingDate = taskHistory.insertingDate
         )
     }
-
 }

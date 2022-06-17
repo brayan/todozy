@@ -5,7 +5,11 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.utility.android.string.StringProvider
-import br.com.sailboat.uicomponent.model.*
+import br.com.sailboat.uicomponent.model.LabelUiModel
+import br.com.sailboat.uicomponent.model.LabelValueUiModel
+import br.com.sailboat.uicomponent.model.TitleUiModel
+import br.com.sailboat.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.UiModelType
 
 class TaskDetailsUiModelFactory(
     private val stringProvider: StringProvider,
@@ -28,7 +32,6 @@ class TaskDetailsUiModelFactory(
         val item = TitleUiModel(task.name)
         uiModelList.add(item)
     }
-
 
     private fun addAlarm(alarm: Alarm, uiModelList: MutableList<UiModel>) {
         val item = LabelUiModel(stringProvider.getString(R.string.alarm), UiModelType.LABEL.ordinal)

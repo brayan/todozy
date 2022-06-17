@@ -9,5 +9,4 @@ class CancelAlarmSchedule(
     override suspend operator fun invoke(taskId: Long) {
         alarmManagerService.cancelAlarm(taskId)
     }
-
 }

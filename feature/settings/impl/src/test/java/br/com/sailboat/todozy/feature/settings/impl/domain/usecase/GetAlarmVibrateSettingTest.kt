@@ -20,5 +20,4 @@ class GetAlarmVibrateSettingTest {
         coVerify { repository.getAlarmVibrate() }
         confirmVerified(repository)
     }
-
 }

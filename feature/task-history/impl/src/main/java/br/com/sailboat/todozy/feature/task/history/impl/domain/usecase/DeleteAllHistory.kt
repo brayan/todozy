@@ -9,5 +9,4 @@ class DeleteAllHistory(
     override suspend operator fun invoke(): Result<Unit?> {
         return taskHistoryRepository.deleteAll()
     }
-
 }

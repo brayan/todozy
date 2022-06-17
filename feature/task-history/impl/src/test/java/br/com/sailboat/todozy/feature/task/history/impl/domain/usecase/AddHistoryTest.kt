@@ -10,7 +10,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class AddHistoryTest {
 
@@ -32,5 +32,4 @@ class AddHistoryTest {
         coVerify { repository.insert(task, TaskStatus.DONE) }
         confirmVerified(repository)
     }
-
 }

@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.feature.task.form.impl.domain.service
 
 import br.com.sailboat.todozy.domain.model.RepeatType
-import java.util.*
+import java.util.Calendar
 
 interface AlarmService {
     fun getRepeatTypeDescription(repeatType: RepeatType): String

@@ -3,12 +3,10 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.utility.android.string.StringProvider
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
-import br.com.sailboat.todozy.feature.task.list.impl.R
 
 class TaskCategoryToStringMapperTest {
 

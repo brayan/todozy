@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteStatement
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
-import java.util.*
+import java.util.Calendar
 
 abstract class BaseSQLite(database: DatabaseOpenHelperService) {
 
@@ -111,16 +111,12 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
     protected fun getCalendarToBind(calendar: Calendar): String? {
         try {
             return parseCalendarToString(calendar)
-
         } catch (e: Exception) {
             return ""
         }
-
     }
 
     protected fun parseBooleanToInt(value: Boolean): Int {
         return if (value) 1 else 0
     }
-
-
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import br.com.sailboat.todozy.utility.android.activity.BaseActivity
 
-
 fun Context.startTaskListActivity() {
     val intent = Intent(this, TaskListActivity::class.java)
     startActivity(intent)

@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.domain.model.TaskFieldsConditions
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 import kotlin.test.assertEquals
 
 class CheckTaskFieldsTest {
@@ -59,5 +59,4 @@ class CheckTaskFieldsTest {
             )
             assertEquals(expected, result)
         }
-
 }

@@ -1,6 +1,10 @@
 package br.com.sailboat.todozy.feature.alarm.impl.domain.usecase
 
-import br.com.sailboat.todozy.domain.model.*
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Task
+import br.com.sailboat.todozy.domain.model.TaskCategory
+import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import io.mockk.coEvery
@@ -9,7 +13,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class ScheduleAllAlarmsTest {
 
@@ -111,5 +115,4 @@ class ScheduleAllAlarmsTest {
     ) {
         coEvery { getTasksUseCase(any()) } returns tasksResult
     }
-
 }

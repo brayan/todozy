@@ -44,5 +44,4 @@ class GetTaskMetrics(
 
             return@runCatching cont
         }
-
 }

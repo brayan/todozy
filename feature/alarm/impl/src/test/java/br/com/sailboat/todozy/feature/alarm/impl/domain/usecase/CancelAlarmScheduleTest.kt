@@ -20,5 +20,4 @@ class CancelAlarmScheduleTest {
         coVerify { alarmManagerService.cancelAlarm(45) }
         confirmVerified(alarmManagerService)
     }
-
 }

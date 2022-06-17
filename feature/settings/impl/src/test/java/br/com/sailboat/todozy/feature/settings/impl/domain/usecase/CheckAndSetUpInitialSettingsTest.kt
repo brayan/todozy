@@ -85,5 +85,4 @@ class CheckAndSetUpInitialSettingsTest {
             confirmVerified(repository)
             confirmVerified(scheduleAlarmUpdatesUseCase)
         }
-
 }

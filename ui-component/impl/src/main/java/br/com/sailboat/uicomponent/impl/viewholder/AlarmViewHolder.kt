@@ -40,5 +40,4 @@ class AlarmViewHolder(parent: ViewGroup) :
             tvAlarmRepeat.gone()
         }
     }
-
 }

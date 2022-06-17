@@ -7,5 +7,4 @@ class GetAlarmVibrateSetting(
 ) : GetAlarmVibrateSettingUseCase {
 
     override suspend operator fun invoke() = settingsRepository.getAlarmVibrate()
-
 }

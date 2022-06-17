@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
-import java.util.*
+import java.util.Calendar
 
 class GetNextAlarm : GetNextAlarmUseCase {
 
@@ -38,8 +38,6 @@ class GetNextAlarm : GetNextAlarmUseCase {
         do {
             calendar.add(Calendar.DATE, 1)
             val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK).toString()
-
         } while (days.contains(currentDayOfWeek).not())
     }
-
 }

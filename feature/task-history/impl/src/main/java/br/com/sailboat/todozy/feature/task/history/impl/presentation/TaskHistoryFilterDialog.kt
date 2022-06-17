@@ -54,8 +54,10 @@ class TaskHistoryFilterDialog : DialogFragment() {
 
     companion object {
         fun show(
-            manager: FragmentManager, date: DateFilterTaskHistorySelectableItem,
-            status: TaskStatusSelectableItem, callback: Callback
+            manager: FragmentManager,
+            date: DateFilterTaskHistorySelectableItem,
+            status: TaskStatusSelectableItem,
+            callback: Callback,
         ) {
             val dialog = TaskHistoryFilterDialog()
             dialog.callback = callback

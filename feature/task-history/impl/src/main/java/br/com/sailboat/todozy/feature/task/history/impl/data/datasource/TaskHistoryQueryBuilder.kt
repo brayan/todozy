@@ -2,9 +2,14 @@ package br.com.sailboat.todozy.feature.task.history.impl.data.datasource
 
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
-import br.com.sailboat.todozy.utility.kotlin.extension.*
+import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
+import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForYesterday
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToday
+import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForYesterday
+import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryQueryBuilder {
 

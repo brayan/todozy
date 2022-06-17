@@ -5,4 +5,3 @@ data class TaskMetrics(
     val notDoneTasks: Int,
     val consecutiveDone: Int
 )
-

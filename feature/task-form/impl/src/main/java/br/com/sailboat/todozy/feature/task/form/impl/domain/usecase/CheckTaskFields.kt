@@ -20,5 +20,4 @@ class CheckTaskFields : CheckTaskFieldsUseCase {
 
         return conditions
     }
-
 }

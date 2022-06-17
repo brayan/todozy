@@ -1,10 +1,9 @@
 package br.com.sailboat.uicomponent.impl.dialog.selectable.model
 
 import br.com.sailboat.uicomponent.impl.R
-import java.util.*
+import java.util.Arrays
 
 enum class DateFilterTaskHistorySelectableItem : SelectableItem {
-
 
     NO_FILTER {
         override fun getName(): Int {
@@ -42,5 +41,4 @@ enum class DateFilterTaskHistorySelectableItem : SelectableItem {
             return ArrayList<SelectableItem>(Arrays.asList(*values()))
         }
     }
-
 }

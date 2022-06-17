@@ -2,15 +2,47 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.*
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAddAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAlarmDate
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAlarmTime
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickCustomRepeatAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickRepeatAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickSaveTask
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmDate
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmTime
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmType
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectCustomAlarmType
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnStart
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.*
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.CloseTaskForm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.HideKeyboard
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToAlarmDateSelector
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToAlarmTimeSelector
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToCustomRepeatAlarmSelector
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToRepeatAlarmSelector
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.SetFocusOnInputTaskName
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.SetTaskDetails
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorAlarmNotValid
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorSavingTask
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorTaskNameCantBeEmpty
+import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
+import br.com.sailboat.todozy.utility.android.activity.showKeyboard
+import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.visible
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.TimeSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
@@ -19,12 +51,6 @@ import br.com.sailboat.uicomponent.impl.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.uicomponent.impl.helper.AnimationHelper
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
-import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
-import br.com.sailboat.todozy.utility.android.activity.showKeyboard
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
-import br.com.sailboat.todozy.utility.android.view.gone
-import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskFormFragment : BaseFragment() {
@@ -167,7 +193,8 @@ class TaskFormFragment : BaseFragment() {
                     )
                     viewModel.dispatchViewAction(onSelectAlarmDateAction)
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToAlarmTimeSelector(action: NavigateToAlarmTimeSelector) {
@@ -182,17 +209,20 @@ class TaskFormFragment : BaseFragment() {
                     )
                     viewModel.dispatchViewAction(onSelectAlarmTimeAction)
                 }
-            })
+            }
+        )
     }
 
     private fun navigateToRepeatAlarmSelector(action: NavigateToRepeatAlarmSelector) {
-        SelectItemDialog.show(childFragmentManager,
+        SelectItemDialog.show(
+            childFragmentManager,
             getString(R.string.repeat_alarm),
             RepeatAlarmSelectableItem.getItems(),
             RepeatAlarmSelectableItem.getFromId(action.repeatType.ordinal),
             object : SelectItemDialog.Callback {
                 override fun onClickItem(item: SelectableItem) = onSelectItemRepeatAlarm(item)
-            })
+            }
+        )
     }
 
     private fun navigateToCustomRepeatAlarmSelector(action: NavigateToCustomRepeatAlarmSelector) {
@@ -207,7 +237,8 @@ class TaskFormFragment : BaseFragment() {
                         viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.NOT_REPEAT))
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun showAlarm() {
@@ -250,13 +281,15 @@ class TaskFormFragment : BaseFragment() {
     }
 
     private fun initEditTexts() {
-        binding.etTaskFormName.setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                activity?.hideKeyboard()
-                return@OnKeyListener true
+        binding.etTaskFormName.setOnKeyListener(
+            View.OnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    activity?.hideKeyboard()
+                    return@OnKeyListener true
+                }
+                false
             }
-            false
-        })
+        )
     }
 
     private fun onSelectItemRepeatAlarm(item: SelectableItem) {
@@ -289,5 +322,4 @@ class TaskFormFragment : BaseFragment() {
             if (animate) hideAlarmWithAnimation() else hideAlarm()
         }
     }
-
 }

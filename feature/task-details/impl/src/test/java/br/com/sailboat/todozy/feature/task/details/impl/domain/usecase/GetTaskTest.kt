@@ -46,5 +46,4 @@ class GetTaskTest {
     ) {
         coEvery { repository.getTask(any()) } returns taskResult
     }
-
 }

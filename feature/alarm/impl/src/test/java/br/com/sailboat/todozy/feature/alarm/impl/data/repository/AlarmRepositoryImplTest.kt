@@ -13,7 +13,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 import kotlin.test.assertEquals
 
 class AlarmRepositoryImplTest {
@@ -117,5 +117,4 @@ class AlarmRepositoryImplTest {
         coEvery { alarmDataToAlarmMapper.map(any()) } returns alarm
         coEvery { alarmToAlarmDataMapper.map(any(), any()) } returns alarmData
     }
-
 }

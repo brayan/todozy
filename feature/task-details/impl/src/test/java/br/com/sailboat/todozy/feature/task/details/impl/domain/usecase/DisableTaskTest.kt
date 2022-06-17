@@ -34,5 +34,4 @@ class DisableTaskTest {
         coVerify { deleteAlarmUseCase(task.id) }
         confirmVerified(deleteAlarmUseCase)
     }
-
 }

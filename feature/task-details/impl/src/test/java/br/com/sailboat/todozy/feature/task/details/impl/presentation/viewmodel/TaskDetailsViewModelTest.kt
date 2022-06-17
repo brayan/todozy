@@ -15,7 +15,11 @@ import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.AlarmUiModel
 import br.com.sailboat.uicomponent.model.TitleUiModel
 import br.com.sailboat.uicomponent.model.UiModel
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test

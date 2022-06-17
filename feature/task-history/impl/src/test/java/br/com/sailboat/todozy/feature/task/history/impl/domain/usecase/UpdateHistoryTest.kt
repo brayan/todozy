@@ -28,5 +28,4 @@ class UpdateHistoryTest {
         coVerify { repository.update(history) }
         confirmVerified(repository)
     }
-
 }

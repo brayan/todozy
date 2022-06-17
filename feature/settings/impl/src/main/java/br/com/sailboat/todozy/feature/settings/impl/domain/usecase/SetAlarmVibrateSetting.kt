@@ -9,5 +9,4 @@ class SetAlarmVibrateSetting(
     override suspend operator fun invoke(vibrate: Boolean) {
         settingsRepository.setAlarmVibrate(vibrate)
     }
-
 }

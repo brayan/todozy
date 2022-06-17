@@ -7,5 +7,4 @@ class GetAlarmSoundSetting(
 ) : GetAlarmSoundSettingUseCase {
 
     override suspend operator fun invoke() = settingsRepository.getAlarmTone()
-
 }

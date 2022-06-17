@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.domain.model.mock
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
-import java.util.*
+import java.util.Calendar
 
 object TaskMockFactory {
 

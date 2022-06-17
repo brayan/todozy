@@ -10,5 +10,4 @@ class UpdateHistory(
     override suspend operator fun invoke(taskHistory: TaskHistory): Result<Unit?> {
         return taskHistoryRepository.update(taskHistory)
     }
-
 }

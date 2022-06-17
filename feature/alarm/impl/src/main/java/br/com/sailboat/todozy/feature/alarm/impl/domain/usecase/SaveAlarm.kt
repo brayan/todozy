@@ -18,5 +18,4 @@ class SaveAlarm(
         cancelAlarmScheduleUseCase(taskId)
         scheduleAlarmUseCase(alarm, taskId)
     }
-
 }

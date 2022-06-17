@@ -4,8 +4,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
-import br.com.sailboat.uicomponent.impl.viewholder.*
-import br.com.sailboat.uicomponent.model.*
+import br.com.sailboat.uicomponent.impl.viewholder.AlarmViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.LabelValueViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.LabelViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.TitleViewHolder
+import br.com.sailboat.uicomponent.model.AlarmUiModel
+import br.com.sailboat.uicomponent.model.LabelUiModel
+import br.com.sailboat.uicomponent.model.LabelValueUiModel
+import br.com.sailboat.uicomponent.model.TitleUiModel
+import br.com.sailboat.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.model.UiModelType
 
 class TaskDetailsAdapter :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
@@ -30,5 +39,4 @@ class TaskDetailsAdapter :
     }
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
-
 }

@@ -14,5 +14,4 @@ class AlarmDataToAlarmMapper {
             repeatType = RepeatType.indexOf(alarmData.repeatType),
             customDays = alarmData.days
         )
-
 }

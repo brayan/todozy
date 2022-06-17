@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
 import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
@@ -25,7 +25,6 @@ class TaskHistoryLocalDataSourceSQLite(
         .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
         .append(" ); ")
         .toString()
-
 
     override fun save(taskId: Long, taskStatus: Int): Result<Long> = runCatching {
         val sql = StringBuilder()
@@ -216,8 +215,7 @@ class TaskHistoryLocalDataSourceSQLite(
                 val taskHistory = cursor.mapToTaskHistoryData()
                 historyList.add(taskHistory)
                 cursor.moveToNext()
-            } while (!cursor.isAfterLast)
-
+            } while (cursor.isAfterLast.not())
         }
         cursor.close()
         return historyList
@@ -232,5 +230,4 @@ class TaskHistoryLocalDataSourceSQLite(
             insertingDate = getString(this, "insertingDate"),
             enabled = getBoolean(this, "enabled") ?: true
         )
-
 }

@@ -8,7 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class SaveAlarmTest {
 
@@ -48,5 +48,4 @@ class SaveAlarmTest {
         coVerify { scheduleAlarmUseCase(alarm, taskId) }
         confirmVerified(scheduleAlarmUseCase)
     }
-
 }

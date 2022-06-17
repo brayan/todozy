@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 fun String.toShortDateView(ctx: Context): String {
     val calendar = this.toDateTimeCalendar()
@@ -30,23 +30,18 @@ fun Context.getDatePattern(): String {
 fun Calendar.getFullDateName(ctx: Context): String {
     return if (isToday()) {
         ctx.getString(R.string.today) + ", " + DateFormat.getLongDateFormat(ctx).format(time)
-
     } else if (isTomorrow()) {
         ctx.getString(R.string.tomorrow) + ", " + DateFormat.getLongDateFormat(ctx).format(time)
-
     } else {
         getDayName() + ", " + DateFormat.getLongDateFormat(ctx).format(time)
     }
 }
 
 fun Calendar.getSimpleDayName(ctx: Context): String {
-
     return if (isToday()) {
         ctx.getString(R.string.today)
-
     } else if (isTomorrow()) {
         ctx.getString(R.string.tomorrow)
-
     } else {
         getFullDateName(ctx)
     }

@@ -110,5 +110,4 @@ class GetTaskHistoryTest {
         coEvery { repository.getPreviousDaysHistory(any()) } returns taskHistoryListResult
         coEvery { repository.getYesterdayHistory(any()) } returns taskHistoryListResult
     }
-
 }

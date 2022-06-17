@@ -1,7 +1,12 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,15 +23,23 @@ import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
-import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
-import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.CloseNotifications
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToAbout
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToHistory
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToSettings
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskDetails
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskForm
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorCompletingTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorLoadingTasks
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.UpdateRemovedTask
 import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
+import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
+import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -244,7 +257,8 @@ class TaskListFragment : BaseFragment() {
                             )
                         )
                     }
-                })
+                }
+            )
         )
 
         itemTouchHelper.attachToRecyclerView(binding.recycler)
@@ -263,5 +277,4 @@ class TaskListFragment : BaseFragment() {
         progress?.dismissAllowingStateLoss()
         progress = null
     }
-
 }

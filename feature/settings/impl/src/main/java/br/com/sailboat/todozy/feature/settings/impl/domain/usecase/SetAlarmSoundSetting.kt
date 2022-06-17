@@ -8,5 +8,4 @@ class SetAlarmSoundSetting(
 ) : SetAlarmSoundSettingUseCase {
 
     override suspend operator fun invoke(soundUri: Uri) = settingsRepository.setAlarmTone(soundUri)
-
 }

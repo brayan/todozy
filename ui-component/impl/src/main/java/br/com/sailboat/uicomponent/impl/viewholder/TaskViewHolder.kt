@@ -13,7 +13,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeToday
 import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
 import br.com.sailboat.uicomponent.impl.databinding.VhTaskBinding
 import br.com.sailboat.uicomponent.model.TaskUiModel
-import java.util.*
+import java.util.Calendar
 
 class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<TaskUiModel, VhTaskBinding>(
@@ -51,7 +51,6 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
             } else {
                 alarm.toShortDateView(context)
             }
-
         } else {
             task.tvTaskTime.text = alarm.formatTimeWithAndroidFormat(context)
         }
@@ -68,15 +67,12 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         if (alarm == null) {
             task.tvTaskDate.gone()
             task.tvTaskTime.gone()
-
         } else if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
             task.tvTaskTime.gone()
             task.tvTaskDate.visible()
-
         } else {
             task.tvTaskTime.visible()
             task.tvTaskDate.gone()
         }
     }
-
 }

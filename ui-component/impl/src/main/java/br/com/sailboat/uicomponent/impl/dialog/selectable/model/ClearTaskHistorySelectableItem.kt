@@ -15,12 +15,9 @@ enum class ClearTaskHistorySelectableItem : SelectableItem {
         }
     };
 
-
     companion object {
         fun getItems(): List<SelectableItem> {
             return ArrayList<SelectableItem>(listOf(*values()))
         }
     }
-
-
 }

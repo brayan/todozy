@@ -18,5 +18,4 @@ enum class RepeatType {
             return NOT_REPEAT
         }
     }
-
 }

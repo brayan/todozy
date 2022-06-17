@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 import kotlin.test.assertEquals
 
 class GetNextAlarmTest {
@@ -114,5 +114,4 @@ class GetNextAlarmTest {
         )
         assertEquals(expected, result)
     }
-
 }

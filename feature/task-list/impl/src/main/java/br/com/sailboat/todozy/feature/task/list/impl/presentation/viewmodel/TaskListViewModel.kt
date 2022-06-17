@@ -13,11 +13,32 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilte
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.*
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.*
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuAbout
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuHistory
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuSettings
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickNewTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnStart
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnSubmitSearchTerm
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnSwipeTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.CloseNotifications
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToAbout
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToHistory
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToSettings
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskDetails
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskForm
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorCompletingTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorLoadingTasks
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.UpdateRemovedTask
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.uicomponent.model.TaskUiModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
@@ -142,7 +163,6 @@ class TaskListViewModel(
                 loadTasks()
                 viewState.taskMetrics.value = null
             }
-
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = ShowErrorCompletingTask
@@ -156,5 +176,4 @@ class TaskListViewModel(
         swipeTaskAsyncJobs.add(job)
         job.invokeOnCompletion { swipeTaskAsyncJobs.remove(job) }
     }
-
 }

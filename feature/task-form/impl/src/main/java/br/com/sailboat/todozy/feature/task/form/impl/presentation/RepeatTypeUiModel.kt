@@ -25,5 +25,4 @@ enum class RepeatTypeUiModel(val repeatType: RepeatType, val description: Int) {
             throw Exception("RepeatType not found.")
         }
     }
-
 }

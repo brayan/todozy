@@ -3,8 +3,8 @@ package br.com.sailboat.todozy
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettingsUseCase
 import br.com.sailboat.todozy.feature.navigation.android.TaskListNavigator
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettingsUseCase
 import br.com.sailboat.todozy.utility.android.log.log
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

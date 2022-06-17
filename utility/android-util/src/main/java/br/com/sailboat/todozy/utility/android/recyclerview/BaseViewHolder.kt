@@ -16,5 +16,4 @@ abstract class BaseViewHolder<in T, VB : ViewBinding>(val binding: VB) :
     companion object {
         fun getInflater(parent: ViewGroup): LayoutInflater = LayoutInflater.from(parent.context)
     }
-
 }

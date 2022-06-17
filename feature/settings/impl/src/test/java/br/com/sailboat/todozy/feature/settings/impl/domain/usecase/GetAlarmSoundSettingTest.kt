@@ -20,5 +20,4 @@ class GetAlarmSoundSettingTest {
         coVerify { repository.getAlarmTone() }
         confirmVerified(repository)
     }
-
 }

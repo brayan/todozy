@@ -11,5 +11,4 @@ class GetAlarm(
     override suspend operator fun invoke(taskId: Long): Result<Alarm?> {
         return alarmRepository.getAlarmByTaskId(taskId)
     }
-
 }

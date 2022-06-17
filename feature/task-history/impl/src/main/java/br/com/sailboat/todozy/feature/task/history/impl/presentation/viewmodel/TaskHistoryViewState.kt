@@ -6,7 +6,7 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHi
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.uicomponent.model.UiModel
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryViewState {
 
