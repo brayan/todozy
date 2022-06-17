@@ -34,7 +34,6 @@ class TwoOptionsDialog : BaseDialogFragment() {
         fun onClickPositiveOption()
     }
 
-
     interface PositiveNegativeCallback {
         fun onClickPositiveOption()
         fun onClickNegativeOption()
