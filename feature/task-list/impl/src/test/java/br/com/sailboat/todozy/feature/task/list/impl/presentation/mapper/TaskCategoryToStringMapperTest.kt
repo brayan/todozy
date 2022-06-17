@@ -18,9 +18,8 @@ class TaskCategoryToStringMapperTest {
 
     @Test
     fun `should map String from task category BEFORE_TODAY`() = runBlocking {
-        val taskCategoryInt = 2132017400
         val taskCategoryString = "Before today"
-        coEvery { stringProvider.getString(taskCategoryInt) } returns taskCategoryString
+        prepareScenario(taskCategoryString = taskCategoryString)
 
         val result = taskCategoryToStringMapper.map(TaskCategory.BEFORE_TODAY)
 
@@ -29,9 +28,8 @@ class TaskCategoryToStringMapperTest {
 
     @Test
     fun `should map String from task category TODAY`() = runBlocking {
-        val taskCategoryInt = 2132017430
         val taskCategoryString = "Today"
-        coEvery { stringProvider.getString(taskCategoryInt) } returns taskCategoryString
+        prepareScenario(taskCategoryString = taskCategoryString)
 
         val result = taskCategoryToStringMapper.map(TaskCategory.TODAY)
 
@@ -40,9 +38,8 @@ class TaskCategoryToStringMapperTest {
 
     @Test
     fun `should map String from task category TOMORROW`() = runBlocking {
-        val taskCategoryInt = 2132017431
         val taskCategoryString = "Tomorrow"
-        coEvery { stringProvider.getString(taskCategoryInt) } returns taskCategoryString
+        prepareScenario(taskCategoryString = taskCategoryString)
 
         val result = taskCategoryToStringMapper.map(TaskCategory.TOMORROW)
 
@@ -51,12 +48,15 @@ class TaskCategoryToStringMapperTest {
 
     @Test
     fun `should map String from task category NEXT_DAYS`() = runBlocking {
-        val taskCategoryInt = 2132017380
         val taskCategoryString = "Next days"
-        coEvery { stringProvider.getString(taskCategoryInt) } returns taskCategoryString
+        prepareScenario(taskCategoryString = taskCategoryString)
 
         val result = taskCategoryToStringMapper.map(TaskCategory.NEXT_DAYS)
 
         assertEquals(taskCategoryString, result)
+    }
+
+    private fun prepareScenario(taskCategoryString: String = "Today") {
+        coEvery { stringProvider.getString(any()) } returns taskCategoryString
     }
 }
