@@ -20,10 +20,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
-private var testsTotal = 0L
-private var testsSuccess = 0L
-private var testsFailed = 0L
-private var testsSkipped = 0L
+var testsTotal = 0L
+var testsSuccess = 0L
+var testsFailed = 0L
+var testsSkipped = 0L
 
 allprojects {
     repositories {
