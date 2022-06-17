@@ -21,5 +21,4 @@ class BitmapHelper {
 
         return bitmap
     }
-
 }

@@ -12,7 +12,8 @@ import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.databinding.DialogRecyclerBinding
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 
-class SelectItemDialog(private val callback: Callback) : BaseDialogFragment(),
+class SelectItemDialog(private val callback: Callback) :
+    BaseDialogFragment(),
     SelectableItemAdapter.Callback {
 
     override lateinit var selectableItems: List<SelectableItem>

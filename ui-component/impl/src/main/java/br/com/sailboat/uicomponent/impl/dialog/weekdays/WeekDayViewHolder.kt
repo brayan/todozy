@@ -2,10 +2,10 @@ package br.com.sailboat.uicomponent.impl.dialog.weekdays
 
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import br.com.sailboat.uicomponent.model.DayUiModel
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.databinding.VhWeekDayBinding
+import br.com.sailboat.uicomponent.model.DayUiModel
 
 class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<DayUiModel, VhWeekDayBinding>(
@@ -36,7 +36,6 @@ class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
                 )
             )
         }
-
     }
 
     interface Callback {

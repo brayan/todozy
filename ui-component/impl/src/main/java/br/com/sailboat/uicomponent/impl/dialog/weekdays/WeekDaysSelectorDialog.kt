@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.databinding.DlgWeekDaysSelectorBinding
 import br.com.sailboat.uicomponent.model.DayUiModel
-import java.util.*
+import java.util.Calendar
 
-class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
+class WeekDaysSelectorDialog(private val callback: Callback) :
+    DialogFragment(),
     WeekDaysSelectorAdapter.Callback {
 
     private var selectedDays = ""
@@ -81,7 +82,6 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
             }
 
             days
-
         } else {
             ""
         }
@@ -101,7 +101,6 @@ class WeekDaysSelectorDialog(private val callback: Callback) : DialogFragment(),
         }
 
         binding.recycler.adapter?.notifyItemChanged(position)
-
     }
 
     private fun getDayViewFromId(id: Int) = when (id) {

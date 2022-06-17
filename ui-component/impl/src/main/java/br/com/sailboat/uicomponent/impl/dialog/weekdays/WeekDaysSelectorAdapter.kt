@@ -21,5 +21,4 @@ class WeekDaysSelectorAdapter(private val callback: Callback) :
     }
 
     override fun getItemCount() = callback.days.size
-
 }

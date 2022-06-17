@@ -31,5 +31,4 @@ class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback
             ivSelectableItemSelected.gone()
         }
     }
-
 }

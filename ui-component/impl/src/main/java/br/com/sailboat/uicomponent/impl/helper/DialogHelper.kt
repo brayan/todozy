@@ -33,5 +33,4 @@ class DialogHelper {
 
         dialog.show(manager, "YES_OR_NO_DIALOG")
     }
-
 }

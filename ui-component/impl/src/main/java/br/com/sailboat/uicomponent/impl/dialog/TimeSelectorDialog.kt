@@ -7,9 +7,10 @@ import android.text.format.DateFormat
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import java.util.*
+import java.util.Calendar
 
-class TimeSelectorDialog(private val callback: Callback) : DialogFragment(),
+class TimeSelectorDialog(private val callback: Callback) :
+    DialogFragment(),
     TimePickerDialog.OnTimeSetListener {
 
     private lateinit var calendar: Calendar

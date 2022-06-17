@@ -11,5 +11,4 @@ class ApiLevelHelper {
     fun isLowerThan(apiLevel: Int): Boolean {
         return Build.VERSION.SDK_INT < apiLevel
     }
-
 }

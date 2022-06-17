@@ -83,24 +83,17 @@ class AnimationHelper {
         colorAnimation.addUpdateListener { animator -> callback.onAnimationUpdate(animator) }
         colorAnimation.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
-
             }
-
             override fun onAnimationEnd(animation: Animator) {
                 callback.onAnimationEnd(animation)
             }
-
             override fun onAnimationCancel(animation: Animator) {
-
             }
-
             override fun onAnimationRepeat(animation: Animator) {
-
             }
         })
         colorAnimation.start()
     }
-
 
     interface BackgroundColorCallback {
         fun onAnimationUpdate(animator: ValueAnimator)

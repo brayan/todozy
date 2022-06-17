@@ -36,5 +36,4 @@ class SelectableItemAdapter(private val callback: Callback) :
             newItem: SelectableItem,
         ) = oldItem.getName() == newItem.getName()
     }
-
 }
