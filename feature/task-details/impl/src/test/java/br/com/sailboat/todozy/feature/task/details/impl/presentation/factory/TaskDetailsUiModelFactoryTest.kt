@@ -8,8 +8,6 @@ import br.com.sailboat.todozy.utility.android.string.StringProvider
 import br.com.sailboat.uicomponent.model.AlarmUiModel
 import br.com.sailboat.uicomponent.model.LabelUiModel
 import br.com.sailboat.uicomponent.model.LabelValueUiModel
-import br.com.sailboat.uicomponent.model.SubheadUiModel
-import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.TitleUiModel
 import io.mockk.coEvery
 import io.mockk.mockk

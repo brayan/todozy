@@ -23,7 +23,7 @@ class TaskListUiModelFactoryTest {
     )
 
     @Test
-    fun `should create a subhead and a task when create is called from tasksUiModelFactory`() = runBlocking {
+    fun `should create a subhead and a task when create is called from taskListUiModelFactory`() = runBlocking {
         val taskList = listOf(
             Task(
                 id = 42L,
