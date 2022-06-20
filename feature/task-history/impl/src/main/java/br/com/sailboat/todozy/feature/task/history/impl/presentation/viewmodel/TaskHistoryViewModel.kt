@@ -24,7 +24,7 @@ import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 
 class TaskHistoryViewModel(
     override val viewState: TaskHistoryViewState = TaskHistoryViewState(),
