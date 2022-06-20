@@ -4,13 +4,15 @@ import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.impl.domain.service.CalendarService
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteAllHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHistoryUseCase
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameViewUseCase
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryViewUseCase
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.factory.TaskHistoryUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
@@ -20,17 +22,19 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHi
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.util.*
 
 class TaskHistoryViewModel(
     override val viewState: TaskHistoryViewState = TaskHistoryViewState(),
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
-    private val getHistoryViewUseCase: GetHistoryViewUseCase,
+    private val getTaskHistoryUseCase: GetTaskHistoryUseCase,
     private val getDateFilterNameViewUseCase: GetDateFilterNameViewUseCase,
     private val updateHistoryUseCase: UpdateHistoryUseCase,
     private val deleteHistoryUseCase: DeleteHistoryUseCase,
     private val deleteAllHistoryUseCase: DeleteAllHistoryUseCase,
+    private val taskHistoryUiModelFactory: TaskHistoryUiModelFactory,
     private val taskHistoryUiModelToTaskHistoryMapper: TaskHistoryUiModelToTaskHistoryMapper,
     private val logService: LogService,
     private val calendarService: CalendarService,
@@ -265,10 +269,24 @@ class TaskHistoryViewModel(
     private fun loadHistoryTasks() = viewModelScope.launch {
         try {
             val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
-            val taskHistoryList = async { getHistoryViewUseCase(filter).getOrThrow() }
+
+            val taskHistoryCategories = listOf(
+                TaskHistoryCategory.TODAY,
+                TaskHistoryCategory.YESTERDAY,
+                TaskHistoryCategory.PREVIOUS_DAYS,
+            )
+
+            val taskHistoryList = taskHistoryCategories.map { category ->
+                async {
+                    val searchFilter = filter.copy(category = category).apply { text = filter.text }
+                    val taskHistoryList = getTaskHistoryUseCase(searchFilter).getOrThrow()
+
+                    taskHistoryUiModelFactory.create(taskHistoryList, category)
+                }
+            }.awaitAll().flatten()
 
             viewState.taskMetrics.postValue(taskMetrics.await())
-            viewState.taskHistoryList.postValue(taskHistoryList.await())
+            viewState.taskHistoryList.postValue(taskHistoryList)
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = TaskHistoryViewState.Action.ShowGenericError

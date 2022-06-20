@@ -6,7 +6,9 @@ import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 
 class TaskHistoryToTaskHistoryUiModelMapper {
 
-    fun map(taskHistory: TaskHistory): TaskHistoryUiModel {
+    fun map(taskHistoryList: List<TaskHistory>) = taskHistoryList.map { map(it) }
+
+    private fun map(taskHistory: TaskHistory): TaskHistoryUiModel {
         val done = taskHistory.status == TaskStatus.DONE
 
         return TaskHistoryUiModel(

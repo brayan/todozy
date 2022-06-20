@@ -13,14 +13,14 @@ class TaskListUiModelFactory(
 ) {
 
     fun create(tasks: List<Task>, category: TaskCategory): List<UiModel> {
-        val tasksView = mutableListOf<UiModel>()
+        val taskListUiModel = mutableListOf<UiModel>()
         val subhead = taskCategoryToStringMapper.map(category)
 
         if (tasks.isNotEmpty()) {
-            tasksView.add(SubheadUiModel(subhead))
-            tasksView.addAll(taskToTaskUiModelMapper.map(tasks))
+            taskListUiModel.add(SubheadUiModel(subhead))
+            taskListUiModel.addAll(taskToTaskUiModelMapper.map(tasks))
         }
 
-        return tasksView
+        return taskListUiModel
     }
 }

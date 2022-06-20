@@ -19,8 +19,8 @@ import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHis
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameView
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameViewUseCase
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryView
-import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetHistoryViewUseCase
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.factory.TaskHistoryUiModelFactory
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryCategoryToStringMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.navigator.TaskHistoryNavigatorImpl
@@ -31,21 +31,23 @@ import org.koin.dsl.module
 
 private val presentation = module {
     factory<CalendarService> { CalendarServiceImpl(get()) }
-    factory<GetHistoryViewUseCase> { GetHistoryView(get(), get(), get()) }
     factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
     factory<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
     factory { TaskHistoryToTaskHistoryUiModelMapper() }
     factory { TaskHistoryUiModelToTaskHistoryMapper() }
+    factory { TaskHistoryCategoryToStringMapper(get()) }
+    factory { TaskHistoryUiModelFactory(get(), get()) }
 
     viewModel {
         TaskHistoryViewModel(
             getTaskMetricsUseCase = get(),
-            getHistoryViewUseCase = get(),
+            getTaskHistoryUseCase = get(),
             getDateFilterNameViewUseCase = get(),
             updateHistoryUseCase = get(),
             deleteHistoryUseCase = get(),
             deleteAllHistoryUseCase = get(),
+            taskHistoryUiModelFactory = get(),
             taskHistoryUiModelToTaskHistoryMapper = get(),
             logService = get(),
             calendarService = get(),
