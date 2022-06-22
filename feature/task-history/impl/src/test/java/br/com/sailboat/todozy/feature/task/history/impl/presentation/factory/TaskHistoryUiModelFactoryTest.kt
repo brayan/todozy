@@ -72,6 +72,3 @@ class TaskHistoryUiModelFactoryTest {
         coEvery { taskHistoryCategoryToStringMapper.map(any()) } returns subhead
     }
 }
-
-
-
