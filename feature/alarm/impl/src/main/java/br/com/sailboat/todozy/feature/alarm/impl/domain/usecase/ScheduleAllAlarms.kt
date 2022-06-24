@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.utility.kotlin.extension.isAfterNow
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 
-class ScheduleAllAlarms(
+internal class ScheduleAllAlarms(
     private val getTasksUseCase: GetTasksUseCase,
     private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase,

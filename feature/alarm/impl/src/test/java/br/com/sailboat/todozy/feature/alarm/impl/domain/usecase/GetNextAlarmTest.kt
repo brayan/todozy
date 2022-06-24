@@ -7,7 +7,7 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 
-class GetNextAlarmTest {
+internal class GetNextAlarmTest {
 
     private val getNextAlarm = GetNextAlarm()
 

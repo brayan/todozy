@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidForm
 import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.uicomponent.model.AlarmUiModel
 
-class AlarmToAlarmUiModelMapperImpl(
+internal class AlarmToAlarmUiModelMapperImpl(
     // TODO: Add string provider
     private val context: Context,
 ) : AlarmToAlarmUiModelMapper {

@@ -1,5 +1,5 @@
 package br.com.sailboat.todozy.feature.alarm.impl.domain.usecase
 
-interface CancelAlarmScheduleUseCase {
+internal interface CancelAlarmScheduleUseCase {
     suspend operator fun invoke(taskId: Long)
 }

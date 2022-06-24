@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 
-class AlarmDataToAlarmMapper {
+internal class AlarmDataToAlarmMapper {
 
     fun map(alarmData: AlarmData) =
         Alarm(

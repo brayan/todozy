@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 
-class ScheduleAllAlarmsTest {
+internal class ScheduleAllAlarmsTest {
 
     private val getTasksUseCase: GetTasksUseCase = mockk(relaxed = true)
     private val getNextAlarmUseCase: GetNextAlarmUseCase = mockk(relaxed = true)

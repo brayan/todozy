@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 
-class GetAlarm(
+internal class GetAlarm(
     private val alarmRepository: AlarmRepository,
 ) : GetAlarmUseCase {
 

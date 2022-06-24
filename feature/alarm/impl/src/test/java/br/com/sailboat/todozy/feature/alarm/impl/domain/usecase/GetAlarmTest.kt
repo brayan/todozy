@@ -12,7 +12,7 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 
-class GetAlarmTest {
+internal class GetAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
 

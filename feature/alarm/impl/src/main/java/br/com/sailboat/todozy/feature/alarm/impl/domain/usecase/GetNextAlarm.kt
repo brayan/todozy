@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetNextAlarmUseCase
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.Calendar
 
-class GetNextAlarm : GetNextAlarmUseCase {
+internal class GetNextAlarm : GetNextAlarmUseCase {
 
     override operator fun invoke(alarm: Alarm): Alarm {
         if (alarm.repeatType == RepeatType.NOT_REPEAT) {

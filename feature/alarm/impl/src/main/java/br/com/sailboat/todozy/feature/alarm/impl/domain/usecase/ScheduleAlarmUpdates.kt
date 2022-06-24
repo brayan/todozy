@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAlarmUpdatesU
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
 
-class ScheduleAlarmUpdates(
+internal class ScheduleAlarmUpdates(
     private val alarmManagerService: AlarmManagerService,
 ) : ScheduleAlarmUpdatesUseCase {
 

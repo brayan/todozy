@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
-class AlarmToAlarmDataMapper {
+internal class AlarmToAlarmDataMapper {
 
     fun map(from: Alarm, taskId: Long) =
         AlarmData(

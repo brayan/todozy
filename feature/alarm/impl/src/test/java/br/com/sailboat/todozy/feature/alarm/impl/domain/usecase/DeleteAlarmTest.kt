@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class DeleteAlarmTest {
+internal class DeleteAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase = mockk(relaxed = true)

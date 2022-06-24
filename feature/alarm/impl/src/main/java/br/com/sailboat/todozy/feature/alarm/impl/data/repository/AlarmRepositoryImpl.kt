@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataS
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
 
-class AlarmRepositoryImpl(
+internal class AlarmRepositoryImpl(
     private val alarmLocalDataSource: AlarmLocalDataSource,
     private val alarmDataToAlarmMapper: AlarmDataToAlarmMapper,
     private val alarmToAlarmDataMapper: AlarmToAlarmDataMapper,

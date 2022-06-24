@@ -16,7 +16,7 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 
-class AlarmRepositoryImplTest {
+internal class AlarmRepositoryImplTest {
 
     private val alarmLocalDataSource: AlarmLocalDataSource = mockk(relaxed = true)
     private val alarmDataToAlarmMapper: AlarmDataToAlarmMapper = mockk(relaxed = true)

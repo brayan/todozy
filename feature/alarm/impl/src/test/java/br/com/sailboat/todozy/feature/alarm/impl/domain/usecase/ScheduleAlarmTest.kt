@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 
-class ScheduleAlarmTest {
+internal class ScheduleAlarmTest {
 
     private val alarmManagerService: AlarmManagerService = mockk(relaxed = true)
 

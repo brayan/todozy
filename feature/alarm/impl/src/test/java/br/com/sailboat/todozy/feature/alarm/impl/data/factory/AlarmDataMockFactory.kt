@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.alarm.impl.data.factory
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
 
-object AlarmDataMockFactory {
+internal object AlarmDataMockFactory {
 
     fun makeAlarmData(
         id: Long = 75L,

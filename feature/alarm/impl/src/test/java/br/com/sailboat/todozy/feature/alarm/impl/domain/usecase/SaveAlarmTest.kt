@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 
-class SaveAlarmTest {
+internal class SaveAlarmTest {
 
     private val repository: AlarmRepository = mockk(relaxed = true)
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase = mockk(relaxed = true)

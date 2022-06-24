@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.feature.alarm.domain.repository.AlarmRepository
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase
 
-class SaveAlarm(
+internal class SaveAlarm(
     private val alarmRepository: AlarmRepository,
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
