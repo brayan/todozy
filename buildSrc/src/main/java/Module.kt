@@ -5,7 +5,7 @@ object Module {
     const val uiComponentImpl = ":ui-component:impl"
     const val domain = ":domain"
     const val aboutImpl = ":feature:about:impl"
-    const val settings = ":feature:settings"
+    const val settingsPublic = ":feature:settings:public"
     const val settingsImpl = ":feature:settings:impl"
     const val alarmPublic = ":feature:alarm:public"
     const val alarmImpl = ":feature:alarm:impl"

@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
 
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAlarmUpdatesUseCase
+import br.com.sailboat.todozy.feature.settings.domain.usecase.CheckAndSetUpInitialSettingsUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
 internal class CheckAndSetUpInitialSettings(

@@ -42,6 +42,7 @@ dependencies {
     implementation(project(Module.domain))
     implementation(project(Module.alarmPublic))
     implementation(project(Module.taskListPublic))
+    implementation(project(Module.settingsPublic))
 
     implementation(Kotlin.stdlib)
     implementation(Kotlin.reflect)

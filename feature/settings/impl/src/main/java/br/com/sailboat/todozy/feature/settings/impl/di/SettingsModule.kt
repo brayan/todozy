@@ -1,16 +1,16 @@
 package br.com.sailboat.todozy.feature.settings.impl.di
 
 import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
+import br.com.sailboat.todozy.feature.settings.domain.usecase.CheckAndSetUpInitialSettingsUseCase
+import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSource
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSourceImpl
 import br.com.sailboat.todozy.feature.settings.impl.data.repository.SettingsRepositoryImpl
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettings
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettingsUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSetting
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSetting
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSetting
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibrateSetting
