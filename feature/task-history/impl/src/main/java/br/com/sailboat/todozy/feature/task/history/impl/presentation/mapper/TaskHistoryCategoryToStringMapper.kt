@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCateg
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.utility.android.string.StringProvider
 
-class TaskHistoryCategoryToStringMapper(private val stringProvider: StringProvider) {
+internal class TaskHistoryCategoryToStringMapper(private val stringProvider: StringProvider) {
 
     fun map(taskHistoryCategory: TaskHistoryCategory): String {
         val category = when (taskHistoryCategory) {

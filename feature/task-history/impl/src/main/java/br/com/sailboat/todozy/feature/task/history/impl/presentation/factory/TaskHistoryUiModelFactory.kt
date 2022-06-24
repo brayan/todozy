@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.Task
 import br.com.sailboat.uicomponent.model.SubheadUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 
-class TaskHistoryUiModelFactory(
+internal class TaskHistoryUiModelFactory(
     private val taskHistoryCategoryToStringMapper: TaskHistoryCategoryToStringMapper,
     private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper,
 ) {

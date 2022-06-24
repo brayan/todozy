@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.history.impl.data.repository
 
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryData
 
-object TaskHistoryDataMockFactory {
+internal object TaskHistoryDataMockFactory {
 
     fun makeTaskHistoryData(
         id: Long = 45L,

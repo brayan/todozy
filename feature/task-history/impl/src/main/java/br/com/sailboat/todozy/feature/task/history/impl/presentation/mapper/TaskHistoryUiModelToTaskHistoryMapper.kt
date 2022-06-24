@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 
-class TaskHistoryUiModelToTaskHistoryMapper {
+internal class TaskHistoryUiModelToTaskHistoryMapper {
 
     fun map(taskHistory: TaskHistoryUiModel): TaskHistory {
         val status = if (taskHistory.done) TaskStatus.DONE else TaskStatus.NOT_DONE

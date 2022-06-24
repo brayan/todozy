@@ -8,7 +8,7 @@ import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.uicomponent.model.UiModel
 import java.util.Calendar
 
-class TaskHistoryViewState {
+internal class TaskHistoryViewState {
 
     val action = Event<Action>()
     val taskHistoryList = MutableLiveData<List<UiModel>>()

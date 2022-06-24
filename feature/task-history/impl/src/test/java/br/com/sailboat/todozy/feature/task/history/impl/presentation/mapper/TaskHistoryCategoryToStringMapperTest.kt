@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class TaskHistoryCategoryToStringMapperTest {
+internal class TaskHistoryCategoryToStringMapperTest {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
 

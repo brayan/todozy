@@ -7,12 +7,12 @@ import br.com.sailboat.uicomponent.impl.helper.getBundle
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.hasTaskId
 
-fun Context.startTaskHistoryActivity() {
+internal fun Context.startTaskHistoryActivity() {
     val intent = Intent(this, TaskHistoryActivity::class.java)
     startActivity(intent)
 }
 
-class TaskHistoryActivity : BaseActivity() {
+internal class TaskHistoryActivity : BaseActivity() {
 
     override fun newFragmentInstance(): TaskHistoryFragment {
         val bundle = intent.getBundle()

@@ -12,7 +12,7 @@ import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-class TaskHistoryAdapter(private val callback: Callback) :
+internal class TaskHistoryAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     interface Callback : TaskHistoryViewHolder.Callback

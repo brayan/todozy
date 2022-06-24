@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetTaskHistoryTest {
+internal class GetTaskHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 

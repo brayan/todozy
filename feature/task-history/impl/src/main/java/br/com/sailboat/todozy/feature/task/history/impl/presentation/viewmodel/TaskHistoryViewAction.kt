@@ -4,7 +4,7 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHi
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import java.util.Calendar
 
-sealed class TaskHistoryViewAction {
+internal sealed class TaskHistoryViewAction {
     object OnStart : TaskHistoryViewAction()
     object OnClickFilter : TaskHistoryViewAction()
     object OnClickDateFilter : TaskHistoryViewAction()

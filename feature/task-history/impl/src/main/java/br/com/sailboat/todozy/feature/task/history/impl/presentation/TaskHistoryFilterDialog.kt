@@ -10,7 +10,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.databinding.DialogFilter
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 
-class TaskHistoryFilterDialog : DialogFragment() {
+internal class TaskHistoryFilterDialog : DialogFragment() {
 
     var status: TaskStatusSelectableItem? = null
     var date: DateFilterTaskHistorySelectableItem? = null

@@ -16,7 +16,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class TaskHistoryRepositoryImplTest {
+internal class TaskHistoryRepositoryImplTest {
 
     private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource = mockk(relaxed = true)
 

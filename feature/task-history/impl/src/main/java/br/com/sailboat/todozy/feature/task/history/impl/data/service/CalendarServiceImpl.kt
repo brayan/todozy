@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.domain.service.CalendarS
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import java.util.Calendar
 
-class CalendarServiceImpl(
+internal class CalendarServiceImpl(
     private val context: Context
 ) : CalendarService {
 

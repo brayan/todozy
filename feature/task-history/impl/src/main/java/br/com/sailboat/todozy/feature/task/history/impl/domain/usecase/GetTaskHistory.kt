@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCateg
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 
-class GetTaskHistory(
+internal class GetTaskHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskHistoryUseCase {
 

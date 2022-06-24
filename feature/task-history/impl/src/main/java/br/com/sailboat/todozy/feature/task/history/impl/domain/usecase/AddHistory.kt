@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 
-class AddHistory(
+internal class AddHistory(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : AddHistoryUseCase {
 

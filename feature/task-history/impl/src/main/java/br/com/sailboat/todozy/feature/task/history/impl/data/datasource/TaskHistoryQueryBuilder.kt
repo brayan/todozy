@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.Calendar
 
-class TaskHistoryQueryBuilder {
+internal class TaskHistoryQueryBuilder {
 
     var query = StringBuilder()
 

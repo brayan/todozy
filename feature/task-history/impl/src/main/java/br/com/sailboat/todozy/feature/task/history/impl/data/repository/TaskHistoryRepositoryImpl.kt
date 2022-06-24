@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHist
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.mapToTaskHistoryData
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.mapToTaskHistoryList
 
-class TaskHistoryRepositoryImpl(
+internal class TaskHistoryRepositoryImpl(
     private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource
 ) : TaskHistoryRepository {
 

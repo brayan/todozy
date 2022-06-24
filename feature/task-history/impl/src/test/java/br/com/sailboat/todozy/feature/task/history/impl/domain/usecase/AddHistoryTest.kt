@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 
-class AddHistoryTest {
+internal class AddHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 

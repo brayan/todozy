@@ -17,7 +17,7 @@ import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
 import java.util.Calendar
 
-class DateRangeSelectorDialog : BaseDialogFragment() {
+internal class DateRangeSelectorDialog : BaseDialogFragment() {
 
     private lateinit var initialDate: Calendar
     private lateinit var finalDate: Calendar

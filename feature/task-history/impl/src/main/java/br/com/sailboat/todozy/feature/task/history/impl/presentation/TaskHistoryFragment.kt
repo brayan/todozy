@@ -54,7 +54,7 @@ import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
-class TaskHistoryFragment : BaseFragment() {
+internal class TaskHistoryFragment : BaseFragment() {
 
     private val viewModel: TaskHistoryViewModel by viewModel()
 

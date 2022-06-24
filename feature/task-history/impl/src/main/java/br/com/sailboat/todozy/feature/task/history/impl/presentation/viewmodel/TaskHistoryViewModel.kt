@@ -26,7 +26,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class TaskHistoryViewModel(
+internal class TaskHistoryViewModel(
     override val viewState: TaskHistoryViewState = TaskHistoryViewState(),
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getTaskHistoryUseCase: GetTaskHistoryUseCase,

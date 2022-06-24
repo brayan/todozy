@@ -9,7 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class UpdateHistoryTest {
+internal class UpdateHistoryTest {
 
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 
