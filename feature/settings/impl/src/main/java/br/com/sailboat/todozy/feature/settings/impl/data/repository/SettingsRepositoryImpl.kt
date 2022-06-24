@@ -4,7 +4,7 @@ import android.net.Uri
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSource
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
-class SettingsRepositoryImpl(
+internal class SettingsRepositoryImpl(
     private val localDataSource: SettingsLocalDataSource,
 ) : SettingsRepository {
 

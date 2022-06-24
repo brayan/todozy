@@ -10,6 +10,6 @@ fun Context.startSettingsActivity(launcher: ActivityResultLauncher<Intent>) {
     launcher.launch(intent)
 }
 
-class SettingsActivity : BaseActivity() {
+internal class SettingsActivity : BaseActivity() {
     override fun newFragmentInstance() = SettingsFragment()
 }

@@ -8,7 +8,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class SetAlarmSoundSettingTest {
+internal class SetAlarmSoundSettingTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
 

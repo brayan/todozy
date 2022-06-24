@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
 
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
-class GetAlarmVibrateSetting(
+internal class GetAlarmVibrateSetting(
     private val settingsRepository: SettingsRepository
 ) : GetAlarmVibrateSettingUseCase {
 

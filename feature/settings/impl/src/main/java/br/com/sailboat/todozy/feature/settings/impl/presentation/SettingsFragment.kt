@@ -16,7 +16,7 @@ import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment : BaseFragment() {
+internal class SettingsFragment : BaseFragment() {
 
     private val viewModel: SettingsViewModel by viewModel()
     private val aboutNavigator: AboutNavigator by inject()

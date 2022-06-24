@@ -9,7 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class CheckAndSetUpInitialSettingsTest {
+internal class CheckAndSetUpInitialSettingsTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
     private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase = mockk(relaxed = true)

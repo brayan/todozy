@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.net.Uri
 
-class SettingsLocalDataSourceImpl(context: Context) : SettingsLocalDataSource {
+internal class SettingsLocalDataSourceImpl(context: Context) : SettingsLocalDataSource {
 
     private val sharedPreferences: SharedPreferences by lazy {
         context.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)

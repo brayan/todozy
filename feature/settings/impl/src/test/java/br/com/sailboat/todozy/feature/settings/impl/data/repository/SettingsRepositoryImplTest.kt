@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class SettingsRepositoryImplTest {
+internal class SettingsRepositoryImplTest {
 
     private val settingsLocalDataSource: SettingsLocalDataSource = mockk(relaxed = true)
 

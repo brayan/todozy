@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.settings.impl.data.datasource
 
 import android.net.Uri
 
-interface SettingsLocalDataSource {
+internal interface SettingsLocalDataSource {
     fun getAlarmTone(): Uri?
     fun setAlarmTone(alarmTone: Uri)
     fun getAlarmVibrate(): Boolean

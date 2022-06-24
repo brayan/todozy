@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAlarmUpdatesUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
-class CheckAndSetUpInitialSettings(
+internal class CheckAndSetUpInitialSettings(
     private val repository: SettingsRepository,
     private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase,
 ) : CheckAndSetUpInitialSettingsUseCase {

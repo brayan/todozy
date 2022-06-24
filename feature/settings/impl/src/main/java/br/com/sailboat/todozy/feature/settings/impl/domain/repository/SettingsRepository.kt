@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.settings.impl.domain.repository
 
 import android.net.Uri
 
-interface SettingsRepository {
+internal interface SettingsRepository {
     suspend fun getAlarmTone(): Uri?
     suspend fun getAlarmVibrate(): Boolean
     suspend fun setAlarmTone(toneUri: Uri)

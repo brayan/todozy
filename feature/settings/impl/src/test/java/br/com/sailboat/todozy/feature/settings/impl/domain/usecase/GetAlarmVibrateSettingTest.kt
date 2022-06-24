@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class GetAlarmVibrateSettingTest {
+internal class GetAlarmVibrateSettingTest {
 
     private val repository: SettingsRepository = mockk(relaxed = true)
 

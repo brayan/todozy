@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import br.com.sailboat.uicomponent.impl.helper.Event
 
-class SettingsViewState {
+internal class SettingsViewState {
 
     val action = Event<Action>()
     val alarmSound = MutableLiveData<Uri>()

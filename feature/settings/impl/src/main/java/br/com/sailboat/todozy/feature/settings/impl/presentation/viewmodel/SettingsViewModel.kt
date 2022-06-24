@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibra
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(
+internal class SettingsViewModel(
     override val viewState: SettingsViewState = SettingsViewState(),
     private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase,
     private val setAlarmSoundSettingUseCase: SetAlarmSoundSettingUseCase,

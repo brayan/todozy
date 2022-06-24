@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
 import android.net.Uri
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
-class SetAlarmSoundSetting(
+internal class SetAlarmSoundSetting(
     private val settingsRepository: SettingsRepository,
 ) : SetAlarmSoundSettingUseCase {
 

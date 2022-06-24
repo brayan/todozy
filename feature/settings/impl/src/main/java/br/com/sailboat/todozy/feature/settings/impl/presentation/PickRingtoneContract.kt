@@ -8,7 +8,7 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import br.com.sailboat.todozy.feature.settings.impl.R
 
-class PickRingtoneContract : ActivityResultContract<Uri, Uri?>() {
+internal class PickRingtoneContract : ActivityResultContract<Uri, Uri?>() {
     override fun createIntent(context: Context, alarmSoundUri: Uri) =
         Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
             putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
