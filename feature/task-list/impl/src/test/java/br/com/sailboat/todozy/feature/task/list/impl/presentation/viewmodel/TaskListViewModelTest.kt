@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
@@ -16,6 +15,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilte
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
@@ -68,14 +68,18 @@ internal class TaskListViewModelTest {
 
             viewModel.dispatchViewAction(TaskListViewAction.OnStart)
 
-            assertEquals(TaskListViewState.Action.CloseNotifications, viewModel.viewState.action.value)
+            assertEquals(
+                TaskListViewState.Action.CloseNotifications,
+                viewModel.viewState.action.value
+            )
         }
     }
 
     @Test
     fun `should call getTasksUseCase when dispatchViewAction is called with OnStart`() {
         runBlocking {
-            val tasksView = mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
+            val tasksView =
+                mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
             prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewAction(TaskListViewAction.OnStart)

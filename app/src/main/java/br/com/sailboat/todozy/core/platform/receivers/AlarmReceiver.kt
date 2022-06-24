@@ -15,11 +15,11 @@ import br.com.sailboat.todozy.LauncherActivity
 import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
-import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
+import br.com.sailboat.todozy.utility.android.intent.getPendingIntentFlags
 import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
@@ -36,7 +36,6 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     val getTasksUseCase: GetTasksUseCase by inject()
     val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
     val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
-    val alarmManagerService: AlarmManagerService by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         "${javaClass.simpleName}.onReceive()".logDebug()
@@ -50,7 +49,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private suspend fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
+    private fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -68,7 +67,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             context,
             0,
             resultIntent,
-            alarmManagerService.getPendingIntentFlags()
+            getPendingIntentFlags()
         )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
@@ -139,7 +138,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun NotificationManager.makeNotificationChannel(context: Context) {
+    private fun NotificationManager.makeNotificationChannel(context: Context) {
         createNotificationChannel(
             NotificationChannel(
                 CHANNEL_ID_ALARM,

@@ -1,10 +1,10 @@
-package br.com.sailboat.todozy.core.platform
+package br.com.sailboat.todozy.platform.impl
 
 import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
-internal class CrashlyticsReportingTree : Timber.Tree() {
+class CrashlyticsReportingTree : Timber.Tree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (priority == Log.VERBOSE || priority == Log.DEBUG) {

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.utility.android.string
+package br.com.sailboat.todozy.utility.kotlin
 
 interface StringProvider {
     fun getString(stringRes: Int): String

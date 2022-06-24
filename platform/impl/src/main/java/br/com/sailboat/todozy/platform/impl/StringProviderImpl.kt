@@ -1,7 +1,7 @@
-package br.com.sailboat.todozy.core.platform
+package br.com.sailboat.todozy.platform.impl
 
 import android.content.Context
-import br.com.sailboat.todozy.utility.android.string.StringProvider
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 
 internal class StringProviderImpl(private val context: Context) : StringProvider {
 

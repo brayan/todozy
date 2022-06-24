@@ -18,4 +18,5 @@ object Module {
     const val taskDetailsPublic = ":feature:task-details:public"
     const val taskDetailsImpl = ":feature:task-details:impl"
     const val navigationPublicAndroid = ":feature:navigation:public-android"
+    const val platformImpl = ":platform:impl"
 }

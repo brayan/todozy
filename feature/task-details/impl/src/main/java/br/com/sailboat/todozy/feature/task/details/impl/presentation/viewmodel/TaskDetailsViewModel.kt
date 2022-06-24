@@ -3,13 +3,13 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskMetrics
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import kotlinx.coroutines.launch
 
 internal class TaskDetailsViewModel(

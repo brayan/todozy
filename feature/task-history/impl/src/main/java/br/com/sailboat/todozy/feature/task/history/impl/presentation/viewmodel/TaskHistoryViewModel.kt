@@ -2,7 +2,6 @@ package br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCategory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
@@ -15,6 +14,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilt
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.factory.TaskHistoryUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryUiModelToTaskHistoryMapper
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
@@ -54,8 +54,12 @@ internal class TaskHistoryViewModel(
             is TaskHistoryViewAction.OnSelectDateFromFilter -> onSelectDateFromFilter(viewAction)
             is TaskHistoryViewAction.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewAction)
             is TaskHistoryViewAction.OnClickClearAllHistory -> onClickClearAllHistory()
-            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewAction)
-            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewAction)
+            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(
+                viewAction
+            )
+            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(
+                viewAction
+            )
             is TaskHistoryViewAction.OnClickConfirmClearAllHistory -> onClickConfirmClearAllHistory()
             is TaskHistoryViewAction.OnClickTaskHistory -> onClickTaskHistory(viewAction)
             is TaskHistoryViewAction.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewAction)
@@ -70,7 +74,8 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickFilter() {
-        viewState.action.value = TaskHistoryViewState.Action.NavigateToMenuFilter(dateFilterType, taskStatusFilterType)
+        viewState.action.value =
+            TaskHistoryViewState.Action.NavigateToMenuFilter(dateFilterType, taskStatusFilterType)
     }
 
     private fun onClickFilterDate() {
@@ -78,7 +83,8 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickFilterStatus() {
-        viewState.action.value = TaskHistoryViewState.Action.NavigateToStatusFilter(taskStatusFilterType)
+        viewState.action.value =
+            TaskHistoryViewState.Action.NavigateToStatusFilter(taskStatusFilterType)
     }
 
     private fun onSelectDateFromFilter(viewAction: TaskHistoryViewAction.OnSelectDateFromFilter) {
@@ -164,12 +170,14 @@ internal class TaskHistoryViewModel(
                 selectedItemPosition = viewAction.position
                 refreshHistoryItem(oldSelectedPosition)
                 refreshHistoryItem(viewAction.position)
-                viewState.action.value = TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
+                viewState.action.value =
+                    TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
             }
             else -> {
                 selectedItemPosition = viewAction.position
                 refreshHistoryItem(viewAction.position)
-                viewState.action.value = TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
+                viewState.action.value =
+                    TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
             }
         }
     }
@@ -263,7 +271,8 @@ internal class TaskHistoryViewModel(
         val initialDate = filter.initialDate.orNewCalendar()
         val finalDate = filter.finalDate.orNewCalendar()
 
-        viewState.action.value = TaskHistoryViewState.Action.NavigateToDateRangeFilter(initialDate, finalDate)
+        viewState.action.value =
+            TaskHistoryViewState.Action.NavigateToDateRangeFilter(initialDate, finalDate)
     }
 
     private fun loadHistoryTasks() = viewModelScope.launch {

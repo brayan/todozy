@@ -10,7 +10,6 @@ import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 
 internal class DatabaseOpenHelper(
     context: Context,
-    private val databaseService: DatabaseService,
 ) : DatabaseOpenHelperService, SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
@@ -31,7 +30,9 @@ internal class DatabaseOpenHelper(
             TaskHistoryLocalDataSourceSQLite(this)
         )
 
-        databaseService.createTables(db, tables)
+        for (table in tables) {
+            db.execSQL(table.createTableStatement)
+        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}

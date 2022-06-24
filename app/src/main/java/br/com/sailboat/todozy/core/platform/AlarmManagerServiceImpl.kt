@@ -9,6 +9,7 @@ import android.os.Build
 import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
 import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
+import br.com.sailboat.todozy.utility.android.intent.getPendingIntentFlags
 import java.util.Calendar
 
 internal class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {
@@ -67,13 +68,5 @@ internal class AlarmManagerServiceImpl(private val context: Context) : AlarmMana
         alarmIntent.cancel()
 
         alarmManager.cancel(alarmIntent)
-    }
-
-    override fun getPendingIntentFlags(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
     }
 }

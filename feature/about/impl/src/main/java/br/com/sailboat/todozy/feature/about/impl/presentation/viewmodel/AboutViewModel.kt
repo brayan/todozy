@@ -1,9 +1,9 @@
 package br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import br.com.sailboat.todozy.domain.service.LogService
 import br.com.sailboat.todozy.feature.about.impl.presentation.GetAboutViewUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import kotlinx.coroutines.launch
 
 internal class AboutViewModel(

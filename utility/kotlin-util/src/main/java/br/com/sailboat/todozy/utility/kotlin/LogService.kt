@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.domain.service
+package br.com.sailboat.todozy.utility.kotlin
 
 interface LogService {
     fun error(t: Throwable)

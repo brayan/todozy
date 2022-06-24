@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("com.google.firebase.crashlytics")
-    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("kapt")
 }
@@ -63,7 +62,6 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(platform(Firebase.bom))
 
     implementation(project(Module.kotlinUtil))
     implementation(project(Module.androidUtil))
@@ -83,6 +81,7 @@ dependencies {
     implementation(project(Module.taskDetailsImpl))
     implementation(project(Module.taskListPublic))
     implementation(project(Module.taskListImpl))
+    implementation(project(Module.platformImpl))
 
     implementation(Kotlin.stdlib)
     implementation(Kotlin.reflect)
@@ -94,9 +93,6 @@ dependencies {
     implementation(Koin.android)
     implementation(AndroidX.appcompat)
     implementation(AndroidX.ktx)
-    implementation(Firebase.core)
-    implementation(Firebase.crashlytics)
-    implementation(Firebase.analytics)
     implementation(Timber.timber)
 
     testImplementation(Junit.junit)

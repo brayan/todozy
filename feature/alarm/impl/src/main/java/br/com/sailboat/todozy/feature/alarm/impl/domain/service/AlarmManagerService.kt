@@ -6,5 +6,4 @@ interface AlarmManagerService {
     fun scheduleAlarm(dateTime: Calendar, taskId: Long)
     fun scheduleAlarmUpdates(calendar: Calendar)
     fun cancelAlarm(taskId: Long)
-    fun getPendingIntentFlags(): Int
 }

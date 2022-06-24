@@ -1,6 +1,6 @@
-package br.com.sailboat.todozy.core.platform
+package br.com.sailboat.todozy.platform.impl
 
-import br.com.sailboat.todozy.domain.service.LogService
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import timber.log.Timber
 
 internal class LogServiceImpl : LogService {

@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper
 
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.feature.task.list.impl.R
-import br.com.sailboat.todozy.utility.android.string.StringProvider
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 
 internal class TaskCategoryToStringMapper(private val stringProvider: StringProvider) {
 

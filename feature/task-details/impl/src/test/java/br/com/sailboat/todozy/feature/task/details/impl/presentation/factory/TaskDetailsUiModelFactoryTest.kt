@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
-import br.com.sailboat.todozy.utility.android.string.StringProvider
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import br.com.sailboat.uicomponent.model.AlarmUiModel
 import br.com.sailboat.uicomponent.model.LabelUiModel
 import br.com.sailboat.uicomponent.model.LabelValueUiModel
