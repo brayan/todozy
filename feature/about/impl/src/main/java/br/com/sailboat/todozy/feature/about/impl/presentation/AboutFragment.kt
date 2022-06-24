@@ -15,7 +15,7 @@ import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutVie
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AboutFragment : BaseFragment() {
+internal class AboutFragment : BaseFragment() {
 
     private val viewModel: AboutViewModel by viewModel()
 

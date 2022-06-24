@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.uicomponent.model.UiModel
 
-class AboutViewState {
+internal class AboutViewState {
     val action = Event<Action>()
     val itemViews = MutableLiveData<List<UiModel>>()
 

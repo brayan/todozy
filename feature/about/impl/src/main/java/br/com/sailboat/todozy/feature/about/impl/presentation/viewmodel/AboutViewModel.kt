@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.feature.about.impl.presentation.GetAboutViewUseCas
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 
-class AboutViewModel(
+internal class AboutViewModel(
     override val viewState: AboutViewState = AboutViewState(),
     private val getAboutViewUseCase: GetAboutViewUseCase,
     private val logService: LogService,

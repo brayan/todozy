@@ -6,7 +6,7 @@ import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 
-class GetAboutView(private val context: Context) : GetAboutViewUseCase {
+internal class GetAboutView(private val context: Context) : GetAboutViewUseCase {
 
     override suspend fun invoke(): Result<List<UiModel>> = runCatching {
         val items = ArrayList<UiModel>()

@@ -10,7 +10,7 @@ fun Context.startAboutActivity() {
     startActivity(starter)
 }
 
-class AboutActivity : BaseActivity() {
+internal class AboutActivity : BaseActivity() {
 
     override fun newFragmentInstance(): Fragment {
         return AboutFragment.newInstance()
