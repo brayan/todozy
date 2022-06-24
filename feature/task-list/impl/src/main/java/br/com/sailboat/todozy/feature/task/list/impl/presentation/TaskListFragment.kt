@@ -43,7 +43,7 @@ import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskListFragment : BaseFragment() {
+internal class TaskListFragment : BaseFragment() {
 
     private val viewModel: TaskListViewModel by viewModel()
     private val taskDetailsNavigator: TaskDetailsNavigator by inject()

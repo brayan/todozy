@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import java.util.Calendar
 
-class TaskToTaskUiModelMapper(private val context: Context) {
+internal class TaskToTaskUiModelMapper(private val context: Context) {
 
     fun map(tasks: List<Task>): List<TaskUiModel> = tasks.map { map(it) }
 

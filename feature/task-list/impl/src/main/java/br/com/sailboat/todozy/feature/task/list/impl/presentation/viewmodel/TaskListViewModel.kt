@@ -42,7 +42,7 @@ import kotlinx.coroutines.supervisorScope
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
-class TaskListViewModel(
+internal class TaskListViewModel(
     override val viewState: TaskListViewState = TaskListViewState(),
     private val getTasksUseCase: GetTasksUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,

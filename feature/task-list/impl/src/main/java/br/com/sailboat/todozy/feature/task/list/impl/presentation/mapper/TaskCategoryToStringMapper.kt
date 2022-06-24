@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.utility.android.string.StringProvider
 
-class TaskCategoryToStringMapper(private val stringProvider: StringProvider) {
+internal class TaskCategoryToStringMapper(private val stringProvider: StringProvider) {
 
     fun map(taskCategory: TaskCategory): String {
         val category = when (taskCategory) {

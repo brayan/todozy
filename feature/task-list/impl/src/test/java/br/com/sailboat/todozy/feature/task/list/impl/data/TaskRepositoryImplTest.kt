@@ -17,7 +17,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class TaskRepositoryImplTest {
+internal class TaskRepositoryImplTest {
 
     private val alarmRepository: AlarmRepository = mockk(relaxed = true)
     private val taskLocalDataSource: TaskLocalDataSource = mockk(relaxed = true)

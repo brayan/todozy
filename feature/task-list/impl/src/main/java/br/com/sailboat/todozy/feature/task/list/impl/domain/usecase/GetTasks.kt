@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 
-class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {
+internal class GetTasks(private val taskRepository: TaskRepository) : GetTasksUseCase {
 
     override suspend operator fun invoke(filter: TaskFilter): Result<List<Task>> =
         with(taskRepository) {

@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskToT
 import br.com.sailboat.uicomponent.model.SubheadUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 
-class TaskListUiModelFactory(
+internal class TaskListUiModelFactory(
     private val taskToTaskUiModelMapper: TaskToTaskUiModelMapper,
     private val taskCategoryToStringMapper: TaskCategoryToStringMapper,
 ) {

@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
 
-class CompleteTask(
+internal class CompleteTask(
     private val getTaskUseCase: GetTaskUseCase,
     private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,

@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.uicomponent.model.UiModel
 
-class TaskListViewState {
+internal class TaskListViewState {
 
     val action = Event<Action>()
     val loading = MutableLiveData(true)

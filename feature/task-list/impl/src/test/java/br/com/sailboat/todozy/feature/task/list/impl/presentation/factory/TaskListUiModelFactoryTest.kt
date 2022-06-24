@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class TaskListUiModelFactoryTest {
+internal class TaskListUiModelFactoryTest {
 
     private val taskToTaskUiModelMapper: TaskToTaskUiModelMapper = mockk(relaxed = true)
     private val taskCategoryToStringMapper: TaskCategoryToStringMapper = mockk(relaxed = true)

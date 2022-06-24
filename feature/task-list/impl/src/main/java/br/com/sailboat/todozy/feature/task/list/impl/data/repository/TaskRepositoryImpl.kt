@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.mapToTask
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.mapToTaskData
 
-class TaskRepositoryImpl(
+internal class TaskRepositoryImpl(
     private val alarmRepository: AlarmRepository,
     private val taskLocalDataSource: TaskLocalDataSource
 ) : TaskRepository {
