@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ScheduleAlarmsReceiver : BroadcastReceiver(), KoinComponent {
+internal class ScheduleAlarmsReceiver : BroadcastReceiver(), KoinComponent {
 
     val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase by inject()
 

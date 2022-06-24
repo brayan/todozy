@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.utility.android.log.log
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class LauncherActivity : AppCompatActivity() {
+internal class LauncherActivity : AppCompatActivity() {
 
     private val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
     private val taskListNavigator: TaskListNavigator by inject()

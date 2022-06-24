@@ -9,7 +9,7 @@ import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.check.checkModules
 
-class DiProviderTest {
+internal class DiProviderTest {
 
     @Before
     fun setUp() {

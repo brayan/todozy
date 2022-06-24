@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.di.taskHistoryModule
 import br.com.sailboat.todozy.feature.task.list.impl.di.taskListModule
 import org.koin.core.module.Module
 
-object DiProvider {
+internal object DiProvider {
 
     fun getModules(): List<Module> = listOf(
         appModule,

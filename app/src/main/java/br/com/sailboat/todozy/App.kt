@@ -10,7 +10,7 @@ import org.koin.core.logger.Level
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-class App : Application() {
+internal class App : Application() {
 
     override fun onCreate() {
         super.onCreate()

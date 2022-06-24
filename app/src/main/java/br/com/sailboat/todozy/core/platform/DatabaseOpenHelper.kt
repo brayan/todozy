@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHist
 import br.com.sailboat.todozy.feature.task.list.impl.data.datasource.TaskLocalDataSourceSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 
-class DatabaseOpenHelper(
+internal class DatabaseOpenHelper(
     context: Context,
     private val databaseService: DatabaseService,
 ) : DatabaseOpenHelperService, SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {

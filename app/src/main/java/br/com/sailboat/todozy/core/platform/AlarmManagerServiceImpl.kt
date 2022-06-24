@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import java.util.Calendar
 
-class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {
+internal class AlarmManagerServiceImpl(private val context: Context) : AlarmManagerService {
 
     private val alarmManager by lazy { (context.getSystemService(ALARM_SERVICE) as AlarmManager) }
 

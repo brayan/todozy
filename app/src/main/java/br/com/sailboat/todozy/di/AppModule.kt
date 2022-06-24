@@ -24,4 +24,4 @@ private val platformModule = module {
     factory<StringProvider> { StringProviderImpl(get()) }
 }
 
-val appModule: List<Module> = listOf(dataModule, platformModule)
+internal val appModule: List<Module> = listOf(dataModule, platformModule)
