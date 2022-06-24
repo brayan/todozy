@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
 import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import java.util.Calendar
 
-class AlarmServiceImpl(private val context: Context) : AlarmService {
+internal class AlarmServiceImpl(private val context: Context) : AlarmService {
 
     override fun getRepeatTypeDescription(repeatType: RepeatType): String {
         val repeatTypeUiModel = RepeatTypeUiModel.getFromRepeatType(repeatType)

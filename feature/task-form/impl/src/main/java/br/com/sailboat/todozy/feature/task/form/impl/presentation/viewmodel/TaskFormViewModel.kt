@@ -20,7 +20,7 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class TaskFormViewModel(
+internal class TaskFormViewModel(
     override val viewState: TaskFormViewState = TaskFormViewState(),
     private val getTaskUseCase: GetTaskUseCase,
     private val saveTaskUseCase: SaveTaskUseCase,

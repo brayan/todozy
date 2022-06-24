@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import java.util.Arrays
 
-enum class RepeatAlarmSelectableItem : SelectableItem {
+internal enum class RepeatAlarmSelectableItem : SelectableItem {
 
     NOT_REPEAT {
         override fun getId(): Int {

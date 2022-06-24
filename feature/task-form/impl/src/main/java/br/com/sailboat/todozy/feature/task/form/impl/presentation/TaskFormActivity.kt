@@ -31,7 +31,7 @@ fun Context.startTaskFormActivity(
     launcher.launch(intent)
 }
 
-class TaskFormActivity : BaseActivity() {
+internal class TaskFormActivity : BaseActivity() {
 
     override fun newFragmentInstance(): TaskFormFragment {
         val bundle = intent.getBundle()

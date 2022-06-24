@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
 
-enum class RepeatTypeUiModel(val repeatType: RepeatType, val description: Int) {
+internal enum class RepeatTypeUiModel(val repeatType: RepeatType, val description: Int) {
 
     NOT_REPEAT(RepeatType.NOT_REPEAT, R.string.not_repeat),
     DAY(RepeatType.DAY, R.string.every_day),

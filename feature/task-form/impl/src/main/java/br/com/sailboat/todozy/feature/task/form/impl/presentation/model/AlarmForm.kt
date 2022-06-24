@@ -2,7 +2,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation.model
 
 import java.util.Calendar
 
-data class AlarmForm(
+internal data class AlarmForm(
     val alarm: Calendar?,
     val date: String?,
     val time: String?,

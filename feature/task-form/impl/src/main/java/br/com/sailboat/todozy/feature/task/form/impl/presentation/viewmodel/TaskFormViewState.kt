@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.helper.Event
 import java.util.Calendar
 
-class TaskFormViewState {
+internal class TaskFormViewState {
     val action = Event<Action>()
     var taskId: Long = Entity.NO_ID
 

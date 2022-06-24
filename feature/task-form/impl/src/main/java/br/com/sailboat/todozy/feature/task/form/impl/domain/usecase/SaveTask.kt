@@ -8,7 +8,7 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.SaveAlarmUseCase
 import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
-class SaveTask(
+internal class SaveTask(
     private val taskRepository: TaskRepository,
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
     private val saveAlarmUseCase: SaveAlarmUseCase,

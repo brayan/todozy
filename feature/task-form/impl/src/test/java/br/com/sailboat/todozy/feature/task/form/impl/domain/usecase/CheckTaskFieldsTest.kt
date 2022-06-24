@@ -10,7 +10,7 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 
-class CheckTaskFieldsTest {
+internal class CheckTaskFieldsTest {
 
     private val checkTaskFields = CheckTaskFields()
 

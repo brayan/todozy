@@ -53,7 +53,7 @@ import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskFormFragment : BaseFragment() {
+internal class TaskFormFragment : BaseFragment() {
 
     private val viewModel: TaskFormViewModel by viewModel()
 

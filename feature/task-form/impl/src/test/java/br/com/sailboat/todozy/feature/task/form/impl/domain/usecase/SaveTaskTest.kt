@@ -16,7 +16,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 
-class SaveTaskTest {
+internal class SaveTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
     private val deleteAlarmUseCase: DeleteAlarmUseCase = mockk(relaxed = true)
