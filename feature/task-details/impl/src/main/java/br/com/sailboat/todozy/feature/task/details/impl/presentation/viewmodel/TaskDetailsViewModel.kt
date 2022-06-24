@@ -12,7 +12,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilte
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 
-class TaskDetailsViewModel(
+internal class TaskDetailsViewModel(
     override val viewState: TaskDetailsViewState = TaskDetailsViewState(),
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getTaskUseCase: GetTaskUseCase,

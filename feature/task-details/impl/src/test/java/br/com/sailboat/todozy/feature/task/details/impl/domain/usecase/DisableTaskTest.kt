@@ -10,7 +10,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-class DisableTaskTest {
+internal class DisableTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
     private val deleteAlarmUseCase: DeleteAlarmUseCase = mockk(relaxed = true)

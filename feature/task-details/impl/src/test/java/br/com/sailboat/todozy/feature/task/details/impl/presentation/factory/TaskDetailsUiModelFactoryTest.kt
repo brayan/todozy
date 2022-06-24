@@ -16,7 +16,7 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 
-class TaskDetailsUiModelFactoryTest {
+internal class TaskDetailsUiModelFactoryTest {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val alarmToAlarmUiModelMapper: AlarmToAlarmUiModelMapper = mockk(relaxed = true)

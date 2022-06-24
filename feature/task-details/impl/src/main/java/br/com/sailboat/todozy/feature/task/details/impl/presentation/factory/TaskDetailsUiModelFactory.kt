@@ -11,7 +11,7 @@ import br.com.sailboat.uicomponent.model.TitleUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-class TaskDetailsUiModelFactory(
+internal class TaskDetailsUiModelFactory(
     private val stringProvider: StringProvider,
     private val alarmToAlarmUiModelMapper: AlarmToAlarmUiModelMapper,
 ) {

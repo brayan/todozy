@@ -16,7 +16,7 @@ import br.com.sailboat.uicomponent.model.TitleUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-class TaskDetailsAdapter :
+internal class TaskDetailsAdapter :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {

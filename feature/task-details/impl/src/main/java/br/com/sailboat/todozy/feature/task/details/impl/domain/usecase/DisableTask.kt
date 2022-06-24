@@ -5,7 +5,7 @@ import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.DeleteAlarmUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 
-class DisableTask(
+internal class DisableTask(
     private val taskRepository: TaskRepository,
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
 ) : DisableTaskUseCase {

@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class TaskDetailsViewModelTest {
+internal class TaskDetailsViewModelTest {
 
     @get:Rule
     val instantTask = InstantTaskExecutorRule()

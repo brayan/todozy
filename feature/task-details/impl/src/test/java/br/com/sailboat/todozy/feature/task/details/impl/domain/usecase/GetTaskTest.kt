@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetTaskTest {
+internal class GetTaskTest {
 
     private val repository: TaskRepository = mockk(relaxed = true)
 

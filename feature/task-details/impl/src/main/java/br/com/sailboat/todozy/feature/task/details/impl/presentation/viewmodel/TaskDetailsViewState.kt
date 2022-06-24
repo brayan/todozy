@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.helper.Event
 import br.com.sailboat.uicomponent.model.UiModel
 
-class TaskDetailsViewState {
+internal class TaskDetailsViewState {
 
     val action = Event<Action>()
     val taskMetrics = MutableLiveData<TaskMetrics>()

@@ -33,7 +33,7 @@ import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TaskDetailsFragment : BaseFragment() {
+internal class TaskDetailsFragment : BaseFragment() {
 
     private val viewModel: TaskDetailsViewModel by viewModel()
     private val taskFormNavigator: TaskFormNavigator by inject()

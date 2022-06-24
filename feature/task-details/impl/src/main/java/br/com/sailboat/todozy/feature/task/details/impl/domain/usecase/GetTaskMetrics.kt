@@ -9,8 +9,8 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-class GetTaskMetrics(
-    private val taskHistoryRepository: TaskHistoryRepository
+internal class GetTaskMetrics(
+    private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskMetricsUseCase {
 
     override suspend operator fun invoke(filter: TaskHistoryFilter) = runCatching {
