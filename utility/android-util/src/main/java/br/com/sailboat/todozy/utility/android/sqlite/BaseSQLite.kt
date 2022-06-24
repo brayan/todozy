@@ -14,8 +14,6 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
     private val readable: SQLiteDatabase by lazy { database.readable }
     private val writable: SQLiteDatabase by lazy { database.writable }
 
-    abstract val createTableStatement: String
-
     protected fun insert(statement: SQLiteStatement): Long {
         try {
             writable.beginTransactionNonExclusive()

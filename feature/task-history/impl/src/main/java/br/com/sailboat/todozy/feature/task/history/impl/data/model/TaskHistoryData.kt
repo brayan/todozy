@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
-data class TaskHistoryData(
+internal data class TaskHistoryData(
     var id: Long = Entity.NO_ID,
     var taskId: Long = 0,
     var taskName: String?,
@@ -14,7 +14,7 @@ data class TaskHistoryData(
 )
 
 // TODO: Move mappers into a specific class
-fun TaskHistoryData.mapToTaskHistory() =
+internal fun TaskHistoryData.mapToTaskHistory() =
     TaskHistory(
         id = id,
         taskId = taskId,
@@ -23,9 +23,9 @@ fun TaskHistoryData.mapToTaskHistory() =
         insertingDate = insertingDate.orEmpty(),
     )
 
-fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
+internal fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
 
-fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData =
+internal fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData =
     TaskHistoryData(
         id = id,
         taskId = taskId,

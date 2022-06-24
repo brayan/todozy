@@ -4,7 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 
-data class TaskData(
+internal data class TaskData(
     var id: Long = Entity.NO_ID,
     var name: String?,
     var notes: String?,
@@ -12,7 +12,7 @@ data class TaskData(
     var enabled: Boolean = true,
 )
 
-fun TaskData.mapToTask(alarm: Alarm?) =
+internal fun TaskData.mapToTask(alarm: Alarm?) =
     Task(
         id = id,
         name = name.orEmpty(),
@@ -20,7 +20,7 @@ fun TaskData.mapToTask(alarm: Alarm?) =
         alarm = alarm,
     )
 
-fun Task.mapToTaskData() =
+internal fun Task.mapToTaskData() =
     TaskData(
         id = id,
         name = name,

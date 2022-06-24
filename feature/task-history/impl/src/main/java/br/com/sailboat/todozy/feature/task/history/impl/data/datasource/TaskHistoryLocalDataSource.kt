@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.history.impl.data.datasource
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryData
 
-interface TaskHistoryLocalDataSource {
+internal interface TaskHistoryLocalDataSource {
     fun getTodayHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>
     fun getYesterdayHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>
     fun getPreviousDaysHistory(filter: TaskHistoryFilter): Result<List<TaskHistoryData>>

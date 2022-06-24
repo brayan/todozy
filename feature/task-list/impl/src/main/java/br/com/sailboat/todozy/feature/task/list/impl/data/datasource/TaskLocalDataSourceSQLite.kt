@@ -14,19 +14,9 @@ import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.Calendar
 
-class TaskLocalDataSourceSQLite(
+internal class TaskLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
 ) : BaseSQLite(database), TaskLocalDataSource {
-
-    override val createTableStatement = StringBuilder()
-        .append(" CREATE TABLE Task ( ")
-        .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-        .append(" name TEXT NOT NULL, ")
-        .append(" notes TEXT, ")
-        .append(" insertingDate TEXT, ")
-        .append(" enabled INTEGER ")
-        .append(" ); ")
-        .toString()
 
     override suspend fun getTask(taskId: Long): Result<TaskData> = runCatching {
         val sb = StringBuilder()

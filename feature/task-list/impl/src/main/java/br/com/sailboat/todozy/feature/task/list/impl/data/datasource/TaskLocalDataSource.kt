@@ -3,7 +3,7 @@ package br.com.sailboat.todozy.feature.task.list.impl.data.datasource
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.feature.task.list.impl.data.model.TaskData
 
-interface TaskLocalDataSource {
+internal interface TaskLocalDataSource {
     suspend fun getTask(taskId: Long): Result<TaskData>
     suspend fun getBeforeTodayTasks(filter: TaskFilter): Result<List<TaskData>>
     suspend fun getTodayTasks(filter: TaskFilter): Result<List<TaskData>>

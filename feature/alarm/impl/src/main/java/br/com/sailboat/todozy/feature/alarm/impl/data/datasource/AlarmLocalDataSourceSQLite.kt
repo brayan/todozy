@@ -9,21 +9,9 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.Calendar
 
-class AlarmLocalDataSourceSQLite(
+internal class AlarmLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
 ) : BaseSQLite(database), AlarmLocalDataSource {
-
-    override val createTableStatement = StringBuilder()
-        .append(" CREATE TABLE Alarm ( ")
-        .append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ")
-        .append(" fkTaskId INTEGER, ")
-        .append(" repeatType INTEGER, ")
-        .append(" nextAlarmDate TEXT NOT NULL, ")
-        .append(" insertingDate TEXT, ")
-        .append(" days TEXT, ")
-        .append(" FOREIGN KEY(fkTaskId) REFERENCES Task(id) ")
-        .append(" ); ")
-        .toString()
 
     override fun getAlarmByTask(taskId: Long): Result<AlarmData?> = runCatching {
         val sb = StringBuilder()
