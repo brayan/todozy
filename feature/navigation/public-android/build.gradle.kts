@@ -30,8 +30,5 @@ android {
 }
 
 dependencies {
-    implementation(Kotlin.stdlib)
-    implementation(Kotlin.reflect)
     implementation(AndroidX.appcompat)
-    implementation(AndroidX.ktx)
 }

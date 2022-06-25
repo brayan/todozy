@@ -37,10 +37,8 @@ android {
 dependencies {
     implementation(project(Module.kotlinUtil))
 
-    implementation(AndroidX.ktx)
     implementation(AndroidX.appcompat)
     implementation(AndroidX.materialDesign)
-    implementation(AndroidX.legacy)
     implementation(AndroidX.recyclerview)
     implementation(Coroutines.core)
     implementation(Coroutines.android)

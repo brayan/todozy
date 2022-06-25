@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AlarmReceiver : BroadcastReceiver(), KoinComponent {
+internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
     private val getTaskUseCase: GetTaskUseCase by inject()
     private val getTasksUseCase: GetTasksUseCase by inject()

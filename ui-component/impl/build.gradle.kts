@@ -41,13 +41,9 @@ dependencies {
 
     implementation(AndroidX.appcompat)
     implementation(AndroidX.recyclerview)
-    implementation(AndroidX.ktx)
     implementation(AndroidX.materialDesign)
-    implementation(AndroidX.legacy)
     implementation(Junit.junit)
-    implementation(Kotlin.test)
     implementation(Coroutines.test)
-    implementation(Lifecycle.test)
 
     testImplementation(Junit.junit)
 

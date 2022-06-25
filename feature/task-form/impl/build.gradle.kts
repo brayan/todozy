@@ -45,8 +45,6 @@ dependencies {
     implementation(project(Module.taskDetailsPublic))
     implementation(project(Module.alarmPublic))
 
-    implementation(Kotlin.stdlib)
-    implementation(Kotlin.reflect)
     implementation(Coroutines.core)
     implementation(Coroutines.android)
     implementation(Lifecycle.viewModel)
@@ -54,12 +52,8 @@ dependencies {
     implementation(Lifecycle.liveData)
     implementation(Koin.android)
     implementation(AndroidX.appcompat)
-    implementation(AndroidX.recyclerview)
-    implementation(AndroidX.ktx)
     implementation(AndroidX.constraintLayout)
     implementation(AndroidX.materialDesign)
-    implementation(AndroidX.legacy)
-    implementation(Firebase.core)
 
     testImplementation(Junit.junit)
     testImplementation(MockK.core)
