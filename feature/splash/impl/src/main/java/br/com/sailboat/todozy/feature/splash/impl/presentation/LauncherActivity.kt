@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy
+package br.com.sailboat.todozy.feature.splash.impl.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.utility.android.log.log
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-internal class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : AppCompatActivity() {
 
     private val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
     private val taskListNavigator: TaskListNavigator by inject()

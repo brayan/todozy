@@ -82,6 +82,7 @@ dependencies {
     implementation(project(Module.taskDetailsImpl))
     implementation(project(Module.taskListPublic))
     implementation(project(Module.taskListImpl))
+    implementation(project(Module.splashImpl))
     implementation(project(Module.platformImpl))
 
     implementation(Kotlin.stdlib)

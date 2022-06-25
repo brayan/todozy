@@ -36,17 +36,6 @@
         <receiver android:name=".core.platform.receivers.AlarmReceiver" />
 
         <receiver android:name=".core.platform.receivers.ScheduleAlarmsReceiver" />
-
-        <activity
-            android:name=".LauncherActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.SplashScreen">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-
     </application>
 
 </manifest>
