@@ -7,8 +7,8 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
 import br.com.sailboat.todozy.core.platform.receivers.AlarmReceiver
-import br.com.sailboat.todozy.core.platform.receivers.ScheduleAlarmsReceiver
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
+import br.com.sailboat.todozy.feature.alarm.impl.presentation.broadcastreceiver.ScheduleAlarmsReceiver
 import br.com.sailboat.todozy.utility.android.intent.getPendingIntentFlags
 import java.util.Calendar
 
