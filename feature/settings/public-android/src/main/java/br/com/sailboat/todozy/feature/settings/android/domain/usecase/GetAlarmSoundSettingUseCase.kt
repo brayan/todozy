@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
+package br.com.sailboat.todozy.feature.settings.android.domain.usecase
 
 import android.net.Uri
 

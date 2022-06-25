@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application xmlns:tools="http://schemas.android.com/tools"
         android:name=".App"
         android:allowBackup="true"
@@ -22,8 +21,5 @@
         <uses-library
             android:name="android.test.runner"
             android:required="false" />
-
-        <receiver android:name=".core.platform.receivers.AlarmReceiver" />
     </application>
-
 </manifest>

@@ -43,6 +43,7 @@ dependencies {
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.alarmPublic))
     implementation(project(Module.settingsPublic))
+    implementation(project(Module.settingsPublicAndroid))
 
     implementation(Kotlin.stdlib)
     implementation(Kotlin.reflect)

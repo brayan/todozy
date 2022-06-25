@@ -6,6 +6,7 @@ object Module {
     const val domain = ":domain"
     const val aboutImpl = ":feature:about:impl"
     const val settingsPublic = ":feature:settings:public"
+    const val settingsPublicAndroid = ":feature:settings:public-android"
     const val settingsImpl = ":feature:settings:impl"
     const val alarmPublic = ":feature:alarm:public"
     const val alarmImpl = ":feature:alarm:impl"

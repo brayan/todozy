@@ -12,6 +12,8 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.datasource.AlarmLocalDataS
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmDataToAlarmMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMapper
 import br.com.sailboat.todozy.feature.alarm.impl.data.repository.AlarmRepositoryImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
+import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerServiceImpl
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.CancelAlarmSchedule
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.CancelAlarmScheduleUseCase
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.DeleteAlarm
@@ -45,6 +47,7 @@ private val domain = module {
 private val data = module {
     factory<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
     factory<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
+    factory<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
     factory { AlarmDataToAlarmMapper() }
     factory { AlarmToAlarmDataMapper() }
 }

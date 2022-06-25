@@ -71,6 +71,7 @@ dependencies {
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.aboutImpl))
     implementation(project(Module.settingsPublic))
+    implementation(project(Module.settingsPublicAndroid))
     implementation(project(Module.settingsImpl))
     implementation(project(Module.alarmPublic))
     implementation(project(Module.alarmImpl))

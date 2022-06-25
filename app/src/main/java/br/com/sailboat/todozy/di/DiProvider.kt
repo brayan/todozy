@@ -15,7 +15,6 @@ internal object DiProvider {
 
     val modules: List<Module>
         get() = listOf(
-            appModule,
             platformModule,
             aboutModule,
             settingsModule,

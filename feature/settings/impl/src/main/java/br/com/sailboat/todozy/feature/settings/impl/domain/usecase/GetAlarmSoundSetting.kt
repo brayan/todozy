@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.settings.impl.domain.usecase
 
+import br.com.sailboat.todozy.feature.settings.android.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 
 internal class GetAlarmSoundSetting(

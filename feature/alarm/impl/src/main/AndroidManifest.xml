@@ -13,6 +13,7 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".presentation.broadcastreceiver.AlarmReceiver" />
         <receiver android:name=".presentation.broadcastreceiver.ScheduleAlarmsReceiver" />
     </application>
 </manifest>

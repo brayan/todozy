@@ -9,7 +9,7 @@ import br.com.sailboat.todozy.feature.settings.impl.data.repository.SettingsRepo
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettings
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSetting
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
+import br.com.sailboat.todozy.feature.settings.android.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSetting
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSetting
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSettingUseCase

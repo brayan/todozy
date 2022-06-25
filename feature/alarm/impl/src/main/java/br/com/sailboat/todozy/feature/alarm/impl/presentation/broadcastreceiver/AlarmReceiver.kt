@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.core.platform.receivers
+package br.com.sailboat.todozy.feature.alarm.impl.presentation.broadcastreceiver
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,12 +11,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import br.com.sailboat.todozy.R
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.feature.alarm.impl.R
+import br.com.sailboat.todozy.feature.navigation.android.SplashNavigator
+import br.com.sailboat.todozy.feature.settings.android.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCase
-import br.com.sailboat.todozy.feature.splash.impl.presentation.LauncherActivity
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.utility.android.intent.getPendingIntentFlags
@@ -30,12 +30,13 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
+class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
-    val getTaskUseCase: GetTaskUseCase by inject()
-    val getTasksUseCase: GetTasksUseCase by inject()
-    val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
-    val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
+    private val getTaskUseCase: GetTaskUseCase by inject()
+    private val getTasksUseCase: GetTasksUseCase by inject()
+    private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
+    private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
+    private val splashNavigator: SplashNavigator by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         "${javaClass.simpleName}.onReceive()".logDebug()
@@ -62,7 +63,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         context: Context,
         intent: Intent
     ): NotificationCompat.Builder {
-        val resultIntent = Intent(context, LauncherActivity::class.java)
+        val resultIntent = splashNavigator.getSplashIntent(context)
         val resultPendingIntent = PendingIntent.getActivity(
             context,
             0,
