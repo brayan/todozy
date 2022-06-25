@@ -17,7 +17,7 @@ internal class App : Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@App)
-            modules(DiProvider.getModules())
+            modules(DiProvider.modules)
         }
         initTimber()
     }

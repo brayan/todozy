@@ -20,7 +20,7 @@ internal class DiProviderTest {
     fun `should check all modules from DiProvider`() {
         koinApplication {
             modules(module { single { mockk<Context>() } })
-            modules(DiProvider.getModules())
+            modules(DiProvider.modules)
         }.checkModules()
     }
 }

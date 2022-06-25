@@ -13,16 +13,17 @@ import org.koin.core.module.Module
 
 internal object DiProvider {
 
-    fun getModules(): List<Module> = listOf(
-        appModule,
-        platformModule,
-        aboutModule,
-        settingsModule,
-        alarmModule,
-        splashModule,
-        taskHistoryModule,
-        taskFormModule,
-        taskListModule,
-        taskDetailsModule,
-    ).flatten()
+    val modules: List<Module>
+        get() = listOf(
+            appModule,
+            platformModule,
+            aboutModule,
+            settingsModule,
+            alarmModule,
+            splashModule,
+            taskHistoryModule,
+            taskFormModule,
+            taskListModule,
+            taskDetailsModule,
+        ).flatten()
 }
