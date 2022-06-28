@@ -23,7 +23,7 @@ internal class GetTasksTest {
         val tasksResult = Result.success(TaskMockFactory.makeTaskList())
         prepareScenario(tasksResult = tasksResult)
 
-        val result = getTasks(TaskFilter(TaskCategory.BEFORE_NOW))
+        val result = getTasks(TaskFilter(category = TaskCategory.BEFORE_NOW))
 
         coVerify(exactly = 1) { repository.getBeforeNowTasks() }
         coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }
@@ -39,7 +39,7 @@ internal class GetTasksTest {
         val tasksResult = Result.success(TaskMockFactory.makeTaskList())
         prepareScenario(tasksResult = tasksResult)
 
-        val result = getTasks(TaskFilter(TaskCategory.BEFORE_TODAY))
+        val result = getTasks(TaskFilter(category = TaskCategory.BEFORE_TODAY))
 
         coVerify(exactly = 0) { repository.getBeforeNowTasks() }
         coVerify(exactly = 1) { repository.getBeforeTodayTasks(any()) }
@@ -56,7 +56,7 @@ internal class GetTasksTest {
             val tasksResult = Result.success(TaskMockFactory.makeTaskList())
             prepareScenario(tasksResult = tasksResult)
 
-            val result = getTasks(TaskFilter(TaskCategory.TODAY))
+            val result = getTasks(TaskFilter(category = TaskCategory.TODAY))
 
             coVerify(exactly = 0) { repository.getBeforeNowTasks() }
             coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }
@@ -72,7 +72,7 @@ internal class GetTasksTest {
         val tasksResult = Result.success(TaskMockFactory.makeTaskList())
         prepareScenario(tasksResult = tasksResult)
 
-        val result = getTasks(TaskFilter(TaskCategory.TOMORROW))
+        val result = getTasks(TaskFilter(category = TaskCategory.TOMORROW))
 
         coVerify(exactly = 0) { repository.getBeforeNowTasks() }
         coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }
@@ -88,7 +88,7 @@ internal class GetTasksTest {
         val tasksResult = Result.success(TaskMockFactory.makeTaskList())
         prepareScenario(tasksResult = tasksResult)
 
-        val result = getTasks(TaskFilter(TaskCategory.NEXT_DAYS))
+        val result = getTasks(TaskFilter(category = TaskCategory.NEXT_DAYS))
 
         coVerify(exactly = 0) { repository.getBeforeNowTasks() }
         coVerify(exactly = 0) { repository.getBeforeTodayTasks(any()) }

@@ -95,7 +95,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         builder: NotificationCompat.Builder
     ) {
         try {
-            val taskFilter = TaskFilter(TaskCategory.BEFORE_NOW)
+            val taskFilter = TaskFilter(category = TaskCategory.BEFORE_NOW)
             val tasks = getTasksUseCase(taskFilter).getOrDefault(emptyList())
 
             if (tasks.size <= 1) {

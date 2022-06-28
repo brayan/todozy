@@ -4,9 +4,10 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteStatement
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
-import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.kotlin.model.Filter
 import java.util.Calendar
 
 abstract class BaseSQLite(database: DatabaseOpenHelperService) {
@@ -48,9 +49,9 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
     }
 
     @Throws(SQLiteException::class)
-    protected fun getCountFromQuery(query: String, filter: BaseFilter?): Int {
+    protected fun getCountFromQuery(query: String, filter: Filter?): Int {
 
-        val cursor = if (filter != null && filter.text.isNotEmpty()) {
+        val cursor = if (filter != null && filter.text?.isNotEmpty().isTrue()) {
             performQuery(query, filter)
         } else {
             performQuery(query)
@@ -66,9 +67,9 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
         return performQuery(query, null)
     }
 
-    protected fun performQuery(query: String, filter: BaseFilter?): Cursor {
-        return if (filter != null && filter.text.isNotEmpty()) {
-            readable.rawQuery(query, arrayOf("%" + filter.text.trim { it <= ' ' } + "%"))
+    protected fun performQuery(query: String, filter: Filter?): Cursor {
+        return if (filter != null && filter.text?.isNotEmpty().isTrue()) {
+            readable.rawQuery(query, arrayOf("%" + filter.text?.trim { it <= ' ' } + "%"))
         } else {
             readable.rawQuery(query, null)
         }

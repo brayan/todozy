@@ -6,6 +6,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForYesterday
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForYesterday
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
@@ -33,7 +34,7 @@ internal class TaskHistoryQueryBuilder {
             query.append(" AND Task.id = " + filter.taskId)
         }
 
-        if (filter.text.isNotEmpty()) {
+        if (filter.text?.isNotEmpty().isTrue()) {
             query.append(" AND Task.name LIKE ? ")
         }
 

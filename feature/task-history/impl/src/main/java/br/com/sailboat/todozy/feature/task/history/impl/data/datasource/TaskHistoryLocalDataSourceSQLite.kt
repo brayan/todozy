@@ -7,8 +7,8 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryDa
 import br.com.sailboat.todozy.utility.android.sqlite.BaseSQLite
 import br.com.sailboat.todozy.utility.android.sqlite.DatabaseOpenHelperService
 import br.com.sailboat.todozy.utility.kotlin.exception.EntityNotFoundException
-import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.Filter
 import java.util.Calendar
 
 internal class TaskHistoryLocalDataSourceSQLite(
@@ -194,7 +194,7 @@ internal class TaskHistoryLocalDataSourceSQLite(
         throw EntityNotFoundException()
     }
 
-    private fun getTaskHistoryList(sql: String, filter: BaseFilter?): List<TaskHistoryData> {
+    private fun getTaskHistoryList(sql: String, filter: Filter?): List<TaskHistoryData> {
         val cursor = performQuery(sql, filter)
 
         val historyList = ArrayList<TaskHistoryData>()

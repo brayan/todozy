@@ -33,7 +33,7 @@ internal class ScheduleAllAlarmsTest {
 
         scheduleAllAlarms()
 
-        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
         confirmVerified(getTasksUseCase)
     }
 
@@ -53,7 +53,7 @@ internal class ScheduleAllAlarmsTest {
 
         scheduleAllAlarms()
 
-        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
         coVerify { getNextAlarmUseCase(alarm) }
         confirmVerified(getTasksUseCase)
         confirmVerified(getNextAlarmUseCase)
@@ -75,7 +75,7 @@ internal class ScheduleAllAlarmsTest {
 
         scheduleAllAlarms()
 
-        coVerify { getTasksUseCase(TaskFilter(TaskCategory.WITH_ALARMS)) }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
         coVerify { scheduleAlarmUseCase(alarm, 42L) }
         confirmVerified(getTasksUseCase)
         confirmVerified(scheduleAlarmUseCase)

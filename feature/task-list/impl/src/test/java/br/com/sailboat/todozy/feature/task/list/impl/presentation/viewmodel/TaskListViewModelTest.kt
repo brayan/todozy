@@ -85,10 +85,10 @@ internal class TaskListViewModelTest {
             viewModel.dispatchViewAction(TaskListViewAction.OnStart)
 
             coVerifyOrder {
-                getTasksUseCase(TaskFilter(TaskCategory.BEFORE_TODAY))
-                getTasksUseCase(TaskFilter(TaskCategory.TODAY))
-                getTasksUseCase(TaskFilter(TaskCategory.TOMORROW))
-                getTasksUseCase(TaskFilter(TaskCategory.NEXT_DAYS))
+                getTasksUseCase(TaskFilter(category = TaskCategory.BEFORE_TODAY))
+                getTasksUseCase(TaskFilter(category = TaskCategory.TODAY))
+                getTasksUseCase(TaskFilter(category = TaskCategory.TOMORROW))
+                getTasksUseCase(TaskFilter(category = TaskCategory.NEXT_DAYS))
             }
             val expected = mutableListOf<UiModel>(
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
@@ -172,10 +172,10 @@ internal class TaskListViewModelTest {
             viewModel.dispatchViewAction(TaskListViewAction.OnSubmitSearchTerm(term = term))
 
             coVerifyOrder {
-                getTasksUseCase(TaskFilter(TaskCategory.BEFORE_TODAY))
-                getTasksUseCase(TaskFilter(TaskCategory.TODAY))
-                getTasksUseCase(TaskFilter(TaskCategory.TOMORROW))
-                getTasksUseCase(TaskFilter(TaskCategory.NEXT_DAYS))
+                getTasksUseCase(TaskFilter(text = term, category = TaskCategory.BEFORE_TODAY))
+                getTasksUseCase(TaskFilter(text = term, category = TaskCategory.TODAY))
+                getTasksUseCase(TaskFilter(text = term, category = TaskCategory.TOMORROW))
+                getTasksUseCase(TaskFilter(text = term, category = TaskCategory.NEXT_DAYS))
             }
             val expected = mutableListOf<UiModel>(
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),

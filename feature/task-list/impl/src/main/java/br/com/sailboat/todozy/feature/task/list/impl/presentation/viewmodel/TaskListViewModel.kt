@@ -53,7 +53,7 @@ internal class TaskListViewModel(
     private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
 
-    private var filter = TaskFilter(TaskCategory.TODAY)
+    private var filter = TaskFilter(category = TaskCategory.TODAY)
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
     override fun dispatchViewAction(viewAction: TaskListViewAction) {
@@ -102,7 +102,7 @@ internal class TaskListViewModel(
 
     private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
         try {
-            filter.text = term
+            filter = filter.copy(text = term)
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
@@ -122,7 +122,10 @@ internal class TaskListViewModel(
 
         val tasks = taskCategories.map { category ->
             async {
-                val filter = TaskFilter(category).apply { text = filter.text }
+                val filter = TaskFilter(
+                    text = filter.text,
+                    category = category,
+                )
                 val tasks = getTasksUseCase(filter).getOrThrow()
 
                 taskListUiModelFactory.create(tasks, category)

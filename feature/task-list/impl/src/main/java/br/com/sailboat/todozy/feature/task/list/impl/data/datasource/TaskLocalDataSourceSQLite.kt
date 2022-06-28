@@ -10,8 +10,9 @@ import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getFinalCalendarForTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForToday
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomorrow
-import br.com.sailboat.todozy.utility.kotlin.model.BaseFilter
+import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
+import br.com.sailboat.todozy.utility.kotlin.model.Filter
 import java.util.Calendar
 
 internal class TaskLocalDataSourceSQLite(
@@ -134,7 +135,7 @@ internal class TaskLocalDataSourceSQLite(
         return@runCatching getListFromQuery(sb.toString(), null)
     }
 
-    private fun getListFromQuery(query: String, filter: BaseFilter?): List<TaskData> {
+    private fun getListFromQuery(query: String, filter: Filter?): List<TaskData> {
         val cursor = performQuery(query, filter)
         val tasks = ArrayList<TaskData>()
 
@@ -200,7 +201,7 @@ internal class TaskLocalDataSourceSQLite(
             return
         }
 
-        if (filter.text.isNotEmpty()) {
+        if (filter.text?.isNotEmpty().isTrue()) {
             sb.append(" AND Task.name LIKE ? ")
         }
     }
