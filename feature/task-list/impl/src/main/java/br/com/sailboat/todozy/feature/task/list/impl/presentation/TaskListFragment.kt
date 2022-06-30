@@ -37,7 +37,7 @@ import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
+import br.com.sailboat.todozy.utility.kotlin.extension.isFalse
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import org.koin.android.ext.android.inject
@@ -267,8 +267,8 @@ internal class TaskListFragment : BaseFragment() {
     }
 
     private fun showProgress() {
-        progress = ProgressDialog()
-        if (progress?.isAdded.isTrue().not()) {
+        if (progress == null || progress?.isAdded.isFalse()) {
+            progress = ProgressDialog()
             progress?.show(childFragmentManager, "PROGRESS")
         }
     }

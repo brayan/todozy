@@ -38,6 +38,7 @@ dependencies {
     implementation(project(Module.androidUtil))
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.settingsPublic))
+    implementation(project(Module.uiComponentImpl))
 
     implementation(Coroutines.core)
     implementation(Coroutines.android)
