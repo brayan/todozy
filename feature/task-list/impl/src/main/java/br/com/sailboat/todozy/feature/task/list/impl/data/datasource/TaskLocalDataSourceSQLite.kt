@@ -82,7 +82,8 @@ internal class TaskLocalDataSourceSQLite(
     override suspend fun getTasksThrowBeforeNow(): Result<List<TaskData>> = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)
-        sb.append(" WHERE Alarm.nextAlarmDate <= '" + parseCalendarToString(Calendar.getInstance()) + "' ")
+        sb.append(" WHERE (Alarm.nextAlarmDate <= '" + parseCalendarToString(Calendar.getInstance()) + "' ")
+        sb.append(" OR Alarm.nextAlarmDate is null) ")
         sb.append(" AND Task.enabled = 1 ")
         bindOrderBy(sb)
 
