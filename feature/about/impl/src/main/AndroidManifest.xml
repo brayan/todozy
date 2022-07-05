@@ -3,9 +3,7 @@
     package="br.com.sailboat.todozy.feature.about.impl">
 
     <application>
-        <activity
-            android:name=".presentation.AboutActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".presentation.AboutActivity" />
     </application>
 
 </manifest>
