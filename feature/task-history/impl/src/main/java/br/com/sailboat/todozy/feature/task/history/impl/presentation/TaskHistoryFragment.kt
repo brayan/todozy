@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory
@@ -63,8 +64,19 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private var taskHistoryAdapter: TaskHistoryAdapter? = null
+    private var taskHistoryFilterDialog: TaskHistoryFilterDialog? = null
 
     private lateinit var binding: FrgTaskHistoryBinding
+
+    private val taskHistoryFilterDialogCallback = object : TaskHistoryFilterDialog.Callback {
+        override fun onClickFilterDate() {
+            viewModel.dispatchViewAction(OnClickDateFilter)
+        }
+
+        override fun onClickFilterStatus() {
+            viewModel.dispatchViewAction(OnClickStatusFilter)
+        }
+    }
 
     companion object {
         fun newInstance() = TaskHistoryFragment()
@@ -89,6 +101,11 @@ internal class TaskHistoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         viewModel.dispatchViewAction(OnStart)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateCallbacksFromDialogs()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -163,20 +180,18 @@ internal class TaskHistoryFragment : BaseFragment() {
         }
     }
 
+    private fun updateCallbacksFromDialogs() {
+        taskHistoryFilterDialog =
+            childFragmentManager.findFragmentByTag(TaskHistoryFilterDialog.TAG) as? TaskHistoryFilterDialog
+        taskHistoryFilterDialog?.callback = taskHistoryFilterDialogCallback
+    }
+
     private fun navigateToMenuFilter(action: NavigateToMenuFilter) {
-        TaskHistoryFilterDialog.show(
+        taskHistoryFilterDialog = TaskHistoryFilterDialog.show(
             childFragmentManager,
             action.dateRangeType,
             action.status,
-            object : TaskHistoryFilterDialog.Callback {
-                override fun onClickFilterDate() {
-                    viewModel.dispatchViewAction(OnClickDateFilter)
-                }
-
-                override fun onClickFilterStatus() {
-                    viewModel.dispatchViewAction(OnClickStatusFilter)
-                }
-            }
+            taskHistoryFilterDialogCallback,
         )
     }
 

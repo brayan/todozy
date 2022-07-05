@@ -3,9 +3,7 @@
     package="br.com.sailboat.todozy.feature.task.history.impl">
 
     <application>
-        <activity
-            android:name=".presentation.TaskHistoryActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".presentation.TaskHistoryActivity" />
     </application>
 
 </manifest>
