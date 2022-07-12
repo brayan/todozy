@@ -5,6 +5,6 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHi
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 
 internal class TaskHistoryFilterViewState {
-    var date = MutableLiveData<DateFilterTaskHistorySelectableItem>()
-    var status = MutableLiveData<TaskStatusSelectableItem>()
+    val date = MutableLiveData<DateFilterTaskHistorySelectableItem>()
+    val status = MutableLiveData<TaskStatusSelectableItem>()
 }

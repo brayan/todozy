@@ -42,6 +42,7 @@ dependencies {
     implementation(AndroidX.recyclerview)
     implementation(Coroutines.core)
     implementation(Coroutines.android)
+    implementation(Koin.android)
 
     testImplementation(Junit.junit)
 

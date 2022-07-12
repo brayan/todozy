@@ -72,6 +72,7 @@ dependencies {
     implementation(project(Module.taskListImpl))
     implementation(project(Module.splashImpl))
     implementation(project(Module.platformImpl))
+    implementation(project(Module.uiComponentImpl))
 
     implementation(Koin.android)
     implementation(Timber.timber)

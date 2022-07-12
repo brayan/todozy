@@ -215,6 +215,7 @@ internal class TaskFormFragment : BaseFragment() {
 
     private fun navigateToRepeatAlarmSelector(action: NavigateToRepeatAlarmSelector) {
         SelectItemDialog.show(
+            "TAGZERA",
             childFragmentManager,
             getString(R.string.repeat_alarm),
             RepeatAlarmSelectableItem.getItems(),

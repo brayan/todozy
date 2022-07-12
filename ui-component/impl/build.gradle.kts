@@ -44,6 +44,7 @@ dependencies {
     implementation(AndroidX.materialDesign)
     implementation(Junit.junit)
     implementation(Coroutines.test)
+    implementation(Koin.android)
 
     testImplementation(Junit.junit)
 

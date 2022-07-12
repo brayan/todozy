@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.DateFilterDialog
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.StatusFilterDialog
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory
@@ -65,6 +68,9 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     private var taskHistoryAdapter: TaskHistoryAdapter? = null
     private var taskHistoryFilterDialog: TaskHistoryFilterDialog? = null
+    private var dateFilterDialog: SelectItemDialog? = null
+    private var dateRangeSelectorFilterDialog: DateRangeSelectorFilterDialog? = null
+    private var statusFilterDialog: SelectItemDialog? = null
 
     private lateinit var binding: FrgTaskHistoryBinding
 
@@ -75,6 +81,26 @@ internal class TaskHistoryFragment : BaseFragment() {
 
         override fun onClickFilterStatus() {
             viewModel.dispatchViewAction(OnClickStatusFilter)
+        }
+    }
+
+    private val dateFilterDialogCallback = object : SelectItemDialog.Callback {
+        override fun onClickItem(item: SelectableItem) {
+            val date = item as DateFilterTaskHistorySelectableItem
+            viewModel.dispatchViewAction(OnSelectDateFromFilter(date))
+        }
+    }
+
+    private val statusFilterDialogCallback = object : SelectItemDialog.Callback {
+        override fun onClickItem(item: SelectableItem) {
+            val status = item as TaskStatusSelectableItem
+            viewModel.dispatchViewAction(OnSelectStatusFromFilter(status))
+        }
+    }
+
+    private val dateRangeSelectorDialogCallback = object : DateRangeSelectorFilterDialog.Callback {
+        override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
+            viewModel.dispatchViewAction(OnSelectDateRange(initialDate, finalDate))
         }
     }
 
@@ -184,6 +210,15 @@ internal class TaskHistoryFragment : BaseFragment() {
         taskHistoryFilterDialog =
             childFragmentManager.findFragmentByTag(TaskHistoryFilterDialog.TAG) as? TaskHistoryFilterDialog
         taskHistoryFilterDialog?.callback = taskHistoryFilterDialogCallback
+
+        dateFilterDialog = childFragmentManager.findFragmentByTag(DateFilterDialog.TAG) as? SelectItemDialog
+        dateFilterDialog?.callback = dateFilterDialogCallback
+
+        statusFilterDialog = childFragmentManager.findFragmentByTag(StatusFilterDialog.TAG) as? SelectItemDialog
+        statusFilterDialog?.callback = statusFilterDialogCallback
+
+        dateRangeSelectorFilterDialog = childFragmentManager.findFragmentByTag(DateRangeSelectorFilterDialog.TAG) as? DateRangeSelectorFilterDialog
+        dateRangeSelectorFilterDialog?.callback = dateRangeSelectorDialogCallback
     }
 
     private fun navigateToMenuFilter(action: NavigateToMenuFilter) {
@@ -196,45 +231,31 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun navigateToDateFilter(action: NavigateToDateFilter) {
-        SelectItemDialog.show(
+        dateFilterDialog = DateFilterDialog.show(
             childFragmentManager,
             getString(R.string.filter),
             DateFilterTaskHistorySelectableItem.getItems(),
             action.dateFilterType,
-            object : SelectItemDialog.Callback {
-                override fun onClickItem(item: SelectableItem) {
-                    val date = item as DateFilterTaskHistorySelectableItem
-                    viewModel.dispatchViewAction(OnSelectDateFromFilter(date))
-                }
-            }
+            dateFilterDialogCallback,
         )
     }
 
     private fun navigateToDateRangeFilter(action: NavigateToDateRangeFilter) {
-        DateRangeSelectorDialog.show(
+        dateRangeSelectorFilterDialog = DateRangeSelectorFilterDialog.show(
             childFragmentManager,
             action.initialDate,
             action.finalDate,
-            object : DateRangeSelectorDialog.Callback {
-                override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
-                    viewModel.dispatchViewAction(OnSelectDateRange(initialDate, finalDate))
-                }
-            }
+            dateRangeSelectorDialogCallback,
         )
     }
 
     private fun navigateToStatusFilter(action: NavigateToStatusFilter) {
-        SelectItemDialog.show(
+        statusFilterDialog = StatusFilterDialog.show(
             childFragmentManager,
             getString(R.string.filter_status),
             TaskStatusSelectableItem.getItems(),
             action.status,
-            object : SelectItemDialog.Callback {
-                override fun onClickItem(item: SelectableItem) {
-                    val status = item as TaskStatusSelectableItem
-                    viewModel.dispatchViewAction(OnSelectStatusFromFilter(status))
-                }
-            }
+            statusFilterDialogCallback,
         )
     }
 

@@ -1,4 +1,4 @@
-package br.com.sailboat.todozy.feature.task.history.impl.presentation
+package br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,22 +15,26 @@ import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding
 import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
-internal class DateRangeSelectorDialog : BaseDialogFragment() {
+internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
 
-    private lateinit var initialDate: Calendar
-    private lateinit var finalDate: Calendar
+    private var initialDate: Calendar? = null
+    private var finalDate: Calendar? = null
 
     private lateinit var binding: DialogDateRangeSelectorBinding
 
-    private var callback: Callback? = null
+    var callback: Callback? = null
+
+    private val viewModel: DateRangeSelectorFilterViewModel by viewModel()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogDateRangeSelectorBinding.inflate(LayoutInflater.from(requireContext()))
 
         initViews()
-        updateViews()
+        observeViewModel()
+        viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnStart(initialDate, finalDate))
 
         return buildDialog()
     }
@@ -39,7 +43,7 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
         llDateRangeSelectorInitialDate.setOnClickListener {
             DateSelectorDialog.show(
                 childFragmentManager,
-                initialDate,
+                initialDate.orNewCalendar(),
                 object : DateSelectorDialog.Callback {
                     override fun onDateSet(year: Int, month: Int, day: Int) {
                         val newInitialDate = Calendar.getInstance()
@@ -70,11 +74,11 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
                             return
                         }
 
-                        initialDate.set(Calendar.YEAR, year)
-                        initialDate.set(Calendar.MONTH, month)
-                        initialDate.set(Calendar.DAY_OF_MONTH, day)
-
-                        updateViews()
+                        viewModel.dispatchViewAction(
+                            DateRangeSelectorFilterViewAction.OnSelectInitialDate(
+                                newInitialDate
+                            )
+                        )
                     }
                 }
             )
@@ -83,7 +87,7 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
         llDateRangeSelectorFinalDate.setOnClickListener {
             DateSelectorDialog.show(
                 childFragmentManager,
-                finalDate,
+                finalDate.orNewCalendar(),
                 object : DateSelectorDialog.Callback {
                     override fun onDateSet(year: Int, month: Int, day: Int) {
                         val newFinalDate = Calendar.getInstance()
@@ -110,27 +114,31 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
                             return
                         }
 
-                        finalDate.set(Calendar.YEAR, year)
-                        finalDate.set(Calendar.MONTH, month)
-                        finalDate.set(Calendar.DAY_OF_MONTH, day)
-
-                        updateViews()
+                        viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectFinalDate(newFinalDate))
                     }
                 }
             )
         }
     }
 
-    private fun updateViews() = with(binding) {
-        tvDateRangeSelectorInitialDate.text = initialDate.toShortDateView(requireContext())
-        tvDateRangeSelectorFinalDate.text = finalDate.toShortDateView(requireContext())
+    private fun observeViewModel() {
+        viewModel.viewState.initialDate.observe(this) { initialDate ->
+            initialDate?.run {
+                binding.tvDateRangeSelectorInitialDate.text = initialDate.toShortDateView(requireContext())
+            }
+        }
+        viewModel.viewState.finalDate.observe(this) { finalDate ->
+            finalDate?.run {
+                binding.tvDateRangeSelectorFinalDate.text = finalDate.toShortDateView(requireContext())
+            }
+        }
     }
 
     private fun buildDialog(): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            callback?.onClickOk(initialDate, finalDate)
+            callback?.onClickOk(initialDate.orNewCalendar(), finalDate.orNewCalendar())
         }
 
         builder.setNegativeButton(R.string.cancel, null)
@@ -143,8 +151,10 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
     }
 
     companion object {
-        fun show(manager: FragmentManager, callback: Callback) {
-            show(manager, null, null, callback)
+        val TAG: String = DateRangeSelectorFilterDialog::class.java.name
+
+        fun show(manager: FragmentManager, callback: Callback): DateRangeSelectorFilterDialog {
+            return show(manager, null, null, callback)
         }
 
         fun show(
@@ -152,14 +162,14 @@ internal class DateRangeSelectorDialog : BaseDialogFragment() {
             initialDate: Calendar?,
             finalDate: Calendar?,
             callback: Callback
-        ) {
-            val dialog = DateRangeSelectorDialog()
+        ): DateRangeSelectorFilterDialog {
+            val dialog = DateRangeSelectorFilterDialog()
             dialog.callback = callback
             dialog.initialDate = initialDate.orNewCalendar()
             dialog.finalDate = finalDate.orNewCalendar()
-            dialog.show(manager, DateRangeSelectorDialog::class.java.name)
+            dialog.show(manager, TAG)
 
-            true
+            return dialog
         }
     }
 }

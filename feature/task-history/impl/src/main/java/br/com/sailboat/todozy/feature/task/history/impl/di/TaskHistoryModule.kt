@@ -20,6 +20,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHis
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameView
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameViewUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterViewModel
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewModel
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.factory.TaskHistoryUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryCategoryToStringMapper
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.mapper.TaskHistoryToTaskHistoryUiModelMapper
@@ -55,6 +56,7 @@ private val presentation = module {
         )
     }
     viewModel { TaskHistoryFilterViewModel() }
+    viewModel { DateRangeSelectorFilterViewModel() }
 }
 
 private val domain = module {
