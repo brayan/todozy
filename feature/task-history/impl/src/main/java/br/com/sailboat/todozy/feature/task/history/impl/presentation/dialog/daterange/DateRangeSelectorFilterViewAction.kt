@@ -15,4 +15,6 @@ internal sealed class DateRangeSelectorFilterViewAction {
     data class OnSelectFinalDate(
         val finalDate: Calendar?,
     ) : DateRangeSelectorFilterViewAction()
+
+    object OnClickConfirmSelectedDates : DateRangeSelectorFilterViewAction()
 }

@@ -122,6 +122,11 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.viewState.action.observe(this) { action ->
+            when (action) {
+                is DateRangeSelectorFilterViewState.Action.ReturnSelectedDates -> returnSelectedDates(action)
+            }
+        }
         viewModel.viewState.initialDate.observe(this) { initialDate ->
             initialDate?.run {
                 binding.tvDateRangeSelectorInitialDate.text = initialDate.toShortDateView(requireContext())
@@ -134,11 +139,15 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         }
     }
 
+    private fun returnSelectedDates(action: DateRangeSelectorFilterViewState.Action.ReturnSelectedDates) {
+        callback?.onClickOk(action.initialDate, action.finalDate)
+    }
+
     private fun buildDialog(): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            callback?.onClickOk(initialDate.orNewCalendar(), finalDate.orNewCalendar())
+            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnClickConfirmSelectedDates)
         }
 
         builder.setNegativeButton(R.string.cancel, null)
