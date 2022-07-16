@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -71,12 +72,15 @@ internal class TaskListViewModel(
 
     private fun onStart() = viewModelScope.launch {
         try {
+            viewState.loading.postValue(true)
             viewState.action.postValue(CloseNotifications)
             loadTasks()
             scheduleAllAlarmsUseCase()
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = ShowErrorLoadingTasks
+        } finally {
+            viewState.loading.postValue(false)
         }
     }
 
@@ -102,17 +106,18 @@ internal class TaskListViewModel(
 
     private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
         try {
+            viewState.loading.postValue(true)
             filter = filter.copy(text = term)
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = ShowErrorLoadingTasks
+        } finally {
+            viewState.loading.postValue(false)
         }
     }
 
-    private fun loadTasks() = viewModelScope.launch {
-        viewState.loading.postValue(true)
-
+    private suspend fun loadTasks() = coroutineScope {
         val taskCategories = listOf(
             TaskCategory.BEFORE_TODAY,
             TaskCategory.TODAY,
@@ -133,7 +138,6 @@ internal class TaskListViewModel(
         }.awaitAll().flatten()
 
         viewState.itemsView.postValue(tasks.toMutableList())
-        viewState.loading.postValue(false)
     }
 
     private fun onSwipeTask(position: Int, status: TaskStatus) = launchSwipeTask {

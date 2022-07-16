@@ -32,12 +32,10 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorCompletingTask
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorLoadingTasks
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.UpdateRemovedTask
-import br.com.sailboat.todozy.utility.android.dialog.ProgressDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.todozy.utility.kotlin.extension.isFalse
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import org.koin.android.ext.android.inject
@@ -53,7 +51,6 @@ internal class TaskListFragment : BaseFragment() {
     private val settingsNavigator: SettingsNavigator by inject()
 
     private lateinit var binding: FrgTaskListBinding
-    private var progress: ProgressDialog? = null
     private var taskListAdapter: TaskListAdapter? = null
 
     private val launcher =
@@ -115,16 +112,22 @@ internal class TaskListFragment : BaseFragment() {
     private fun observeViewModel() {
         observeActions()
         viewModel.viewState.loading.observe(viewLifecycleOwner) { loading ->
-            if (loading) showProgress() else hideProgress()
+            if (loading) {
+                binding.progressTaskList.visible()
+                binding.rvTaskList.gone()
+            } else {
+                binding.progressTaskList.gone()
+                binding.rvTaskList.visible()
+            }
         }
         viewModel.viewState.itemsView.observe(viewLifecycleOwner) { items ->
             taskListAdapter?.submitList(items)
 
             if (items.isEmpty()) {
-                hideTasks()
+                binding.rvTaskList.gone()
                 showEmptyView()
             } else {
-                showTasks()
+                binding.rvTaskList.visible()
                 hideEmptyView()
             }
         }
@@ -163,14 +166,6 @@ internal class TaskListFragment : BaseFragment() {
 
     private fun hideMetrics() {
         binding.appbarTaskListFlMetrics.gone()
-    }
-
-    private fun hideTasks() {
-        binding.recycler.gone()
-    }
-
-    private fun showTasks() {
-        binding.recycler.visible()
     }
 
     private fun showEmptyView() {
@@ -225,7 +220,7 @@ internal class TaskListFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        binding.recycler.run {
+        binding.rvTaskList.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
                 override fun onClickTask(taskId: Long) {
                     viewModel.dispatchViewAction(TaskListViewAction.OnClickTask(taskId = taskId))
@@ -261,20 +256,8 @@ internal class TaskListFragment : BaseFragment() {
             )
         )
 
-        itemTouchHelper.attachToRecyclerView(binding.recycler)
+        itemTouchHelper.attachToRecyclerView(binding.rvTaskList)
 
-        binding.recycler.hideFabWhenScrolling(binding.fab)
-    }
-
-    private fun showProgress() {
-        if (progress == null || progress?.isAdded.isFalse()) {
-            progress = ProgressDialog()
-            progress?.show(childFragmentManager, "PROGRESS")
-        }
-    }
-
-    private fun hideProgress() {
-        progress?.dismissAllowingStateLoss()
-        progress = null
+        binding.rvTaskList.hideFabWhenScrolling(binding.fab)
     }
 }
