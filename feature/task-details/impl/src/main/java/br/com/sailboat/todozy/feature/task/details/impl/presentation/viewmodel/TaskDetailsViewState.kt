@@ -9,6 +9,7 @@ import br.com.sailboat.uicomponent.model.UiModel
 internal class TaskDetailsViewState {
 
     val action = Event<Action>()
+    val loading = MutableLiveData(true)
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val taskDetails = MutableLiveData<List<UiModel>>()
     var taskId: Long = Entity.NO_ID

@@ -63,7 +63,7 @@ internal class TaskHistoryFragment : BaseFragment() {
     private val viewModel: TaskHistoryViewModel by viewModel()
 
     private val linearLayoutManager by lazy {
-        binding.recycler.layoutManager as LinearLayoutManager
+        binding.rvTaskHistory.layoutManager as LinearLayoutManager
     }
 
     private var taskHistoryAdapter: TaskHistoryAdapter? = null
@@ -164,14 +164,23 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     private fun observeViewModel() {
         observeActions()
+        viewModel.viewState.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading) {
+                binding.progressTaskHistory.visible()
+                binding.rvTaskHistory.gone()
+            } else {
+                binding.progressTaskHistory.gone()
+                binding.rvTaskHistory.visible()
+            }
+        }
         viewModel.viewState.taskHistoryList.observe(viewLifecycleOwner) { taskHistoryList ->
             taskHistoryAdapter?.submitList(taskHistoryList)
 
             if (taskHistoryList.isEmpty()) {
-                hideHistoryList()
+                binding.rvTaskHistory.gone()
                 showEmptyView()
             } else {
-                showHistoryList()
+                binding.rvTaskHistory.visible()
                 hideEmptyView()
             }
         }
@@ -286,7 +295,7 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun refreshHistoryItem(action: RefreshHistoryItem) {
-        binding.recycler.adapter?.notifyItemChanged(action.position)
+        binding.rvTaskHistory.adapter?.notifyItemChanged(action.position)
     }
 
     private fun scrollToTop() {
@@ -308,7 +317,7 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        binding.recycler.run {
+        binding.rvTaskHistory.run {
             adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
                 override fun onClickMarkTaskAsDone(position: Int) {
                     viewModel.dispatchViewAction(OnClickMarkTaskAsDone(position))
@@ -352,14 +361,6 @@ internal class TaskHistoryFragment : BaseFragment() {
             val final = finalDate.toShortDateView(this)
             binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = "$initial - $final"
         }
-    }
-
-    private fun hideHistoryList() {
-        binding.recycler.gone()
-    }
-
-    private fun showHistoryList() {
-        binding.recycler.visible()
     }
 
     private fun showEmptyView() {

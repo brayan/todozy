@@ -61,6 +61,8 @@ internal class TaskDetailsViewModel(
 
     private fun loadDetails() = viewModelScope.launch {
         try {
+            viewState.loading.postValue(true)
+
             val task = getTaskUseCase(viewState.taskId).getOrThrow()
             val taskDetails = taskDetailsUiModelFactory.create(task)
 
@@ -81,6 +83,8 @@ internal class TaskDetailsViewModel(
             logService.error(e)
             viewState.action.value = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
             viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
+        } finally {
+            viewState.loading.postValue(false)
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.Calendar
 internal class TaskHistoryViewState {
 
     val action = Event<Action>()
+    val loading = MutableLiveData(true)
     val taskHistoryList = MutableLiveData<List<UiModel>>()
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val subtitle = MutableLiveData<String>()

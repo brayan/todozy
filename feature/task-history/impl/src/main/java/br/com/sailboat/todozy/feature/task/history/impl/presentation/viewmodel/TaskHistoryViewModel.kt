@@ -293,6 +293,8 @@ internal class TaskHistoryViewModel(
 
     private fun loadHistoryTasks() = viewModelScope.launch {
         try {
+            viewState.loading.postValue(true)
+
             val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
 
             val taskHistoryCategories = listOf(
@@ -318,6 +320,8 @@ internal class TaskHistoryViewModel(
         } catch (e: Exception) {
             logService.error(e)
             viewState.action.value = TaskHistoryViewState.Action.ShowGenericError
+        } finally {
+            viewState.loading.postValue(false)
         }
     }
 

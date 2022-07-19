@@ -83,7 +83,7 @@ internal class TaskDetailsFragment : BaseFragment() {
             viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
         }
 
-        binding.recycler.recycler.run {
+        binding.rvTaskDetails.run {
             adapter = TaskDetailsAdapter().apply {
                 taskDetailsAdapter = this
             }
@@ -97,6 +97,15 @@ internal class TaskDetailsFragment : BaseFragment() {
 
     private fun observeViewModel() {
         observeActions()
+        viewModel.viewState.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading) {
+                binding.progressTaskDetails.visible()
+                binding.rvTaskDetails.gone()
+            } else {
+                binding.progressTaskDetails.gone()
+                binding.rvTaskDetails.visible()
+            }
+        }
         viewModel.viewState.taskDetails.observe(viewLifecycleOwner) { items ->
             taskDetailsAdapter?.submitList(items)
         }
