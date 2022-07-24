@@ -16,6 +16,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.Task
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.DateFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.StatusFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterDialog
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.delete.DeleteTaskHistoryDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmClearAllHistory
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory
@@ -42,18 +43,16 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ScrollToPosition
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ScrollToTop
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewState.Action.ShowGenericError
-import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
-import br.com.sailboat.uicomponent.impl.helper.DialogHelper
+import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
@@ -71,6 +70,8 @@ internal class TaskHistoryFragment : BaseFragment() {
     private var dateFilterDialog: SelectItemDialog? = null
     private var dateRangeSelectorFilterDialog: DateRangeSelectorFilterDialog? = null
     private var statusFilterDialog: SelectItemDialog? = null
+    private var deleteTaskHistoryDialog: DeleteTaskHistoryDialog? = null
+    private var clearAllHistoryDialog: TwoOptionsDialog? = null
 
     private lateinit var binding: FrgTaskHistoryBinding
 
@@ -101,6 +102,20 @@ internal class TaskHistoryFragment : BaseFragment() {
     private val dateRangeSelectorDialogCallback = object : DateRangeSelectorFilterDialog.Callback {
         override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
             viewModel.dispatchViewAction(OnSelectDateRange(initialDate, finalDate))
+        }
+    }
+
+    private val clearAllHistoryCallback = object : TwoOptionsDialog.Callback {
+        override fun onClickPositiveOption() {
+            viewModel.dispatchViewAction(OnClickConfirmClearAllHistory)
+        }
+
+        override fun onClickNegativeOption() {}
+    }
+
+    private val deleteTaskHistoryCallback = object : DeleteTaskHistoryDialog.Callback {
+        override fun onConfirmDeleteTaskHistory(position: Int) {
+            viewModel.dispatchViewAction(OnClickConfirmDeleteTaskHistory(position))
         }
     }
 
@@ -226,8 +241,16 @@ internal class TaskHistoryFragment : BaseFragment() {
         statusFilterDialog = childFragmentManager.findFragmentByTag(StatusFilterDialog.TAG) as? SelectItemDialog
         statusFilterDialog?.callback = statusFilterDialogCallback
 
-        dateRangeSelectorFilterDialog = childFragmentManager.findFragmentByTag(DateRangeSelectorFilterDialog.TAG) as? DateRangeSelectorFilterDialog
+        dateRangeSelectorFilterDialog =
+            childFragmentManager.findFragmentByTag(DateRangeSelectorFilterDialog.TAG) as? DateRangeSelectorFilterDialog
         dateRangeSelectorFilterDialog?.callback = dateRangeSelectorDialogCallback
+
+        clearAllHistoryDialog = childFragmentManager.findFragmentByTag("CLEAR_HISTORY") as? TwoOptionsDialog
+        clearAllHistoryDialog?.callback = clearAllHistoryCallback
+
+        deleteTaskHistoryDialog =
+            childFragmentManager.findFragmentByTag(DeleteTaskHistoryDialog.TAG) as? DeleteTaskHistoryDialog
+        deleteTaskHistoryDialog?.callback = deleteTaskHistoryCallback
     }
 
     private fun navigateToMenuFilter(action: NavigateToMenuFilter) {
@@ -269,29 +292,18 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun navigateToClearAllHistoryConfirmation() {
-        val dialog = TwoOptionsDialog()
-        dialog.message = getString(R.string.msg_ask_clear_all_history)
-        dialog.positiveMsg = R.string.clear
-        dialog.positiveCallback = object : TwoOptionsDialog.PositiveCallback {
-            override fun onClickPositiveOption() {
-                viewModel.dispatchViewAction(OnClickConfirmClearAllHistory)
-            }
-        }
-        dialog.show(childFragmentManager, "CLEAR_HISTORY")
+        clearAllHistoryDialog = TwoOptionsDialog.newInstance(
+            message = getString(R.string.msg_ask_clear_all_history),
+            positiveMsg = R.string.clear,
+        )
+        clearAllHistoryDialog?.callback = clearAllHistoryCallback
+        clearAllHistoryDialog?.show(childFragmentManager, "CLEAR_HISTORY")
     }
 
     private fun navigateToDeleteTaskHistoryConfirmation(action: NavigateToDeleteTaskHistoryConfirmation) {
-        activity?.run {
-            DialogHelper().showDeleteDialog(
-                childFragmentManager,
-                this,
-                object : TwoOptionsDialog.PositiveCallback {
-                    override fun onClickPositiveOption() {
-                        viewModel.dispatchViewAction(OnClickConfirmDeleteTaskHistory(action.position))
-                    }
-                }
-            )
-        }
+        deleteTaskHistoryDialog = DeleteTaskHistoryDialog.newInstance(taskHistoryPosition = action.position)
+        deleteTaskHistoryDialog?.callback = deleteTaskHistoryCallback
+        deleteTaskHistoryDialog?.show(childFragmentManager, DeleteTaskHistoryDialog.TAG)
     }
 
     private fun refreshHistoryItem(action: RefreshHistoryItem) {
@@ -351,18 +363,6 @@ internal class TaskHistoryFragment : BaseFragment() {
         toolbar.setTitle(R.string.history)
     }
 
-    fun setEmptySubtitle() {
-        binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = ""
-    }
-
-    fun setDateRangeSubtitle(initialDate: Calendar, finalDate: Calendar) {
-        activity?.run {
-            val initial = initialDate.toShortDateView(this)
-            val final = finalDate.toShortDateView(this)
-            binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle = "$initial - $final"
-        }
-    }
-
     private fun showEmptyView() {
         binding.eptView.root.visible()
         binding.appbarTaskHistory.root.setExpanded(true)
@@ -370,10 +370,5 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     private fun hideEmptyView() {
         binding.eptView.root.gone()
-    }
-
-    fun setDateFilterSubtitle(dateRangeType: DateFilterTaskHistorySelectableItem) {
-        binding.appbarTaskHistory.toolbarScroll.toolbar.subtitle =
-            getString(dateRangeType.getName()).uppercase()
     }
 }

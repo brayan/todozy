@@ -26,7 +26,7 @@ import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.uicomponent.impl.dialog.TwoOptionsDialog
+import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.DialogHelper
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
@@ -130,9 +130,11 @@ internal class TaskDetailsFragment : BaseFragment() {
             DialogHelper().showDeleteDialog(
                 childFragmentManager,
                 this,
-                object : TwoOptionsDialog.PositiveCallback {
+                object : TwoOptionsDialog.Callback {
                     override fun onClickPositiveOption() {
                         viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
+                    }
+                    override fun onClickNegativeOption() {
                     }
                 }
             )
