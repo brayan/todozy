@@ -9,11 +9,15 @@ internal sealed class DateRangeSelectorFilterViewAction {
     ) : DateRangeSelectorFilterViewAction()
 
     data class OnSelectInitialDate(
-        val initialDate: Calendar?,
+        val year: Int,
+        val month: Int,
+        val day: Int,
     ) : DateRangeSelectorFilterViewAction()
 
     data class OnSelectFinalDate(
-        val finalDate: Calendar?,
+        val year: Int,
+        val month: Int,
+        val day: Int,
     ) : DateRangeSelectorFilterViewAction()
 
     object OnClickConfirmSelectedDates : DateRangeSelectorFilterViewAction()

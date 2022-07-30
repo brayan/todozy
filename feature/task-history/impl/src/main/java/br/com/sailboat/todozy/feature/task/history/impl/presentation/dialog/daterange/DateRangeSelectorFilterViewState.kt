@@ -11,5 +11,8 @@ internal class DateRangeSelectorFilterViewState {
 
     sealed class Action {
         data class ReturnSelectedDates(val initialDate: Calendar, val finalDate: Calendar) : Action()
+        object ShowDateCantBeGreaterThanTodayMessage : Action()
+        object ShowInitialDateCantBeGreaterThanFinalDateMessage : Action()
+        object ShowFinalDateCantBeLowerThanFinalDateMessage : Action()
     }
 }

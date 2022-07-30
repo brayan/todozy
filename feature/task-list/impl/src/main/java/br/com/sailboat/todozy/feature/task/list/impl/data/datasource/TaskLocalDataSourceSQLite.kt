@@ -56,7 +56,6 @@ internal class TaskLocalDataSourceSQLite(
 
         return@runCatching getListFromQuery(sb.toString(), filter)
     }
-
     override suspend fun getTomorrowTasks(filter: TaskFilter) = runCatching {
         val sb = StringBuilder()
         bindSelect(sb)

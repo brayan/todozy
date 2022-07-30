@@ -6,22 +6,40 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ReturnSelectedDates
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ShowDateCantBeGreaterThanTodayMessage
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ShowFinalDateCantBeLowerThanFinalDateMessage
+import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ShowInitialDateCantBeGreaterThanFinalDateMessage
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
+import br.com.sailboat.todozy.utility.android.dialog.dateselector.DateSelectorDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
-import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
-import br.com.sailboat.todozy.utility.kotlin.extension.isAfterToday
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
-import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
 import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding
-import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
+
+private const val INITIAL_DATE_SELECTOR = "INITIAL_DATE_SELECTOR"
+private const val FINAL_DATE_SELECTOR = "FINAL_DATE_SELECTOR"
 
 internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
 
     private var initialDate: Calendar? = null
     private var finalDate: Calendar? = null
+    private var initialDateSelectorDialog: DateSelectorDialog? = null
+    private var finalDateSelectorDialog: DateSelectorDialog? = null
+    private var initialDateSelectorDialogCallback = object : DateSelectorDialog.Callback {
+        override fun onDateSelected(year: Int, month: Int, day: Int) {
+            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectInitialDate(year, month, day))
+            initialDateSelectorDialog = null
+        }
+    }
+    private var finalDateSelectorDialogCallback = object : DateSelectorDialog.Callback {
+        override fun onDateSelected(year: Int, month: Int, day: Int) {
+            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectFinalDate(year, month, day))
+            finalDateSelectorDialog = null
+        }
+    }
 
     private lateinit var binding: DialogDateRangeSelectorBinding
 
@@ -39,84 +57,27 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         return buildDialog()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateCallbacksFromDialogs()
+    }
+
     private fun initViews() = with(binding) {
         llDateRangeSelectorInitialDate.setOnClickListener {
-            DateSelectorDialog.show(
+            initialDateSelectorDialog = DateSelectorDialog.show(
+                INITIAL_DATE_SELECTOR,
                 childFragmentManager,
                 initialDate.orNewCalendar(),
-                object : DateSelectorDialog.Callback {
-                    override fun onDateSet(year: Int, month: Int, day: Int) {
-                        val newInitialDate = Calendar.getInstance()
-                        newInitialDate.set(Calendar.YEAR, year)
-                        newInitialDate.set(Calendar.MONTH, month)
-                        newInitialDate.set(Calendar.DAY_OF_MONTH, day)
-                        newInitialDate.clearTime()
-
-                        if (newInitialDate.isAfterToday()) {
-                            childFragmentManager.run {
-                                MessageDialog.showMessage(
-                                    manager = this,
-                                    message = "A data não pode ser maior que hoje",
-                                    title = "Ops...",
-                                )
-                            }
-                            return
-                        }
-
-                        if (newInitialDate.after(finalDate)) {
-                            childFragmentManager.run {
-                                MessageDialog.showMessage(
-                                    manager = this,
-                                    message = "A data inicial não pode ser maior que a data final",
-                                    title = "Ops...",
-                                )
-                            }
-                            return
-                        }
-
-                        viewModel.dispatchViewAction(
-                            DateRangeSelectorFilterViewAction.OnSelectInitialDate(
-                                newInitialDate
-                            )
-                        )
-                    }
-                }
+                initialDateSelectorDialogCallback,
             )
         }
 
         llDateRangeSelectorFinalDate.setOnClickListener {
-            DateSelectorDialog.show(
+            finalDateSelectorDialog = DateSelectorDialog.show(
+                FINAL_DATE_SELECTOR,
                 childFragmentManager,
                 finalDate.orNewCalendar(),
-                object : DateSelectorDialog.Callback {
-                    override fun onDateSet(year: Int, month: Int, day: Int) {
-                        val newFinalDate = Calendar.getInstance()
-                        newFinalDate.set(Calendar.YEAR, year)
-                        newFinalDate.set(Calendar.MONTH, month)
-                        newFinalDate.set(Calendar.DAY_OF_MONTH, day)
-                        newFinalDate.setFinalTimeToCalendar()
-
-                        if (newFinalDate.isAfterToday()) {
-                            MessageDialog.showMessage(
-                                childFragmentManager,
-                                getString(R.string.msg_data_cant_be_greater),
-                                "Ops..."
-                            )
-                            return
-                        }
-
-                        if (newFinalDate.before(initialDate)) {
-                            MessageDialog.showMessage(
-                                childFragmentManager,
-                                getString(R.string.msg_end_date),
-                                "Ops..."
-                            )
-                            return
-                        }
-
-                        viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectFinalDate(newFinalDate))
-                    }
-                }
+                finalDateSelectorDialogCallback,
             )
         }
     }
@@ -124,7 +85,11 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
     private fun observeViewModel() {
         viewModel.viewState.action.observe(this) { action ->
             when (action) {
-                is DateRangeSelectorFilterViewState.Action.ReturnSelectedDates -> returnSelectedDates(action)
+                is ReturnSelectedDates -> returnSelectedDates(action)
+                is ShowDateCantBeGreaterThanTodayMessage -> showDateCantBeGreaterThanTodayMessage()
+                is ShowInitialDateCantBeGreaterThanFinalDateMessage ->
+                    showInitialDateCantBeGreaterThanFinalDateMessage()
+                is ShowFinalDateCantBeLowerThanFinalDateMessage -> showFinalDateCantBeLowerThanFinalDateMessage()
             }
         }
         viewModel.viewState.initialDate.observe(this) { initialDate ->
@@ -139,7 +104,35 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         }
     }
 
-    private fun returnSelectedDates(action: DateRangeSelectorFilterViewState.Action.ReturnSelectedDates) {
+    private fun showDateCantBeGreaterThanTodayMessage() {
+        childFragmentManager.run {
+            MessageDialog.showMessage(
+                manager = this,
+                message = "A data não pode ser maior que hoje",
+                title = "Ops...",
+            )
+        }
+    }
+
+    private fun showInitialDateCantBeGreaterThanFinalDateMessage() {
+        childFragmentManager.run {
+            MessageDialog.showMessage(
+                manager = this,
+                message = "A data inicial não pode ser maior que a data final",
+                title = "Ops...",
+            )
+        }
+    }
+
+    private fun showFinalDateCantBeLowerThanFinalDateMessage() {
+        MessageDialog.showMessage(
+            childFragmentManager,
+            getString(R.string.msg_end_date),
+            "Ops..."
+        )
+    }
+
+    private fun returnSelectedDates(action: ReturnSelectedDates) {
         callback?.onClickOk(action.initialDate, action.finalDate)
     }
 
@@ -155,16 +148,22 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         return builder.create()
     }
 
+    private fun updateCallbacksFromDialogs() {
+        initialDateSelectorDialog =
+            childFragmentManager.findFragmentByTag("INITIAL_DATE_SELECTOR") as? DateSelectorDialog
+        initialDateSelectorDialog?.callback = initialDateSelectorDialogCallback
+
+        finalDateSelectorDialog =
+            childFragmentManager.findFragmentByTag("FINAL_DATE_SELECTOR") as? DateSelectorDialog
+        finalDateSelectorDialog?.callback = finalDateSelectorDialogCallback
+    }
+
     interface Callback {
         fun onClickOk(initialDate: Calendar, finalDate: Calendar)
     }
 
     companion object {
         val TAG: String = DateRangeSelectorFilterDialog::class.java.name
-
-        fun show(manager: FragmentManager, callback: Callback): DateRangeSelectorFilterDialog {
-            return show(manager, null, null, callback)
-        }
 
         fun show(
             manager: FragmentManager,

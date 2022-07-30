@@ -39,11 +39,11 @@ import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorTaskNameCantBeEmpty
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
+import br.com.sailboat.todozy.utility.android.dialog.dateselector.DateSelectorDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.uicomponent.impl.dialog.DateSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.TimeSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
@@ -182,10 +182,11 @@ internal class TaskFormFragment : BaseFragment() {
 
     private fun navigateToAlarmDateSelector(action: NavigateToAlarmDateSelector) {
         DateSelectorDialog.show(
+            "ALARM_DATE_SELECTOR",
             childFragmentManager,
             action.currentDate,
             object : DateSelectorDialog.Callback {
-                override fun onDateSet(year: Int, month: Int, day: Int) {
+                override fun onDateSelected(year: Int, month: Int, day: Int) {
                     val onSelectAlarmDateAction = OnSelectAlarmDate(
                         year = year,
                         month = month,
