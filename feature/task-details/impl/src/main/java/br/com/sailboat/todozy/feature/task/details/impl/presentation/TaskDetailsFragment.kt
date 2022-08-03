@@ -17,6 +17,7 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.OnClickConfirmDeleteTask
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.CloseTaskDetails
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ConfirmDeleteTask
@@ -27,18 +28,26 @@ import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
-import br.com.sailboat.uicomponent.impl.helper.DialogHelper
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val DELETE_TASK_TAG = "DELETE_TASK_TAG"
+
 internal class TaskDetailsFragment : BaseFragment() {
 
     private val viewModel: TaskDetailsViewModel by viewModel()
     private val taskFormNavigator: TaskFormNavigator by inject()
+    private val deleteTaskCallback = object : TwoOptionsDialog.Callback {
+        override fun onClickPositiveOption() {
+            viewModel.dispatchViewAction(OnClickConfirmDeleteTask)
+        }
 
+        override fun onClickNegativeOption() {}
+    }
     private var taskDetailsAdapter: TaskDetailsAdapter? = null
+    private var deleteTaskDialog: TwoOptionsDialog? = null
 
     private val editTaskLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -71,9 +80,20 @@ internal class TaskDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+        updateCallbacksFromDialogs()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_delete -> {
+                viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickMenuDelete)
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override fun initViews() {
@@ -126,19 +146,12 @@ internal class TaskDetailsFragment : BaseFragment() {
     }
 
     private fun confirmDeleteTask() {
-        activity?.run {
-            DialogHelper().showDeleteDialog(
-                childFragmentManager,
-                this,
-                object : TwoOptionsDialog.Callback {
-                    override fun onClickPositiveOption() {
-                        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
-                    }
-                    override fun onClickNegativeOption() {
-                    }
-                }
-            )
-        }
+        deleteTaskDialog = TwoOptionsDialog.newInstance(
+            message = getString(R.string.are_you_sure),
+            positiveMsg = R.string.delete
+        )
+        deleteTaskDialog?.callback = deleteTaskCallback
+        deleteTaskDialog?.show(childFragmentManager, DELETE_TASK_TAG)
     }
 
     private fun closeTaskDetails(action: CloseTaskDetails) {
@@ -178,13 +191,8 @@ internal class TaskDetailsFragment : BaseFragment() {
         binding.appbarTaskDetailsFlMetrics.gone()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickMenuDelete)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
+    private fun updateCallbacksFromDialogs() {
+        deleteTaskDialog = childFragmentManager.findFragmentByTag(DELETE_TASK_TAG) as? TwoOptionsDialog
+        deleteTaskDialog?.callback = deleteTaskCallback
     }
 }
