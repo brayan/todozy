@@ -11,7 +11,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ShowFinalDateCantBeLowerThanFinalDateMessage
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.daterange.DateRangeSelectorFilterViewState.Action.ShowInitialDateCantBeGreaterThanFinalDateMessage
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
-import br.com.sailboat.todozy.utility.android.dialog.dateselector.DateSelectorDialog
+import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.DateSelectorDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
 import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding

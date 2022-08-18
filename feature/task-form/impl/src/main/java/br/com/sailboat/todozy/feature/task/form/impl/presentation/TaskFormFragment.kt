@@ -39,12 +39,12 @@ import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorTaskNameCantBeEmpty
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
-import br.com.sailboat.todozy.utility.android.dialog.dateselector.DateSelectorDialog
+import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.DateSelectorDialog
+import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.TimeSelectorDialog
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
-import br.com.sailboat.uicomponent.impl.dialog.TimeSelectorDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.weekdays.WeekDaysSelectorDialog
@@ -58,6 +58,30 @@ internal class TaskFormFragment : BaseFragment() {
     private val viewModel: TaskFormViewModel by viewModel()
 
     private lateinit var binding: FragmentTaskFormBinding
+
+    private var dateSelectorDialog: DateSelectorDialog? = null
+    private var timeSelectorDialog: TimeSelectorDialog? = null
+
+    private val dateSelectorDialogCallback = object : DateSelectorDialog.Callback {
+        override fun onDateSelected(year: Int, month: Int, day: Int) {
+            val onSelectAlarmDateAction = OnSelectAlarmDate(
+                year = year,
+                month = month,
+                day = day,
+            )
+            viewModel.dispatchViewAction(onSelectAlarmDateAction)
+        }
+    }
+
+    private val timeSelectorDialogCallback = object : TimeSelectorDialog.Callback {
+        override fun onTimeSelected(hourOfDay: Int, minute: Int) {
+            val onSelectAlarmTimeAction = OnSelectAlarmTime(
+                hourOfDay = hourOfDay,
+                minute = minute,
+            )
+            viewModel.dispatchViewAction(onSelectAlarmTimeAction)
+        }
+    }
 
     companion object {
         fun newInstance() = TaskFormFragment()
@@ -81,9 +105,18 @@ internal class TaskFormFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+        updateCallbacksFromDialogs()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
         viewModel.dispatchViewAction(OnStart(taskId))
+    }
+
+    private fun updateCallbacksFromDialogs() {
+        dateSelectorDialog = childFragmentManager.findFragmentByTag(DateSelectorDialog.TAG) as? DateSelectorDialog
+        dateSelectorDialog?.callback = dateSelectorDialogCallback
+
+        timeSelectorDialog = childFragmentManager.findFragmentByTag(TimeSelectorDialog.TAG) as? TimeSelectorDialog
+        timeSelectorDialog?.callback = timeSelectorDialogCallback
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -181,36 +214,20 @@ internal class TaskFormFragment : BaseFragment() {
     }
 
     private fun navigateToAlarmDateSelector(action: NavigateToAlarmDateSelector) {
-        DateSelectorDialog.show(
-            "ALARM_DATE_SELECTOR",
-            childFragmentManager,
-            action.currentDate,
-            object : DateSelectorDialog.Callback {
-                override fun onDateSelected(year: Int, month: Int, day: Int) {
-                    val onSelectAlarmDateAction = OnSelectAlarmDate(
-                        year = year,
-                        month = month,
-                        day = day,
-                    )
-                    viewModel.dispatchViewAction(onSelectAlarmDateAction)
-                }
-            }
+        // TODO: EXPERIMENT WITH MATERIAL DATE PICKER
+        // https://material.io/components/date-pickers/android
+        dateSelectorDialog = DateSelectorDialog.show(
+            fragmentManager = childFragmentManager,
+            calendar = action.currentDate,
+            callback = dateSelectorDialogCallback,
         )
     }
 
     private fun navigateToAlarmTimeSelector(action: NavigateToAlarmTimeSelector) {
-        TimeSelectorDialog.show(
-            childFragmentManager,
-            action.currentTime,
-            object : TimeSelectorDialog.Callback {
-                override fun onTimeSet(hourOfDay: Int, minute: Int) {
-                    val onSelectAlarmTimeAction = OnSelectAlarmTime(
-                        hourOfDay = hourOfDay,
-                        minute = minute,
-                    )
-                    viewModel.dispatchViewAction(onSelectAlarmTimeAction)
-                }
-            }
+        timeSelectorDialog = TimeSelectorDialog.show(
+            fragmentManager = childFragmentManager,
+            calendar = action.currentTime,
+            callback = timeSelectorDialogCallback,
         )
     }
 
