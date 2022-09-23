@@ -1,9 +1,9 @@
 object BuildPlugin {
     object Version {
         const val gradlePlugin = "7.1.2"
-        const val kotlin = "1.6.21"
-        const val googleServices = "4.3.10"
-        const val crashlytics = "2.8.1"
+        const val kotlin = "1.7.10"
+        const val googleServices = "4.3.13"
+        const val crashlytics = "2.9.1"
     }
 
     const val android = "com.android.tools.build:gradle:${Version.gradlePlugin}"
@@ -15,15 +15,15 @@ object BuildPlugin {
 object BuildVersion {
     const val versionCode = 14
     const val versionName = "1.5"
-    const val compileSdk = 32
+    const val compileSdk = 33
     const val minSdk = 21
-    const val targetSdk = 32
+    const val targetSdk = 33
     const val buildTools = "30.0.3"
 }
 
 object Coroutines {
     object Version {
-        const val coroutines = "1.6.0"
+        const val coroutines = "1.6.4"
     }
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.coroutines}"
@@ -33,7 +33,7 @@ object Coroutines {
 
 object Lifecycle {
     object Version {
-        const val lifecycle = "2.4.1"
+        const val lifecycle = "2.5.1"
         const val lifecycleTesting = "2.1.0"
     }
 
@@ -46,22 +46,22 @@ object Lifecycle {
 
 object AndroidX {
     object Versions {
-        const val ktx = "1.7.0"
-        const val appcompat = "1.4.1"
-        const val materialDesign = "1.5.0"
+        const val ktx = "1.9.0"
+        const val appcompat = "1.5.1"
+        const val materialDesign = "1.6.1"
         const val browser = "1.4.0"
         const val recyclerView = "1.2.1"
         const val legacy = "1.0.0"
         const val swipeRefreshLayout = "1.1.0"
         const val transition = "1.3.1"
-        const val annotation = "1.1.0"
-        const val fragment = "1.3.6"
+        const val annotation = "1.4.0"
+        const val fragment = "1.5.2"
         const val viewPager = "1.0.0"
         const val viewPager2 = "1.0.0"
         const val preferences = "1.1.1"
         const val collection = "1.1.0"
-        const val activity = "1.4.0"
-        const val constraintLayout = "2.1.3"
+        const val activity = "1.6.0"
+        const val constraintLayout = "2.1.4"
     }
 
     const val ktx = "androidx.core:core-ktx:${Versions.ktx}"
@@ -99,7 +99,7 @@ object AndroidXTest {
 
 object MockK {
     object Version {
-        const val mockk = "1.12.0"
+        const val mockk = "1.12.8"
     }
 
     const val core = "io.mockk:mockk:${Version.mockk}"
@@ -108,7 +108,7 @@ object MockK {
 
 object Koin {
     object Version {
-        const val koin = "3.0.2"
+        const val koin = "3.2.0"
     }
 
     const val android = "io.insert-koin:koin-android:${Version.koin}"
@@ -137,7 +137,7 @@ object Firebase {
 
 object Kotlin {
     object Version {
-        const val kotlin = "1.6.10"
+        const val kotlin = "1.7.10"
     }
 
     const val test = "org.jetbrains.kotlin:kotlin-test-junit:${Version.kotlin}"
@@ -151,4 +151,44 @@ object Timber {
     }
 
     const val timber = "com.jakewharton.timber:timber:${Version.timber}"
+}
+
+object Flipper {
+    object Version {
+        const val flipper = "0.154.0"
+        const val soloader = "0.10.1"
+    }
+
+    const val flipper = "com.facebook.flipper:flipper:${Version.flipper}"
+    const val flipperNoop = "com.facebook.flipper:flipper-noop:${Version.flipper}"
+    const val soloader = "com.facebook.soloader:soloader:${Version.soloader}"
+}
+
+object Hilt {
+    object Version {
+        const val core = "2.40.5"
+        const val lifecycleViewModel = "1.0.0-alpha03"
+        const val compiler = "1.0.0"
+        const val navigationCompose = "1.0.0"
+    }
+
+    const val android = "com.google.dagger:hilt-android:${Version.core}"
+    const val androidCompiler = "com.google.dagger:hilt-android-compiler:${Version.core}"
+    const val lifecycleViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:${Version.lifecycleViewModel}"
+    const val compiler = "androidx.hilt:hilt-compiler:${Version.compiler}"
+    const val navigationCompose = "androidx.hilt:hilt-navigation-compose:${Version.navigationCompose}"
+}
+
+object Compose {
+    object Version {
+        const val core = "1.2.1"
+        const val lifecycleRuntime = "2.5.1"
+        const val activity = "1.5.1"
+    }
+
+    const val ui = "androidx.compose.ui:ui:${Version.core}"
+    const val material = "androidx.compose.material:material:${Version.core}"
+    const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Version.core}"
+    const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycleRuntime}"
+    const val activity = "androidx.activity:activity-compose:${Version.activity}"
 }
