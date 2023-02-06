@@ -17,11 +17,11 @@ internal class DateRangeSelectorFilterViewModel(
     override val viewState: DateRangeSelectorFilterViewState = DateRangeSelectorFilterViewState(),
 ) : BaseViewModel<DateRangeSelectorFilterViewState, DateRangeSelectorFilterViewAction>() {
 
-    override fun dispatchViewAction(viewAction: DateRangeSelectorFilterViewAction) {
-        when (viewAction) {
-            is OnStart -> onStart(viewAction)
-            is OnSelectInitialDate -> onSelectInitialDate(viewAction)
-            is OnSelectFinalDate -> onSelectFinalDate(viewAction)
+    override fun dispatchViewIntent(viewIntent: DateRangeSelectorFilterViewAction) {
+        when (viewIntent) {
+            is OnStart -> onStart(viewIntent)
+            is OnSelectInitialDate -> onSelectInitialDate(viewIntent)
+            is OnSelectFinalDate -> onSelectFinalDate(viewIntent)
             is OnClickConfirmSelectedDates -> onClickConfirmSelectedDates()
         }
     }

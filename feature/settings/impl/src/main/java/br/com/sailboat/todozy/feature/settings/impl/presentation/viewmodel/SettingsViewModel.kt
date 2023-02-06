@@ -16,13 +16,13 @@ internal class SettingsViewModel(
     private val setAlarmVibrateSettingUseCase: SetAlarmVibrateSettingUseCase,
 ) : BaseViewModel<SettingsViewState, SettingsViewAction>() {
 
-    override fun dispatchViewAction(viewAction: SettingsViewAction) {
-        when (viewAction) {
+    override fun dispatchViewIntent(viewIntent: SettingsViewAction) {
+        when (viewIntent) {
             is SettingsViewAction.OnStart -> onStart()
             is SettingsViewAction.OnClickMenuAlarmTone -> onClickMenuAlarmTone()
             is SettingsViewAction.OnClickAbout -> onClickAbout()
-            is SettingsViewAction.OnClickVibrateAlarm -> onClickVibrateAlarm(viewAction)
-            is SettingsViewAction.OnSelectAlarmTone -> onSelectAlarmTone(viewAction)
+            is SettingsViewAction.OnClickVibrateAlarm -> onClickVibrateAlarm(viewIntent)
+            is SettingsViewAction.OnSelectAlarmTone -> onSelectAlarmTone(viewIntent)
         }
     }
 

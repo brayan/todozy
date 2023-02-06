@@ -41,7 +41,7 @@ internal class TaskDetailsFragment : BaseFragment() {
     private val taskFormNavigator: TaskFormNavigator by inject()
     private val deleteTaskCallback = object : TwoOptionsDialog.Callback {
         override fun onClickPositiveOption() {
-            viewModel.dispatchViewAction(OnClickConfirmDeleteTask)
+            viewModel.dispatchViewIntent(OnClickConfirmDeleteTask)
         }
 
         override fun onClickNegativeOption() {}
@@ -51,7 +51,7 @@ internal class TaskDetailsFragment : BaseFragment() {
 
     private val editTaskLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
+            viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
         }
 
     companion object {
@@ -83,13 +83,13 @@ internal class TaskDetailsFragment : BaseFragment() {
         updateCallbacksFromDialogs()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_delete -> {
-                viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickMenuDelete)
+                viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickMenuDelete)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -100,7 +100,7 @@ internal class TaskDetailsFragment : BaseFragment() {
         binding.toolbar.setTitle(R.string.task_details)
         binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
         binding.fab.root.setOnClickListener {
-            viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
+            viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
         }
 
         binding.rvTaskDetails.run {

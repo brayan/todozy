@@ -34,7 +34,7 @@ class SelectItemDialog :
         }
 
         observeViewModel()
-        viewModel.dispatchViewAction(SelectItemViewAction.OnStart(title, selectableItems, selectedItem))
+        viewModel.dispatchViewIntent(SelectItemViewAction.OnStart(title, selectableItems, selectedItem))
 
         return buildDialog()
     }

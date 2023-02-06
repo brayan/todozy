@@ -38,7 +38,7 @@ internal class AboutFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewAction(AboutViewAction.OnStart)
+        viewModel.dispatchViewIntent(AboutViewAction.OnStart)
     }
 
     private fun observeViewModel() {

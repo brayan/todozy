@@ -28,7 +28,7 @@ class TimeSelectorDialog : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         super.onCreate(savedInstanceState)
 
         observeViewModel()
-        viewModel.dispatchViewAction(DateTimeSelectorViewAction.OnStart(calendar))
+        viewModel.dispatchViewIntent(DateTimeSelectorViewAction.OnStart(calendar))
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

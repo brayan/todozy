@@ -6,9 +6,9 @@ internal class TaskHistoryFilterViewModel(
     override val viewState: TaskHistoryFilterViewState = TaskHistoryFilterViewState(),
 ) : BaseViewModel<TaskHistoryFilterViewState, TaskHistoryFilterViewAction>() {
 
-    override fun dispatchViewAction(viewAction: TaskHistoryFilterViewAction) {
-        when (viewAction) {
-            is TaskHistoryFilterViewAction.OnStart -> onStart(viewAction)
+    override fun dispatchViewIntent(viewIntent: TaskHistoryFilterViewAction) {
+        when (viewIntent) {
+            is TaskHistoryFilterViewAction.OnStart -> onStart(viewIntent)
         }
     }
 

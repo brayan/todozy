@@ -65,7 +65,7 @@ internal class TaskDetailsViewModelTest {
         )
         prepareScenario(taskDetailsResult = taskDetails)
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
 
         coVerify(exactly = 1) { getTaskUseCase(taskId) }
         assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
@@ -82,7 +82,7 @@ internal class TaskDetailsViewModelTest {
         )
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
 
         coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
         assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
@@ -97,7 +97,7 @@ internal class TaskDetailsViewModelTest {
             )
         )
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
     }
@@ -115,7 +115,7 @@ internal class TaskDetailsViewModelTest {
         }
         prepareScenario(taskResult = taskResult)
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
 
         val expected = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
         assertTrue { list.contains(expected) }
@@ -134,7 +134,7 @@ internal class TaskDetailsViewModelTest {
         }
         prepareScenario(taskResult = taskResult)
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
 
         val expected = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
         assertTrue { list.contains(expected) }
@@ -144,7 +144,7 @@ internal class TaskDetailsViewModelTest {
     fun `should confirm if user wants to delete an task when dispatchViewAction is called with OnClickMenuDelete`() {
         prepareScenario()
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickMenuDelete)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickMenuDelete)
 
         val expected = TaskDetailsViewState.Action.ConfirmDeleteTask
         assertEquals(expected, viewModel.viewState.action.value)
@@ -155,7 +155,7 @@ internal class TaskDetailsViewModelTest {
         val task = TaskMockFactory.makeTask()
         prepareScenario(taskResult = Result.success(task))
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickConfirmDeleteTask)
 
         coVerify(exactly = 1) { disableTaskUseCase(task) }
     }
@@ -170,10 +170,10 @@ internal class TaskDetailsViewModelTest {
         val taskId = 42L
         prepareScenario()
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickConfirmDeleteTask)
 
         val expected = TaskDetailsViewState.Action.CloseTaskDetails(success = true)
         assertEquals(expected, viewModel.viewState.action.value)
@@ -184,8 +184,8 @@ internal class TaskDetailsViewModelTest {
         val taskId = 42L
         prepareScenario()
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
 
         val expected = TaskDetailsViewState.Action.NavigateToTaskForm(taskId)
         assertEquals(expected, viewModel.viewState.action.value)
@@ -208,7 +208,7 @@ internal class TaskDetailsViewModelTest {
         prepareScenario(taskDetailsResult = taskDetails)
         viewModel.viewState.taskId = taskId
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
 
         coVerify(exactly = 1) { getTaskUseCase(taskId) }
         assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
@@ -226,7 +226,7 @@ internal class TaskDetailsViewModelTest {
         viewModel.viewState.taskId = taskId
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
 
         coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
         assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
@@ -242,7 +242,7 @@ internal class TaskDetailsViewModelTest {
             )
         )
 
-        viewModel.dispatchViewAction(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
     }

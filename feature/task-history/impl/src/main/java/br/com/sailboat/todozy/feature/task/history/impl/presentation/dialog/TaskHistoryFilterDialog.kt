@@ -29,7 +29,7 @@ internal class TaskHistoryFilterDialog : DialogFragment() {
         binding = DialogFilterTaskHistoryBinding.inflate(LayoutInflater.from(requireContext()))
         initViews()
         observeViewModel()
-        viewModel.dispatchViewAction(TaskHistoryFilterViewAction.OnStart(date, status))
+        viewModel.dispatchViewIntent(TaskHistoryFilterViewAction.OnStart(date, status))
         return buildDialog()
     }
 

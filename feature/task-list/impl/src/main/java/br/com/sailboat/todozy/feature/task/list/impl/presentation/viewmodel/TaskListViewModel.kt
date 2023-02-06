@@ -57,16 +57,16 @@ internal class TaskListViewModel(
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
-    override fun dispatchViewAction(viewAction: TaskListViewAction) {
-        when (viewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskListViewAction) {
+        when (viewIntent) {
             is OnStart -> onStart()
             is OnClickMenuAbout -> onClickMenuAbout()
             is OnClickMenuSettings -> onClickMenuSettings()
             is OnClickMenuHistory -> onClickMenuHistory()
             is OnClickNewTask -> onClickNewTask()
-            is OnClickTask -> onClickTask(viewAction.taskId)
-            is OnSubmitSearchTerm -> onSubmitSearchTerm(viewAction.term)
-            is OnSwipeTask -> onSwipeTask(viewAction.position, viewAction.status)
+            is OnClickTask -> onClickTask(viewIntent.taskId)
+            is OnSubmitSearchTerm -> onSubmitSearchTerm(viewIntent.term)
+            is OnSwipeTask -> onSwipeTask(viewIntent.position, viewIntent.status)
         }
     }
 

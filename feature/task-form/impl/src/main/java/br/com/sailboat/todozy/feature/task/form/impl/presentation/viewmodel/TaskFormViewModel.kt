@@ -30,15 +30,15 @@ internal class TaskFormViewModel(
     private val alarmService: AlarmService,
 ) : BaseViewModel<TaskFormViewState, TaskFormViewAction>() {
 
-    override fun dispatchViewAction(viewAction: TaskFormViewAction) {
-        when (viewAction) {
-            is TaskFormViewAction.OnStart -> onStart(viewAction)
+    override fun dispatchViewIntent(viewIntent: TaskFormViewAction) {
+        when (viewIntent) {
+            is TaskFormViewAction.OnStart -> onStart(viewIntent)
             is TaskFormViewAction.OnClickAddAlarm -> onClickAddAlarm()
-            is TaskFormViewAction.OnClickSaveTask -> onClickSaveTask(viewAction)
-            is TaskFormViewAction.OnSelectAlarmDate -> onSelectAlarmDate(viewAction)
-            is TaskFormViewAction.OnSelectAlarmTime -> onSelectAlarmTime(viewAction)
-            is TaskFormViewAction.OnSelectAlarmType -> onSelectAlarmType(viewAction)
-            is TaskFormViewAction.OnSelectCustomAlarmType -> onSelectCustomAlarmType(viewAction)
+            is TaskFormViewAction.OnClickSaveTask -> onClickSaveTask(viewIntent)
+            is TaskFormViewAction.OnSelectAlarmDate -> onSelectAlarmDate(viewIntent)
+            is TaskFormViewAction.OnSelectAlarmTime -> onSelectAlarmTime(viewIntent)
+            is TaskFormViewAction.OnSelectAlarmType -> onSelectAlarmType(viewIntent)
+            is TaskFormViewAction.OnSelectCustomAlarmType -> onSelectCustomAlarmType(viewIntent)
             is TaskFormViewAction.OnClickAlarmDate -> onClickAlarmDate()
             is TaskFormViewAction.OnClickAlarmTime -> onClickAlarmTime()
             is TaskFormViewAction.OnClickRepeatAlarm -> onClickRepeatAlarm()

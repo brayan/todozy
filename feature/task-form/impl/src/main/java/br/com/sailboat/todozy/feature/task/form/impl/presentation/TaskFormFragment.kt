@@ -69,7 +69,7 @@ internal class TaskFormFragment : BaseFragment() {
                 month = month,
                 day = day,
             )
-            viewModel.dispatchViewAction(onSelectAlarmDateAction)
+            viewModel.dispatchViewIntent(onSelectAlarmDateAction)
         }
     }
 
@@ -79,7 +79,7 @@ internal class TaskFormFragment : BaseFragment() {
                 hourOfDay = hourOfDay,
                 minute = minute,
             )
-            viewModel.dispatchViewAction(onSelectAlarmTimeAction)
+            viewModel.dispatchViewIntent(onSelectAlarmTimeAction)
         }
     }
 
@@ -108,7 +108,7 @@ internal class TaskFormFragment : BaseFragment() {
         updateCallbacksFromDialogs()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
-        viewModel.dispatchViewAction(OnStart(taskId))
+        viewModel.dispatchViewIntent(OnStart(taskId))
     }
 
     private fun updateCallbacksFromDialogs() {
@@ -139,7 +139,7 @@ internal class TaskFormFragment : BaseFragment() {
                     taskName = binding.etTaskFormName.text.toString(),
                     taskNotes = binding.etTaskFormNotes.text.toString(),
                 )
-                viewModel.dispatchViewAction(action)
+                viewModel.dispatchViewIntent(action)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -251,9 +251,9 @@ internal class TaskFormFragment : BaseFragment() {
             object : WeekDaysSelectorDialog.Callback {
                 override fun onClickOk(selectedDays: String) {
                     if (selectedDays.isNotEmpty()) {
-                        viewModel.dispatchViewAction(OnSelectCustomAlarmType(selectedDays))
+                        viewModel.dispatchViewIntent(OnSelectCustomAlarmType(selectedDays))
                     } else {
-                        viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.NOT_REPEAT))
+                        viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.NOT_REPEAT))
                     }
                 }
             }
@@ -286,16 +286,16 @@ internal class TaskFormFragment : BaseFragment() {
 
     private fun initAlarmViews() = with(binding) {
         rlTaskFormAddAlarm.setOnClickListener {
-            viewModel.dispatchViewAction(OnClickAddAlarm)
+            viewModel.dispatchViewIntent(OnClickAddAlarm)
         }
         alarmDetails.tvAlarmDate.setOnClickListener {
-            viewModel.dispatchViewAction(OnClickAlarmDate)
+            viewModel.dispatchViewIntent(OnClickAlarmDate)
         }
         alarmDetails.tvAlarmTime.setOnClickListener {
-            viewModel.dispatchViewAction(OnClickAlarmTime)
+            viewModel.dispatchViewIntent(OnClickAlarmTime)
         }
         alarmDetails.tvAlarmRepeat.setOnClickListener {
-            viewModel.dispatchViewAction(OnClickRepeatAlarm)
+            viewModel.dispatchViewIntent(OnClickRepeatAlarm)
         }
     }
 
@@ -314,22 +314,22 @@ internal class TaskFormFragment : BaseFragment() {
     private fun onSelectItemRepeatAlarm(item: SelectableItem) {
         when (item as RepeatAlarmSelectableItem) {
             RepeatAlarmSelectableItem.NOT_REPEAT -> {
-                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.NOT_REPEAT))
+                viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.NOT_REPEAT))
             }
             RepeatAlarmSelectableItem.DAY -> {
-                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.DAY))
+                viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.DAY))
             }
             RepeatAlarmSelectableItem.WEEK -> {
-                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.WEEK))
+                viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.WEEK))
             }
             RepeatAlarmSelectableItem.MONTH -> {
-                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.MONTH))
+                viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.MONTH))
             }
             RepeatAlarmSelectableItem.YEAR -> {
-                viewModel.dispatchViewAction(OnSelectAlarmType(RepeatType.YEAR))
+                viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.YEAR))
             }
             RepeatAlarmSelectableItem.CUSTOM -> {
-                viewModel.dispatchViewAction(OnClickCustomRepeatAlarm)
+                viewModel.dispatchViewIntent(OnClickCustomRepeatAlarm)
             }
         }
     }

@@ -21,9 +21,9 @@ internal class TaskDetailsViewModel(
     private val logService: LogService,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewAction>() {
 
-    override fun dispatchViewAction(viewAction: TaskDetailsViewAction) {
-        when (viewAction) {
-            is TaskDetailsViewAction.OnStart -> onStart(viewAction)
+    override fun dispatchViewIntent(viewIntent: TaskDetailsViewAction) {
+        when (viewIntent) {
+            is TaskDetailsViewAction.OnStart -> onStart(viewIntent)
             is TaskDetailsViewAction.OnClickMenuDelete -> onClickMenuDelete()
             is TaskDetailsViewAction.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
             is TaskDetailsViewAction.OnClickEditTask -> onClickEditTask()

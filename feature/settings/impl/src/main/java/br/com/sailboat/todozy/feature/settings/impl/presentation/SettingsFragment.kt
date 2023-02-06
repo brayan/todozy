@@ -25,7 +25,7 @@ internal class SettingsFragment : BaseFragment() {
 
     private val pickRingtoneLauncher = registerForActivityResult(PickRingtoneContract()) { uri ->
         uri?.run {
-            viewModel.dispatchViewAction(SettingsViewAction.OnSelectAlarmTone(uri))
+            viewModel.dispatchViewIntent(SettingsViewAction.OnSelectAlarmTone(uri))
         }
     }
 
@@ -40,7 +40,7 @@ internal class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewAction(SettingsViewAction.OnStart)
+        viewModel.dispatchViewIntent(SettingsViewAction.OnStart)
     }
 
     override fun initViews() {
@@ -91,19 +91,19 @@ internal class SettingsFragment : BaseFragment() {
 
     private fun initToneViews() = activity?.run {
         binding.llSettingsTone.setOnClickListener {
-            viewModel.dispatchViewAction(SettingsViewAction.OnClickMenuAlarmTone)
+            viewModel.dispatchViewIntent(SettingsViewAction.OnClickMenuAlarmTone)
         }
     }
 
     private fun initAbout() {
         binding.tvSettingsAbout.setOnClickListener {
-            viewModel.dispatchViewAction(SettingsViewAction.OnClickAbout)
+            viewModel.dispatchViewIntent(SettingsViewAction.OnClickAbout)
         }
     }
 
     private fun initCheckBoxVibrate() = activity?.run {
         binding.cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.dispatchViewAction(SettingsViewAction.OnClickVibrateAlarm(isChecked))
+            viewModel.dispatchViewIntent(SettingsViewAction.OnClickVibrateAlarm(isChecked))
         }
     }
 

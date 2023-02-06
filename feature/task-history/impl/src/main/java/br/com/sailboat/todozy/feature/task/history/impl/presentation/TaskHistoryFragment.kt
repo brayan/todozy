@@ -77,37 +77,37 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     private val taskHistoryFilterDialogCallback = object : TaskHistoryFilterDialog.Callback {
         override fun onClickFilterDate() {
-            viewModel.dispatchViewAction(OnClickDateFilter)
+            viewModel.dispatchViewIntent(OnClickDateFilter)
         }
 
         override fun onClickFilterStatus() {
-            viewModel.dispatchViewAction(OnClickStatusFilter)
+            viewModel.dispatchViewIntent(OnClickStatusFilter)
         }
     }
 
     private val dateFilterDialogCallback = object : SelectItemDialog.Callback {
         override fun onClickItem(item: SelectableItem) {
             val date = item as DateFilterTaskHistorySelectableItem
-            viewModel.dispatchViewAction(OnSelectDateFromFilter(date))
+            viewModel.dispatchViewIntent(OnSelectDateFromFilter(date))
         }
     }
 
     private val statusFilterDialogCallback = object : SelectItemDialog.Callback {
         override fun onClickItem(item: SelectableItem) {
             val status = item as TaskStatusSelectableItem
-            viewModel.dispatchViewAction(OnSelectStatusFromFilter(status))
+            viewModel.dispatchViewIntent(OnSelectStatusFromFilter(status))
         }
     }
 
     private val dateRangeSelectorDialogCallback = object : DateRangeSelectorFilterDialog.Callback {
         override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
-            viewModel.dispatchViewAction(OnSelectDateRange(initialDate, finalDate))
+            viewModel.dispatchViewIntent(OnSelectDateRange(initialDate, finalDate))
         }
     }
 
     private val clearAllHistoryCallback = object : TwoOptionsDialog.Callback {
         override fun onClickPositiveOption() {
-            viewModel.dispatchViewAction(OnClickConfirmClearAllHistory)
+            viewModel.dispatchViewIntent(OnClickConfirmClearAllHistory)
         }
 
         override fun onClickNegativeOption() {}
@@ -115,7 +115,7 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     private val deleteTaskHistoryCallback = object : DeleteTaskHistoryDialog.Callback {
         override fun onConfirmDeleteTaskHistory(position: Int) {
-            viewModel.dispatchViewAction(OnClickConfirmDeleteTaskHistory(position))
+            viewModel.dispatchViewIntent(OnClickConfirmDeleteTaskHistory(position))
         }
     }
 
@@ -141,7 +141,7 @@ internal class TaskHistoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewAction(OnStart)
+        viewModel.dispatchViewIntent(OnStart)
     }
 
     override fun onResume() {
@@ -157,10 +157,10 @@ internal class TaskHistoryFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_filter -> {
-                viewModel.dispatchViewAction(OnClickFilter)
+                viewModel.dispatchViewIntent(OnClickFilter)
             }
             R.id.menu_clear_history -> {
-                viewModel.dispatchViewAction(OnClickClearAllHistory)
+                viewModel.dispatchViewIntent(OnClickClearAllHistory)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -174,7 +174,7 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     override fun onSubmitSearch(search: String) {
-        viewModel.dispatchViewAction(OnSubmitSearchTerm(search))
+        viewModel.dispatchViewIntent(OnSubmitSearchTerm(search))
     }
 
     private fun observeViewModel() {
@@ -337,21 +337,21 @@ internal class TaskHistoryFragment : BaseFragment() {
         binding.rvTaskHistory.run {
             adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
                 override fun onClickMarkTaskAsDone(position: Int) {
-                    viewModel.dispatchViewAction(OnClickMarkTaskAsDone(position))
+                    viewModel.dispatchViewIntent(OnClickMarkTaskAsDone(position))
                 }
 
                 override fun onClickMarkTaskAsNotDone(position: Int) {
-                    viewModel.dispatchViewAction(OnClickMarkTaskAsNotDone(position))
+                    viewModel.dispatchViewIntent(OnClickMarkTaskAsNotDone(position))
                 }
 
                 override fun onClickHistory(position: Int) {
-                    viewModel.dispatchViewAction(OnClickTaskHistory(position))
+                    viewModel.dispatchViewIntent(OnClickTaskHistory(position))
                 }
 
                 override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
 
                 override fun onClickDelete(position: Int) {
-                    viewModel.dispatchViewAction(OnClickDeleteTaskHistoryItem(position))
+                    viewModel.dispatchViewIntent(OnClickDeleteTaskHistoryItem(position))
                 }
             }).apply {
                 taskHistoryAdapter = this

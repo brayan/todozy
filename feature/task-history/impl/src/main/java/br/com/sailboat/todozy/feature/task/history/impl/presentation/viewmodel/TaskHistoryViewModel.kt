@@ -45,23 +45,23 @@ internal class TaskHistoryViewModel(
     private var dateFilterType = DateFilterTaskHistorySelectableItem.NO_FILTER
     private var taskStatusFilterType = TaskStatusSelectableItem.NO_FILTER
 
-    override fun dispatchViewAction(viewAction: TaskHistoryViewAction) {
-        when (viewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskHistoryViewAction) {
+        when (viewIntent) {
             is TaskHistoryViewAction.OnStart -> onStart()
             is TaskHistoryViewAction.OnClickFilter -> onClickFilter()
             is TaskHistoryViewAction.OnClickDateFilter -> onClickFilterDate()
             is TaskHistoryViewAction.OnClickStatusFilter -> onClickFilterStatus()
-            is TaskHistoryViewAction.OnSelectDateFromFilter -> onSelectDateFromFilter(viewAction)
-            is TaskHistoryViewAction.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewAction)
+            is TaskHistoryViewAction.OnSelectDateFromFilter -> onSelectDateFromFilter(viewIntent)
+            is TaskHistoryViewAction.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewIntent)
             is TaskHistoryViewAction.OnClickClearAllHistory -> onClickClearAllHistory()
-            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewAction)
-            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewAction)
+            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewIntent)
+            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewIntent)
             is TaskHistoryViewAction.OnClickConfirmClearAllHistory -> onClickConfirmClearAllHistory()
-            is TaskHistoryViewAction.OnClickTaskHistory -> onClickTaskHistory(viewAction)
-            is TaskHistoryViewAction.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewAction)
-            is TaskHistoryViewAction.OnClickMarkTaskAsNotDone -> onClickMarkTaskAsNotDone(viewAction)
-            is TaskHistoryViewAction.OnSelectDateRange -> onSelectDateRange(viewAction)
-            is TaskHistoryViewAction.OnSubmitSearchTerm -> onSubmitSearch(viewAction)
+            is TaskHistoryViewAction.OnClickTaskHistory -> onClickTaskHistory(viewIntent)
+            is TaskHistoryViewAction.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewIntent)
+            is TaskHistoryViewAction.OnClickMarkTaskAsNotDone -> onClickMarkTaskAsNotDone(viewIntent)
+            is TaskHistoryViewAction.OnSelectDateRange -> onSelectDateRange(viewIntent)
+            is TaskHistoryViewAction.OnSubmitSearchTerm -> onSubmitSearch(viewIntent)
         }
     }
 

@@ -30,13 +30,13 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
     private var finalDateSelectorDialog: DateSelectorDialog? = null
     private var initialDateSelectorDialogCallback = object : DateSelectorDialog.Callback {
         override fun onDateSelected(year: Int, month: Int, day: Int) {
-            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectInitialDate(year, month, day))
+            viewModel.dispatchViewIntent(DateRangeSelectorFilterViewAction.OnSelectInitialDate(year, month, day))
             initialDateSelectorDialog = null
         }
     }
     private var finalDateSelectorDialogCallback = object : DateSelectorDialog.Callback {
         override fun onDateSelected(year: Int, month: Int, day: Int) {
-            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnSelectFinalDate(year, month, day))
+            viewModel.dispatchViewIntent(DateRangeSelectorFilterViewAction.OnSelectFinalDate(year, month, day))
             finalDateSelectorDialog = null
         }
     }
@@ -52,7 +52,7 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
 
         initViews()
         observeViewModel()
-        viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnStart(initialDate, finalDate))
+        viewModel.dispatchViewIntent(DateRangeSelectorFilterViewAction.OnStart(initialDate, finalDate))
 
         return buildDialog()
     }
@@ -140,7 +140,7 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            viewModel.dispatchViewAction(DateRangeSelectorFilterViewAction.OnClickConfirmSelectedDates)
+            viewModel.dispatchViewIntent(DateRangeSelectorFilterViewAction.OnClickConfirmSelectedDates)
         }
 
         builder.setNegativeButton(R.string.cancel, null)

@@ -12,8 +12,8 @@ internal class AboutViewModel(
     private val logService: LogService,
 ) : BaseViewModel<AboutViewState, AboutViewAction>() {
 
-    override fun dispatchViewAction(viewAction: AboutViewAction) {
-        when (viewAction) {
+    override fun dispatchViewIntent(viewIntent: AboutViewAction) {
+        when (viewIntent) {
             is AboutViewAction.OnStart -> onStart()
         }
     }

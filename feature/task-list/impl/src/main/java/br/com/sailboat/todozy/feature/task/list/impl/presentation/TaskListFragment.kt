@@ -55,7 +55,7 @@ internal class TaskListFragment : BaseFragment() {
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.dispatchViewAction(TaskListViewAction.OnStart)
+            viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
         }
 
     override fun onCreateView(
@@ -79,10 +79,10 @@ internal class TaskListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_fragments_history -> {
-                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuHistory)
+                viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuHistory)
             }
             R.id.menu_fragments_settings -> {
-                viewModel.dispatchViewAction(TaskListViewAction.OnClickMenuSettings)
+                viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuSettings)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -91,7 +91,7 @@ internal class TaskListFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.dispatchViewAction(TaskListViewAction.OnStart)
+        viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
     }
 
     override fun initViews() {
@@ -105,7 +105,7 @@ internal class TaskListFragment : BaseFragment() {
         initRecyclerView()
 
         binding.fab.setOnClickListener {
-            viewModel.dispatchViewAction(TaskListViewAction.OnClickNewTask)
+            viewModel.dispatchViewIntent(TaskListViewAction.OnClickNewTask)
         }
     }
 
@@ -153,7 +153,7 @@ internal class TaskListFragment : BaseFragment() {
     }
 
     override fun onSubmitSearch(search: String) {
-        viewModel.dispatchViewAction(TaskListViewAction.OnSubmitSearchTerm(term = search))
+        viewModel.dispatchViewIntent(TaskListViewAction.OnSubmitSearchTerm(term = search))
     }
 
     private fun closeNotifications() {
@@ -223,7 +223,7 @@ internal class TaskListFragment : BaseFragment() {
         binding.rvTaskList.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
                 override fun onClickTask(taskId: Long) {
-                    viewModel.dispatchViewAction(TaskListViewAction.OnClickTask(taskId = taskId))
+                    viewModel.dispatchViewIntent(TaskListViewAction.OnClickTask(taskId = taskId))
                 }
             }).apply {
                 taskListAdapter = this
@@ -236,7 +236,7 @@ internal class TaskListFragment : BaseFragment() {
                 requireContext(),
                 object : SwipeTaskLeftRight.Callback {
                     override fun onSwipeLeft(position: Int) {
-                        viewModel.dispatchViewAction(
+                        viewModel.dispatchViewIntent(
                             TaskListViewAction.OnSwipeTask(
                                 position = position,
                                 status = TaskStatus.NOT_DONE
@@ -245,7 +245,7 @@ internal class TaskListFragment : BaseFragment() {
                     }
 
                     override fun onSwipeRight(position: Int) {
-                        viewModel.dispatchViewAction(
+                        viewModel.dispatchViewIntent(
                             TaskListViewAction.OnSwipeTask(
                                 position = position,
                                 status = TaskStatus.DONE

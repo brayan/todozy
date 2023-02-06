@@ -6,9 +6,9 @@ internal class SelectItemViewModel(
     override val viewState: SelectItemViewState = SelectItemViewState(),
 ) : BaseViewModel<SelectItemViewState, SelectItemViewAction>() {
 
-    override fun dispatchViewAction(viewAction: SelectItemViewAction) {
-        when (viewAction) {
-            is SelectItemViewAction.OnStart -> onStart(viewAction)
+    override fun dispatchViewIntent(viewIntent: SelectItemViewAction) {
+        when (viewIntent) {
+            is SelectItemViewAction.OnStart -> onStart(viewIntent)
         }
     }
 
