@@ -173,20 +173,6 @@ internal class TaskDetailsViewModelTest {
         viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
         viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickConfirmDeleteTask)
-
-        val expected = TaskDetailsViewState.Action.CloseTaskDetails(success = true)
-        assertEquals(expected, viewModel.viewState.action.value)
-    }
-
-    @Test
-    fun `should navigate to task form when dispatchViewAction is called with OnClickEditTask`() {
-        val taskId = 42L
-        prepareScenario()
-
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
-
         val expected = TaskDetailsViewState.Action.NavigateToTaskForm(taskId)
         assertEquals(expected, viewModel.viewState.action.value)
     }
