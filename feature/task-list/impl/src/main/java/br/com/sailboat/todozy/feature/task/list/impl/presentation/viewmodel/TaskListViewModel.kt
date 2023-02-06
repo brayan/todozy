@@ -12,23 +12,14 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilte
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuAbout
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuHistory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickMenuSettings
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickNewTask
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnClickTask
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnStart
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnSubmitSearchTerm
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction.OnSwipeTask
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.CloseNotifications
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToAbout
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToHistory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToSettings
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskDetails
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskForm
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorCompletingTask
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorLoadingTasks
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.UpdateRemovedTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuAbout
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuHistory
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuSettings
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickNewTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnStart
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSubmitSearchTerm
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSwipeTask
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.uicomponent.model.TaskUiModel
@@ -52,12 +43,12 @@ internal class TaskListViewModel(
     private val completeTaskUseCase: CompleteTaskUseCase,
     private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
-) : BaseViewModel<TaskListViewState, TaskListViewAction>() {
+) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
 
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
-    override fun dispatchViewIntent(viewIntent: TaskListViewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
         when (viewIntent) {
             is OnStart -> onStart()
             is OnClickMenuAbout -> onClickMenuAbout()
@@ -73,35 +64,35 @@ internal class TaskListViewModel(
     private fun onStart() = viewModelScope.launch {
         try {
             viewState.loading.postValue(true)
-            viewState.action.postValue(CloseNotifications)
+            viewState.action.postValue(TaskListViewAction.CloseNotifications)
             loadTasks()
             scheduleAllAlarmsUseCase()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = ShowErrorLoadingTasks
+            viewState.action.value = TaskListViewAction.ShowErrorLoadingTasks
         } finally {
             viewState.loading.postValue(false)
         }
     }
 
     private fun onClickMenuAbout() {
-        viewState.action.value = NavigateToAbout
+        viewState.action.value = TaskListViewAction.NavigateToAbout
     }
 
     private fun onClickMenuSettings() {
-        viewState.action.value = NavigateToSettings
+        viewState.action.value = TaskListViewAction.NavigateToSettings
     }
 
     private fun onClickMenuHistory() {
-        viewState.action.value = NavigateToHistory
+        viewState.action.value = TaskListViewAction.NavigateToHistory
     }
 
     private fun onClickNewTask() {
-        viewState.action.value = NavigateToTaskForm
+        viewState.action.value = TaskListViewAction.NavigateToTaskForm
     }
 
     private fun onClickTask(taskId: Long) {
-        viewState.action.value = NavigateToTaskDetails(taskId = taskId)
+        viewState.action.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
     }
 
     private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
@@ -111,7 +102,7 @@ internal class TaskListViewModel(
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = ShowErrorLoadingTasks
+            viewState.action.value = TaskListViewAction.ShowErrorLoadingTasks
         } finally {
             viewState.loading.postValue(false)
         }
@@ -151,7 +142,7 @@ internal class TaskListViewModel(
             completeTaskUseCase(taskId, status)
 
             itemsView.removeAt(position)
-            viewState.action.postValue(UpdateRemovedTask(position))
+            viewState.action.postValue(TaskListViewAction.UpdateRemovedTask(position))
 
             viewState.itemsView.postValue(itemsView)
 
@@ -172,7 +163,7 @@ internal class TaskListViewModel(
             }
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = ShowErrorCompletingTask
+            viewState.action.value = TaskListViewAction.ShowErrorCompletingTask
         }
     }
 

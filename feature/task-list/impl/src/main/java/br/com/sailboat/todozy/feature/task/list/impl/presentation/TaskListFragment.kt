@@ -22,16 +22,8 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
 import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.CloseNotifications
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToAbout
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToHistory
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToSettings
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskDetails
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.NavigateToTaskForm
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorCompletingTask
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.ShowErrorLoadingTasks
-import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewState.Action.UpdateRemovedTask
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
@@ -55,7 +47,7 @@ internal class TaskListFragment : BaseFragment() {
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
         }
 
     override fun onCreateView(
@@ -79,10 +71,10 @@ internal class TaskListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_fragments_history -> {
-                viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuHistory)
+                viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
             }
             R.id.menu_fragments_settings -> {
-                viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuSettings)
+                viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -91,7 +83,7 @@ internal class TaskListFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
     }
 
     override fun initViews() {
@@ -105,7 +97,7 @@ internal class TaskListFragment : BaseFragment() {
         initRecyclerView()
 
         binding.fab.setOnClickListener {
-            viewModel.dispatchViewIntent(TaskListViewAction.OnClickNewTask)
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
         }
     }
 
@@ -139,21 +131,21 @@ internal class TaskListFragment : BaseFragment() {
     private fun observeActions() {
         viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is CloseNotifications -> closeNotifications()
-                is NavigateToAbout -> navigateToAbout()
-                is NavigateToHistory -> navigateToHistory()
-                is NavigateToSettings -> navigateToSettings()
-                is NavigateToTaskForm -> navigateToTaskForm()
-                is NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
-                is UpdateRemovedTask -> updateRemovedTask(action.position)
-                is ShowErrorCompletingTask -> showErrorCompletingTask()
-                is ShowErrorLoadingTasks -> showErrorLoadingTasks()
+                is TaskListViewAction.CloseNotifications -> closeNotifications()
+                is TaskListViewAction.NavigateToAbout -> navigateToAbout()
+                is TaskListViewAction.NavigateToHistory -> navigateToHistory()
+                is TaskListViewAction.NavigateToSettings -> navigateToSettings()
+                is TaskListViewAction.NavigateToTaskForm -> navigateToTaskForm()
+                is TaskListViewAction.NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
+                is TaskListViewAction.UpdateRemovedTask -> updateRemovedTask(action.position)
+                is TaskListViewAction.ShowErrorCompletingTask -> showErrorCompletingTask()
+                is TaskListViewAction.ShowErrorLoadingTasks -> showErrorLoadingTasks()
             }
         }
     }
 
     override fun onSubmitSearch(search: String) {
-        viewModel.dispatchViewIntent(TaskListViewAction.OnSubmitSearchTerm(term = search))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = search))
     }
 
     private fun closeNotifications() {
@@ -223,7 +215,7 @@ internal class TaskListFragment : BaseFragment() {
         binding.rvTaskList.run {
             adapter = TaskListAdapter(object : TaskListAdapter.Callback {
                 override fun onClickTask(taskId: Long) {
-                    viewModel.dispatchViewIntent(TaskListViewAction.OnClickTask(taskId = taskId))
+                    viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
                 }
             }).apply {
                 taskListAdapter = this
@@ -237,7 +229,7 @@ internal class TaskListFragment : BaseFragment() {
                 object : SwipeTaskLeftRight.Callback {
                     override fun onSwipeLeft(position: Int) {
                         viewModel.dispatchViewIntent(
-                            TaskListViewAction.OnSwipeTask(
+                            TaskListViewIntent.OnSwipeTask(
                                 position = position,
                                 status = TaskStatus.NOT_DONE
                             )
@@ -246,7 +238,7 @@ internal class TaskListFragment : BaseFragment() {
 
                     override fun onSwipeRight(position: Int) {
                         viewModel.dispatchViewIntent(
-                            TaskListViewAction.OnSwipeTask(
+                            TaskListViewIntent.OnSwipeTask(
                                 position = position,
                                 status = TaskStatus.DONE
                             )

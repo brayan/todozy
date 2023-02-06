@@ -66,10 +66,10 @@ internal class TaskListViewModelTest {
         runBlocking {
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
 
             assertEquals(
-                TaskListViewState.Action.CloseNotifications,
+                TaskListViewAction.CloseNotifications,
                 viewModel.viewState.action.value
             )
         }
@@ -82,7 +82,7 @@ internal class TaskListViewModelTest {
                 mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
             prepareScenario(tasksView = tasksView)
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
 
             coVerifyOrder {
                 getTasksUseCase(TaskFilter(category = TaskCategory.BEFORE_TODAY))
@@ -105,7 +105,7 @@ internal class TaskListViewModelTest {
         runBlocking {
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnStart)
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
 
             coVerify(exactly = 1) { scheduleAllAlarmsUseCase() }
         }
@@ -115,35 +115,35 @@ internal class TaskListViewModelTest {
     fun `should navigate to about screen when dispatchViewAction is called with OnClickMenuAbout`() {
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuAbout)
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuAbout)
 
-        assertEquals(TaskListViewState.Action.NavigateToAbout, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToAbout, viewModel.viewState.action.value)
     }
 
     @Test
     fun `should navigate to history screen when dispatchViewAction is called with OnClickMenuHistory`() {
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuHistory)
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
 
-        assertEquals(TaskListViewState.Action.NavigateToHistory, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToHistory, viewModel.viewState.action.value)
     }
 
     @Test
     fun `should navigate to settings screen when dispatchViewAction is called with OnClickMenuSettings`() {
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskListViewAction.OnClickMenuSettings)
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
 
-        assertEquals(TaskListViewState.Action.NavigateToSettings, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToSettings, viewModel.viewState.action.value)
     }
 
     @Test
     fun `should navigate to task form screen when dispatchViewAction is called with OnClickNewTask`() {
         prepareScenario()
-        viewModel.dispatchViewIntent(TaskListViewAction.OnClickNewTask)
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
 
-        assertEquals(TaskListViewState.Action.NavigateToTaskForm, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToTaskForm, viewModel.viewState.action.value)
     }
 
     @Test
@@ -151,9 +151,9 @@ internal class TaskListViewModelTest {
         prepareScenario()
         val taskId = 123L
 
-        viewModel.dispatchViewIntent(TaskListViewAction.OnClickTask(taskId = taskId))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
 
-        val expected = TaskListViewState.Action.NavigateToTaskDetails(taskId = taskId)
+        val expected = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
         assertEquals(expected, viewModel.viewState.action.value)
     }
 
@@ -169,7 +169,7 @@ internal class TaskListViewModelTest {
             )
             prepareScenario(tasksView = tasksView)
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnSubmitSearchTerm(term = term))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = term))
 
             coVerifyOrder {
                 getTasksUseCase(TaskFilter(text = term, category = TaskCategory.BEFORE_TODAY))
@@ -199,7 +199,7 @@ internal class TaskListViewModelTest {
             viewModel.viewState.itemsView.value = tasks
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
 
             coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
         }
@@ -213,9 +213,9 @@ internal class TaskListViewModelTest {
             val tasks = mutableListOf<UiModel>(task1, task2)
             val position = 1
             val status = TaskStatus.DONE
-            val observer = mockk<Observer<TaskListViewState.Action>>()
-            val slot = slot<TaskListViewState.Action>()
-            val list = arrayListOf<TaskListViewState.Action>()
+            val observer = mockk<Observer<TaskListViewAction>>()
+            val slot = slot<TaskListViewAction>()
+            val list = arrayListOf<TaskListViewAction>()
             viewModel.viewState.action.observeForever(observer)
             viewModel.viewState.itemsView.value = tasks
             every { observer.onChanged(capture(slot)) } answers {
@@ -223,9 +223,9 @@ internal class TaskListViewModelTest {
             }
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
 
-            val expected = TaskListViewState.Action.UpdateRemovedTask(position)
+            val expected = TaskListViewAction.UpdateRemovedTask(position)
             assertTrue { list.contains(expected) }
         }
     }
@@ -242,7 +242,7 @@ internal class TaskListViewModelTest {
             viewModel.viewState.itemsView.value = tasks
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
 
             coVerify { getAlarmUseCase(taskId = 978L) }
         }
@@ -266,7 +266,7 @@ internal class TaskListViewModelTest {
             viewModel.viewState.itemsView.value = tasks
             prepareScenario(alarmResult = alarmResult)
 
-            viewModel.dispatchViewIntent(TaskListViewAction.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
 
             coVerify { getTaskMetricsUseCase(TaskHistoryFilter(taskId = 978L)) }
         }
