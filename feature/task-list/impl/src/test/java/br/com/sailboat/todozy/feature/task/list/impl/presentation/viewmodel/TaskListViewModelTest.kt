@@ -70,7 +70,7 @@ internal class TaskListViewModelTest {
 
             assertEquals(
                 TaskListViewAction.CloseNotifications,
-                viewModel.viewState.action.value
+                viewModel.viewState.viewAction.value
             )
         }
     }
@@ -117,7 +117,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuAbout)
 
-        assertEquals(TaskListViewAction.NavigateToAbout, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToAbout, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -126,7 +126,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
 
-        assertEquals(TaskListViewAction.NavigateToHistory, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToHistory, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -135,7 +135,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
 
-        assertEquals(TaskListViewAction.NavigateToSettings, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToSettings, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -143,7 +143,7 @@ internal class TaskListViewModelTest {
         prepareScenario()
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
 
-        assertEquals(TaskListViewAction.NavigateToTaskForm, viewModel.viewState.action.value)
+        assertEquals(TaskListViewAction.NavigateToTaskForm, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -154,7 +154,7 @@ internal class TaskListViewModelTest {
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
 
         val expected = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
-        assertEquals(expected, viewModel.viewState.action.value)
+        assertEquals(expected, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -216,7 +216,7 @@ internal class TaskListViewModelTest {
             val observer = mockk<Observer<TaskListViewAction>>()
             val slot = slot<TaskListViewAction>()
             val list = arrayListOf<TaskListViewAction>()
-            viewModel.viewState.action.observeForever(observer)
+            viewModel.viewState.viewAction.observeForever(observer)
             viewModel.viewState.itemsView.value = tasks
             every { observer.onChanged(capture(slot)) } answers {
                 list.add(slot.captured)

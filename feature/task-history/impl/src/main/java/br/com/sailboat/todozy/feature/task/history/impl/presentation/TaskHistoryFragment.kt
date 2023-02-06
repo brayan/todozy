@@ -209,19 +209,19 @@ internal class TaskHistoryFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
-            when (action) {
-                is TaskHistoryViewAction.NavigateToMenuFilter -> navigateToMenuFilter(action)
-                is TaskHistoryViewAction.NavigateToDateFilter -> navigateToDateFilter(action)
-                is TaskHistoryViewAction.NavigateToDateRangeFilter -> navigateToDateRangeFilter(action)
-                is TaskHistoryViewAction.NavigateToStatusFilter -> navigateToStatusFilter(action)
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { viewAction ->
+            when (viewAction) {
+                is TaskHistoryViewAction.NavigateToMenuFilter -> navigateToMenuFilter(viewAction)
+                is TaskHistoryViewAction.NavigateToDateFilter -> navigateToDateFilter(viewAction)
+                is TaskHistoryViewAction.NavigateToDateRangeFilter -> navigateToDateRangeFilter(viewAction)
+                is TaskHistoryViewAction.NavigateToStatusFilter -> navigateToStatusFilter(viewAction)
                 is TaskHistoryViewAction.NavigateToClearAllHistoryConfirmation ->
                     navigateToClearAllHistoryConfirmation()
                 is TaskHistoryViewAction.NavigateToDeleteTaskHistoryConfirmation ->
-                    navigateToDeleteTaskHistoryConfirmation(action)
-                is TaskHistoryViewAction.RefreshHistoryItem -> refreshHistoryItem(action)
+                    navigateToDeleteTaskHistoryConfirmation(viewAction)
+                is TaskHistoryViewAction.RefreshHistoryItem -> refreshHistoryItem(viewAction)
                 is TaskHistoryViewAction.ScrollToTop -> scrollToTop()
-                is TaskHistoryViewAction.ScrollToPosition -> scrollToPosition(action)
+                is TaskHistoryViewAction.ScrollToPosition -> scrollToPosition(viewAction)
                 is TaskHistoryViewAction.ShowGenericError -> showGenericError()
             }
         }
@@ -250,21 +250,21 @@ internal class TaskHistoryFragment : BaseFragment() {
         deleteTaskHistoryDialog?.callback = deleteTaskHistoryCallback
     }
 
-    private fun navigateToMenuFilter(action: TaskHistoryViewAction.NavigateToMenuFilter) {
+    private fun navigateToMenuFilter(viewAction: TaskHistoryViewAction.NavigateToMenuFilter) {
         taskHistoryFilterDialog = TaskHistoryFilterDialog.show(
             childFragmentManager,
-            action.dateRangeType,
-            action.status,
+            viewAction.dateRangeType,
+            viewAction.status,
             taskHistoryFilterDialogCallback,
         )
     }
 
-    private fun navigateToDateFilter(action: TaskHistoryViewAction.NavigateToDateFilter) {
+    private fun navigateToDateFilter(viewAction: TaskHistoryViewAction.NavigateToDateFilter) {
         dateFilterDialog = DateFilterDialog.show(
             childFragmentManager,
             getString(R.string.filter),
             DateFilterTaskHistorySelectableItem.getItems(),
-            action.dateFilterType,
+            viewAction.dateFilterType,
             dateFilterDialogCallback,
         )
     }

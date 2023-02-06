@@ -129,15 +129,15 @@ internal class TaskListFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
-            when (action) {
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { viewAction ->
+            when (viewAction) {
                 is TaskListViewAction.CloseNotifications -> closeNotifications()
                 is TaskListViewAction.NavigateToAbout -> navigateToAbout()
                 is TaskListViewAction.NavigateToHistory -> navigateToHistory()
                 is TaskListViewAction.NavigateToSettings -> navigateToSettings()
                 is TaskListViewAction.NavigateToTaskForm -> navigateToTaskForm()
-                is TaskListViewAction.NavigateToTaskDetails -> navigateToTaskDetails(action.taskId)
-                is TaskListViewAction.UpdateRemovedTask -> updateRemovedTask(action.position)
+                is TaskListViewAction.NavigateToTaskDetails -> navigateToTaskDetails(viewAction.taskId)
+                is TaskListViewAction.UpdateRemovedTask -> updateRemovedTask(viewAction.position)
                 is TaskListViewAction.ShowErrorCompletingTask -> showErrorCompletingTask()
                 is TaskListViewAction.ShowErrorLoadingTasks -> showErrorLoadingTasks()
             }

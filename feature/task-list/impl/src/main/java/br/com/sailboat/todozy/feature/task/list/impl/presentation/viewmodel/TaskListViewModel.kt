@@ -64,35 +64,35 @@ internal class TaskListViewModel(
     private fun onStart() = viewModelScope.launch {
         try {
             viewState.loading.postValue(true)
-            viewState.action.postValue(TaskListViewAction.CloseNotifications)
+            viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
             loadTasks()
             scheduleAllAlarmsUseCase()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskListViewAction.ShowErrorLoadingTasks
+            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
         } finally {
             viewState.loading.postValue(false)
         }
     }
 
     private fun onClickMenuAbout() {
-        viewState.action.value = TaskListViewAction.NavigateToAbout
+        viewState.viewAction.value = TaskListViewAction.NavigateToAbout
     }
 
     private fun onClickMenuSettings() {
-        viewState.action.value = TaskListViewAction.NavigateToSettings
+        viewState.viewAction.value = TaskListViewAction.NavigateToSettings
     }
 
     private fun onClickMenuHistory() {
-        viewState.action.value = TaskListViewAction.NavigateToHistory
+        viewState.viewAction.value = TaskListViewAction.NavigateToHistory
     }
 
     private fun onClickNewTask() {
-        viewState.action.value = TaskListViewAction.NavigateToTaskForm
+        viewState.viewAction.value = TaskListViewAction.NavigateToTaskForm
     }
 
     private fun onClickTask(taskId: Long) {
-        viewState.action.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
+        viewState.viewAction.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
     }
 
     private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
@@ -102,7 +102,7 @@ internal class TaskListViewModel(
             loadTasks()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskListViewAction.ShowErrorLoadingTasks
+            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
         } finally {
             viewState.loading.postValue(false)
         }
@@ -142,7 +142,7 @@ internal class TaskListViewModel(
             completeTaskUseCase(taskId, status)
 
             itemsView.removeAt(position)
-            viewState.action.postValue(TaskListViewAction.UpdateRemovedTask(position))
+            viewState.viewAction.postValue(TaskListViewAction.UpdateRemovedTask(position))
 
             viewState.itemsView.postValue(itemsView)
 
@@ -163,7 +163,7 @@ internal class TaskListViewModel(
             }
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskListViewAction.ShowErrorCompletingTask
+            viewState.viewAction.value = TaskListViewAction.ShowErrorCompletingTask
         }
     }
 

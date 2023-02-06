@@ -6,7 +6,7 @@ import br.com.sailboat.todozy.utility.android.livedata.Event
 import br.com.sailboat.uicomponent.model.UiModel
 
 internal class TaskListViewState {
-    val action = Event<TaskListViewAction>()
+    val viewAction = Event<TaskListViewAction>()
     val loading = MutableLiveData(true)
     val itemsView = MutableLiveData<MutableList<UiModel>>()
     val taskMetrics = MutableLiveData<TaskMetrics>()
