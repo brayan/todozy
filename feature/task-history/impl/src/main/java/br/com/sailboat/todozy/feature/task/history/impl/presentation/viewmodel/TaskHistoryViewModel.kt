@@ -38,30 +38,30 @@ internal class TaskHistoryViewModel(
     private val taskHistoryUiModelToTaskHistoryMapper: TaskHistoryUiModelToTaskHistoryMapper,
     private val logService: LogService,
     private val calendarService: CalendarService,
-) : BaseViewModel<TaskHistoryViewState, TaskHistoryViewAction>() {
+) : BaseViewModel<TaskHistoryViewState, TaskHistoryViewIntent>() {
 
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
     private var dateFilterType = DateFilterTaskHistorySelectableItem.NO_FILTER
     private var taskStatusFilterType = TaskStatusSelectableItem.NO_FILTER
 
-    override fun dispatchViewIntent(viewIntent: TaskHistoryViewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskHistoryViewIntent) {
         when (viewIntent) {
-            is TaskHistoryViewAction.OnStart -> onStart()
-            is TaskHistoryViewAction.OnClickFilter -> onClickFilter()
-            is TaskHistoryViewAction.OnClickDateFilter -> onClickFilterDate()
-            is TaskHistoryViewAction.OnClickStatusFilter -> onClickFilterStatus()
-            is TaskHistoryViewAction.OnSelectDateFromFilter -> onSelectDateFromFilter(viewIntent)
-            is TaskHistoryViewAction.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewIntent)
-            is TaskHistoryViewAction.OnClickClearAllHistory -> onClickClearAllHistory()
-            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewIntent)
-            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewIntent)
-            is TaskHistoryViewAction.OnClickConfirmClearAllHistory -> onClickConfirmClearAllHistory()
-            is TaskHistoryViewAction.OnClickTaskHistory -> onClickTaskHistory(viewIntent)
-            is TaskHistoryViewAction.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewIntent)
-            is TaskHistoryViewAction.OnClickMarkTaskAsNotDone -> onClickMarkTaskAsNotDone(viewIntent)
-            is TaskHistoryViewAction.OnSelectDateRange -> onSelectDateRange(viewIntent)
-            is TaskHistoryViewAction.OnSubmitSearchTerm -> onSubmitSearch(viewIntent)
+            is TaskHistoryViewIntent.OnStart -> onStart()
+            is TaskHistoryViewIntent.OnClickFilter -> onClickFilter()
+            is TaskHistoryViewIntent.OnClickDateFilter -> onClickFilterDate()
+            is TaskHistoryViewIntent.OnClickStatusFilter -> onClickFilterStatus()
+            is TaskHistoryViewIntent.OnSelectDateFromFilter -> onSelectDateFromFilter(viewIntent)
+            is TaskHistoryViewIntent.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewIntent)
+            is TaskHistoryViewIntent.OnClickClearAllHistory -> onClickClearAllHistory()
+            is TaskHistoryViewIntent.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewIntent)
+            is TaskHistoryViewIntent.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewIntent)
+            is TaskHistoryViewIntent.OnClickConfirmClearAllHistory -> onClickConfirmClearAllHistory()
+            is TaskHistoryViewIntent.OnClickTaskHistory -> onClickTaskHistory(viewIntent)
+            is TaskHistoryViewIntent.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewIntent)
+            is TaskHistoryViewIntent.OnClickMarkTaskAsNotDone -> onClickMarkTaskAsNotDone(viewIntent)
+            is TaskHistoryViewIntent.OnSelectDateRange -> onSelectDateRange(viewIntent)
+            is TaskHistoryViewIntent.OnSubmitSearchTerm -> onSubmitSearch(viewIntent)
         }
     }
 
@@ -70,20 +70,18 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickFilter() {
-        viewState.action.value =
-            TaskHistoryViewState.Action.NavigateToMenuFilter(dateFilterType, taskStatusFilterType)
+        viewState.action.value = TaskHistoryViewAction.NavigateToMenuFilter(dateFilterType, taskStatusFilterType)
     }
 
     private fun onClickFilterDate() {
-        viewState.action.value = TaskHistoryViewState.Action.NavigateToDateFilter(dateFilterType)
+        viewState.action.value = TaskHistoryViewAction.NavigateToDateFilter(dateFilterType)
     }
 
     private fun onClickFilterStatus() {
-        viewState.action.value =
-            TaskHistoryViewState.Action.NavigateToStatusFilter(taskStatusFilterType)
+        viewState.action.value = TaskHistoryViewAction.NavigateToStatusFilter(taskStatusFilterType)
     }
 
-    private fun onSelectDateFromFilter(viewAction: TaskHistoryViewAction.OnSelectDateFromFilter) {
+    private fun onSelectDateFromFilter(viewAction: TaskHistoryViewIntent.OnSelectDateFromFilter) {
         if (viewAction.date === dateFilterType &&
             viewAction.date !== DateFilterTaskHistorySelectableItem.DATE_RANGE
         ) {
@@ -102,7 +100,7 @@ internal class TaskHistoryViewModel(
         }
     }
 
-    private fun onSelectStatusFromFilter(viewAction: TaskHistoryViewAction.OnSelectStatusFromFilter) {
+    private fun onSelectStatusFromFilter(viewAction: TaskHistoryViewIntent.OnSelectStatusFromFilter) {
         if (viewAction.status === taskStatusFilterType) {
             return
         }
@@ -119,7 +117,7 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickClearAllHistory() {
-        viewState.action.value = TaskHistoryViewState.Action.NavigateToClearAllHistoryConfirmation
+        viewState.action.value = TaskHistoryViewAction.NavigateToClearAllHistoryConfirmation
     }
 
     private fun onClickConfirmClearAllHistory() = viewModelScope.launch {
@@ -129,16 +127,15 @@ internal class TaskHistoryViewModel(
             loadHistoryTasks()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskHistoryViewState.Action.ShowGenericError
+            viewState.action.value = TaskHistoryViewAction.ShowGenericError
         }
     }
 
-    private fun onClickDeleteTaskHistoryItem(viewAction: TaskHistoryViewAction.OnClickDeleteTaskHistoryItem) {
-        viewState.action.value =
-            TaskHistoryViewState.Action.NavigateToDeleteTaskHistoryConfirmation(viewAction.position)
+    private fun onClickDeleteTaskHistoryItem(viewAction: TaskHistoryViewIntent.OnClickDeleteTaskHistoryItem) {
+        viewState.action.value = TaskHistoryViewAction.NavigateToDeleteTaskHistoryConfirmation(viewAction.position)
     }
 
-    private fun onClickConfirmDeleteTaskHistory(viewAction: TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory) {
+    private fun onClickConfirmDeleteTaskHistory(viewAction: TaskHistoryViewIntent.OnClickConfirmDeleteTaskHistory) {
         viewModelScope.launch {
             try {
                 clearHistorySelectedPosition()
@@ -151,12 +148,12 @@ internal class TaskHistoryViewModel(
                 loadHistoryTasks()
             } catch (e: Exception) {
                 logService.error(e)
-                viewState.action.value = TaskHistoryViewState.Action.ShowGenericError
+                viewState.action.value = TaskHistoryViewAction.ShowGenericError
             }
         }
     }
 
-    private fun onClickTaskHistory(viewAction: TaskHistoryViewAction.OnClickTaskHistory) {
+    private fun onClickTaskHistory(viewAction: TaskHistoryViewIntent.OnClickTaskHistory) {
         when {
             isShowingOptions(viewAction.position) -> {
                 clearHistorySelectedPosition()
@@ -167,27 +164,25 @@ internal class TaskHistoryViewModel(
                 selectedItemPosition = viewAction.position
                 refreshHistoryItem(oldSelectedPosition)
                 refreshHistoryItem(viewAction.position)
-                viewState.action.value =
-                    TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
+                viewState.action.value = TaskHistoryViewAction.ScrollToPosition(viewAction.position)
             }
             else -> {
                 selectedItemPosition = viewAction.position
                 refreshHistoryItem(viewAction.position)
-                viewState.action.value =
-                    TaskHistoryViewState.Action.ScrollToPosition(viewAction.position)
+                viewState.action.value = TaskHistoryViewAction.ScrollToPosition(viewAction.position)
             }
         }
     }
 
-    private fun onClickMarkTaskAsDone(viewAction: TaskHistoryViewAction.OnClickMarkTaskAsDone) {
+    private fun onClickMarkTaskAsDone(viewAction: TaskHistoryViewIntent.OnClickMarkTaskAsDone) {
         updateHistoryStatus(viewAction.position, TaskStatus.DONE)
     }
 
-    private fun onClickMarkTaskAsNotDone(viewAction: TaskHistoryViewAction.OnClickMarkTaskAsNotDone) {
+    private fun onClickMarkTaskAsNotDone(viewAction: TaskHistoryViewIntent.OnClickMarkTaskAsNotDone) {
         updateHistoryStatus(viewAction.position, TaskStatus.NOT_DONE)
     }
 
-    private fun onSelectDateRange(viewAction: TaskHistoryViewAction.OnSelectDateRange) {
+    private fun onSelectDateRange(viewAction: TaskHistoryViewIntent.OnSelectDateRange) {
         filter = filter.copy(
             initialDate = viewAction.initialDate,
             finalDate = viewAction.finalDate,
@@ -196,10 +191,10 @@ internal class TaskHistoryViewModel(
 
         setDateRangeSubtitle()
         loadHistoryTasks()
-        viewState.action.value = TaskHistoryViewState.Action.ScrollToTop
+        viewState.action.value = TaskHistoryViewAction.ScrollToTop
     }
 
-    private fun onSubmitSearch(viewAction: TaskHistoryViewAction.OnSubmitSearchTerm) {
+    private fun onSubmitSearch(viewAction: TaskHistoryViewIntent.OnSubmitSearchTerm) {
         filter = filter.copy(text = viewAction.searchTerm)
         loadHistoryTasks()
     }
@@ -283,8 +278,7 @@ internal class TaskHistoryViewModel(
         val initialDate = filter.initialDate.orNewCalendar()
         val finalDate = filter.finalDate.orNewCalendar()
 
-        viewState.action.value =
-            TaskHistoryViewState.Action.NavigateToDateRangeFilter(initialDate, finalDate)
+        viewState.action.value = TaskHistoryViewAction.NavigateToDateRangeFilter(initialDate, finalDate)
     }
 
     private fun loadHistoryTasks() = viewModelScope.launch {
@@ -315,7 +309,7 @@ internal class TaskHistoryViewModel(
             viewState.taskHistoryList.postValue(taskHistoryList)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskHistoryViewState.Action.ShowGenericError
+            viewState.action.value = TaskHistoryViewAction.ShowGenericError
         } finally {
             viewState.loading.postValue(false)
         }
@@ -350,7 +344,7 @@ internal class TaskHistoryViewModel(
             viewState.taskMetrics.postValue(taskMetrics.getOrNull())
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskHistoryViewState.Action.ShowGenericError
+            viewState.action.value = TaskHistoryViewAction.ShowGenericError
         }
     }
 
@@ -359,7 +353,7 @@ internal class TaskHistoryViewModel(
     }
 
     private fun refreshHistoryItem(position: Int) {
-        viewState.action.value = TaskHistoryViewState.Action.RefreshHistoryItem(position)
+        viewState.action.value = TaskHistoryViewAction.RefreshHistoryItem(position)
     }
 
     private fun hasHistorySelected(): Boolean {

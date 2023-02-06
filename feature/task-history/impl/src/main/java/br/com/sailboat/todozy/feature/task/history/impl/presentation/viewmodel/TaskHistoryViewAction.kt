@@ -5,25 +5,22 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelect
 import java.util.Calendar
 
 internal sealed class TaskHistoryViewAction {
-    object OnStart : TaskHistoryViewAction()
-    object OnClickFilter : TaskHistoryViewAction()
-    object OnClickDateFilter : TaskHistoryViewAction()
-    object OnClickStatusFilter : TaskHistoryViewAction()
-    object OnClickClearAllHistory : TaskHistoryViewAction()
-    object OnClickConfirmClearAllHistory : TaskHistoryViewAction()
-    data class OnSelectDateFromFilter(val date: DateFilterTaskHistorySelectableItem) :
-        TaskHistoryViewAction()
-
-    data class OnSelectStatusFromFilter(val status: TaskStatusSelectableItem) :
-        TaskHistoryViewAction()
-
-    data class OnClickDeleteTaskHistoryItem(val position: Int) : TaskHistoryViewAction()
-    data class OnClickConfirmDeleteTaskHistory(val position: Int) : TaskHistoryViewAction()
-    data class OnClickMarkTaskAsDone(val position: Int) : TaskHistoryViewAction()
-    data class OnClickMarkTaskAsNotDone(val position: Int) : TaskHistoryViewAction()
-    data class OnClickTaskHistory(val position: Int) : TaskHistoryViewAction()
-    data class OnSelectDateRange(val initialDate: Calendar, val finalDate: Calendar) :
-        TaskHistoryViewAction()
-
-    data class OnSubmitSearchTerm(val searchTerm: String) : TaskHistoryViewAction()
+    object ScrollToTop : TaskHistoryViewAction()
+    object NavigateToClearAllHistoryConfirmation : TaskHistoryViewAction()
+    object ShowGenericError : TaskHistoryViewAction()
+    data class NavigateToMenuFilter(
+        val dateRangeType: DateFilterTaskHistorySelectableItem,
+        val status: TaskStatusSelectableItem,
+    ) : TaskHistoryViewAction()
+    data class NavigateToDateFilter(
+        val dateFilterType: DateFilterTaskHistorySelectableItem,
+    ) : TaskHistoryViewAction()
+    data class NavigateToDateRangeFilter(
+        val initialDate: Calendar,
+        val finalDate: Calendar,
+    ) : TaskHistoryViewAction()
+    data class NavigateToStatusFilter(val status: TaskStatusSelectableItem) : TaskHistoryViewAction()
+    data class NavigateToDeleteTaskHistoryConfirmation(val position: Int) : TaskHistoryViewAction()
+    data class RefreshHistoryItem(val position: Int) : TaskHistoryViewAction()
+    data class ScrollToPosition(val position: Int) : TaskHistoryViewAction()
 }
