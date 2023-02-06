@@ -31,7 +31,7 @@ private val presentation = module {
 
 private val domain = module {
     factory<GetTaskUseCase> { GetTask(get()) }
-    factory<GetTaskMetricsUseCase> { GetTaskMetrics(get()) }
+    factory<GetTaskMetricsUseCase> { GetTaskMetrics(get(), get()) }
     factory<DisableTaskUseCase> { DisableTask(get(), get()) }
 }
 

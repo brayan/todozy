@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.feature.task.details.impl.domain.usecase
 
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskStatus
+import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.coroutineScope
 
 internal class GetTaskMetrics(
     private val taskHistoryRepository: TaskHistoryRepository,
+    private val taskRepository: TaskRepository,
 ) : GetTaskMetricsUseCase {
 
     override suspend operator fun invoke(filter: TaskHistoryFilter) = runCatching {
@@ -25,23 +27,30 @@ internal class GetTaskMetrics(
         }
     }
 
-    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> =
-        runCatching {
-            if (filter.taskId == Entity.NO_ID) {
-                return@runCatching 0
-            }
-
-            val history = taskHistoryRepository.getTaskHistory(filter.taskId).getOrThrow()
-
+    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> {
+        return if (filter.taskId == Entity.NO_ID) {
             var cont = 0
-
-            history.forEach {
-                if (it.status == TaskStatus.NOT_DONE) {
-                    return@runCatching cont
-                }
-                cont++
+            val tasks = taskRepository.getTasksWithAlarms().getOrThrow()
+            repeat(tasks.size) { index ->
+                cont += getTotalOfConsecutiveDoneTasksFromTaskId(tasks[index].id).getOrThrow()
             }
-
-            return@runCatching cont
+            Result.success(cont)
+        } else {
+            getTotalOfConsecutiveDoneTasksFromTaskId(filter.taskId)
         }
+    }
+
+    private suspend fun getTotalOfConsecutiveDoneTasksFromTaskId(taskId: Long): Result<Int> {
+        val history = taskHistoryRepository.getTaskHistory(taskId).getOrThrow()
+
+        var cont = 0
+
+        history.forEach {
+            if (it.status == TaskStatus.NOT_DONE) {
+                return Result.success(cont)
+            }
+            cont++
+        }
+        return Result.success(cont)
+    }
 }

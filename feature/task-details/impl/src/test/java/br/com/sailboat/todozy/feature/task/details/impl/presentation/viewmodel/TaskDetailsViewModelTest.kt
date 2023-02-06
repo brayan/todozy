@@ -163,6 +163,15 @@ internal class TaskDetailsViewModelTest {
     @Test
     fun `should close task details when dispatchViewAction is called with OnClickConfirmDeleteTask`() {
         prepareScenario()
+    }
+
+    @Test
+    fun `should navigate to task form when dispatchViewAction is called with OnClickEditTask`() {
+        val taskId = 42L
+        prepareScenario()
+
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickEditTask)
 
         viewModel.dispatchViewAction(TaskDetailsViewAction.OnClickConfirmDeleteTask)
 

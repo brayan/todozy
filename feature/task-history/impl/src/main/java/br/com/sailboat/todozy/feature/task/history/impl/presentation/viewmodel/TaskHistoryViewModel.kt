@@ -54,12 +54,8 @@ internal class TaskHistoryViewModel(
             is TaskHistoryViewAction.OnSelectDateFromFilter -> onSelectDateFromFilter(viewAction)
             is TaskHistoryViewAction.OnSelectStatusFromFilter -> onSelectStatusFromFilter(viewAction)
             is TaskHistoryViewAction.OnClickClearAllHistory -> onClickClearAllHistory()
-            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(
-                viewAction
-            )
-            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(
-                viewAction
-            )
+            is TaskHistoryViewAction.OnClickDeleteTaskHistoryItem -> onClickDeleteTaskHistoryItem(viewAction)
+            is TaskHistoryViewAction.OnClickConfirmDeleteTaskHistory -> onClickConfirmDeleteTaskHistory(viewAction)
             is TaskHistoryViewAction.OnClickConfirmClearAllHistory -> onClickConfirmClearAllHistory()
             is TaskHistoryViewAction.OnClickTaskHistory -> onClickTaskHistory(viewAction)
             is TaskHistoryViewAction.OnClickMarkTaskAsDone -> onClickMarkTaskAsDone(viewAction)

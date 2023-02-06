@@ -201,10 +201,15 @@ internal class TaskHistoryFragment : BaseFragment() {
         }
 
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
-            binding.appbarTaskHistory.taskMetrics.tvMetricsDone.text =
-                taskMetrics.doneTasks.toString()
-            binding.appbarTaskHistory.taskMetrics.tvMetricsNotDone.text =
-                taskMetrics.notDoneTasks.toString()
+            binding.appbarTaskHistory.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
+            binding.appbarTaskHistory.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
+            binding.appbarTaskHistory.taskMetrics.tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
+
+            if (taskMetrics.consecutiveDone == 0) {
+                binding.appbarTaskHistory.taskMetrics.taskMetricsLlFire.gone()
+            } else {
+                binding.appbarTaskHistory.taskMetrics.taskMetricsLlFire.visible()
+            }
         }
 
         viewModel.viewState.subtitle.observe(viewLifecycleOwner) { subtitle ->
