@@ -8,15 +8,15 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHist
 import br.com.sailboat.todozy.feature.task.history.impl.data.repository.TaskHistoryRepositoryImpl
 import br.com.sailboat.todozy.feature.task.history.impl.data.service.CalendarServiceImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.service.CalendarService
-import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.AddHistory
-import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteAllHistory
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.AddHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteAllHistoryUseCase
-import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHistory
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteAllHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHistoryUseCase
-import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistory
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCase
-import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistory
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCase
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameView
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameViewUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterViewModel
@@ -60,11 +60,11 @@ private val presentation = module {
 }
 
 private val domain = module {
-    factory<GetTaskHistoryUseCase> { GetTaskHistory(get()) }
-    factory<AddHistoryUseCase> { AddHistory(get()) }
-    factory<UpdateHistoryUseCase> { UpdateHistory(get()) }
-    factory<DeleteHistoryUseCase> { DeleteHistory(get()) }
-    factory<DeleteAllHistoryUseCase> { DeleteAllHistory(get()) }
+    factory<GetTaskHistoryUseCase> { GetTaskHistoryUseCaseImpl(get()) }
+    factory<AddHistoryUseCase> { AddHistoryUseCaseImpl(get()) }
+    factory<UpdateHistoryUseCase> { UpdateHistoryUseCaseImpl(get()) }
+    factory<DeleteHistoryUseCase> { DeleteHistoryUseCaseImpl(get()) }
+    factory<DeleteAllHistoryUseCase> { DeleteAllHistoryUseCaseImpl(get()) }
 }
 
 private val data = module {

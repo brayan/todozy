@@ -8,13 +8,13 @@ import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLoca
 import br.com.sailboat.todozy.feature.settings.impl.data.datasource.SettingsLocalDataSourceImpl
 import br.com.sailboat.todozy.feature.settings.impl.data.repository.SettingsRepositoryImpl
 import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRepository
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettings
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSetting
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSetting
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSetting
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.CheckAndSetUpInitialSettingsUseCaseImpl
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmSoundSettingUseCaseImpl
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.GetAlarmVibrateSettingUseCaseImpl
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSettingUseCase
-import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibrateSetting
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmSoundSettingUseCaseImpl
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibrateSettingUseCase
+import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibrateSettingUseCaseImpl
 import br.com.sailboat.todozy.feature.settings.impl.presentation.navigator.SettingsNavigatorImpl
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -34,11 +34,11 @@ private val presentation = module {
 }
 
 private val domain = module {
-    factory<SetAlarmSoundSettingUseCase> { SetAlarmSoundSetting(get()) }
-    factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSetting(get()) }
-    factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSetting(get()) }
-    factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSetting(get()) }
-    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettings(get(), get()) }
+    factory<SetAlarmSoundSettingUseCase> { SetAlarmSoundSettingUseCaseImpl(get()) }
+    factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSettingUseCaseImpl(get()) }
+    factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSettingUseCaseImpl(get()) }
+    factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSettingUseCaseImpl(get()) }
+    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettingsUseCaseImpl(get(), get()) }
 }
 
 private val data = module {

@@ -12,7 +12,7 @@ internal class ScheduleAlarmUpdatesTest {
 
     private val alarmManagerService: AlarmManagerService = mockk(relaxed = true)
 
-    private val scheduleAlarmUpdates = ScheduleAlarmUpdates(alarmManagerService)
+    private val scheduleAlarmUpdatesUseCase = ScheduleAlarmUpdatesUseCaseImpl(alarmManagerService)
 
     @Test
     fun `should schedule alarm updates to the first hour of tomorrow on alarmManagerService`() =
@@ -25,7 +25,7 @@ internal class ScheduleAlarmUpdatesTest {
                 set(Calendar.MILLISECOND, 0)
             }
 
-            scheduleAlarmUpdates()
+            scheduleAlarmUpdatesUseCase()
 
             coVerify { alarmManagerService.scheduleAlarmUpdates(calendar) }
             confirmVerified(alarmManagerService)

@@ -14,16 +14,16 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.mapper.AlarmToAlarmDataMap
 import br.com.sailboat.todozy.feature.alarm.impl.data.repository.AlarmRepositoryImpl
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerService
 import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerServiceImpl
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.CancelAlarmSchedule
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.CancelAlarmScheduleUseCase
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.DeleteAlarm
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.GetAlarm
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.GetNextAlarm
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.SaveAlarm
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarm
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUpdates
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.CancelAlarmScheduleUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.DeleteAlarmUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.GetAlarmUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.GetNextAlarmUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.SaveAlarmUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUpdatesUseCaseImpl
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUseCase
-import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAllAlarms
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAllAlarmsUseCaseImpl
 import br.com.sailboat.todozy.feature.alarm.impl.presentation.mapper.AlarmToAlarmUiModelMapperImpl
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
 import org.koin.core.module.Module
@@ -34,14 +34,14 @@ private val presentation = module {
 }
 
 private val domain = module {
-    factory<ScheduleAlarmUseCase> { ScheduleAlarm(get()) }
-    factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarms(get(), get(), get()) }
-    factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdates(get()) }
-    factory<CancelAlarmScheduleUseCase> { CancelAlarmSchedule(get()) }
-    factory<SaveAlarmUseCase> { SaveAlarm(get(), get(), get()) }
-    factory<GetAlarmUseCase> { GetAlarm(get()) }
-    factory<DeleteAlarmUseCase> { DeleteAlarm(get(), get()) }
-    factory<GetNextAlarmUseCase> { GetNextAlarm() }
+    factory<ScheduleAlarmUseCase> { ScheduleAlarmUseCaseImpl(get()) }
+    factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarmsUseCaseImpl(get(), get(), get()) }
+    factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdatesUseCaseImpl(get()) }
+    factory<CancelAlarmScheduleUseCase> { CancelAlarmScheduleUseCaseImpl(get()) }
+    factory<SaveAlarmUseCase> { SaveAlarmUseCaseImpl(get(), get(), get()) }
+    factory<GetAlarmUseCase> { GetAlarmUseCaseImpl(get()) }
+    factory<DeleteAlarmUseCase> { DeleteAlarmUseCaseImpl(get(), get()) }
+    factory<GetNextAlarmUseCase> { GetNextAlarmUseCaseImpl() }
 }
 
 private val data = module {
