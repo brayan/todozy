@@ -10,11 +10,11 @@ internal class AboutViewModel(
     override val viewState: AboutViewState = AboutViewState(),
     private val getAboutViewUseCase: GetAboutViewUseCase,
     private val logService: LogService,
-) : BaseViewModel<AboutViewState, AboutViewAction>() {
+) : BaseViewModel<AboutViewState, AboutViewIntent>() {
 
-    override fun dispatchViewIntent(viewIntent: AboutViewAction) {
+    override fun dispatchViewIntent(viewIntent: AboutViewIntent) {
         when (viewIntent) {
-            is AboutViewAction.OnStart -> onStart()
+            is AboutViewIntent.OnStart -> onStart()
         }
     }
 
@@ -23,7 +23,7 @@ internal class AboutViewModel(
             viewState.itemViews.value = getAboutViewUseCase().getOrThrow()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = AboutViewState.Action.ShowErrorLoadingAbout
+            viewState.viewAction.value = AboutViewAction.ShowErrorLoadingAbout
         }
     }
 }

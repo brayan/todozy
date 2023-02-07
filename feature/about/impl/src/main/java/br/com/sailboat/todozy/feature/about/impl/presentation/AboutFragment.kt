@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.feature.about.impl.databinding.FragmentAboutBinding
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewAction
+import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewIntent
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
-import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewState
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,7 +38,7 @@ internal class AboutFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewIntent(AboutViewAction.OnStart)
+        viewModel.dispatchViewIntent(AboutViewIntent.OnStart)
     }
 
     private fun observeViewModel() {
@@ -49,9 +49,9 @@ internal class AboutFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is AboutViewState.Action.ShowErrorLoadingAbout -> showErrorLoadingAbout()
+                is AboutViewAction.ShowErrorLoadingAbout -> showErrorLoadingAbout()
             }
         }
     }

@@ -5,10 +5,6 @@ import br.com.sailboat.todozy.utility.android.livedata.Event
 import br.com.sailboat.uicomponent.model.UiModel
 
 internal class AboutViewState {
-    val action = Event<Action>()
+    val viewAction = Event<AboutViewAction>()
     val itemViews = MutableLiveData<List<UiModel>>()
-
-    sealed class Action {
-        object ShowErrorLoadingAbout : Action()
-    }
 }
