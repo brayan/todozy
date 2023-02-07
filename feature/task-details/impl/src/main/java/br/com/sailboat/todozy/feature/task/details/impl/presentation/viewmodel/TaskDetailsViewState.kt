@@ -7,17 +7,9 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.UiModel
 
 internal class TaskDetailsViewState {
-
-    val action = Event<Action>()
+    val viewAction = Event<TaskDetailsViewAction>()
     val loading = MutableLiveData(true)
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val taskDetails = MutableLiveData<List<UiModel>>()
     var taskId: Long = Entity.NO_ID
-
-    sealed class Action {
-        data class NavigateToTaskForm(val taskId: Long) : Action()
-        data class CloseTaskDetails(val success: Boolean) : Action()
-        object ConfirmDeleteTask : Action()
-        object ShowErrorLoadingTaskDetails : Action()
-    }
 }

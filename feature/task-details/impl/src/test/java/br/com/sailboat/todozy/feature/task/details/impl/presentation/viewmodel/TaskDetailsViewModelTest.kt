@@ -65,7 +65,7 @@ internal class TaskDetailsViewModelTest {
         )
         prepareScenario(taskDetailsResult = taskDetails)
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
         coVerify(exactly = 1) { getTaskUseCase(taskId) }
         assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
@@ -82,7 +82,7 @@ internal class TaskDetailsViewModelTest {
         )
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
         coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
         assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
@@ -97,46 +97,46 @@ internal class TaskDetailsViewModelTest {
             )
         )
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
     }
 
     @Test
     fun `should call ShowErrorLoadingTaskDetails when getTaskViewUseCase returns error when dispatchViewAction is called with OnStart`() {
-        val observer = mockk<Observer<TaskDetailsViewState.Action>>()
-        val slot = slot<TaskDetailsViewState.Action>()
-        val list = arrayListOf<TaskDetailsViewState.Action>()
+        val observer = mockk<Observer<TaskDetailsViewAction>>()
+        val slot = slot<TaskDetailsViewAction>()
+        val list = arrayListOf<TaskDetailsViewAction>()
         val taskId = 42L
         val taskResult: Result<Task> = Result.failure(Exception())
-        viewModel.viewState.action.observeForever(observer)
+        viewModel.viewState.viewAction.observeForever(observer)
         every { observer.onChanged(capture(slot)) } answers {
             list.add(slot.captured)
         }
         prepareScenario(taskResult = taskResult)
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
-        val expected = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
+        val expected = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
         assertTrue { list.contains(expected) }
     }
 
     @Test
     fun `should call CloseTaskDetails(success = false) when getTaskUseCase returns error when dispatchViewAction is called with OnStart`() {
-        val observer = mockk<Observer<TaskDetailsViewState.Action>>()
-        val slot = slot<TaskDetailsViewState.Action>()
-        val list = arrayListOf<TaskDetailsViewState.Action>()
+        val observer = mockk<Observer<TaskDetailsViewAction>>()
+        val slot = slot<TaskDetailsViewAction>()
+        val list = arrayListOf<TaskDetailsViewAction>()
         val taskId = 42L
         val taskResult: Result<Task> = Result.failure(Exception())
-        viewModel.viewState.action.observeForever(observer)
+        viewModel.viewState.viewAction.observeForever(observer)
         every { observer.onChanged(capture(slot)) } answers {
             list.add(slot.captured)
         }
         prepareScenario(taskResult = taskResult)
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
-        val expected = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
+        val expected = TaskDetailsViewAction.CloseTaskDetails(success = false)
         assertTrue { list.contains(expected) }
     }
 
@@ -144,10 +144,10 @@ internal class TaskDetailsViewModelTest {
     fun `should confirm if user wants to delete an task when dispatchViewAction is called with OnClickMenuDelete`() {
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickMenuDelete)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
 
-        val expected = TaskDetailsViewState.Action.ConfirmDeleteTask
-        assertEquals(expected, viewModel.viewState.action.value)
+        val expected = TaskDetailsViewAction.ConfirmDeleteTask
+        assertEquals(expected, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -155,7 +155,7 @@ internal class TaskDetailsViewModelTest {
         val task = TaskMockFactory.makeTask()
         prepareScenario(taskResult = Result.success(task))
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickConfirmDeleteTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickConfirmDeleteTask)
 
         coVerify(exactly = 1) { disableTaskUseCase(task) }
     }
@@ -170,11 +170,11 @@ internal class TaskDetailsViewModelTest {
         val taskId = 42L
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
 
-        val expected = TaskDetailsViewState.Action.NavigateToTaskForm(taskId)
-        assertEquals(expected, viewModel.viewState.action.value)
+        val expected = TaskDetailsViewAction.NavigateToTaskForm(taskId)
+        assertEquals(expected, viewModel.viewState.viewAction.value)
     }
 
     @Test
@@ -194,7 +194,7 @@ internal class TaskDetailsViewModelTest {
         prepareScenario(taskDetailsResult = taskDetails)
         viewModel.viewState.taskId = taskId
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
 
         coVerify(exactly = 1) { getTaskUseCase(taskId) }
         assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
@@ -212,7 +212,7 @@ internal class TaskDetailsViewModelTest {
         viewModel.viewState.taskId = taskId
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
 
         coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
         assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
@@ -228,7 +228,7 @@ internal class TaskDetailsViewModelTest {
             )
         )
 
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
     }

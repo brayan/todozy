@@ -17,12 +17,9 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.R
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction.OnClickConfirmDeleteTask
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent
+import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent.OnClickConfirmDeleteTask
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.CloseTaskDetails
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ConfirmDeleteTask
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.NavigateToTaskForm
-import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -51,7 +48,7 @@ internal class TaskDetailsFragment : BaseFragment() {
 
     private val editTaskLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.dispatchViewIntent(TaskDetailsViewAction.OnReturnToDetails)
+            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
         }
 
     companion object {
@@ -83,13 +80,13 @@ internal class TaskDetailsFragment : BaseFragment() {
         updateCallbacksFromDialogs()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
-        viewModel.dispatchViewIntent(TaskDetailsViewAction.OnStart(taskId))
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_delete -> {
-                viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickMenuDelete)
+                viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -100,7 +97,7 @@ internal class TaskDetailsFragment : BaseFragment() {
         binding.toolbar.setTitle(R.string.task_details)
         binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
         binding.fab.root.setOnClickListener {
-            viewModel.dispatchViewIntent(TaskDetailsViewAction.OnClickEditTask)
+            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
         }
 
         binding.rvTaskDetails.run {
@@ -135,12 +132,12 @@ internal class TaskDetailsFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is ConfirmDeleteTask -> confirmDeleteTask()
-                is CloseTaskDetails -> closeTaskDetails(action)
-                is NavigateToTaskForm -> navigateToTaskForm(action)
-                is ShowErrorLoadingTaskDetails -> showErrorLoadingTaskDetails()
+                is TaskDetailsViewAction.ConfirmDeleteTask -> confirmDeleteTask()
+                is TaskDetailsViewAction.CloseTaskDetails -> closeTaskDetails(action)
+                is TaskDetailsViewAction.NavigateToTaskForm -> navigateToTaskForm(action)
+                is TaskDetailsViewAction.ShowErrorLoadingTaskDetails -> showErrorLoadingTaskDetails()
             }
         }
     }
@@ -154,7 +151,7 @@ internal class TaskDetailsFragment : BaseFragment() {
         deleteTaskDialog?.show(childFragmentManager, DELETE_TASK_TAG)
     }
 
-    private fun closeTaskDetails(action: CloseTaskDetails) {
+    private fun closeTaskDetails(action: TaskDetailsViewAction.CloseTaskDetails) {
         val result = if (action.success) {
             Activity.RESULT_OK
         } else {
@@ -164,7 +161,7 @@ internal class TaskDetailsFragment : BaseFragment() {
         activity?.finish()
     }
 
-    private fun navigateToTaskForm(action: NavigateToTaskForm) {
+    private fun navigateToTaskForm(action: TaskDetailsViewAction.NavigateToTaskForm) {
         taskFormNavigator.navigateToEditTask(requireContext(), action.taskId, editTaskLauncher)
     }
 

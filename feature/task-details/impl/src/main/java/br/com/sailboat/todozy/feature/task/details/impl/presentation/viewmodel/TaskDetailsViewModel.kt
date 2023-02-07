@@ -19,40 +19,40 @@ internal class TaskDetailsViewModel(
     private val disableTaskUseCase: DisableTaskUseCase,
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory,
     private val logService: LogService,
-) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewAction>() {
+) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
 
-    override fun dispatchViewIntent(viewIntent: TaskDetailsViewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskDetailsViewIntent) {
         when (viewIntent) {
-            is TaskDetailsViewAction.OnStart -> onStart(viewIntent)
-            is TaskDetailsViewAction.OnClickMenuDelete -> onClickMenuDelete()
-            is TaskDetailsViewAction.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
-            is TaskDetailsViewAction.OnClickEditTask -> onClickEditTask()
-            is TaskDetailsViewAction.OnReturnToDetails -> onReturnToDetails()
+            is TaskDetailsViewIntent.OnStart -> onStart(viewIntent)
+            is TaskDetailsViewIntent.OnClickMenuDelete -> onClickMenuDelete()
+            is TaskDetailsViewIntent.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
+            is TaskDetailsViewIntent.OnClickEditTask -> onClickEditTask()
+            is TaskDetailsViewIntent.OnReturnToDetails -> onReturnToDetails()
         }
     }
 
-    private fun onStart(viewAction: TaskDetailsViewAction.OnStart) {
-        viewState.taskId = viewAction.taskId
+    private fun onStart(viewIntent: TaskDetailsViewIntent.OnStart) {
+        viewState.taskId = viewIntent.taskId
         loadDetails()
     }
 
     private fun onClickMenuDelete() {
-        viewState.action.value = TaskDetailsViewState.Action.ConfirmDeleteTask
+        viewState.viewAction.value = TaskDetailsViewAction.ConfirmDeleteTask
     }
 
     private fun onClickConfirmDeleteTask() = viewModelScope.launch {
         try {
             val task = getTaskUseCase(viewState.taskId).getOrThrow()
             disableTaskUseCase(task).getOrThrow()
-            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails(success = true)
+            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = true)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
+            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
         }
     }
 
     private fun onClickEditTask() {
-        viewState.action.value = TaskDetailsViewState.Action.NavigateToTaskForm(viewState.taskId)
+        viewState.viewAction.value = TaskDetailsViewAction.NavigateToTaskForm(viewState.taskId)
     }
 
     private fun onReturnToDetails() {
@@ -81,8 +81,8 @@ internal class TaskDetailsViewModel(
             viewState.taskMetrics.postValue(taskMetrics)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskDetailsViewState.Action.ShowErrorLoadingTaskDetails
-            viewState.action.value = TaskDetailsViewState.Action.CloseTaskDetails(success = false)
+            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
+            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = false)
         } finally {
             viewState.loading.postValue(false)
         }
