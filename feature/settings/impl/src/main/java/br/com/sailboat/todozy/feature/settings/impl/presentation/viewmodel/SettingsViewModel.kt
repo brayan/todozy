@@ -14,15 +14,15 @@ internal class SettingsViewModel(
     private val setAlarmSoundSettingUseCase: SetAlarmSoundSettingUseCase,
     private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase,
     private val setAlarmVibrateSettingUseCase: SetAlarmVibrateSettingUseCase,
-) : BaseViewModel<SettingsViewState, SettingsViewAction>() {
+) : BaseViewModel<SettingsViewState, SettingsViewIntent>() {
 
-    override fun dispatchViewIntent(viewIntent: SettingsViewAction) {
+    override fun dispatchViewIntent(viewIntent: SettingsViewIntent) {
         when (viewIntent) {
-            is SettingsViewAction.OnStart -> onStart()
-            is SettingsViewAction.OnClickMenuAlarmTone -> onClickMenuAlarmTone()
-            is SettingsViewAction.OnClickAbout -> onClickAbout()
-            is SettingsViewAction.OnClickVibrateAlarm -> onClickVibrateAlarm(viewIntent)
-            is SettingsViewAction.OnSelectAlarmTone -> onSelectAlarmTone(viewIntent)
+            is SettingsViewIntent.OnStart -> onStart()
+            is SettingsViewIntent.OnClickMenuAlarmTone -> onClickMenuAlarmTone()
+            is SettingsViewIntent.OnClickAbout -> onClickAbout()
+            is SettingsViewIntent.OnClickVibrateAlarm -> onClickVibrateAlarm(viewIntent)
+            is SettingsViewIntent.OnSelectAlarmTone -> onSelectAlarmTone(viewIntent)
         }
     }
 
@@ -33,24 +33,24 @@ internal class SettingsViewModel(
 
     private fun onClickMenuAlarmTone() {
         val alarmSound = viewState.alarmSound.value
-        viewState.action.value = SettingsViewState.Action.NavigateToAlarmToneSelector(alarmSound)
+        viewState.viewAction.value = SettingsViewAction.NavigateToAlarmToneSelector(alarmSound)
     }
 
     private fun onClickAbout() {
-        viewState.action.value = SettingsViewState.Action.NavigateToAbout
+        viewState.viewAction.value = SettingsViewAction.NavigateToAbout
     }
 
-    private fun onClickVibrateAlarm(viewAction: SettingsViewAction.OnClickVibrateAlarm) {
+    private fun onClickVibrateAlarm(viewIntent: SettingsViewIntent.OnClickVibrateAlarm) {
         viewModelScope.launch {
-            viewState.vibrate.value = viewAction.vibrate
-            setAlarmVibrateSettingUseCase(viewAction.vibrate)
+            viewState.vibrate.value = viewIntent.vibrate
+            setAlarmVibrateSettingUseCase(viewIntent.vibrate)
         }
     }
 
-    private fun onSelectAlarmTone(viewAction: SettingsViewAction.OnSelectAlarmTone) {
+    private fun onSelectAlarmTone(viewIntent: SettingsViewIntent.OnSelectAlarmTone) {
         viewModelScope.launch {
-            viewState.alarmSound.value = viewAction.uri
-            setAlarmSoundSettingUseCase(viewAction.uri)
+            viewState.alarmSound.value = viewIntent.uri
+            setAlarmSoundSettingUseCase(viewIntent.uri)
         }
     }
 }

@@ -9,9 +9,8 @@ import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.impl.R
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction
+import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewIntent
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
-import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewState
-import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewState.Action.NavigateToAlarmToneSelector
 import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +24,7 @@ internal class SettingsFragment : BaseFragment() {
 
     private val pickRingtoneLauncher = registerForActivityResult(PickRingtoneContract()) { uri ->
         uri?.run {
-            viewModel.dispatchViewIntent(SettingsViewAction.OnSelectAlarmTone(uri))
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnSelectAlarmTone(uri))
         }
     }
 
@@ -40,7 +39,7 @@ internal class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.dispatchViewIntent(SettingsViewAction.OnStart)
+        viewModel.dispatchViewIntent(SettingsViewIntent.OnStart)
     }
 
     override fun initViews() {
@@ -67,15 +66,15 @@ internal class SettingsFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is NavigateToAlarmToneSelector -> navigateToAlarmToneSelector(action)
-                is SettingsViewState.Action.NavigateToAbout -> navigateToAbout()
+                is SettingsViewAction.NavigateToAlarmToneSelector -> navigateToAlarmToneSelector(action)
+                is SettingsViewAction.NavigateToAbout -> navigateToAbout()
             }
         }
     }
 
-    private fun navigateToAlarmToneSelector(action: NavigateToAlarmToneSelector) {
+    private fun navigateToAlarmToneSelector(action: SettingsViewAction.NavigateToAlarmToneSelector) {
         pickRingtoneLauncher.launch(action.uri)
     }
 
@@ -91,19 +90,19 @@ internal class SettingsFragment : BaseFragment() {
 
     private fun initToneViews() = activity?.run {
         binding.llSettingsTone.setOnClickListener {
-            viewModel.dispatchViewIntent(SettingsViewAction.OnClickMenuAlarmTone)
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickMenuAlarmTone)
         }
     }
 
     private fun initAbout() {
         binding.tvSettingsAbout.setOnClickListener {
-            viewModel.dispatchViewIntent(SettingsViewAction.OnClickAbout)
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickAbout)
         }
     }
 
     private fun initCheckBoxVibrate() = activity?.run {
         binding.cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.dispatchViewIntent(SettingsViewAction.OnClickVibrateAlarm(isChecked))
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickVibrateAlarm(isChecked))
         }
     }
 
