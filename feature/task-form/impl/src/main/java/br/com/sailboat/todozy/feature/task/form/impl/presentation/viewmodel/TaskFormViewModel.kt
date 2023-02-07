@@ -11,8 +11,6 @@ import br.com.sailboat.todozy.feature.task.form.domain.usecase.SaveTaskUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.domain.service.AlarmService
 import br.com.sailboat.todozy.feature.task.form.impl.domain.usecase.CheckTaskFieldsUseCase
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.model.AlarmForm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToCustomRepeatAlarmSelector
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToRepeatAlarmSelector
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.extension.getInitialAlarm
@@ -28,39 +26,39 @@ internal class TaskFormViewModel(
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
     private val logService: LogService,
     private val alarmService: AlarmService,
-) : BaseViewModel<TaskFormViewState, TaskFormViewAction>() {
+) : BaseViewModel<TaskFormViewState, TaskFormViewIntent>() {
 
-    override fun dispatchViewIntent(viewIntent: TaskFormViewAction) {
+    override fun dispatchViewIntent(viewIntent: TaskFormViewIntent) {
         when (viewIntent) {
-            is TaskFormViewAction.OnStart -> onStart(viewIntent)
-            is TaskFormViewAction.OnClickAddAlarm -> onClickAddAlarm()
-            is TaskFormViewAction.OnClickSaveTask -> onClickSaveTask(viewIntent)
-            is TaskFormViewAction.OnSelectAlarmDate -> onSelectAlarmDate(viewIntent)
-            is TaskFormViewAction.OnSelectAlarmTime -> onSelectAlarmTime(viewIntent)
-            is TaskFormViewAction.OnSelectAlarmType -> onSelectAlarmType(viewIntent)
-            is TaskFormViewAction.OnSelectCustomAlarmType -> onSelectCustomAlarmType(viewIntent)
-            is TaskFormViewAction.OnClickAlarmDate -> onClickAlarmDate()
-            is TaskFormViewAction.OnClickAlarmTime -> onClickAlarmTime()
-            is TaskFormViewAction.OnClickRepeatAlarm -> onClickRepeatAlarm()
-            is TaskFormViewAction.OnClickCustomRepeatAlarm -> onClickCustomRepeatAlarm()
+            is TaskFormViewIntent.OnStart -> onStart(viewIntent)
+            is TaskFormViewIntent.OnClickAddAlarm -> onClickAddAlarm()
+            is TaskFormViewIntent.OnClickSaveTask -> onClickSaveTask(viewIntent)
+            is TaskFormViewIntent.OnSelectAlarmDate -> onSelectAlarmDate(viewIntent)
+            is TaskFormViewIntent.OnSelectAlarmTime -> onSelectAlarmTime(viewIntent)
+            is TaskFormViewIntent.OnSelectAlarmType -> onSelectAlarmType(viewIntent)
+            is TaskFormViewIntent.OnSelectCustomAlarmType -> onSelectCustomAlarmType(viewIntent)
+            is TaskFormViewIntent.OnClickAlarmDate -> onClickAlarmDate()
+            is TaskFormViewIntent.OnClickAlarmTime -> onClickAlarmTime()
+            is TaskFormViewIntent.OnClickRepeatAlarm -> onClickRepeatAlarm()
+            is TaskFormViewIntent.OnClickCustomRepeatAlarm -> onClickCustomRepeatAlarm()
         }
     }
 
-    private fun onStart(viewAction: TaskFormViewAction.OnStart) {
-        viewState.taskId = viewAction.taskId
+    private fun onStart(viewIntent: TaskFormViewIntent.OnStart) {
+        viewState.taskId = viewIntent.taskId
 
         if (hasTaskToEdit()) {
             viewState.isEditingTask.value = true
             startEditingTask()
         } else {
             viewState.isEditingTask.value = false
-            viewState.action.value = TaskFormViewState.Action.SetFocusOnInputTaskName
+            viewState.viewAction.value = TaskFormViewAction.SetFocusOnInputTaskName
             updateAlarm()
         }
     }
 
     private fun onClickAddAlarm() {
-        viewState.action.value = TaskFormViewState.Action.HideKeyboard
+        viewState.viewAction.value = TaskFormViewAction.HideKeyboard
 
         if (hasAlarm()) {
             clearAlarm()
@@ -71,49 +69,49 @@ internal class TaskFormViewModel(
         updateAlarm(animate = true)
     }
 
-    private fun onClickSaveTask(viewAction: TaskFormViewAction.OnClickSaveTask) {
+    private fun onClickSaveTask(viewIntent: TaskFormViewIntent.OnClickSaveTask) {
         try {
-            viewState.action.value = TaskFormViewState.Action.HideKeyboard
-            checkFieldsAndSaveTask(viewAction.taskName, viewAction.taskNotes)
+            viewState.viewAction.value = TaskFormViewAction.HideKeyboard
+            checkFieldsAndSaveTask(viewIntent.taskName, viewIntent.taskNotes)
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskFormViewState.Action.ShowErrorSavingTask
+            viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
         }
     }
 
-    private fun onSelectAlarmDate(viewAction: TaskFormViewAction.OnSelectAlarmDate) {
+    private fun onSelectAlarmDate(viewIntent: TaskFormViewIntent.OnSelectAlarmDate) {
         viewState.alarm?.apply {
-            set(Calendar.YEAR, viewAction.year)
-            set(Calendar.MONTH, viewAction.month)
-            set(Calendar.DAY_OF_MONTH, viewAction.day)
+            set(Calendar.YEAR, viewIntent.year)
+            set(Calendar.MONTH, viewIntent.month)
+            set(Calendar.DAY_OF_MONTH, viewIntent.day)
         }
         updateAlarm()
     }
 
-    private fun onSelectAlarmTime(viewAction: TaskFormViewAction.OnSelectAlarmTime) {
+    private fun onSelectAlarmTime(viewIntent: TaskFormViewIntent.OnSelectAlarmTime) {
         viewState.alarm?.apply {
-            set(Calendar.HOUR_OF_DAY, viewAction.hourOfDay)
-            set(Calendar.MINUTE, viewAction.minute)
+            set(Calendar.HOUR_OF_DAY, viewIntent.hourOfDay)
+            set(Calendar.MINUTE, viewIntent.minute)
         }
         updateAlarm()
     }
 
-    private fun onSelectAlarmType(viewAction: TaskFormViewAction.OnSelectAlarmType) {
-        viewState.repeatAlarmType = viewAction.repeatType
+    private fun onSelectAlarmType(viewIntent: TaskFormViewIntent.OnSelectAlarmType) {
+        viewState.repeatAlarmType = viewIntent.repeatType
         viewState.selectedDays = null
         updateAlarm()
     }
 
-    private fun onSelectCustomAlarmType(viewAction: TaskFormViewAction.OnSelectCustomAlarmType) {
+    private fun onSelectCustomAlarmType(viewIntent: TaskFormViewIntent.OnSelectCustomAlarmType) {
         viewState.selectedDays = null
 
-        when (viewAction.days.length) {
+        when (viewIntent.days.length) {
             1 -> {
-                viewState.selectedDays = viewAction.days
+                viewState.selectedDays = viewIntent.days
                 viewState.repeatAlarmType = RepeatType.CUSTOM
 
                 val dayOfWeek = viewState.alarm?.get(Calendar.DAY_OF_WEEK).toString()
-                if (viewAction.days.contains(dayOfWeek).not()) {
+                if (viewIntent.days.contains(dayOfWeek).not()) {
                     val alarm = createAlarmFromViews()
                     viewState.alarm = alarm?.let { getNextAlarmUseCase(it).dateTime }
                 }
@@ -125,11 +123,11 @@ internal class TaskFormViewModel(
                 viewState.repeatAlarmType = RepeatType.DAY
             }
             else -> {
-                viewState.selectedDays = viewAction.days
+                viewState.selectedDays = viewIntent.days
                 viewState.repeatAlarmType = RepeatType.CUSTOM
 
                 val dayOfWeek = viewState.alarm?.get(Calendar.DAY_OF_WEEK).toString()
-                if (viewAction.days.contains(dayOfWeek).not()) {
+                if (viewIntent.days.contains(dayOfWeek).not()) {
                     val alarm = createAlarmFromViews()
                     viewState.alarm = alarm?.let { getNextAlarmUseCase(it).dateTime }
                 }
@@ -141,22 +139,22 @@ internal class TaskFormViewModel(
 
     private fun onClickAlarmDate() {
         viewState.alarm?.let { alarm ->
-            viewState.action.value = TaskFormViewState.Action.NavigateToAlarmDateSelector(alarm)
+            viewState.viewAction.value = TaskFormViewAction.NavigateToAlarmDateSelector(alarm)
         }
     }
 
     private fun onClickAlarmTime() {
         viewState.alarm?.let { alarm ->
-            viewState.action.value = TaskFormViewState.Action.NavigateToAlarmTimeSelector(alarm)
+            viewState.viewAction.value = TaskFormViewAction.NavigateToAlarmTimeSelector(alarm)
         }
     }
 
     private fun onClickRepeatAlarm() {
-        viewState.action.value = NavigateToRepeatAlarmSelector(viewState.repeatAlarmType)
+        viewState.viewAction.value = TaskFormViewAction.NavigateToRepeatAlarmSelector(viewState.repeatAlarmType)
     }
 
     private fun onClickCustomRepeatAlarm() {
-        viewState.action.value = NavigateToCustomRepeatAlarmSelector(viewState.selectedDays)
+        viewState.viewAction.value = TaskFormViewAction.NavigateToCustomRepeatAlarmSelector(viewState.selectedDays)
     }
 
     private fun startEditingTask() = viewModelScope.launch {
@@ -167,7 +165,7 @@ internal class TaskFormViewModel(
             viewState.repeatAlarmType = task.alarm?.repeatType ?: RepeatType.NOT_REPEAT
             viewState.selectedDays = task.alarm?.customDays
 
-            viewState.action.value = TaskFormViewState.Action.SetTaskDetails(
+            viewState.viewAction.value = TaskFormViewAction.SetTaskDetails(
                 taskName = task.name,
                 taskNotes = task.notes,
             )
@@ -175,8 +173,8 @@ internal class TaskFormViewModel(
             updateAlarm()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.action.value = TaskFormViewState.Action.ShowErrorSavingTask
-            viewState.action.value = TaskFormViewState.Action.CloseTaskForm(success = false)
+            viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
+            viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = false)
         }
     }
 
@@ -225,21 +223,20 @@ internal class TaskFormViewModel(
                 conditions.forEach {
                     when (it) {
                         TaskFieldsConditions.TASK_NAME_NOT_FILLED -> {
-                            viewState.action.value =
-                                TaskFormViewState.Action.ShowErrorTaskNameCantBeEmpty
+                            viewState.viewAction.value = TaskFormViewAction.ShowErrorTaskNameCantBeEmpty
                         }
                         TaskFieldsConditions.ALARM_NOT_VALID -> {
-                            viewState.action.value = TaskFormViewState.Action.ShowErrorAlarmNotValid
+                            viewState.viewAction.value = TaskFormViewAction.ShowErrorAlarmNotValid
                         }
                     }
                     return@launch
                 }
 
                 saveTaskUseCase(task)
-                viewState.action.value = TaskFormViewState.Action.CloseTaskForm(success = true)
+                viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = true)
             } catch (e: Exception) {
                 logService.error(e)
-                viewState.action.value = TaskFormViewState.Action.ShowErrorSavingTask
+                viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
             }
         }
 

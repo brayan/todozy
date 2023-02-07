@@ -14,29 +14,19 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAddAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAlarmDate
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickAlarmTime
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickCustomRepeatAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickRepeatAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnClickSaveTask
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmDate
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmTime
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectAlarmType
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnSelectCustomAlarmType
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction.OnStart
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAddAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAlarmDate
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAlarmTime
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickCustomRepeatAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickRepeatAlarm
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickSaveTask
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmDate
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmTime
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmType
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectCustomAlarmType
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnStart
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.CloseTaskForm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.HideKeyboard
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToAlarmDateSelector
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToAlarmTimeSelector
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToCustomRepeatAlarmSelector
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.NavigateToRepeatAlarmSelector
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.SetFocusOnInputTaskName
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.SetTaskDetails
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorAlarmNotValid
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorSavingTask
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewState.Action.ShowErrorTaskNameCantBeEmpty
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
 import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.DateSelectorDialog
@@ -166,24 +156,24 @@ internal class TaskFormFragment : BaseFragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.action.observe(viewLifecycleOwner) { action ->
+        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is CloseTaskForm -> closeTaskForm(action)
-                is SetFocusOnInputTaskName -> setFocusOnInputTaskName()
-                is SetTaskDetails -> setTaskDetails(action)
-                is ShowErrorSavingTask -> showErrorSavingTask()
-                is HideKeyboard -> hideKeyboard()
-                is ShowErrorAlarmNotValid -> showErrorAlarmNotValid()
-                is ShowErrorTaskNameCantBeEmpty -> showErrorTaskNameCantBeBlank()
-                is NavigateToAlarmDateSelector -> navigateToAlarmDateSelector(action)
-                is NavigateToAlarmTimeSelector -> navigateToAlarmTimeSelector(action)
-                is NavigateToRepeatAlarmSelector -> navigateToRepeatAlarmSelector(action)
-                is NavigateToCustomRepeatAlarmSelector -> navigateToCustomRepeatAlarmSelector(action)
+                is TaskFormViewAction.CloseTaskForm -> closeTaskForm(action)
+                is TaskFormViewAction.SetFocusOnInputTaskName -> setFocusOnInputTaskName()
+                is TaskFormViewAction.SetTaskDetails -> setTaskDetails(action)
+                is TaskFormViewAction.ShowErrorSavingTask -> showErrorSavingTask()
+                is TaskFormViewAction.HideKeyboard -> hideKeyboard()
+                is TaskFormViewAction.ShowErrorAlarmNotValid -> showErrorAlarmNotValid()
+                is TaskFormViewAction.ShowErrorTaskNameCantBeEmpty -> showErrorTaskNameCantBeBlank()
+                is TaskFormViewAction.NavigateToAlarmDateSelector -> navigateToAlarmDateSelector(action)
+                is TaskFormViewAction.NavigateToAlarmTimeSelector -> navigateToAlarmTimeSelector(action)
+                is TaskFormViewAction.NavigateToRepeatAlarmSelector -> navigateToRepeatAlarmSelector(action)
+                is TaskFormViewAction.NavigateToCustomRepeatAlarmSelector -> navigateToCustomRepeatAlarmSelector(action)
             }
         }
     }
 
-    private fun closeTaskForm(action: CloseTaskForm) {
+    private fun closeTaskForm(action: TaskFormViewAction.CloseTaskForm) {
         val result = if (action.success) {
             Activity.RESULT_OK
         } else {
@@ -198,7 +188,7 @@ internal class TaskFormFragment : BaseFragment() {
         activity?.showKeyboard(binding.etTaskFormName)
     }
 
-    private fun setTaskDetails(action: SetTaskDetails) = with(binding) {
+    private fun setTaskDetails(action: TaskFormViewAction.SetTaskDetails) = with(binding) {
         etTaskFormNotes.setText(action.taskNotes)
 
         etTaskFormName.setText(action.taskName)
@@ -213,7 +203,7 @@ internal class TaskFormFragment : BaseFragment() {
         activity?.hideKeyboard()
     }
 
-    private fun navigateToAlarmDateSelector(action: NavigateToAlarmDateSelector) {
+    private fun navigateToAlarmDateSelector(action: TaskFormViewAction.NavigateToAlarmDateSelector) {
         // TODO: EXPERIMENT WITH MATERIAL DATE PICKER
         // https://material.io/components/date-pickers/android
         dateSelectorDialog = DateSelectorDialog.show(
@@ -223,7 +213,7 @@ internal class TaskFormFragment : BaseFragment() {
         )
     }
 
-    private fun navigateToAlarmTimeSelector(action: NavigateToAlarmTimeSelector) {
+    private fun navigateToAlarmTimeSelector(action: TaskFormViewAction.NavigateToAlarmTimeSelector) {
         timeSelectorDialog = TimeSelectorDialog.show(
             fragmentManager = childFragmentManager,
             calendar = action.currentTime,
@@ -231,7 +221,7 @@ internal class TaskFormFragment : BaseFragment() {
         )
     }
 
-    private fun navigateToRepeatAlarmSelector(action: NavigateToRepeatAlarmSelector) {
+    private fun navigateToRepeatAlarmSelector(action: TaskFormViewAction.NavigateToRepeatAlarmSelector) {
         SelectItemDialog.show(
             "TAGZERA",
             childFragmentManager,
@@ -244,7 +234,7 @@ internal class TaskFormFragment : BaseFragment() {
         )
     }
 
-    private fun navigateToCustomRepeatAlarmSelector(action: NavigateToCustomRepeatAlarmSelector) {
+    private fun navigateToCustomRepeatAlarmSelector(action: TaskFormViewAction.NavigateToCustomRepeatAlarmSelector) {
         WeekDaysSelectorDialog.show(
             childFragmentManager,
             action.days,

@@ -1,17 +1,21 @@
 package br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel
 
 import br.com.sailboat.todozy.domain.model.RepeatType
+import java.util.Calendar
 
 internal sealed class TaskFormViewAction {
-    data class OnStart(val taskId: Long) : TaskFormViewAction()
-    data class OnClickSaveTask(val taskName: String, val taskNotes: String) : TaskFormViewAction()
-    data class OnSelectAlarmDate(val year: Int, val month: Int, val day: Int) : TaskFormViewAction()
-    data class OnSelectAlarmTime(val hourOfDay: Int, val minute: Int) : TaskFormViewAction()
-    data class OnSelectAlarmType(val repeatType: RepeatType) : TaskFormViewAction()
-    data class OnSelectCustomAlarmType(val days: String) : TaskFormViewAction()
-    object OnClickAddAlarm : TaskFormViewAction()
-    object OnClickAlarmDate : TaskFormViewAction()
-    object OnClickAlarmTime : TaskFormViewAction()
-    object OnClickRepeatAlarm : TaskFormViewAction()
-    object OnClickCustomRepeatAlarm : TaskFormViewAction()
+    object SetFocusOnInputTaskName : TaskFormViewAction()
+    object ShowErrorSavingTask : TaskFormViewAction()
+    object HideKeyboard : TaskFormViewAction()
+    object ShowErrorTaskNameCantBeEmpty : TaskFormViewAction()
+    object ShowErrorAlarmNotValid : TaskFormViewAction()
+    data class SetTaskDetails(
+        val taskName: String?,
+        val taskNotes: String?,
+    ) : TaskFormViewAction()
+    data class CloseTaskForm(val success: Boolean) : TaskFormViewAction()
+    data class NavigateToAlarmDateSelector(val currentDate: Calendar) : TaskFormViewAction()
+    data class NavigateToAlarmTimeSelector(val currentTime: Calendar) : TaskFormViewAction()
+    data class NavigateToRepeatAlarmSelector(val repeatType: RepeatType) : TaskFormViewAction()
+    data class NavigateToCustomRepeatAlarmSelector(val days: String?) : TaskFormViewAction()
 }
