@@ -28,13 +28,11 @@ internal class TaskDetailsAdapter :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-
-        when (item.uiModelId) {
-            UiModelType.TITLE.ordinal -> (holder as TitleViewHolder).bind(item as TitleUiModel)
-            UiModelType.ALARM.ordinal -> (holder as AlarmViewHolder).bind(item as AlarmUiModel)
-            UiModelType.LABEL.ordinal -> (holder as LabelViewHolder).bind(item as LabelUiModel)
-            UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
+        when (val item = getItem(position)) {
+            is TitleUiModel -> (holder as TitleViewHolder).bind(item)
+            is AlarmUiModel -> (holder as AlarmViewHolder).bind(item)
+            is LabelUiModel -> (holder as LabelViewHolder).bind(item)
+            is LabelValueUiModel -> (holder as LabelValueViewHolder).bind(item)
         }
     }
 

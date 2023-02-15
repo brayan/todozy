@@ -8,7 +8,7 @@ class UiModelDiffUtilCallback : DiffUtil.ItemCallback<UiModel>() {
     override fun areItemsTheSame(
         oldItem: UiModel,
         newItem: UiModel,
-    ) = oldItem.uiModelId == newItem.uiModelId
+    ) = oldItem == newItem
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(

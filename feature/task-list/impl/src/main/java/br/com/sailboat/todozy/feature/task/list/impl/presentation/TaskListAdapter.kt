@@ -24,11 +24,9 @@ internal class TaskListAdapter(private val callback: Callback) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-
-        when (item.uiModelId) {
-            UiModelType.TASK.ordinal -> (holder as TaskViewHolder).bind(item as TaskUiModel)
-            UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
+        when (val item = getItem(position)) {
+            is TaskUiModel -> (holder as TaskViewHolder).bind(item)
+            is SubheadUiModel -> (holder as SubheadViewHolder).bind(item)
         }
     }
 

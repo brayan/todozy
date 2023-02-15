@@ -22,11 +22,9 @@ internal class AboutAdapter :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-
-        when (item.uiModelId) {
-            UiModelType.IMAGE_TITLE.ordinal -> (holder as ImageTitleDividerViewHolder).bind(item as ImageTitleDividerUiModel)
-            UiModelType.LABEL_VALUE.ordinal -> (holder as LabelValueViewHolder).bind(item as LabelValueUiModel)
+        when (val item = getItem(position)) {
+            is ImageTitleDividerUiModel -> (holder as ImageTitleDividerViewHolder).bind(item)
+            is LabelValueUiModel -> (holder as LabelValueViewHolder).bind(item)
         }
     }
 

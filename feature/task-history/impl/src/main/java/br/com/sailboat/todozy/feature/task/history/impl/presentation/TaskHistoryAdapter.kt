@@ -24,11 +24,9 @@ internal class TaskHistoryAdapter(private val callback: Callback) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
-
-        when (item.uiModelId) {
-            UiModelType.TASK_HISTORY.ordinal -> (holder as TaskHistoryViewHolder).bind(item as TaskHistoryUiModel)
-            UiModelType.SUBHEADER.ordinal -> (holder as SubheadViewHolder).bind(item as SubheadUiModel)
+        when (val item = getItem(position)) {
+            is TaskHistoryUiModel -> (holder as TaskHistoryViewHolder).bind(item)
+            is SubheadUiModel -> (holder as SubheadViewHolder).bind(item)
         }
     }
 
