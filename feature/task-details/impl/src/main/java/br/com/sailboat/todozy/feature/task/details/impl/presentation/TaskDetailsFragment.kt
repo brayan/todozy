@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
@@ -20,7 +21,6 @@ import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent.OnClickConfirmDeleteTask
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
@@ -32,7 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val DELETE_TASK_TAG = "DELETE_TASK_TAG"
 
-internal class TaskDetailsFragment : BaseFragment() {
+internal class TaskDetailsFragment : Fragment() {
 
     private val viewModel: TaskDetailsViewModel by viewModel()
     private val taskFormNavigator: TaskFormNavigator by inject()
@@ -76,6 +76,7 @@ internal class TaskDetailsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         updateCallbacksFromDialogs()
 
@@ -93,7 +94,7 @@ internal class TaskDetailsFragment : BaseFragment() {
         return true
     }
 
-    override fun initViews() {
+    private fun initViews() {
         binding.toolbar.setTitle(R.string.task_details)
         binding.fab.root.setImageResource(R.drawable.ic_edit_white_24dp)
         binding.fab.root.setOnClickListener {

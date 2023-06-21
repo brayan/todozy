@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.impl.R
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewIntent
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class SettingsFragment : BaseFragment() {
+internal class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModel()
     private val aboutNavigator: AboutNavigator by inject()
@@ -38,11 +38,12 @@ internal class SettingsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         viewModel.dispatchViewIntent(SettingsViewIntent.OnStart)
     }
 
-    override fun initViews() {
+    private fun initViews() {
         initToolbar()
         initToneViews()
         initAbout()

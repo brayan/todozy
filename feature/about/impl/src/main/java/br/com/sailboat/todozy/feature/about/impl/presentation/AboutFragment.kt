@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.feature.about.impl.databinding.FragmentAboutBinding
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewAction
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewIntent
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class AboutFragment : BaseFragment() {
+internal class AboutFragment : Fragment() {
 
     private val viewModel: AboutViewModel by viewModel()
 
@@ -37,6 +37,7 @@ internal class AboutFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         viewModel.dispatchViewIntent(AboutViewIntent.OnStart)
     }
@@ -56,7 +57,7 @@ internal class AboutFragment : BaseFragment() {
         }
     }
 
-    override fun initViews() {
+    private fun initViews() {
         initToolbar()
         initRecyclerView()
     }

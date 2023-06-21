@@ -11,27 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAddAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAlarmDate
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAlarmTime
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickCustomRepeatAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickRepeatAlarm
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickSaveTask
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmDate
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmTime
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectAlarmType
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnSelectCustomAlarmType
-import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnStart
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.*
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
 import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.DateSelectorDialog
 import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.TimeSelectorDialog
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
@@ -43,7 +33,7 @@ import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class TaskFormFragment : BaseFragment() {
+internal class TaskFormFragment : Fragment() {
 
     private val viewModel: TaskFormViewModel by viewModel()
 
@@ -94,6 +84,7 @@ internal class TaskFormFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         updateCallbacksFromDialogs()
 
@@ -113,15 +104,6 @@ internal class TaskFormFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_insert, menu)
     }
 
-    override fun initViews() {
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarTaskForm)
-        binding.toolbarTaskForm.setNavigationIcon(R.drawable.ic_close_white_24dp)
-        binding.toolbarTaskForm.setNavigationOnClickListener { activity?.onBackPressed() }
-
-        initEditTexts()
-        initAlarmViews()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_save -> {
@@ -134,6 +116,15 @@ internal class TaskFormFragment : BaseFragment() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    private fun initViews() {
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarTaskForm)
+        binding.toolbarTaskForm.setNavigationIcon(R.drawable.ic_close_white_24dp)
+        binding.toolbarTaskForm.setNavigationOnClickListener { activity?.onBackPressed() }
+
+        initEditTexts()
+        initAlarmViews()
     }
 
     private fun observeViewModel() {

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -24,7 +25,8 @@ import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBind
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
+import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -33,7 +35,7 @@ import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class TaskListFragment : BaseFragment() {
+internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
     private val viewModel: TaskListViewModel by viewModel()
     private val taskDetailsNavigator: TaskDetailsNavigator by inject()
@@ -50,6 +52,11 @@ internal class TaskListFragment : BaseFragment() {
             viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,11 +67,13 @@ internal class TaskListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
+        addSearchMenu(menu, ::onSubmitSearch)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -86,7 +95,7 @@ internal class TaskListFragment : BaseFragment() {
         viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
     }
 
-    override fun initViews() {
+    private fun initViews() {
         binding.toolbar.setTitle(R.string.app_name)
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
@@ -144,7 +153,7 @@ internal class TaskListFragment : BaseFragment() {
         }
     }
 
-    override fun onSubmitSearch(search: String) {
+    private fun onSubmitSearch(search: String) {
         viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = search))
     }
 

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
@@ -34,7 +35,8 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewIntent.OnStart
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewIntent.OnSubmitSearchTerm
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
-import br.com.sailboat.todozy.utility.android.fragment.BaseFragment
+import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
+import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
@@ -48,7 +50,7 @@ import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
-internal class TaskHistoryFragment : BaseFragment() {
+internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
     private val viewModel: TaskHistoryViewModel by viewModel()
 
@@ -121,6 +123,11 @@ internal class TaskHistoryFragment : BaseFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -131,6 +138,7 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         viewModel.dispatchViewIntent(OnStart)
     }
@@ -142,6 +150,7 @@ internal class TaskHistoryFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_history_list, menu)
+        addSearchMenu(menu, ::onSubmitSearch)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -158,13 +167,13 @@ internal class TaskHistoryFragment : BaseFragment() {
         return true
     }
 
-    override fun initViews() {
+    private fun initViews() {
         initToolbar()
         initRecyclerView()
         initEmptyState()
     }
 
-    override fun onSubmitSearch(search: String) {
+    private fun onSubmitSearch(search: String) {
         viewModel.dispatchViewIntent(OnSubmitSearchTerm(search))
     }
 
