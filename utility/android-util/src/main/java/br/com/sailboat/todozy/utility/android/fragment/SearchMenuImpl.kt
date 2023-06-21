@@ -7,7 +7,7 @@ import br.com.sailboat.todozy.utility.android.R
 import java.util.Timer
 import java.util.TimerTask
 
-class SearchMenuImpl: SearchMenu {
+class SearchMenuImpl : SearchMenu {
 
     private var searchViewOpen = false
     private var search = ""
