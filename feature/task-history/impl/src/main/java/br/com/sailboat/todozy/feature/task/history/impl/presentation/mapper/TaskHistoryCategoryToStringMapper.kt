@@ -11,7 +11,6 @@ internal class TaskHistoryCategoryToStringMapper(private val stringProvider: Str
             TaskHistoryCategory.TODAY -> R.string.today
             TaskHistoryCategory.YESTERDAY -> R.string.yesterday
             TaskHistoryCategory.PREVIOUS_DAYS -> R.string.previous_days
-            else -> R.string.empty
         }
         return stringProvider.getString(category)
     }
