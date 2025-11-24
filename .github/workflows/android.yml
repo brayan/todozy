@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.wrapper.download.retries=5 -Dorg.gradle.wrapper.download.timeout=60000"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
