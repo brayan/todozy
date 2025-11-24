@@ -7,11 +7,11 @@ import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 
 class ImageTitleDividerViewHolder(parent: ViewGroup) :
     BaseViewHolder<ImageTitleDividerUiModel, VhImageTitleDividerBinding>(
-        VhImageTitleDividerBinding.inflate(getInflater(parent), parent, false)
+        VhImageTitleDividerBinding.inflate(getInflater(parent), parent, false),
     ) {
-
-    override fun bind(item: ImageTitleDividerUiModel) = with(binding) {
-        vhImageTitleDividerImg.setImageResource(item.imageRes)
-        vhImageTitleDividerTvTitle.text = item.title
-    }
+    override fun bind(item: ImageTitleDividerUiModel) =
+        with(binding) {
+            vhImageTitleDividerImg.setImageResource(item.imageRes)
+            vhImageTitleDividerTvTitle.text = item.title
+        }
 }

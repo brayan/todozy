@@ -11,7 +11,6 @@ import br.com.sailboat.todozy.utility.kotlin.model.Filter
 import java.util.Calendar
 
 abstract class BaseSQLite(database: DatabaseOpenHelperService) {
-
     private val readable: SQLiteDatabase by lazy { database.readable }
     private val writable: SQLiteDatabase by lazy { database.writable }
 
@@ -49,13 +48,16 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
     }
 
     @Throws(SQLiteException::class)
-    protected fun getCountFromQuery(query: String, filter: Filter?): Int {
-
-        val cursor = if (filter != null && filter.text?.isNotEmpty().isTrue()) {
-            performQuery(query, filter)
-        } else {
-            performQuery(query)
-        }
+    protected fun getCountFromQuery(
+        query: String,
+        filter: Filter?,
+    ): Int {
+        val cursor =
+            if (filter != null && filter.text?.isNotEmpty().isTrue()) {
+                performQuery(query, filter)
+            } else {
+                performQuery(query)
+            }
 
         val count = cursor.count
         cursor.close()
@@ -67,7 +69,10 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
         return performQuery(query, null)
     }
 
-    protected fun performQuery(query: String, filter: Filter?): Cursor {
+    protected fun performQuery(
+        query: String,
+        filter: Filter?,
+    ): Cursor {
         return if (filter != null && filter.text?.isNotEmpty().isTrue()) {
             readable.rawQuery(query, arrayOf("%" + filter.text?.trim { it <= ' ' } + "%"))
         } else {
@@ -79,23 +84,38 @@ abstract class BaseSQLite(database: DatabaseOpenHelperService) {
         return writable.compileStatement(statement)
     }
 
-    protected fun getInt(cursor: Cursor, columnName: String): Int? {
+    protected fun getInt(
+        cursor: Cursor,
+        columnName: String,
+    ): Int? {
         return cursor.getInt(cursor.getColumnIndexOrThrow(columnName))
     }
 
-    protected fun getLong(cursor: Cursor, columnName: String): Long? {
+    protected fun getLong(
+        cursor: Cursor,
+        columnName: String,
+    ): Long? {
         return cursor.getLong(cursor.getColumnIndexOrThrow(columnName))
     }
 
-    protected fun getDouble(cursor: Cursor, columnName: String): Double? {
+    protected fun getDouble(
+        cursor: Cursor,
+        columnName: String,
+    ): Double? {
         return cursor.getDouble(cursor.getColumnIndexOrThrow(columnName))
     }
 
-    protected fun getString(cursor: Cursor, columnName: String): String? {
+    protected fun getString(
+        cursor: Cursor,
+        columnName: String,
+    ): String? {
         return cursor.getString(cursor.getColumnIndexOrThrow(columnName))
     }
 
-    protected fun getBoolean(cursor: Cursor, columnName: String): Boolean? {
+    protected fun getBoolean(
+        cursor: Cursor,
+        columnName: String,
+    ): Boolean? {
         return cursor.getInt(cursor.getColumnIndexOrThrow(columnName)) == 1
     }
 

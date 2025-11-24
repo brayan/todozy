@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistory
 internal class DeleteHistoryUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : DeleteHistoryUseCase {
-
     override suspend operator fun invoke(taskHistory: TaskHistory): Result<Unit?> {
         return taskHistoryRepository.delete(taskHistory)
     }

@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 class DateSelectorDialog : DialogFragment(), DatePickerDialog.OnDateSetListener {
-
     private var calendar: Calendar? = null
 
     var callback: Callback? = null
@@ -22,7 +21,11 @@ class DateSelectorDialog : DialogFragment(), DatePickerDialog.OnDateSetListener 
     private var datePickerDialog: DatePickerDialog? = null
 
     interface Callback {
-        fun onDateSelected(year: Int, month: Int, day: Int)
+        fun onDateSelected(
+            year: Int,
+            month: Int,
+            day: Int,
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +41,12 @@ class DateSelectorDialog : DialogFragment(), DatePickerDialog.OnDateSetListener 
         }
     }
 
-    override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    override fun onDateSet(
+        view: DatePicker,
+        year: Int,
+        monthOfYear: Int,
+        dayOfMonth: Int,
+    ) {
         if (view.isShown) {
             callback?.onDateSelected(year, monthOfYear, dayOfMonth)
         }

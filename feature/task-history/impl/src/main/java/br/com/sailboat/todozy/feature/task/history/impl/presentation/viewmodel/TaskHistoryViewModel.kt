@@ -39,7 +39,6 @@ internal class TaskHistoryViewModel(
     private val logService: LogService,
     private val calendarService: CalendarService,
 ) : BaseViewModel<TaskHistoryViewState, TaskHistoryViewIntent>() {
-
     private var selectedItemPosition: Int = 0
     private var filter: TaskHistoryFilter = TaskHistoryFilter()
     private var dateFilterType = DateFilterTaskHistorySelectableItem.NO_FILTER
@@ -106,11 +105,12 @@ internal class TaskHistoryViewModel(
         }
         taskStatusFilterType = viewAction.status
 
-        val status = when (taskStatusFilterType) {
-            TaskStatusSelectableItem.NO_FILTER -> null
-            TaskStatusSelectableItem.TASKS_DONE -> TaskStatus.DONE
-            TaskStatusSelectableItem.TASKS_NOT_DONE -> TaskStatus.NOT_DONE
-        }
+        val status =
+            when (taskStatusFilterType) {
+                TaskStatusSelectableItem.NO_FILTER -> null
+                TaskStatusSelectableItem.TASKS_DONE -> TaskStatus.DONE
+                TaskStatusSelectableItem.TASKS_NOT_DONE -> TaskStatus.NOT_DONE
+            }
         filter = filter.copy(status = status)
 
         loadHistoryTasks()
@@ -120,16 +120,17 @@ internal class TaskHistoryViewModel(
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToClearAllHistoryConfirmation
     }
 
-    private fun onClickConfirmClearAllHistory() = viewModelScope.launch {
-        try {
-            clearHistorySelectedPosition()
-            deleteAllHistoryUseCase()
-            loadHistoryTasks()
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
+    private fun onClickConfirmClearAllHistory() =
+        viewModelScope.launch {
+            try {
+                clearHistorySelectedPosition()
+                deleteAllHistoryUseCase()
+                loadHistoryTasks()
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
+            }
         }
-    }
 
     private fun onClickDeleteTaskHistoryItem(viewAction: TaskHistoryViewIntent.OnClickDeleteTaskHistoryItem) {
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToDeleteTaskHistoryConfirmation(viewAction.position)
@@ -183,10 +184,11 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onSelectDateRange(viewAction: TaskHistoryViewIntent.OnSelectDateRange) {
-        filter = filter.copy(
-            initialDate = viewAction.initialDate,
-            finalDate = viewAction.finalDate,
-        )
+        filter =
+            filter.copy(
+                initialDate = viewAction.initialDate,
+                finalDate = viewAction.finalDate,
+            )
         dateFilterType = DateFilterTaskHistorySelectableItem.DATE_RANGE
 
         setDateRangeSubtitle()
@@ -204,71 +206,82 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickFilterNoFilter() {
-        filter = filter.copy(
-            initialDate = null,
-            finalDate = null,
-        )
+        filter =
+            filter.copy(
+                initialDate = null,
+                finalDate = null,
+            )
         clearSubtitle()
         loadHistoryTasks()
     }
 
     private fun onClickFilterToday() {
-        filter = filter.copy(
-            initialDate = Calendar.getInstance().apply { clearTime() },
-            finalDate = Calendar.getInstance().apply { setFinalTimeToCalendar() },
-        )
+        filter =
+            filter.copy(
+                initialDate = Calendar.getInstance().apply { clearTime() },
+                finalDate = Calendar.getInstance().apply { setFinalTimeToCalendar() },
+            )
         setDateFilterSubtitle()
         loadHistoryTasks()
     }
 
     private fun onClickFilterYesterday() {
-        val initialDate = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, -1)
-            clearTime()
-        }
-        val finalDate = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, -1)
-            setFinalTimeToCalendar()
-        }
-        filter = filter.copy(
-            initialDate = initialDate,
-            finalDate = finalDate,
-        )
+        val initialDate =
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_MONTH, -1)
+                clearTime()
+            }
+        val finalDate =
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_MONTH, -1)
+                setFinalTimeToCalendar()
+            }
+        filter =
+            filter.copy(
+                initialDate = initialDate,
+                finalDate = finalDate,
+            )
 
         setDateFilterSubtitle()
         loadHistoryTasks()
     }
 
     private fun onClickFilterLastSevenDays() {
-        val initialDate = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, -7)
-            clearTime()
-        }
-        val finalDate = Calendar.getInstance().apply {
-            setFinalTimeToCalendar()
-        }
-        filter = filter.copy(
-            initialDate = initialDate,
-            finalDate = finalDate,
-        )
+        val initialDate =
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_MONTH, -7)
+                clearTime()
+            }
+        val finalDate =
+            Calendar.getInstance().apply {
+                setFinalTimeToCalendar()
+            }
+        filter =
+            filter.copy(
+                initialDate = initialDate,
+                finalDate = finalDate,
+            )
 
         setDateFilterSubtitle()
         loadHistoryTasks()
     }
 
     private fun onClickFilterLastThirtyDays() {
-        val initialDate = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, -30)
-            clearTime()
-        }
+        val initialDate =
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_MONTH, -30)
+                clearTime()
+            }
 
-        val finalDate = Calendar.getInstance().apply {
-            setFinalTimeToCalendar()
-        }
-        filter = filter.copy(
-            initialDate = initialDate,
-            finalDate = finalDate,
-        )
+        val finalDate =
+            Calendar.getInstance().apply {
+                setFinalTimeToCalendar()
+            }
+        filter =
+            filter.copy(
+                initialDate = initialDate,
+                finalDate = finalDate,
+            )
 
         setDateFilterSubtitle()
         loadHistoryTasks()
@@ -281,39 +294,43 @@ internal class TaskHistoryViewModel(
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToDateRangeFilter(initialDate, finalDate)
     }
 
-    private fun loadHistoryTasks() = viewModelScope.launch {
-        try {
-            viewState.loading.postValue(true)
+    private fun loadHistoryTasks() =
+        viewModelScope.launch {
+            try {
+                viewState.loading.postValue(true)
 
-            val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
+                val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
 
-            val taskHistoryCategories = listOf(
-                TaskHistoryCategory.TODAY,
-                TaskHistoryCategory.YESTERDAY,
-                TaskHistoryCategory.PREVIOUS_DAYS,
-            )
-
-            val taskHistoryList = taskHistoryCategories.map { category ->
-                async {
-                    val searchFilter = filter.copy(
-                        text = filter.text,
-                        category = category,
+                val taskHistoryCategories =
+                    listOf(
+                        TaskHistoryCategory.TODAY,
+                        TaskHistoryCategory.YESTERDAY,
+                        TaskHistoryCategory.PREVIOUS_DAYS,
                     )
-                    val taskHistoryList = getTaskHistoryUseCase(searchFilter).getOrThrow()
 
-                    taskHistoryUiModelFactory.create(taskHistoryList, category)
-                }
-            }.awaitAll().flatten()
+                val taskHistoryList =
+                    taskHistoryCategories.map { category ->
+                        async {
+                            val searchFilter =
+                                filter.copy(
+                                    text = filter.text,
+                                    category = category,
+                                )
+                            val taskHistoryList = getTaskHistoryUseCase(searchFilter).getOrThrow()
 
-            viewState.taskMetrics.postValue(taskMetrics.await())
-            viewState.taskHistoryList.postValue(taskHistoryList)
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
-        } finally {
-            viewState.loading.postValue(false)
+                            taskHistoryUiModelFactory.create(taskHistoryList, category)
+                        }
+                    }.awaitAll().flatten()
+
+                viewState.taskMetrics.postValue(taskMetrics.await())
+                viewState.taskHistoryList.postValue(taskHistoryList)
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
+            } finally {
+                viewState.loading.postValue(false)
+            }
         }
-    }
 
     private fun clearSubtitle() {
         viewState.subtitle.value = ""
@@ -323,13 +340,17 @@ internal class TaskHistoryViewModel(
         viewState.subtitle.value = getDateFilterNameViewUseCase(dateFilterType)
     }
 
-    private fun setDateRangeSubtitle() = with(filter) {
-        val initial = initialDate?.run { calendarService.getShortDate(this) }.orEmpty()
-        val final = finalDate?.run { calendarService.getShortDate(this) }.orEmpty()
-        viewState.subtitle.value = "$initial - $final"
-    }
+    private fun setDateRangeSubtitle() =
+        with(filter) {
+            val initial = initialDate?.run { calendarService.getShortDate(this) }.orEmpty()
+            val final = finalDate?.run { calendarService.getShortDate(this) }.orEmpty()
+            viewState.subtitle.value = "$initial - $final"
+        }
 
-    private fun updateHistoryStatus(position: Int, status: TaskStatus) = viewModelScope.launch {
+    private fun updateHistoryStatus(
+        position: Int,
+        status: TaskStatus,
+    ) = viewModelScope.launch {
         try {
             clearHistorySelectedPosition()
 

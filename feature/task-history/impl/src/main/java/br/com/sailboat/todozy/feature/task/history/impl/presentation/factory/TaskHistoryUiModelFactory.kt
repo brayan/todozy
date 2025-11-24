@@ -11,8 +11,10 @@ internal class TaskHistoryUiModelFactory(
     private val taskHistoryCategoryToStringMapper: TaskHistoryCategoryToStringMapper,
     private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper,
 ) {
-
-    fun create(taskHistoryList: List<TaskHistory>, category: TaskHistoryCategory): List<UiModel> {
+    fun create(
+        taskHistoryList: List<TaskHistory>,
+        category: TaskHistoryCategory,
+    ): List<UiModel> {
         val taskHistoryUiModel = mutableListOf<UiModel>()
         val subhead = taskHistoryCategoryToStringMapper.map(category)
 

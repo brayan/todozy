@@ -10,7 +10,6 @@ import org.koin.dsl.module
 import org.koin.test.check.checkModules
 
 internal class DiProviderTest {
-
     @Before
     fun setUp() {
         startKoin {}

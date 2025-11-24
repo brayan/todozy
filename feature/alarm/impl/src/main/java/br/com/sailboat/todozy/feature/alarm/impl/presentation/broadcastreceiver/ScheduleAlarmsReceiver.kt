@@ -13,10 +13,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 internal class ScheduleAlarmsReceiver : BroadcastReceiver(), KoinComponent {
-
     val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase by inject()
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         "${javaClass.simpleName}.onReceive()".logDebug()
         GlobalScope.launch(Dispatchers.Main) {
             try {

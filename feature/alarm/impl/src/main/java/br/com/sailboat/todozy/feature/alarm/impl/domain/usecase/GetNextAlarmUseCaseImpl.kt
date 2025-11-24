@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import java.util.Calendar
 
 internal class GetNextAlarmUseCaseImpl : GetNextAlarmUseCase {
-
     override operator fun invoke(alarm: Alarm): Alarm {
         if (alarm.repeatType == RepeatType.NOT_REPEAT) {
             return alarm
@@ -20,7 +19,11 @@ internal class GetNextAlarmUseCaseImpl : GetNextAlarmUseCase {
         return alarm
     }
 
-    private fun incrementToNext(calendar: Calendar, repeatType: RepeatType, days: String?) {
+    private fun incrementToNext(
+        calendar: Calendar,
+        repeatType: RepeatType,
+        days: String?,
+    ) {
         when (repeatType) {
             RepeatType.SECOND -> calendar.add(Calendar.SECOND, 1)
             RepeatType.MINUTE -> calendar.add(Calendar.MINUTE, 1)
@@ -34,7 +37,10 @@ internal class GetNextAlarmUseCaseImpl : GetNextAlarmUseCase {
         }
     }
 
-    private fun incrementToNextCustomAlarm(calendar: Calendar, days: String) {
+    private fun incrementToNextCustomAlarm(
+        calendar: Calendar,
+        days: String,
+    ) {
         do {
             calendar.add(Calendar.DATE, 1)
             val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK).toString()

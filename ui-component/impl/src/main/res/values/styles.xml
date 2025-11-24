@@ -10,9 +10,12 @@
         <item name="colorAccent">@color/md_teal_A700</item>
         <item name="actionModeBackground">@color/md_blue_500</item>
         <item name="android:navigationBarColor">@color/grey_80</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+        <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
     </style>
 
-    <style name="AppThemeParent" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeParent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="toolbarStyle">@style/toolbar</item>
@@ -42,7 +45,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="toolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>

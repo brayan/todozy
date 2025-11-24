@@ -36,7 +36,6 @@ import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class TaskListViewModelTest {
-
     @get:Rule
     val instantTask = InstantTaskExecutorRule()
 
@@ -51,15 +50,16 @@ internal class TaskListViewModelTest {
     private val taskListUiModelFactory: TaskListUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
 
-    private val viewModel = TaskListViewModel(
-        getTasksUseCase = getTasksUseCase,
-        getAlarmUseCase = getAlarmUseCase,
-        scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
-        getTaskMetricsUseCase = getTaskMetricsUseCase,
-        completeTaskUseCase = completeTaskUseCase,
-        taskListUiModelFactory = taskListUiModelFactory,
-        logService = logService,
-    )
+    private val viewModel =
+        TaskListViewModel(
+            getTasksUseCase = getTasksUseCase,
+            getAlarmUseCase = getAlarmUseCase,
+            scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
+            getTaskMetricsUseCase = getTaskMetricsUseCase,
+            completeTaskUseCase = completeTaskUseCase,
+            taskListUiModelFactory = taskListUiModelFactory,
+            logService = logService,
+        )
 
     @Test
     fun `should send CloseNotifications when dispatchViewAction is called with OnStart`() {
@@ -70,7 +70,7 @@ internal class TaskListViewModelTest {
 
             assertEquals(
                 TaskListViewAction.CloseNotifications,
-                viewModel.viewState.viewAction.value
+                viewModel.viewState.viewAction.value,
             )
         }
     }
@@ -90,12 +90,13 @@ internal class TaskListViewModelTest {
                 getTasksUseCase(TaskFilter(category = TaskCategory.TOMORROW))
                 getTasksUseCase(TaskFilter(category = TaskCategory.NEXT_DAYS))
             }
-            val expected = mutableListOf<UiModel>(
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-            )
+            val expected =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                )
             assertEquals(expected, viewModel.viewState.itemsView.value)
         }
     }
@@ -161,12 +162,13 @@ internal class TaskListViewModelTest {
     fun `should call getTasksUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
         runBlocking {
             val term = "Term"
-            val tasksView = mutableListOf<UiModel>(
-                TaskUiModel(
-                    taskId = 543L,
-                    taskName = "Task 543",
+            val tasksView =
+                mutableListOf<UiModel>(
+                    TaskUiModel(
+                        taskId = 543L,
+                        taskName = "Task 543",
+                    ),
                 )
-            )
             prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = term))
@@ -177,12 +179,13 @@ internal class TaskListViewModelTest {
                 getTasksUseCase(TaskFilter(text = term, category = TaskCategory.TOMORROW))
                 getTasksUseCase(TaskFilter(text = term, category = TaskCategory.NEXT_DAYS))
             }
-            val expected = mutableListOf<UiModel>(
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-            )
+            val expected =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                )
             assertEquals(expected, viewModel.viewState.itemsView.value)
         }
     }
@@ -190,10 +193,11 @@ internal class TaskListViewModelTest {
     @Test
     fun `should call completeTaskUseCase when dispatchViewAction is called with OnSwipeTask`() {
         runTest {
-            val tasks = mutableListOf<UiModel>(
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 978L, taskName = "Task 978"),
-            )
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 978L, taskName = "Task 978"),
+                )
             val position = 1
             val status = TaskStatus.DONE
             viewModel.viewState.itemsView.value = tasks
@@ -233,10 +237,11 @@ internal class TaskListViewModelTest {
     @Test
     fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() =
         runTest {
-            val tasks = mutableListOf<UiModel>(
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 978L, taskName = "Task 978"),
-            )
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 978L, taskName = "Task 978"),
+                )
             val position = 1
             val status = TaskStatus.DONE
             viewModel.viewState.itemsView.value = tasks
@@ -250,16 +255,18 @@ internal class TaskListViewModelTest {
     @Test
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnSwipeTask on a task with repetitive alarm`() {
         runTest {
-            val tasks = mutableListOf<UiModel>(
-                TaskUiModel(taskId = 543L, taskName = "Task 543"),
-                TaskUiModel(taskId = 978L, taskName = "Task 978"),
-            )
-            val alarmResult = Result.success(
-                Alarm(
-                    dateTime = Calendar.getInstance(),
-                    repeatType = RepeatType.WEEK,
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = 978L, taskName = "Task 978"),
                 )
-            )
+            val alarmResult =
+                Result.success(
+                    Alarm(
+                        dateTime = Calendar.getInstance(),
+                        repeatType = RepeatType.WEEK,
+                    ),
+                )
 
             val position = 1
             val status = TaskStatus.DONE
@@ -273,27 +280,30 @@ internal class TaskListViewModelTest {
     }
 
     private fun prepareScenario(
-        tasksView: List<UiModel> = listOf(
-            TaskUiModel(
-                taskName = "Task Name",
-                taskId = 42L,
-            )
-        ),
-        tasksResult: Result<List<Task>> = Result.success(
+        tasksView: List<UiModel> =
             listOf(
-                Task(
-                    id = 42L,
-                    name = "Task Name",
-                    notes = null,
-                )
-            )
-        ),
-        alarmResult: Result<Alarm> = Result.success(
-            Alarm(
-                dateTime = Calendar.getInstance(),
-                repeatType = RepeatType.WEEK,
-            )
-        )
+                TaskUiModel(
+                    taskName = "Task Name",
+                    taskId = 42L,
+                ),
+            ),
+        tasksResult: Result<List<Task>> =
+            Result.success(
+                listOf(
+                    Task(
+                        id = 42L,
+                        name = "Task Name",
+                        notes = null,
+                    ),
+                ),
+            ),
+        alarmResult: Result<Alarm> =
+            Result.success(
+                Alarm(
+                    dateTime = Calendar.getInstance(),
+                    repeatType = RepeatType.WEEK,
+                ),
+            ),
     ) {
         coEvery { getTasksUseCase(any()) } returns tasksResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult

@@ -4,5 +4,8 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskStatus
 
 interface AddHistoryUseCase {
-    suspend operator fun invoke(task: Task, status: TaskStatus): Result<Unit?>
+    suspend operator fun invoke(
+        task: Task,
+        status: TaskStatus,
+    ): Result<Unit?>
 }

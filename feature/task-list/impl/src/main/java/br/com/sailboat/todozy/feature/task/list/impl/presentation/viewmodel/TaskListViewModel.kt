@@ -44,7 +44,6 @@ internal class TaskListViewModel(
     private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
-
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
@@ -61,19 +60,20 @@ internal class TaskListViewModel(
         }
     }
 
-    private fun onStart() = viewModelScope.launch {
-        try {
-            viewState.loading.postValue(true)
-            viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
-            loadTasks()
-            scheduleAllAlarmsUseCase()
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
-        } finally {
-            viewState.loading.postValue(false)
+    private fun onStart() =
+        viewModelScope.launch {
+            try {
+                viewState.loading.postValue(true)
+                viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
+                loadTasks()
+                scheduleAllAlarmsUseCase()
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
+            } finally {
+                viewState.loading.postValue(false)
+            }
         }
-    }
 
     private fun onClickMenuAbout() {
         viewState.viewAction.value = TaskListViewAction.NavigateToAbout
@@ -95,43 +95,51 @@ internal class TaskListViewModel(
         viewState.viewAction.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
     }
 
-    private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
-        try {
-            viewState.loading.postValue(true)
-            filter = filter.copy(text = term)
-            loadTasks()
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
-        } finally {
-            viewState.loading.postValue(false)
-        }
-    }
-
-    private suspend fun loadTasks() = coroutineScope {
-        val taskCategories = listOf(
-            TaskCategory.BEFORE_TODAY,
-            TaskCategory.TODAY,
-            TaskCategory.TOMORROW,
-            TaskCategory.NEXT_DAYS,
-        )
-
-        val tasks = taskCategories.map { category ->
-            async {
-                val filter = TaskFilter(
-                    text = filter.text,
-                    category = category,
-                )
-                val tasks = getTasksUseCase(filter).getOrThrow()
-
-                taskListUiModelFactory.create(tasks, category)
+    private fun onSubmitSearchTerm(term: String) =
+        viewModelScope.launch {
+            try {
+                viewState.loading.postValue(true)
+                filter = filter.copy(text = term)
+                loadTasks()
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
+            } finally {
+                viewState.loading.postValue(false)
             }
-        }.awaitAll().flatten()
+        }
 
-        viewState.itemsView.postValue(tasks.toMutableList())
-    }
+    private suspend fun loadTasks() =
+        coroutineScope {
+            val taskCategories =
+                listOf(
+                    TaskCategory.BEFORE_TODAY,
+                    TaskCategory.TODAY,
+                    TaskCategory.TOMORROW,
+                    TaskCategory.NEXT_DAYS,
+                )
 
-    private fun onSwipeTask(position: Int, status: TaskStatus) = launchSwipeTask {
+            val tasks =
+                taskCategories.map { category ->
+                    async {
+                        val filter =
+                            TaskFilter(
+                                text = filter.text,
+                                category = category,
+                            )
+                        val tasks = getTasksUseCase(filter).getOrThrow()
+
+                        taskListUiModelFactory.create(tasks, category)
+                    }
+                }.awaitAll().flatten()
+
+            viewState.itemsView.postValue(tasks.toMutableList())
+        }
+
+    private fun onSwipeTask(
+        position: Int,
+        status: TaskStatus,
+    ) = launchSwipeTask {
         try {
             viewState.taskMetrics.value = null
 
@@ -168,9 +176,10 @@ internal class TaskListViewModel(
     }
 
     private fun launchSwipeTask(block: suspend CoroutineScope.() -> Unit) {
-        val job: Job = viewModelScope.launch {
-            supervisorScope { block() }
-        }
+        val job: Job =
+            viewModelScope.launch {
+                supervisorScope { block() }
+            }
         swipeTaskAsyncJobs.add(job)
         job.invokeOnCompletion { swipeTaskAsyncJobs.remove(job) }
     }

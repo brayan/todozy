@@ -11,7 +11,6 @@ private const val POSITIVE_BUTTON_TEXT = "POSITIVE_BUTTON_TEXT"
 private const val NEGATIVE_BUTTON_TEXT = "NEGATIVE_BUTTON_TEXT"
 
 class TwoOptionsDialog : BaseDialogFragment() {
-
     var callback: Callback? = null
 
     var positiveMsg: Int = android.R.string.ok
@@ -29,12 +28,13 @@ class TwoOptionsDialog : BaseDialogFragment() {
             positiveMsg: Int = android.R.string.ok,
             negativeMsg: Int = android.R.string.cancel,
         ) = TwoOptionsDialog().apply {
-            arguments = Bundle().apply {
-                putString(TITLE_KEY, title)
-                putString(MESSAGE_KEY, message)
-                putInt(POSITIVE_BUTTON_TEXT, positiveMsg)
-                putInt(NEGATIVE_BUTTON_TEXT, negativeMsg)
-            }
+            arguments =
+                Bundle().apply {
+                    putString(TITLE_KEY, title)
+                    putString(MESSAGE_KEY, message)
+                    putInt(POSITIVE_BUTTON_TEXT, positiveMsg)
+                    putInt(NEGATIVE_BUTTON_TEXT, negativeMsg)
+                }
         }
     }
 

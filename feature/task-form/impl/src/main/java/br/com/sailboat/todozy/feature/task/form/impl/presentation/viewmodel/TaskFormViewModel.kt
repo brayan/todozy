@@ -27,7 +27,6 @@ internal class TaskFormViewModel(
     private val logService: LogService,
     private val alarmService: AlarmService,
 ) : BaseViewModel<TaskFormViewState, TaskFormViewIntent>() {
-
     override fun dispatchViewIntent(viewIntent: TaskFormViewIntent) {
         when (viewIntent) {
             is TaskFormViewIntent.OnStart -> onStart(viewIntent)
@@ -157,43 +156,47 @@ internal class TaskFormViewModel(
         viewState.viewAction.value = TaskFormViewAction.NavigateToCustomRepeatAlarmSelector(viewState.selectedDays)
     }
 
-    private fun startEditingTask() = viewModelScope.launch {
-        try {
-            val task = getTaskUseCase(viewState.taskId).getOrThrow()
+    private fun startEditingTask() =
+        viewModelScope.launch {
+            try {
+                val task = getTaskUseCase(viewState.taskId).getOrThrow()
 
-            viewState.alarm = task.alarm?.dateTime
-            viewState.repeatAlarmType = task.alarm?.repeatType ?: RepeatType.NOT_REPEAT
-            viewState.selectedDays = task.alarm?.customDays
+                viewState.alarm = task.alarm?.dateTime
+                viewState.repeatAlarmType = task.alarm?.repeatType ?: RepeatType.NOT_REPEAT
+                viewState.selectedDays = task.alarm?.customDays
 
-            viewState.viewAction.value = TaskFormViewAction.SetTaskDetails(
-                taskName = task.name,
-                taskNotes = task.notes,
-            )
+                viewState.viewAction.value =
+                    TaskFormViewAction.SetTaskDetails(
+                        taskName = task.name,
+                        taskNotes = task.notes,
+                    )
 
-            updateAlarm()
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
-            viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = false)
+                updateAlarm()
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
+                viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = false)
+            }
         }
-    }
 
     private fun updateAlarm(animate: Boolean = false) {
-        val repeatType = if (viewState.repeatAlarmType == RepeatType.CUSTOM) {
-            viewState.selectedDays?.let { alarmService.getCustomRepeatTypeDescription(it) }
-        } else {
-            alarmService.getRepeatTypeDescription(viewState.repeatAlarmType)
-        }
+        val repeatType =
+            if (viewState.repeatAlarmType == RepeatType.CUSTOM) {
+                viewState.selectedDays?.let { alarmService.getCustomRepeatTypeDescription(it) }
+            } else {
+                alarmService.getRepeatTypeDescription(viewState.repeatAlarmType)
+            }
 
-        viewState.alarmForm.value = AlarmForm(
-            alarm = viewState.alarm,
-            date = viewState.alarm?.let { alarmService.getFullDate(it) },
-            time = viewState.alarm?.let { alarmService.getFullTime(it) },
-            repeatType = repeatType,
-            alarmCustomDays = viewState.selectedDays,
-            animate = animate,
-            visible = viewState.alarm != null,
-        )
+        viewState.alarmForm.value =
+            AlarmForm(
+                alarm = viewState.alarm,
+                date = viewState.alarm?.let { alarmService.getFullDate(it) },
+                time = viewState.alarm?.let { alarmService.getFullTime(it) },
+                repeatType = repeatType,
+                alarmCustomDays = viewState.selectedDays,
+                animate = animate,
+                visible = viewState.alarm != null,
+            )
     }
 
     private fun hasTaskToEdit(): Boolean {
@@ -215,37 +218,42 @@ internal class TaskFormViewModel(
         viewState.selectedDays = null
     }
 
-    private fun checkFieldsAndSaveTask(taskName: String, taskNotes: String) =
-        viewModelScope.launch {
-            try {
-                val task = createTaskFromViews(taskName, taskNotes)
-                val conditions = checkTaskFieldsUseCase(task)
-                conditions.forEach {
-                    when (it) {
-                        TaskFieldsConditions.TASK_NAME_NOT_FILLED -> {
-                            viewState.viewAction.value = TaskFormViewAction.ShowErrorTaskNameCantBeEmpty
-                        }
-                        TaskFieldsConditions.ALARM_NOT_VALID -> {
-                            viewState.viewAction.value = TaskFormViewAction.ShowErrorAlarmNotValid
-                        }
+    private fun checkFieldsAndSaveTask(
+        taskName: String,
+        taskNotes: String,
+    ) = viewModelScope.launch {
+        try {
+            val task = createTaskFromViews(taskName, taskNotes)
+            val conditions = checkTaskFieldsUseCase(task)
+            conditions.forEach {
+                when (it) {
+                    TaskFieldsConditions.TASK_NAME_NOT_FILLED -> {
+                        viewState.viewAction.value = TaskFormViewAction.ShowErrorTaskNameCantBeEmpty
                     }
-                    return@launch
+                    TaskFieldsConditions.ALARM_NOT_VALID -> {
+                        viewState.viewAction.value = TaskFormViewAction.ShowErrorAlarmNotValid
+                    }
                 }
-
-                saveTaskUseCase(task)
-                viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = true)
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
+                return@launch
             }
-        }
 
-    private fun createTaskFromViews(taskName: String, taskNotes: String): Task {
+            saveTaskUseCase(task)
+            viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = true)
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
+        }
+    }
+
+    private fun createTaskFromViews(
+        taskName: String,
+        taskNotes: String,
+    ): Task {
         return Task(
             id = viewState.taskId,
             name = taskName,
             notes = taskNotes,
-            alarm = createAlarmFromViews()
+            alarm = createAlarmFromViews(),
         )
     }
 
@@ -254,7 +262,7 @@ internal class TaskFormViewModel(
             Alarm(
                 dateTime = this,
                 repeatType = viewState.repeatAlarmType,
-                customDays = viewState.selectedDays
+                customDays = viewState.selectedDays,
             )
         }
     }

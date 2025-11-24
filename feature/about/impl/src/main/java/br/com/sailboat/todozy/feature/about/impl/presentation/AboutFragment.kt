@@ -8,15 +8,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.feature.about.impl.databinding.FragmentAboutBinding
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewAction
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewIntent
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class AboutFragment : Fragment() {
-
     private val viewModel: AboutViewModel by viewModel()
 
     private var aboutAdapter: AboutAdapter? = null
@@ -30,12 +29,15 @@ internal class AboutFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentAboutBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
@@ -62,22 +64,25 @@ internal class AboutFragment : Fragment() {
         initRecyclerView()
     }
 
-    private fun initToolbar() = with(binding) {
-        val appCompatActivity = activity as AppCompatActivity
-        appCompatActivity.setSupportActionBar(toolbar)
-        appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        toolbar.setTitle(R.string.about)
-    }
-
-    private fun initRecyclerView() = with(binding) {
-        recycler.layoutManager = LinearLayoutManager(activity)
-        recycler.adapter = AboutAdapter().apply {
-            aboutAdapter = this
+    private fun initToolbar() =
+        with(binding) {
+            val appCompatActivity = activity as AppCompatActivity
+            appCompatActivity.setSupportActionBar(toolbar)
+            appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+            toolbar.setTitle(UiR.string.about)
         }
-    }
+
+    private fun initRecyclerView() =
+        with(binding) {
+            recycler.layoutManager = LinearLayoutManager(activity)
+            recycler.adapter =
+                AboutAdapter().apply {
+                    aboutAdapter = this
+                }
+        }
 
     private fun showErrorLoadingAbout() {
-        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 }

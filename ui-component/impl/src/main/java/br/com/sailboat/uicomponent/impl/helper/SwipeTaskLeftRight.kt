@@ -14,7 +14,6 @@ import kotlin.math.roundToInt
 
 class SwipeTaskLeftRight(private val context: Context, private val callback: Callback) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-
     private var paint = Paint()
 
     interface Callback {
@@ -34,7 +33,6 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
         val icon: Bitmap
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
             val itemView = viewHolder.itemView
 
             if (isSwipedToRight(dX)) {
@@ -50,7 +48,8 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     itemView.left.toFloat(),
                     itemView.top.toFloat(),
                     rightValue,
-                    itemView.bottom.toFloat(), paint
+                    itemView.bottom.toFloat(),
+                    paint,
                 )
 
                 icon = getBitmapFromVectorDrawable(R.drawable.ic_vec_thumb_up_white_24dp)
@@ -59,7 +58,7 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     icon,
                     itemView.left.toFloat() + convertDpToPx(16),
                     itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
-                    paint
+                    paint,
                 )
             } else {
                 paint.color = ContextCompat.getColor(context, R.color.md_red_200)
@@ -74,7 +73,8 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     leftValue,
                     itemView.top.toFloat(),
                     itemView.right.toFloat(),
-                    itemView.bottom.toFloat(), paint
+                    itemView.bottom.toFloat(),
+                    paint,
                 )
 
                 icon = getBitmapFromVectorDrawable(R.drawable.ic_vect_thumb_down_white_24dp)
@@ -83,7 +83,7 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                     icon,
                     itemView.right.toFloat() - convertDpToPx(16) - icon.width,
                     itemView.top.toFloat() + (itemView.bottom.toFloat() - itemView.top.toFloat() - icon.height) / 2,
-                    paint
+                    paint,
                 )
             }
 
@@ -94,13 +94,15 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
                 dX,
                 dY,
                 actionState,
-                isCurrentlyActive
+                isCurrentlyActive,
             )
         }
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+    override fun onSwiped(
+        viewHolder: RecyclerView.ViewHolder,
+        direction: Int,
+    ) {
         if (shouldAllowSwipe(viewHolder)) {
             val view = viewHolder as TaskViewHolder
 
@@ -114,17 +116,19 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
 
     override fun getSwipeDirs(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ): Int {
         return if (!shouldAllowSwipe(viewHolder)) {
             0
-        } else super.getSwipeDirs(recyclerView, viewHolder)
+        } else {
+            super.getSwipeDirs(recyclerView, viewHolder)
+        }
     }
 
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean {
         return false
     }
@@ -151,10 +155,12 @@ class SwipeTaskLeftRight(private val context: Context, private val callback: Cal
 
     private fun getBitmapFromVectorDrawable(drawableId: Int): Bitmap {
         val drawable = ContextCompat.getDrawable(context, drawableId)
-        val bitmap = Bitmap.createBitmap(
-            drawable!!.intrinsicWidth,
-            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
+        val bitmap =
+            Bitmap.createBitmap(
+                drawable!!.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888,
+            )
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)

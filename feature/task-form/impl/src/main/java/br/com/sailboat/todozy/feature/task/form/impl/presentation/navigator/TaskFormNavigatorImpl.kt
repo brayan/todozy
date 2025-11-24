@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.startTaskFormActivity
 
 internal class TaskFormNavigatorImpl : TaskFormNavigator {
-
     override fun navigateToAddTask(
         context: Context,
         launcher: ActivityResultLauncher<Intent>,

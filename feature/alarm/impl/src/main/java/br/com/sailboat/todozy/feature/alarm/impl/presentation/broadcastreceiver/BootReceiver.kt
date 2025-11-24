@@ -14,11 +14,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 internal class BootReceiver : BroadcastReceiver(), KoinComponent {
-
     val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase by inject()
     val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase by inject()
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             onBootCompleted()
         }

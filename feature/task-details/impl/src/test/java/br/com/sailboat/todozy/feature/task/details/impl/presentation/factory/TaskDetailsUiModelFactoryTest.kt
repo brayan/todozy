@@ -17,63 +17,69 @@ import java.util.Calendar
 import kotlin.test.assertEquals
 
 internal class TaskDetailsUiModelFactoryTest {
-
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val alarmToAlarmUiModelMapper: AlarmToAlarmUiModelMapper = mockk(relaxed = true)
 
-    private val taskDetailsUiModelFactory = TaskDetailsUiModelFactory(
-        stringProvider = stringProvider,
-        alarmToAlarmUiModelMapper = alarmToAlarmUiModelMapper,
-    )
+    private val taskDetailsUiModelFactory =
+        TaskDetailsUiModelFactory(
+            stringProvider = stringProvider,
+            alarmToAlarmUiModelMapper = alarmToAlarmUiModelMapper,
+        )
 
     @Test
-    fun `should create task details list when create is called from taskDetailsUiModelFactory`() = runBlocking {
-        val task = Task(
-            id = 45L,
-            name = "Task Name",
-            notes = "Task Notes",
-            alarm = Alarm(
-                dateTime = Calendar.getInstance(),
-                repeatType = RepeatType.WEEK,
-            ),
-        )
-        val alarmUiModel = AlarmUiModel(
-            date = "07/03/2022",
-            time = "11:55",
-            description = "Today, March 7, 2022",
-            isCustom = false,
-            shouldRepeat = true,
-            customDays = null,
-        )
-        prepareScenario(
-            stringProviderResult = "Title",
-            alarmUiModel = alarmUiModel,
-        )
+    fun `should create task details list when create is called from taskDetailsUiModelFactory`() =
+        runBlocking {
+            val task =
+                Task(
+                    id = 45L,
+                    name = "Task Name",
+                    notes = "Task Notes",
+                    alarm =
+                        Alarm(
+                            dateTime = Calendar.getInstance(),
+                            repeatType = RepeatType.WEEK,
+                        ),
+                )
+            val alarmUiModel =
+                AlarmUiModel(
+                    date = "07/03/2022",
+                    time = "11:55",
+                    description = "Today, March 7, 2022",
+                    isCustom = false,
+                    shouldRepeat = true,
+                    customDays = null,
+                )
+            prepareScenario(
+                stringProviderResult = "Title",
+                alarmUiModel = alarmUiModel,
+            )
 
-        val result = taskDetailsUiModelFactory.create(task)
+            val result = taskDetailsUiModelFactory.create(task)
 
-        val expected = listOf(
-            TitleUiModel("Task Name"),
-            LabelUiModel("Title"),
-            alarmUiModel,
-            LabelValueUiModel(
-                label = "Title",
-                value = "Task Notes"
-            ),
-        )
-        assertEquals(expected, result)
-    }
+            val expected =
+                listOf(
+                    TitleUiModel("Task Name"),
+                    LabelUiModel("Title"),
+                    alarmUiModel,
+                    LabelValueUiModel(
+                        label = "Title",
+                        value = "Task Notes",
+                    ),
+                )
+            assertEquals(expected, result)
+        }
 
     private fun prepareScenario(
         stringProviderResult: String = "Title",
-        alarmUiModel: AlarmUiModel = AlarmUiModel(
-            date = "07/03/2022",
-            time = "11:55",
-            description = "Today, March 7, 2022",
-            isCustom = false,
-            shouldRepeat = true,
-            customDays = null,
-        ),
+        alarmUiModel: AlarmUiModel =
+            AlarmUiModel(
+                date = "07/03/2022",
+                time = "11:55",
+                description = "Today, March 7, 2022",
+                isCustom = false,
+                shouldRepeat = true,
+                customDays = null,
+            ),
     ) {
         coEvery { stringProvider.getString(any()) } returns stringProviderResult
         coEvery { alarmToAlarmUiModelMapper.map(any()) } returns alarmUiModel

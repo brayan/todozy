@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistory
 internal class UpdateHistoryUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : UpdateHistoryUseCase {
-
     override suspend operator fun invoke(taskHistory: TaskHistory): Result<Unit?> {
         return taskHistoryRepository.update(taskHistory)
     }

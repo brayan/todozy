@@ -8,16 +8,16 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class CancelAlarmScheduleUseCaseImplTest {
-
     private val alarmManagerService: AlarmManagerService = mockk(relaxed = true)
 
     private val cancelAlarmScheduleUseCase = CancelAlarmScheduleUseCaseImpl(alarmManagerService)
 
     @Test
-    fun `should cancel alarm from alarmManagerService`() = runBlocking {
-        cancelAlarmScheduleUseCase(45)
+    fun `should cancel alarm from alarmManagerService`() =
+        runBlocking {
+            cancelAlarmScheduleUseCase(45)
 
-        coVerify { alarmManagerService.cancelAlarm(45) }
-        confirmVerified(alarmManagerService)
-    }
+            coVerify { alarmManagerService.cancelAlarm(45) }
+            confirmVerified(alarmManagerService)
+        }
 }

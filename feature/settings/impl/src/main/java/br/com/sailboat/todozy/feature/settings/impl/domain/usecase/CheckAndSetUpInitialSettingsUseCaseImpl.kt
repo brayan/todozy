@@ -8,15 +8,15 @@ internal class CheckAndSetUpInitialSettingsUseCaseImpl(
     private val repository: SettingsRepository,
     private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase,
 ) : CheckAndSetUpInitialSettingsUseCase {
+    override suspend operator fun invoke() =
+        with(repository) {
+            if (isFirstTimeLaunchingApp().not()) {
+                return
+            }
 
-    override suspend operator fun invoke() = with(repository) {
-        if (isFirstTimeLaunchingApp().not()) {
-            return
+            setFirstTimeLaunchingApp(false)
+            setAlarmVibrate(true)
+            setDefaultAlarmTone()
+            scheduleAlarmUpdatesUseCase()
         }
-
-        setFirstTimeLaunchingApp(false)
-        setAlarmVibrate(true)
-        setDefaultAlarmTone()
-        scheduleAlarmUpdatesUseCase()
-    }
 }

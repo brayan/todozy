@@ -13,7 +13,6 @@ internal fun Context.startTaskHistoryActivity() {
 }
 
 internal class TaskHistoryActivity : BaseActivity() {
-
     override fun newFragmentInstance(): TaskHistoryFragment {
         val bundle = intent.getBundle()
 

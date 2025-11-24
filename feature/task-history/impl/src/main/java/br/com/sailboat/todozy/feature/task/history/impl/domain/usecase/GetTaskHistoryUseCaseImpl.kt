@@ -8,7 +8,6 @@ import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistory
 internal class GetTaskHistoryUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskHistoryUseCase {
-
     override suspend operator fun invoke(filter: TaskHistoryFilter): Result<List<TaskHistory>> {
         with(taskHistoryRepository) {
             return when (filter.category) {

@@ -13,9 +13,8 @@ import br.com.sailboat.uicomponent.impl.di.uiComponentModule
 import org.koin.core.module.Module
 
 internal object DiProvider {
-
-    val modules: List<Module>
-        get() = listOf(
+    val modules: List<Module> =
+        listOf(
             platformModule,
             aboutModule,
             settingsModule,

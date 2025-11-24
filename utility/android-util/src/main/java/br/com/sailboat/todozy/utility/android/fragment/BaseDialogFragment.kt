@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
 abstract class BaseDialogFragment : DialogFragment() {
-
     var message: String? = null
     var title: String? = null
 

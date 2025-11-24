@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 internal class TaskHistoryFilterViewModel(
     override val viewState: TaskHistoryFilterViewState = TaskHistoryFilterViewState(),
 ) : BaseViewModel<TaskHistoryFilterViewState, TaskHistoryFilterViewAction>() {
-
     override fun dispatchViewIntent(viewIntent: TaskHistoryFilterViewAction) {
         when (viewIntent) {
             is TaskHistoryFilterViewAction.OnStart -> onStart(viewIntent)

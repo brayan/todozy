@@ -12,35 +12,37 @@ import kotlinx.coroutines.coroutineScope
 internal class GetTaskMetricsUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskMetricsUseCase {
+    override suspend operator fun invoke(filter: TaskHistoryFilter) =
+        runCatching {
+            coroutineScope {
+                val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter).getOrThrow() }
+                val notDone =
+                    async {
+                        taskHistoryRepository.getTotalOfNotDoneTasks(filter).getOrThrow()
+                    }
+                val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }
 
-    override suspend operator fun invoke(filter: TaskHistoryFilter) = runCatching {
-        coroutineScope {
-            val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter).getOrThrow() }
-            val notDone = async {
-                taskHistoryRepository.getTotalOfNotDoneTasks(filter).getOrThrow()
+                TaskMetrics(done.await(), notDone.await(), consecutiveDone.await().getOrThrow())
             }
-            val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }
-
-            TaskMetrics(done.await(), notDone.await(), consecutiveDone.await().getOrThrow())
-        }
-    }
-
-    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
-        if (filter.taskId == Entity.NO_ID) {
-            return@runCatching 0
         }
 
-        val history = taskHistoryRepository.getTaskHistory(filter.taskId).getOrThrow()
-
-        var cont = 0
-
-        history.forEach {
-            if (it.status == TaskStatus.NOT_DONE) {
-                return@runCatching cont
+    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> =
+        runCatching {
+            if (filter.taskId == Entity.NO_ID) {
+                return@runCatching 0
             }
-            cont++
-        }
 
-        return@runCatching cont
-    }
+            val history = taskHistoryRepository.getTaskHistory(filter.taskId).getOrThrow()
+
+            var cont = 0
+
+            history.forEach {
+                if (it.status == TaskStatus.NOT_DONE) {
+                    return@runCatching cont
+                }
+                cont++
+            }
+
+            return@runCatching cont
+        }
 }

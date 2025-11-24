@@ -10,22 +10,23 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class DeleteHistoryUseCaseImplTest {
-
     private val repository: TaskHistoryRepository = mockk(relaxed = true)
 
     private val deleteHistoryUseCase = DeleteHistoryUseCaseImpl(repository)
 
     @Test
-    fun `should delete history from repository`() = runBlocking {
-        val history = TaskHistory(
-            taskId = 12,
-            status = TaskStatus.DONE,
-            insertingDate = "2020-08-29-16-18-00",
-            taskName = "Task 1"
-        )
-        deleteHistoryUseCase(history)
+    fun `should delete history from repository`() =
+        runBlocking {
+            val history =
+                TaskHistory(
+                    taskId = 12,
+                    status = TaskStatus.DONE,
+                    insertingDate = "2020-08-29-16-18-00",
+                    taskName = "Task 1",
+                )
+            deleteHistoryUseCase(history)
 
-        coVerify { repository.delete(history) }
-        confirmVerified(repository)
-    }
+            coVerify { repository.delete(history) }
+            confirmVerified(repository)
+        }
 }

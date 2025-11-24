@@ -8,16 +8,16 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class GetAlarmVibrateSettingUseCaseImplTest {
-
     private val repository: SettingsRepository = mockk(relaxed = true)
 
     private val getAlarmVibrateSettingUseCase = GetAlarmVibrateSettingUseCaseImpl(repository)
 
     @Test
-    fun `should get alarm vibrate setting from repository`() = runBlocking {
-        getAlarmVibrateSettingUseCase()
+    fun `should get alarm vibrate setting from repository`() =
+        runBlocking {
+            getAlarmVibrateSettingUseCase()
 
-        coVerify { repository.getAlarmVibrate() }
-        confirmVerified(repository)
-    }
+            coVerify { repository.getAlarmVibrate() }
+            confirmVerified(repository)
+        }
 }

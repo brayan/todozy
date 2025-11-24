@@ -8,12 +8,14 @@ import java.util.Timer
 import java.util.TimerTask
 
 class SearchMenuImpl : SearchMenu {
-
     private var searchViewOpen = false
     private var search = ""
     private var onSubmitSearch: ((String) -> Unit)? = null
 
-    override fun addSearchMenu(menu: Menu, onSubmitSearch: (String) -> Unit) {
+    override fun addSearchMenu(
+        menu: Menu,
+        onSubmitSearch: (String) -> Unit,
+    ) {
         menu.findItem(R.id.menu_search)?.run {
             this@SearchMenuImpl.onSubmitSearch = onSubmitSearch
             val searchView = this.actionView as SearchView
@@ -30,32 +32,37 @@ class SearchMenuImpl : SearchMenu {
             false
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            private var timer = Timer()
-            private val DELAY: Long = 300
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                private var timer = Timer()
+                private val DELAY: Long = 300
 
-            override fun onQueryTextChange(text: String): Boolean {
-                timer.cancel()
-                timer = Timer()
-                timer.schedule(
-                    object : TimerTask() {
-                        override fun run() {
-                            search = text
-                            onSubmitSearch?.invoke(search)
-                        }
-                    },
-                    DELAY
-                )
-                return true
-            }
+                override fun onQueryTextChange(text: String): Boolean {
+                    timer.cancel()
+                    timer = Timer()
+                    timer.schedule(
+                        object : TimerTask() {
+                            override fun run() {
+                                search = text
+                                onSubmitSearch?.invoke(search)
+                            }
+                        },
+                        DELAY,
+                    )
+                    return true
+                }
 
-            override fun onQueryTextSubmit(text: String): Boolean {
-                return true
-            }
-        })
+                override fun onQueryTextSubmit(text: String): Boolean {
+                    return true
+                }
+            },
+        )
     }
 
-    private fun updateSearchView(searchView: SearchView, menuSearchView: MenuItem) {
+    private fun updateSearchView(
+        searchView: SearchView,
+        menuSearchView: MenuItem,
+    ) {
         if (searchViewOpen) {
             menuSearchView.expandActionView()
             searchView.setQuery(search, true)

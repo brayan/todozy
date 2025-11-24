@@ -6,8 +6,10 @@ import br.com.sailboat.todozy.feature.alarm.impl.domain.service.AlarmManagerServ
 internal class ScheduleAlarmUseCaseImpl(
     private val alarmManagerService: AlarmManagerService,
 ) : ScheduleAlarmUseCase {
-
-    override suspend operator fun invoke(alarm: Alarm, taskId: Long) {
+    override suspend operator fun invoke(
+        alarm: Alarm,
+        taskId: Long,
+    ) {
         alarmManagerService.scheduleAlarm(alarm.dateTime, taskId)
     }
 }

@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.startTaskDetailsActivity
 
 internal class TaskDetailsNavigatorImpl : TaskDetailsNavigator {
-
     override fun navigateToTaskDetails(
         context: Context,
         taskId: Long,

@@ -4,7 +4,6 @@ import br.com.sailboat.uicomponent.impl.R
 import java.util.Arrays
 
 enum class TaskStatusSelectableItem : SelectableItem {
-
     NO_FILTER {
         override fun getName(): Int {
             return R.string.no_filter
@@ -19,7 +18,7 @@ enum class TaskStatusSelectableItem : SelectableItem {
         override fun getName(): Int {
             return R.string.tasks_not_done
         }
-    };
+    }, ;
 
     companion object {
         fun getItems(): List<SelectableItem> {

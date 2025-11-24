@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.utility.kotlin.LogService
 import timber.log.Timber
 
 internal class LogServiceImpl : LogService {
-
     override fun error(t: Throwable) {
         Timber.e(t)
     }

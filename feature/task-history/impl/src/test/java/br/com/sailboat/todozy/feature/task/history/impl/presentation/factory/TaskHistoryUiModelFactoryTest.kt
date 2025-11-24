@@ -14,33 +14,35 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class TaskHistoryUiModelFactoryTest {
-
     private val taskHistoryCategoryToStringMapper: TaskHistoryCategoryToStringMapper = mockk(relaxed = true)
     private val taskHistoryToTaskHistoryUiModelMapper: TaskHistoryToTaskHistoryUiModelMapper = mockk(relaxed = true)
 
-    private val taskHistoryUiModelFactory = TaskHistoryUiModelFactory(
-        taskHistoryCategoryToStringMapper = taskHistoryCategoryToStringMapper,
-        taskHistoryToTaskHistoryUiModelMapper = taskHistoryToTaskHistoryUiModelMapper,
-    )
+    private val taskHistoryUiModelFactory =
+        TaskHistoryUiModelFactory(
+            taskHistoryCategoryToStringMapper = taskHistoryCategoryToStringMapper,
+            taskHistoryToTaskHistoryUiModelMapper = taskHistoryToTaskHistoryUiModelMapper,
+        )
 
     @Test
     fun `should create a subhead and a task history when create is called from taskHistoryUiModelFactory`() =
         runBlocking {
-            val taskHistoryList = listOf(
-                TaskHistory(
-                    id = 42L,
-                    taskId = 48L,
-                    taskName = "Task Name",
-                    status = TaskStatus.DONE,
-                    insertingDate = "2022-06-22-19-47-38"
+            val taskHistoryList =
+                listOf(
+                    TaskHistory(
+                        id = 42L,
+                        taskId = 48L,
+                        taskName = "Task Name",
+                        status = TaskStatus.DONE,
+                        insertingDate = "2022-06-22-19-47-38",
+                    ),
                 )
-            )
-            val taskUiModel = TaskHistoryUiModel(
-                id = 42L,
-                taskName = "Task Name",
-                done = true,
-                insertingDate = "2022-06-22-19-47-38",
-            )
+            val taskUiModel =
+                TaskHistoryUiModel(
+                    id = 42L,
+                    taskName = "Task Name",
+                    done = true,
+                    insertingDate = "2022-06-22-19-47-38",
+                )
             prepareScenario(
                 taskHistoryListUiModel = listOf(taskUiModel),
                 subhead = "Today",
@@ -48,21 +50,23 @@ internal class TaskHistoryUiModelFactoryTest {
 
             val result = taskHistoryUiModelFactory.create(taskHistoryList, TaskHistoryCategory.TODAY)
 
-            val expected = listOf(
-                SubheadUiModel("Today"),
-                taskUiModel,
-            )
+            val expected =
+                listOf(
+                    SubheadUiModel("Today"),
+                    taskUiModel,
+                )
             assertEquals(expected, result)
         }
 
     @Test
-    fun `should not create a subhead and a task when task list is empty`() = runBlocking {
-        prepareScenario()
+    fun `should not create a subhead and a task when task list is empty`() =
+        runBlocking {
+            prepareScenario()
 
-        val result = taskHistoryUiModelFactory.create(emptyList(), TaskHistoryCategory.TODAY)
+            val result = taskHistoryUiModelFactory.create(emptyList(), TaskHistoryCategory.TODAY)
 
-        assertEquals(emptyList(), result)
-    }
+            assertEquals(emptyList(), result)
+        }
 
     private fun prepareScenario(
         taskHistoryListUiModel: List<TaskHistoryUiModel> = emptyList(),

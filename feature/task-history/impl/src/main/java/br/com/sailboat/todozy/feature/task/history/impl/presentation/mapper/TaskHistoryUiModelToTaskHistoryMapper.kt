@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 
 internal class TaskHistoryUiModelToTaskHistoryMapper {
-
     fun map(taskHistory: TaskHistoryUiModel): TaskHistory {
         val status = if (taskHistory.done) TaskStatus.DONE else TaskStatus.NOT_DONE
         return TaskHistory(
@@ -14,7 +13,7 @@ internal class TaskHistoryUiModelToTaskHistoryMapper {
             taskId = Entity.NO_ID,
             taskName = taskHistory.taskName,
             status = status,
-            insertingDate = taskHistory.insertingDate
+            insertingDate = taskHistory.insertingDate,
         )
     }
 }

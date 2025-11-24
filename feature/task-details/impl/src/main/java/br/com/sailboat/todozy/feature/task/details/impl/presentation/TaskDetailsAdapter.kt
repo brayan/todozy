@@ -18,8 +18,10 @@ import br.com.sailboat.uicomponent.model.UiModelType
 
 internal class TaskDetailsAdapter :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ) = when (viewType) {
         UiModelType.TITLE.ordinal -> TitleViewHolder(parent)
         UiModelType.ALARM.ordinal -> AlarmViewHolder(parent)
         UiModelType.LABEL.ordinal -> LabelViewHolder(parent)
@@ -27,7 +29,10 @@ internal class TaskDetailsAdapter :
         else -> EmptyViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         when (val item = getItem(position)) {
             is TitleUiModel -> (holder as TitleViewHolder).bind(item)
             is AlarmUiModel -> (holder as AlarmViewHolder).bind(item)

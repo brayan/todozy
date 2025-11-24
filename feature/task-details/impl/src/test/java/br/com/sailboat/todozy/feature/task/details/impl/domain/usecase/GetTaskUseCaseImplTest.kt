@@ -11,38 +11,40 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class GetTaskUseCaseImplTest {
-
     private val repository: TaskRepository = mockk(relaxed = true)
 
     private val getTaskUseCase = GetTaskUseCaseImpl(repository)
 
     @Test
-    fun `should get task from repository`() = runBlocking {
-        val taskId = 42L
-        val taskResult: Result<Task> = Result.success(
-            Task(
-                id = taskId,
-                name = "Task Name",
-                notes = "Some notes",
-            )
-        )
-        prepareScenario()
+    fun `should get task from repository`() =
+        runBlocking {
+            val taskId = 42L
+            val taskResult: Result<Task> =
+                Result.success(
+                    Task(
+                        id = taskId,
+                        name = "Task Name",
+                        notes = "Some notes",
+                    ),
+                )
+            prepareScenario()
 
-        val result = getTaskUseCase(taskId)
+            val result = getTaskUseCase(taskId)
 
-        coVerify { repository.getTask(taskId) }
-        confirmVerified(repository)
-        assertEquals(taskResult, result)
-    }
+            coVerify { repository.getTask(taskId) }
+            confirmVerified(repository)
+            assertEquals(taskResult, result)
+        }
 
     private fun prepareScenario(
-        taskResult: Result<Task> = Result.success(
-            Task(
-                id = 42L,
-                name = "Task Name",
-                notes = "Some notes",
-            )
-        )
+        taskResult: Result<Task> =
+            Result.success(
+                Task(
+                    id = 42L,
+                    name = "Task Name",
+                    notes = "Some notes",
+                ),
+            ),
     ) {
         coEvery { repository.getTask(any()) } returns taskResult
     }

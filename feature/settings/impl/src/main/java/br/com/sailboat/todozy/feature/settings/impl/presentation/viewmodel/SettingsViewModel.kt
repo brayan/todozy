@@ -15,7 +15,6 @@ internal class SettingsViewModel(
     private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase,
     private val setAlarmVibrateSettingUseCase: SetAlarmVibrateSettingUseCase,
 ) : BaseViewModel<SettingsViewState, SettingsViewIntent>() {
-
     override fun dispatchViewIntent(viewIntent: SettingsViewIntent) {
         when (viewIntent) {
             is SettingsViewIntent.OnStart -> onStart()
@@ -26,10 +25,11 @@ internal class SettingsViewModel(
         }
     }
 
-    private fun onStart() = viewModelScope.launch {
-        viewState.alarmSound.value = getAlarmSoundSettingUseCase()
-        viewState.vibrate.value = getAlarmVibrateSettingUseCase()
-    }
+    private fun onStart() =
+        viewModelScope.launch {
+            viewState.alarmSound.value = getAlarmSoundSettingUseCase()
+            viewState.vibrate.value = getAlarmVibrateSettingUseCase()
+        }
 
     private fun onClickMenuAlarmTone() {
         val alarmSound = viewState.alarmSound.value

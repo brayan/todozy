@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRe
 internal class SetAlarmVibrateSettingUseCaseImpl(
     private val settingsRepository: SettingsRepository,
 ) : SetAlarmVibrateSettingUseCase {
-
     override suspend operator fun invoke(vibrate: Boolean) {
         settingsRepository.setAlarmVibrate(vibrate)
     }

@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.utility.android.R
 
 abstract class BaseActivity : AppCompatActivity() {
-
-    private val TAG = "TAG_FRAGMENT"
+    companion object {
+        private const val TAG = "TAG_FRAGMENT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

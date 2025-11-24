@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.platform.impl.database.table
 
 object TaskHistoryTable {
-    const val table =
+    const val TABLE =
         " CREATE TABLE TaskHistory ( " +
             " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " fkTaskId INTEGER, " +

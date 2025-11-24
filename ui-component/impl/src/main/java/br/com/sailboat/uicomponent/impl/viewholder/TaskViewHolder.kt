@@ -17,18 +17,18 @@ import java.util.Calendar
 
 class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<TaskUiModel, VhTaskBinding>(
-        VhTaskBinding.inflate(getInflater(parent), parent, false)
+        VhTaskBinding.inflate(getInflater(parent), parent, false),
     ) {
-
     interface Callback {
         fun onClickTask(taskId: Long)
     }
 
-    override fun bind(item: TaskUiModel) = with(binding) {
-        task.tvTaskName.text = item.taskName
-        bindTaskAlarm(item)
-        root.setOnClickListener { callback.onClickTask(item.taskId) }
-    }
+    override fun bind(item: TaskUiModel) =
+        with(binding) {
+            task.tvTaskName.text = item.taskName
+            bindTaskAlarm(item)
+            root.setOnClickListener { callback.onClickTask(item.taskId) }
+        }
 
     private fun bindTaskAlarm(item: TaskUiModel) {
         try {
@@ -42,37 +42,39 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         }
     }
 
-    private fun updateAlarmText(alarm: Calendar) = with(binding) {
-
-        if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
-
-            task.tvTaskDate.text = if (alarm.isCurrentYear()) {
-                alarm.getMonthAndDayShort(context)
+    private fun updateAlarmText(alarm: Calendar) =
+        with(binding) {
+            if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
+                task.tvTaskDate.text =
+                    if (alarm.isCurrentYear()) {
+                        alarm.getMonthAndDayShort(context)
+                    } else {
+                        alarm.toShortDateView(context)
+                    }
             } else {
-                alarm.toShortDateView(context)
+                task.tvTaskTime.text = alarm.formatTimeWithAndroidFormat(context)
             }
-        } else {
-            task.tvTaskTime.text = alarm.formatTimeWithAndroidFormat(context)
         }
-    }
 
-    private fun updateAlarmColor(alarmColor: Int?) = with(binding) {
-        alarmColor?.let {
-            task.tvTaskDate.setTextColor(alarmColor)
-            task.tvTaskTime.setTextColor(alarmColor)
+    private fun updateAlarmColor(alarmColor: Int?) =
+        with(binding) {
+            alarmColor?.let {
+                task.tvTaskDate.setTextColor(alarmColor)
+                task.tvTaskTime.setTextColor(alarmColor)
+            }
         }
-    }
 
-    private fun updateVisibilityOfAlarmViews(alarm: Calendar?) = with(binding) {
-        if (alarm == null) {
-            task.tvTaskDate.gone()
-            task.tvTaskTime.gone()
-        } else if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
-            task.tvTaskTime.gone()
-            task.tvTaskDate.visible()
-        } else {
-            task.tvTaskTime.visible()
-            task.tvTaskDate.gone()
+    private fun updateVisibilityOfAlarmViews(alarm: Calendar?) =
+        with(binding) {
+            if (alarm == null) {
+                task.tvTaskDate.gone()
+                task.tvTaskTime.gone()
+            } else if (alarm.isBeforeToday() || alarm.isAfterTomorrow()) {
+                task.tvTaskTime.gone()
+                task.tvTaskDate.visible()
+            } else {
+                task.tvTaskTime.visible()
+                task.tvTaskDate.gone()
+            }
         }
-    }
 }

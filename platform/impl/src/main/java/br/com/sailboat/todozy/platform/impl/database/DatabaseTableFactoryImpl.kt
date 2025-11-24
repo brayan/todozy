@@ -6,12 +6,11 @@ import br.com.sailboat.todozy.platform.impl.database.table.TaskTable
 import br.com.sailboat.todozy.utility.kotlin.DatabaseTableFactory
 
 class DatabaseTableFactoryImpl : DatabaseTableFactory {
-
     override fun getTables(): List<String> {
         return listOf(
-            TaskTable.table,
-            TaskHistoryTable.table,
-            AlarmTable.table,
+            TaskTable.TABLE,
+            TaskHistoryTable.TABLE,
+            AlarmTable.TABLE,
         )
     }
 }

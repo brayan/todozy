@@ -1,3 +1,4 @@
+
 package br.com.sailboat.todozy.feature.alarm.impl.presentation.broadcastreceiver
 
 import android.app.Notification
@@ -13,7 +14,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
-import br.com.sailboat.todozy.feature.alarm.impl.R
 import br.com.sailboat.todozy.feature.navigation.android.SplashNavigator
 import br.com.sailboat.todozy.feature.settings.android.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
@@ -29,16 +29,19 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
-
     private val getTaskUseCase: GetTaskUseCase by inject()
     private val getTasksUseCase: GetTasksUseCase by inject()
     private val getAlarmSoundSettingUseCase: GetAlarmSoundSettingUseCase by inject()
     private val getAlarmVibrateSettingUseCase: GetAlarmVibrateSettingUseCase by inject()
     private val splashNavigator: SplashNavigator by inject()
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         "${javaClass.simpleName}.onReceive()".logDebug()
         GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -50,34 +53,39 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private fun throwNotification(context: Context, builder: NotificationCompat.Builder) {
+    private fun throwNotification(
+        context: Context,
+        builder: NotificationCompat.Builder,
+    ) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.makeNotificationChannel(context)
         }
-        notificationManager.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NotificationHelper.TASK_NOTIFICATION_ID, builder.build())
     }
 
     private suspend fun buildNotification(
         context: Context,
-        intent: Intent
+        intent: Intent,
     ): NotificationCompat.Builder {
         val resultIntent = splashNavigator.getSplashIntent(context)
-        val resultPendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            resultIntent,
-            getPendingIntentFlags()
-        )
+        val resultPendingIntent =
+            PendingIntent.getActivity(
+                context,
+                0,
+                resultIntent,
+                getPendingIntentFlags(),
+            )
 
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
-            .setSmallIcon(R.drawable.ic_vec_notification_icon)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setContentIntent(resultPendingIntent)
-            .setAutoCancel(true)
-            .apply { priority = NotificationCompat.PRIORITY_HIGH }
-            .apply { color = ContextCompat.getColor(context, R.color.md_blue_500) }
+        val builder =
+            NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
+                .setSmallIcon(UiR.drawable.ic_vec_notification_icon)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setContentIntent(resultPendingIntent)
+                .setAutoCancel(true)
+                .apply { priority = NotificationCompat.PRIORITY_HIGH }
+                .apply { color = ContextCompat.getColor(context, UiR.color.md_blue_500) }
 
         initContentTextAndTitle(context, intent, builder)
 
@@ -92,7 +100,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private suspend fun initContentTextAndTitle(
         context: Context,
         intent: Intent,
-        builder: NotificationCompat.Builder
+        builder: NotificationCompat.Builder,
     ) {
         try {
             val taskFilter = TaskFilter(category = TaskCategory.BEFORE_NOW)
@@ -105,12 +113,15 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             }
         } catch (e: Exception) {
             e.log()
-            builder.setContentTitle(context.getString(R.string.new_task))
-            builder.setContentText(context.getString(R.string.touch_to_check))
+            builder.setContentTitle(context.getString(UiR.string.new_task))
+            builder.setContentText(context.getString(UiR.string.touch_to_check))
         }
     }
 
-    private suspend fun initContentFromIntent(intent: Intent, builder: NotificationCompat.Builder) {
+    private suspend fun initContentFromIntent(
+        intent: Intent,
+        builder: NotificationCompat.Builder,
+    ) {
         val taskId = intent.getLongExtra(EXTRA_TASK_ID, -1)
 
         val task = getTaskUseCase(taskId).getOrThrow()
@@ -124,10 +135,10 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private fun setTextAndTitleFromList(
         context: Context,
         builder: NotificationCompat.Builder,
-        tasksQuantity: Int
+        tasksQuantity: Int,
     ) {
-        builder.setContentTitle(tasksQuantity.toString() + " " + context.getString(R.string.tasks_to_do))
-        builder.setContentText(context.getString(R.string.touch_to_check))
+        builder.setContentTitle(tasksQuantity.toString() + " " + context.getString(UiR.string.tasks_to_do))
+        builder.setContentText(context.getString(UiR.string.touch_to_check))
     }
 
     private suspend fun initVibrate(builder: NotificationCompat.Builder) {
@@ -143,13 +154,13 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         createNotificationChannel(
             NotificationChannel(
                 CHANNEL_ID_ALARM,
-                context.getString(R.string.notification_title_task_alarms),
-                NotificationManager.IMPORTANCE_HIGH
+                context.getString(UiR.string.notification_title_task_alarms),
+                NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
                 enableLights(true)
                 enableVibration(true)
-            }
+            },
         )
     }
 

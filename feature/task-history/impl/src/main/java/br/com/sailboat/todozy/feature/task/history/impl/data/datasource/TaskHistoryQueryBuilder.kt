@@ -13,7 +13,6 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import java.util.Calendar
 
 internal class TaskHistoryQueryBuilder {
-
     var query = StringBuilder()
 
     override fun toString(): String {
@@ -97,7 +96,10 @@ internal class TaskHistoryQueryBuilder {
         return this
     }
 
-    fun bindWherePreviousDays(initialDate: Calendar, finalDate: Calendar): TaskHistoryQueryBuilder {
+    fun bindWherePreviousDays(
+        initialDate: Calendar,
+        finalDate: Calendar,
+    ): TaskHistoryQueryBuilder {
         query.append(" AND (TaskHistory.insertingDate >= ")
         query.append(" '" + parseCalendarToString(initialDate) + "' ")
         query.append(" AND TaskHistory.insertingDate <= ")

@@ -18,34 +18,37 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    factory<TaskListNavigator> { TaskListNavigatorImpl() }
-    factory { TaskListUiModelFactory(get(), get()) }
+private val presentation =
+    module {
+        factory<TaskListNavigator> { TaskListNavigatorImpl() }
+        factory { TaskListUiModelFactory(get(), get()) }
 
-    factory { TaskToTaskUiModelMapper(get()) }
-    factory { TaskCategoryToStringMapper(get()) }
+        factory { TaskToTaskUiModelMapper(get()) }
+        factory { TaskCategoryToStringMapper(get()) }
 
-    viewModel {
-        TaskListViewModel(
-            getTasksUseCase = get(),
-            getAlarmUseCase = get(),
-            scheduleAllAlarmsUseCase = get(),
-            getTaskMetricsUseCase = get(),
-            completeTaskUseCase = get(),
-            taskListUiModelFactory = get(),
-            logService = get(),
-        )
+        viewModel {
+            TaskListViewModel(
+                getTasksUseCase = get(),
+                getAlarmUseCase = get(),
+                scheduleAllAlarmsUseCase = get(),
+                getTaskMetricsUseCase = get(),
+                completeTaskUseCase = get(),
+                taskListUiModelFactory = get(),
+                logService = get(),
+            )
+        }
     }
-}
 
-private val domain = module {
-    factory<GetTasksUseCase> { GetTasksUseCaseImpl(get()) }
-    factory<CompleteTaskUseCase> { CompleteTaskUseCaseImpl(get(), get(), get(), get(), get()) }
-}
+private val domain =
+    module {
+        factory<GetTasksUseCase> { GetTasksUseCaseImpl(get()) }
+        factory<CompleteTaskUseCase> { CompleteTaskUseCaseImpl(get(), get(), get(), get(), get()) }
+    }
 
-private val data = module {
-    factory<TaskRepository> { TaskRepositoryImpl(get(), get()) }
-    factory<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
-}
+private val data =
+    module {
+        factory<TaskRepository> { TaskRepositoryImpl(get(), get()) }
+        factory<TaskLocalDataSource> { TaskLocalDataSourceSQLite(get()) }
+    }
 
 val taskListModule: List<Module> = listOf(presentation, domain, data)

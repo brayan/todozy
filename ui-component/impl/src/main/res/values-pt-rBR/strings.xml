@@ -99,6 +99,9 @@
     <string name="thursday">Quinta</string>
     <string name="friday">Sexta</string>
     <string name="saturday">Sábado</string>
+    <string name="tomorrow">Amanhã</string>
+    <string name="today">Hoje</string>
+    <string name="yesterday">Ontem</string>
     <string name="no_filter">Nenhum filtro</string>
     <string name="last_7_days">Últimos 7 dias</string>
     <string name="last_30_days">Últimos 30 dias</string>

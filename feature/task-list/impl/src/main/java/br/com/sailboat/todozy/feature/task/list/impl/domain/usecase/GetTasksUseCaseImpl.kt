@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.domain.repository.TaskRepository
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 
 internal class GetTasksUseCaseImpl(private val taskRepository: TaskRepository) : GetTasksUseCase {
-
     override suspend operator fun invoke(filter: TaskFilter): Result<List<Task>> =
         with(taskRepository) {
             return when (filter.category) {

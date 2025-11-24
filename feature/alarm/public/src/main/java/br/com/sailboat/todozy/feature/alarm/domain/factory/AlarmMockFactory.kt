@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import java.util.Calendar
 
 object AlarmMockFactory {
-
     fun makeAlarm(
         dateTime: Calendar = Calendar.getInstance(),
         repeatType: RepeatType = RepeatType.WEEK,
@@ -14,7 +13,7 @@ object AlarmMockFactory {
         return Alarm(
             dateTime = dateTime,
             repeatType = repeatType,
-            customDays = customDays
+            customDays = customDays,
         )
     }
 

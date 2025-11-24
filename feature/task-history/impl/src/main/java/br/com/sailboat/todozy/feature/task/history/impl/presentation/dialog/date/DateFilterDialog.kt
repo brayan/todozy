@@ -5,7 +5,6 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 
 object DateFilterDialog {
-
     val TAG: String = DateFilterDialog::class.java.name
 
     fun show(

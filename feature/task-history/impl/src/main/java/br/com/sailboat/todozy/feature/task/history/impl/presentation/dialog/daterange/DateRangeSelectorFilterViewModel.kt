@@ -16,7 +16,6 @@ import java.util.Calendar
 internal class DateRangeSelectorFilterViewModel(
     override val viewState: DateRangeSelectorFilterViewState = DateRangeSelectorFilterViewState(),
 ) : BaseViewModel<DateRangeSelectorFilterViewState, DateRangeSelectorFilterViewAction>() {
-
     override fun dispatchViewIntent(viewIntent: DateRangeSelectorFilterViewAction) {
         when (viewIntent) {
             is OnStart -> onStart(viewIntent)
@@ -32,12 +31,13 @@ internal class DateRangeSelectorFilterViewModel(
     }
 
     private fun onSelectInitialDate(viewAction: OnSelectInitialDate) {
-        val initialDate = Calendar.getInstance().apply {
-            set(Calendar.YEAR, viewAction.year)
-            set(Calendar.MONTH, viewAction.month)
-            set(Calendar.DAY_OF_MONTH, viewAction.day)
-            clearTime()
-        }
+        val initialDate =
+            Calendar.getInstance().apply {
+                set(Calendar.YEAR, viewAction.year)
+                set(Calendar.MONTH, viewAction.month)
+                set(Calendar.DAY_OF_MONTH, viewAction.day)
+                clearTime()
+            }
 
         if (initialDate.isAfterToday()) {
             viewState.action.value = ShowDateCantBeGreaterThanTodayMessage
@@ -54,12 +54,13 @@ internal class DateRangeSelectorFilterViewModel(
     }
 
     private fun onSelectFinalDate(viewAction: OnSelectFinalDate) {
-        val finalDate = Calendar.getInstance().apply {
-            set(Calendar.YEAR, viewAction.year)
-            set(Calendar.MONTH, viewAction.month)
-            set(Calendar.DAY_OF_MONTH, viewAction.day)
-            setFinalTimeToCalendar()
-        }
+        val finalDate =
+            Calendar.getInstance().apply {
+                set(Calendar.YEAR, viewAction.year)
+                set(Calendar.MONTH, viewAction.month)
+                set(Calendar.DAY_OF_MONTH, viewAction.day)
+                setFinalTimeToCalendar()
+            }
 
         if (finalDate.isAfterToday()) {
             viewState.action.value = ShowDateCantBeGreaterThanTodayMessage
@@ -75,9 +76,10 @@ internal class DateRangeSelectorFilterViewModel(
     }
 
     private fun onClickConfirmSelectedDates() {
-        viewState.action.value = DateRangeSelectorFilterViewState.Action.ReturnSelectedDates(
-            initialDate = viewState.initialDate.value.orNewCalendar(),
-            finalDate = viewState.finalDate.value.orNewCalendar(),
-        )
+        viewState.action.value =
+            DateRangeSelectorFilterViewState.Action.ReturnSelectedDates(
+                initialDate = viewState.initialDate.value.orNewCalendar(),
+                finalDate = viewState.finalDate.value.orNewCalendar(),
+            )
     }
 }

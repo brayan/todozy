@@ -28,7 +28,6 @@ import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class TaskDetailsViewModelTest {
-
     @get:Rule
     val instantTask = InstantTaskExecutorRule()
 
@@ -41,28 +40,30 @@ internal class TaskDetailsViewModelTest {
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
 
-    private val viewModel = TaskDetailsViewModel(
-        getTaskMetricsUseCase = getTaskMetricsUseCase,
-        getTaskUseCase = getTaskUseCase,
-        disableTaskUseCase = disableTaskUseCase,
-        taskDetailsUiModelFactory = taskDetailsUiModelFactory,
-        logService = logService,
-    )
+    private val viewModel =
+        TaskDetailsViewModel(
+            getTaskMetricsUseCase = getTaskMetricsUseCase,
+            getTaskUseCase = getTaskUseCase,
+            disableTaskUseCase = disableTaskUseCase,
+            taskDetailsUiModelFactory = taskDetailsUiModelFactory,
+            logService = logService,
+        )
 
     @Test
     fun `should call getTaskUseCase when dispatchViewAction is called with OnStart`() {
         val taskId = 42L
-        val taskDetails = listOf(
-            TitleUiModel(title = "Task Name"),
-            AlarmUiModel(
-                date = "07/03/2022",
-                time = "11:55",
-                description = "Today, March 7, 2022",
-                isCustom = false,
-                shouldRepeat = true,
-                customDays = null,
+        val taskDetails =
+            listOf(
+                TitleUiModel(title = "Task Name"),
+                AlarmUiModel(
+                    date = "07/03/2022",
+                    time = "11:55",
+                    description = "Today, March 7, 2022",
+                    isCustom = false,
+                    shouldRepeat = true,
+                    customDays = null,
+                ),
             )
-        )
         prepareScenario(taskDetailsResult = taskDetails)
 
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
@@ -75,11 +76,12 @@ internal class TaskDetailsViewModelTest {
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnStart`() {
         val taskId = 42L
         val filter = TaskHistoryFilter(taskId = taskId)
-        val taskMetrics = TaskMetrics(
-            doneTasks = 15,
-            notDoneTasks = 2,
-            consecutiveDone = 5,
-        )
+        val taskMetrics =
+            TaskMetrics(
+                doneTasks = 15,
+                notDoneTasks = 2,
+                consecutiveDone = 5,
+            )
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
@@ -92,9 +94,10 @@ internal class TaskDetailsViewModelTest {
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnStart when alarm is null`() {
         val taskId = 42L
         prepareScenario(
-            taskResult = Result.success(
-                TaskMockFactory.makeTask().copy(alarm = null)
-            )
+            taskResult =
+                Result.success(
+                    TaskMockFactory.makeTask().copy(alarm = null),
+                ),
         )
 
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
@@ -180,17 +183,18 @@ internal class TaskDetailsViewModelTest {
     @Test
     fun `should call getTaskUseCase when dispatchViewAction is called with OnReturnToDetails`() {
         val taskId = 42L
-        val taskDetails = listOf(
-            TitleUiModel(title = "Task Name"),
-            AlarmUiModel(
-                date = "07/03/2022",
-                time = "11:55",
-                description = "Today, March 7, 2022",
-                isCustom = false,
-                shouldRepeat = true,
-                customDays = null,
+        val taskDetails =
+            listOf(
+                TitleUiModel(title = "Task Name"),
+                AlarmUiModel(
+                    date = "07/03/2022",
+                    time = "11:55",
+                    description = "Today, March 7, 2022",
+                    isCustom = false,
+                    shouldRepeat = true,
+                    customDays = null,
+                ),
             )
-        )
         prepareScenario(taskDetailsResult = taskDetails)
         viewModel.viewState.taskId = taskId
 
@@ -204,11 +208,12 @@ internal class TaskDetailsViewModelTest {
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnReturnToDetails`() {
         val taskId = 42L
         val filter = TaskHistoryFilter(taskId = taskId)
-        val taskMetrics = TaskMetrics(
-            doneTasks = 15,
-            notDoneTasks = 2,
-            consecutiveDone = 5,
-        )
+        val taskMetrics =
+            TaskMetrics(
+                doneTasks = 15,
+                notDoneTasks = 2,
+                consecutiveDone = 5,
+            )
         viewModel.viewState.taskId = taskId
         prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
@@ -223,9 +228,10 @@ internal class TaskDetailsViewModelTest {
         val taskId = 42L
         viewModel.viewState.taskId = taskId
         prepareScenario(
-            taskResult = Result.success(
-                TaskMockFactory.makeTask().copy(alarm = null)
-            )
+            taskResult =
+                Result.success(
+                    TaskMockFactory.makeTask().copy(alarm = null),
+                ),
         )
 
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
@@ -244,16 +250,17 @@ internal class TaskDetailsViewModelTest {
                     isCustom = false,
                     shouldRepeat = true,
                     customDays = null,
-                )
+                ),
             ),
         taskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),
-        taskMetricsResult: Result<TaskMetrics> = Result.success(
-            TaskMetrics(
-                doneTasks = 15,
-                notDoneTasks = 2,
-                consecutiveDone = 5,
-            )
-        )
+        taskMetricsResult: Result<TaskMetrics> =
+            Result.success(
+                TaskMetrics(
+                    doneTasks = 15,
+                    notDoneTasks = 2,
+                    consecutiveDone = 5,
+                ),
+            ),
     ) {
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { taskDetailsUiModelFactory.create(any()) } returns taskDetailsResult

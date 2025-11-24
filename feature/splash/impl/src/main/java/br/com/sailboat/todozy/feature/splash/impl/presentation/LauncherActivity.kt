@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class LauncherActivity : AppCompatActivity() {
-
     private val checkAndSetUpInitialSettingsUseCase: CheckAndSetUpInitialSettingsUseCase by inject()
     private val taskListNavigator: TaskListNavigator by inject()
 

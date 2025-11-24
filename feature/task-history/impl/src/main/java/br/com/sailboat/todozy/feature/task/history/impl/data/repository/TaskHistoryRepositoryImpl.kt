@@ -10,9 +10,8 @@ import br.com.sailboat.todozy.feature.task.history.impl.data.model.mapToTaskHist
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.mapToTaskHistoryList
 
 internal class TaskHistoryRepositoryImpl(
-    private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource
+    private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource,
 ) : TaskHistoryRepository {
-
     override suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int> {
         return taskHistoryLocalDataSource.getTotalOfNotDoneTasks(filter)
     }
@@ -21,27 +20,34 @@ internal class TaskHistoryRepositoryImpl(
         return taskHistoryLocalDataSource.getTotalOfDoneTasks(filter)
     }
 
-    override suspend fun getTodayHistory(filter: TaskHistoryFilter) = runCatching {
-        val taskHistoryList = taskHistoryLocalDataSource.getTodayHistory(filter).getOrThrow()
-        return@runCatching taskHistoryList.mapToTaskHistoryList()
-    }
+    override suspend fun getTodayHistory(filter: TaskHistoryFilter) =
+        runCatching {
+            val taskHistoryList = taskHistoryLocalDataSource.getTodayHistory(filter).getOrThrow()
+            return@runCatching taskHistoryList.mapToTaskHistoryList()
+        }
 
-    override suspend fun getYesterdayHistory(filter: TaskHistoryFilter) = runCatching {
-        val taskHistoryList = taskHistoryLocalDataSource.getYesterdayHistory(filter).getOrThrow()
-        return@runCatching taskHistoryList.mapToTaskHistoryList()
-    }
+    override suspend fun getYesterdayHistory(filter: TaskHistoryFilter) =
+        runCatching {
+            val taskHistoryList = taskHistoryLocalDataSource.getYesterdayHistory(filter).getOrThrow()
+            return@runCatching taskHistoryList.mapToTaskHistoryList()
+        }
 
-    override suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter) = runCatching {
-        val taskHistoryList = taskHistoryLocalDataSource.getPreviousDaysHistory(filter).getOrThrow()
-        return@runCatching taskHistoryList.mapToTaskHistoryList()
-    }
+    override suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter) =
+        runCatching {
+            val taskHistoryList = taskHistoryLocalDataSource.getPreviousDaysHistory(filter).getOrThrow()
+            return@runCatching taskHistoryList.mapToTaskHistoryList()
+        }
 
-    override suspend fun getTaskHistory(taskId: Long) = runCatching {
-        val taskHistoryList = taskHistoryLocalDataSource.getTaskHistoryByTask(taskId).getOrThrow()
-        return@runCatching taskHistoryList.mapToTaskHistoryList()
-    }
+    override suspend fun getTaskHistory(taskId: Long) =
+        runCatching {
+            val taskHistoryList = taskHistoryLocalDataSource.getTaskHistoryByTask(taskId).getOrThrow()
+            return@runCatching taskHistoryList.mapToTaskHistoryList()
+        }
 
-    override suspend fun insert(task: Task, status: TaskStatus) = runCatching {
+    override suspend fun insert(
+        task: Task,
+        status: TaskStatus,
+    ) = runCatching {
         taskHistoryLocalDataSource.save(task.id, status.id)
         return@runCatching
     }

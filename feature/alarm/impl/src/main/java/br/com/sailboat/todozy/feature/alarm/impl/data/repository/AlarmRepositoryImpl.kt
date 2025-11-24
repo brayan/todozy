@@ -11,19 +11,23 @@ internal class AlarmRepositoryImpl(
     private val alarmDataToAlarmMapper: AlarmDataToAlarmMapper,
     private val alarmToAlarmDataMapper: AlarmToAlarmDataMapper,
 ) : AlarmRepository {
-
-    override suspend fun getAlarmByTaskId(taskId: Long): Result<Alarm?> = runCatching {
-        val alarmData = alarmLocalDataSource.getAlarmByTask(taskId).getOrNull()
-        return@runCatching alarmData?.run { alarmDataToAlarmMapper.map(this) }
-    }
+    override suspend fun getAlarmByTaskId(taskId: Long): Result<Alarm?> =
+        runCatching {
+            val alarmData = alarmLocalDataSource.getAlarmByTask(taskId).getOrNull()
+            return@runCatching alarmData?.run { alarmDataToAlarmMapper.map(this) }
+        }
 
     override suspend fun deleteAlarmByTask(taskId: Long): Result<Unit?> {
         return alarmLocalDataSource.deleteByTask(taskId)
     }
 
-    override suspend fun save(alarm: Alarm, taskId: Long): Result<Unit?> = runCatching {
-        val alarmData = alarmToAlarmDataMapper.map(alarm, taskId)
-        alarmLocalDataSource.save(alarmData).getOrThrow()
-        return@runCatching
-    }
+    override suspend fun save(
+        alarm: Alarm,
+        taskId: Long,
+    ): Result<Unit?> =
+        runCatching {
+            val alarmData = alarmToAlarmDataMapper.map(alarm, taskId)
+            alarmLocalDataSource.save(alarmData).getOrThrow()
+            return@runCatching
+        }
 }

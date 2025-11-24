@@ -9,11 +9,11 @@ internal class DisableTaskUseCaseImpl(
     private val taskRepository: TaskRepository,
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
 ) : DisableTaskUseCase {
+    override suspend operator fun invoke(task: Task): Result<Task> =
+        runCatching {
+            taskRepository.disableTask(task).getOrThrow()
+            deleteAlarmUseCase(task.id)
 
-    override suspend operator fun invoke(task: Task): Result<Task> = runCatching {
-        taskRepository.disableTask(task).getOrThrow()
-        deleteAlarmUseCase(task.id)
-
-        return@runCatching task
-    }
+            return@runCatching task
+        }
 }
