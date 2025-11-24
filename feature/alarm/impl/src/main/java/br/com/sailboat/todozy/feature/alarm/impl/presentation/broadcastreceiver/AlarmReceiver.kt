@@ -1,3 +1,4 @@
+
 package br.com.sailboat.todozy.feature.alarm.impl.presentation.broadcastreceiver
 
 import android.app.Notification
@@ -61,7 +62,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.makeNotificationChannel(context)
         }
-        notificationManager.notify(NotificationHelper().TASK_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NotificationHelper.TASK_NOTIFICATION_ID, builder.build())
     }
 
     private suspend fun buildNotification(
