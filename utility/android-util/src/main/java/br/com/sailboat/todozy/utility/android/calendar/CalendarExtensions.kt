@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.utility.android.calendar
 
 import android.content.Context
-import android.text.format.DateFormat
 import android.os.Build
+import android.text.format.DateFormat
 import br.com.sailboat.todozy.utility.android.R
 import br.com.sailboat.todozy.utility.kotlin.extension.getDayName
 import br.com.sailboat.todozy.utility.kotlin.extension.isToday
@@ -77,7 +77,10 @@ private fun Calendar.toLocalDateTime(): LocalDateTime {
     return LocalDateTime.ofInstant(toInstant(), zoneId)
 }
 
-private fun Calendar.formatWithPattern(pattern: String, locale: Locale): String {
+private fun Calendar.formatWithPattern(
+    pattern: String,
+    locale: Locale,
+): String {
     val formatter = DateTimeFormatter.ofPattern(pattern, locale)
     return formatter.format(toLocalDateTime())
 }

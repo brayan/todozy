@@ -13,50 +13,55 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class TaskListUiModelFactoryTest {
-
     private val taskToTaskUiModelMapper: TaskToTaskUiModelMapper = mockk(relaxed = true)
     private val taskCategoryToStringMapper: TaskCategoryToStringMapper = mockk(relaxed = true)
 
-    private val taskListUiModelFactory = TaskListUiModelFactory(
-        taskToTaskUiModelMapper = taskToTaskUiModelMapper,
-        taskCategoryToStringMapper = taskCategoryToStringMapper,
-    )
+    private val taskListUiModelFactory =
+        TaskListUiModelFactory(
+            taskToTaskUiModelMapper = taskToTaskUiModelMapper,
+            taskCategoryToStringMapper = taskCategoryToStringMapper,
+        )
 
     @Test
-    fun `should create a subhead and a task when create is called from taskListUiModelFactory`() = runBlocking {
-        val taskList = listOf(
-            Task(
-                id = 42L,
-                name = "Task Name",
-                notes = "Notes",
+    fun `should create a subhead and a task when create is called from taskListUiModelFactory`() =
+        runBlocking {
+            val taskList =
+                listOf(
+                    Task(
+                        id = 42L,
+                        name = "Task Name",
+                        notes = "Notes",
+                    ),
+                )
+            val taskUiModel =
+                TaskUiModel(
+                    taskId = 42L,
+                    taskName = "Task Name",
+                )
+            prepareScenario(
+                taskListUiModel = listOf(taskUiModel),
+                subhead = "Today",
             )
-        )
-        val taskUiModel = TaskUiModel(
-            taskId = 42L,
-            taskName = "Task Name",
-        )
-        prepareScenario(
-            taskListUiModel = listOf(taskUiModel),
-            subhead = "Today",
-        )
 
-        val result = taskListUiModelFactory.create(taskList, TaskCategory.TODAY)
+            val result = taskListUiModelFactory.create(taskList, TaskCategory.TODAY)
 
-        val expected = listOf(
-            SubheadUiModel("Today"),
-            taskUiModel,
-        )
-        assertEquals(expected, result)
-    }
+            val expected =
+                listOf(
+                    SubheadUiModel("Today"),
+                    taskUiModel,
+                )
+            assertEquals(expected, result)
+        }
 
     @Test
-    fun `should not create a subhead and a task when task list is empty`() = runBlocking {
-        prepareScenario()
+    fun `should not create a subhead and a task when task list is empty`() =
+        runBlocking {
+            prepareScenario()
 
-        val result = taskListUiModelFactory.create(emptyList(), TaskCategory.TODAY)
+            val result = taskListUiModelFactory.create(emptyList(), TaskCategory.TODAY)
 
-        assertEquals(emptyList(), result)
-    }
+            assertEquals(emptyList(), result)
+        }
 
     private fun prepareScenario(
         taskListUiModel: List<TaskUiModel> = emptyList(),

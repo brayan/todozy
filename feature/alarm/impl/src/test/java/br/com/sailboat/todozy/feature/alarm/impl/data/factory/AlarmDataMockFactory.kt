@@ -4,7 +4,6 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
 
 internal object AlarmDataMockFactory {
-
     fun makeAlarmData(
         id: Long = 75L,
         taskId: Long = 45L,

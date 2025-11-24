@@ -10,14 +10,14 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class CheckAndSetUpInitialSettingsUseCaseImplTest {
-
     private val repository: SettingsRepository = mockk(relaxed = true)
     private val scheduleAlarmUpdatesUseCase: ScheduleAlarmUpdatesUseCase = mockk(relaxed = true)
 
-    private val checkAndSetUpInitialSettingsUseCase = CheckAndSetUpInitialSettingsUseCaseImpl(
-        repository = repository,
-        scheduleAlarmUpdatesUseCase = scheduleAlarmUpdatesUseCase,
-    )
+    private val checkAndSetUpInitialSettingsUseCase =
+        CheckAndSetUpInitialSettingsUseCaseImpl(
+            repository = repository,
+            scheduleAlarmUpdatesUseCase = scheduleAlarmUpdatesUseCase,
+        )
 
     @Test
     fun `should check if it is the first time that the app is launching from repository`() =

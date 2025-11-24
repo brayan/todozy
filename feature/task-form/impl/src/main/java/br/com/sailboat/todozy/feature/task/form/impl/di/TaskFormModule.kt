@@ -17,26 +17,28 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    viewModel {
-        TaskFormViewModel(
-            getTaskUseCase = get(),
-            saveTaskUseCase = get(),
-            getNextAlarmUseCase = get(),
-            checkTaskFieldsUseCase = get(),
-            logService = get(),
-            alarmService = get(),
-        )
+private val presentation =
+    module {
+        viewModel {
+            TaskFormViewModel(
+                getTaskUseCase = get(),
+                saveTaskUseCase = get(),
+                getNextAlarmUseCase = get(),
+                checkTaskFieldsUseCase = get(),
+                logService = get(),
+                alarmService = get(),
+            )
+        }
+        factory<TaskFormNavigator> { TaskFormNavigatorImpl() }
+        factory<TaskFormDateTimeFormatter> { TaskFormDateTimeFormatterImpl(get()) }
+        factory { WeekDaysHelper(get<StringProvider>()) }
+        factory<AlarmService> { AlarmServiceImpl(get(), get(), get()) }
     }
-    factory<TaskFormNavigator> { TaskFormNavigatorImpl() }
-    factory<TaskFormDateTimeFormatter> { TaskFormDateTimeFormatterImpl(get()) }
-    factory { WeekDaysHelper(get<StringProvider>()) }
-    factory<AlarmService> { AlarmServiceImpl(get(), get(), get()) }
-}
 
-private val domain = module {
-    factory<CheckTaskFieldsUseCase> { CheckTaskFieldsUseCaseImpl() }
-    factory<SaveTaskUseCase> { SaveTaskUseCaseImpl(get(), get(), get(), get()) }
-}
+private val domain =
+    module {
+        factory<CheckTaskFieldsUseCase> { CheckTaskFieldsUseCaseImpl() }
+        factory<SaveTaskUseCase> { SaveTaskUseCaseImpl(get(), get(), get(), get()) }
+    }
 
 val taskFormModule: List<Module> = listOf(presentation, domain)

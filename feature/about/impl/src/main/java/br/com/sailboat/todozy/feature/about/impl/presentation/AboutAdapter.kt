@@ -14,14 +14,19 @@ import br.com.sailboat.uicomponent.model.UiModelType
 
 internal class AboutAdapter :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ) = when (viewType) {
         UiModelType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
         UiModelType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
         else -> EmptyViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         when (val item = getItem(position)) {
             is ImageTitleDividerUiModel -> (holder as ImageTitleDividerViewHolder).bind(item)
             is LabelValueUiModel -> (holder as LabelValueViewHolder).bind(item)

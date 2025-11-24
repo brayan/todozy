@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
@@ -26,25 +27,24 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
-import br.com.sailboat.todozy.feature.task.details.impl.R as TaskDetailsR
-import br.com.sailboat.uicomponent.impl.R as UiR
-import androidx.core.view.MenuProvider
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import br.com.sailboat.todozy.feature.task.details.impl.R as TaskDetailsR
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 private const val DELETE_TASK_TAG = "DELETE_TASK_TAG"
 
 internal class TaskDetailsFragment : Fragment() {
-
     private val viewModel: TaskDetailsViewModel by viewModel()
     private val taskFormNavigator: TaskFormNavigator by inject()
-    private val deleteTaskCallback = object : TwoOptionsDialog.Callback {
-        override fun onClickPositiveOption() {
-            viewModel.dispatchViewIntent(OnClickConfirmDeleteTask)
-        }
+    private val deleteTaskCallback =
+        object : TwoOptionsDialog.Callback {
+            override fun onClickPositiveOption() {
+                viewModel.dispatchViewIntent(OnClickConfirmDeleteTask)
+            }
 
-        override fun onClickNegativeOption() {}
-    }
+            override fun onClickNegativeOption() {}
+        }
     private var taskDetailsAdapter: TaskDetailsAdapter? = null
     private var deleteTaskDialog: TwoOptionsDialog? = null
 
@@ -54,12 +54,13 @@ internal class TaskDetailsFragment : Fragment() {
         }
 
     companion object {
-        fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
-            val bundle = Bundle()
-            bundle.putTaskId(taskId)
-            arguments = bundle
-            return this
-        }
+        fun newInstance(taskId: Long): TaskDetailsFragment =
+            with(TaskDetailsFragment()) {
+                val bundle = Bundle()
+                bundle.putTaskId(taskId)
+                arguments = bundle
+                return this
+            }
     }
 
     private lateinit var binding: FrgTaskDetailsBinding
@@ -67,12 +68,15 @@ internal class TaskDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FrgTaskDetailsBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
@@ -90,9 +94,10 @@ internal class TaskDetailsFragment : Fragment() {
         }
 
         binding.rvTaskDetails.run {
-            adapter = TaskDetailsAdapter().apply {
-                taskDetailsAdapter = this
-            }
+            adapter =
+                TaskDetailsAdapter().apply {
+                    taskDetailsAdapter = this
+                }
             layoutManager = LinearLayoutManager(activity)
         }
 
@@ -133,20 +138,22 @@ internal class TaskDetailsFragment : Fragment() {
     }
 
     private fun confirmDeleteTask() {
-        deleteTaskDialog = TwoOptionsDialog.newInstance(
-            message = getString(UiR.string.are_you_sure),
-            positiveMsg = UiR.string.delete
-        )
+        deleteTaskDialog =
+            TwoOptionsDialog.newInstance(
+                message = getString(UiR.string.are_you_sure),
+                positiveMsg = UiR.string.delete,
+            )
         deleteTaskDialog?.callback = deleteTaskCallback
         deleteTaskDialog?.show(childFragmentManager, DELETE_TASK_TAG)
     }
 
     private fun closeTaskDetails(action: TaskDetailsViewAction.CloseTaskDetails) {
-        val result = if (action.success) {
-            Activity.RESULT_OK
-        } else {
-            Activity.RESULT_CANCELED
-        }
+        val result =
+            if (action.success) {
+                Activity.RESULT_OK
+            } else {
+                Activity.RESULT_CANCELED
+            }
         activity?.setResult(result)
         activity?.finish()
     }
@@ -160,21 +167,27 @@ internal class TaskDetailsFragment : Fragment() {
     }
 
     private fun addMenuProvider() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(TaskDetailsR.menu.menu_task_details, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    TaskDetailsR.id.menu_delete -> {
-                        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
-                        true
-                    }
-                    else -> false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater,
+                ) {
+                    menuInflater.inflate(TaskDetailsR.menu.menu_task_details, menu)
                 }
-            }
-        }, viewLifecycleOwner)
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        TaskDetailsR.id.menu_delete -> {
+                            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+        )
     }
 
     private fun showMetrics(taskMetrics: TaskMetrics) {

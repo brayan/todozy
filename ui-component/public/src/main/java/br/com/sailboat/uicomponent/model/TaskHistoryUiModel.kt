@@ -5,5 +5,5 @@ data class TaskHistoryUiModel(
     val taskName: String,
     var done: Boolean,
     val insertingDate: String,
-    override val uiModelId: Int = UiModelType.TASK_HISTORY.ordinal
+    override val uiModelId: Int = UiModelType.TASK_HISTORY.ordinal,
 ) : UiModel

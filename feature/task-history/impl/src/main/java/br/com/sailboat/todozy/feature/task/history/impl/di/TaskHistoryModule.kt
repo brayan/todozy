@@ -31,45 +31,48 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    factory<CalendarService> { CalendarServiceImpl(get()) }
-    factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
+private val presentation =
+    module {
+        factory<CalendarService> { CalendarServiceImpl(get()) }
+        factory<GetDateFilterNameViewUseCase> { GetDateFilterNameView(get()) }
 
-    factory<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
-    factory { TaskHistoryToTaskHistoryUiModelMapper() }
-    factory { TaskHistoryUiModelToTaskHistoryMapper() }
-    factory { TaskHistoryCategoryToStringMapper(get()) }
-    factory { TaskHistoryUiModelFactory(get(), get()) }
+        factory<TaskHistoryNavigator> { TaskHistoryNavigatorImpl() }
+        factory { TaskHistoryToTaskHistoryUiModelMapper() }
+        factory { TaskHistoryUiModelToTaskHistoryMapper() }
+        factory { TaskHistoryCategoryToStringMapper(get()) }
+        factory { TaskHistoryUiModelFactory(get(), get()) }
 
-    viewModel {
-        TaskHistoryViewModel(
-            getTaskMetricsUseCase = get(),
-            getTaskHistoryUseCase = get(),
-            getDateFilterNameViewUseCase = get(),
-            updateHistoryUseCase = get(),
-            deleteHistoryUseCase = get(),
-            deleteAllHistoryUseCase = get(),
-            taskHistoryUiModelFactory = get(),
-            taskHistoryUiModelToTaskHistoryMapper = get(),
-            logService = get(),
-            calendarService = get(),
-        )
+        viewModel {
+            TaskHistoryViewModel(
+                getTaskMetricsUseCase = get(),
+                getTaskHistoryUseCase = get(),
+                getDateFilterNameViewUseCase = get(),
+                updateHistoryUseCase = get(),
+                deleteHistoryUseCase = get(),
+                deleteAllHistoryUseCase = get(),
+                taskHistoryUiModelFactory = get(),
+                taskHistoryUiModelToTaskHistoryMapper = get(),
+                logService = get(),
+                calendarService = get(),
+            )
+        }
+        viewModel { TaskHistoryFilterViewModel() }
+        viewModel { DateRangeSelectorFilterViewModel() }
     }
-    viewModel { TaskHistoryFilterViewModel() }
-    viewModel { DateRangeSelectorFilterViewModel() }
-}
 
-private val domain = module {
-    factory<GetTaskHistoryUseCase> { GetTaskHistoryUseCaseImpl(get()) }
-    factory<AddHistoryUseCase> { AddHistoryUseCaseImpl(get()) }
-    factory<UpdateHistoryUseCase> { UpdateHistoryUseCaseImpl(get()) }
-    factory<DeleteHistoryUseCase> { DeleteHistoryUseCaseImpl(get()) }
-    factory<DeleteAllHistoryUseCase> { DeleteAllHistoryUseCaseImpl(get()) }
-}
+private val domain =
+    module {
+        factory<GetTaskHistoryUseCase> { GetTaskHistoryUseCaseImpl(get()) }
+        factory<AddHistoryUseCase> { AddHistoryUseCaseImpl(get()) }
+        factory<UpdateHistoryUseCase> { UpdateHistoryUseCaseImpl(get()) }
+        factory<DeleteHistoryUseCase> { DeleteHistoryUseCaseImpl(get()) }
+        factory<DeleteAllHistoryUseCase> { DeleteAllHistoryUseCaseImpl(get()) }
+    }
 
-private val data = module {
-    factory<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
-    factory<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
-}
+private val data =
+    module {
+        factory<TaskHistoryRepository> { TaskHistoryRepositoryImpl(get()) }
+        factory<TaskHistoryLocalDataSource> { TaskHistoryLocalDataSourceSQLite(get()) }
+    }
 
 val taskHistoryModule: List<Module> = listOf(presentation, domain, data)

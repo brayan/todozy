@@ -9,19 +9,19 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class AlarmDataToAlarmMapperTest {
-
     private val mapper = AlarmDataToAlarmMapper()
 
     @Test
     fun `maps alarm when nextAlarmDate is valid`() {
         val alarmDate = "2024-06-18 12:30:00"
-        val alarmData = AlarmData(
-            taskId = 12L,
-            repeatType = RepeatType.DAY.ordinal,
-            nextAlarmDate = alarmDate,
-            insertingDate = null,
-            days = null,
-        )
+        val alarmData =
+            AlarmData(
+                taskId = 12L,
+                repeatType = RepeatType.DAY.ordinal,
+                nextAlarmDate = alarmDate,
+                insertingDate = null,
+                days = null,
+            )
 
         val result = mapper.map(alarmData)
 
@@ -37,13 +37,14 @@ internal class AlarmDataToAlarmMapperTest {
 
     @Test
     fun `returns null when nextAlarmDate is missing`() {
-        val alarmData = AlarmData(
-            taskId = 12L,
-            repeatType = RepeatType.DAY.ordinal,
-            nextAlarmDate = null,
-            insertingDate = null,
-            days = null,
-        )
+        val alarmData =
+            AlarmData(
+                taskId = 12L,
+                repeatType = RepeatType.DAY.ordinal,
+                nextAlarmDate = null,
+                insertingDate = null,
+                days = null,
+            )
 
         val result = mapper.map(alarmData)
 
@@ -52,13 +53,14 @@ internal class AlarmDataToAlarmMapperTest {
 
     @Test
     fun `returns null when nextAlarmDate cannot be parsed`() {
-        val alarmData = AlarmData(
-            taskId = 12L,
-            repeatType = RepeatType.DAY.ordinal,
-            nextAlarmDate = "bad-date",
-            insertingDate = null,
-            days = null,
-        )
+        val alarmData =
+            AlarmData(
+                taskId = 12L,
+                repeatType = RepeatType.DAY.ordinal,
+                nextAlarmDate = "bad-date",
+                insertingDate = null,
+                days = null,
+            )
 
         val result = mapper.map(alarmData)
 

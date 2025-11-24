@@ -23,11 +23,12 @@ fun Activity.showKeyboard(editText: EditText) {
 fun Activity.blockScreenOrientation() {
     val config = resources.configuration
 
-    requestedOrientation = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    } else {
-        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    }
+    requestedOrientation =
+        if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
 }
 
 fun Activity.unblockScreenOrientation() {

@@ -8,7 +8,6 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseViewHolder<in T, VB : ViewBinding>(val binding: VB) :
     RecyclerView.ViewHolder(binding.root) {
-
     val context: Context by lazy { itemView.context }
 
     abstract fun bind(item: T)

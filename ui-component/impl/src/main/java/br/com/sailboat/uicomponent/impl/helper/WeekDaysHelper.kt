@@ -1,12 +1,11 @@
 package br.com.sailboat.uicomponent.impl.helper
 
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.model.DayUiModel
-import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import java.util.Calendar
 
 class WeekDaysHelper(private val stringProvider: StringProvider) {
-
     fun getCustomRepeat(days: String?): String {
         var days = days
         if (days.isNullOrEmpty()) {
@@ -19,7 +18,6 @@ class WeekDaysHelper(private val stringProvider: StringProvider) {
 
             if (days.length > 1) {
                 for (i in 1 until days.length) {
-
                     if (days.length > 2 && i != days.length - 1) {
                         sb.append(", ")
                     } else {

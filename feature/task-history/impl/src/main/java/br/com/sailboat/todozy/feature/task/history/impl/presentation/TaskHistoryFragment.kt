@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
@@ -40,21 +41,19 @@ import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatterImpl
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
+import br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatterImpl
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
-import br.com.sailboat.todozy.feature.task.history.impl.R as TaskHistoryR
-import br.com.sailboat.uicomponent.impl.R as UiR
-import androidx.core.view.MenuProvider
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
+import br.com.sailboat.todozy.feature.task.history.impl.R as TaskHistoryR
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() {
-
     private val viewModel: TaskHistoryViewModel by viewModel()
 
     private val linearLayoutManager by lazy {
@@ -71,70 +70,83 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
 
     private lateinit var binding: FrgTaskHistoryBinding
 
-    private val taskHistoryFilterDialogCallback = object : TaskHistoryFilterDialog.Callback {
-        override fun onClickFilterDate() {
-            viewModel.dispatchViewIntent(OnClickDateFilter)
+    private val taskHistoryFilterDialogCallback =
+        object : TaskHistoryFilterDialog.Callback {
+            override fun onClickFilterDate() {
+                viewModel.dispatchViewIntent(OnClickDateFilter)
+            }
+
+            override fun onClickFilterStatus() {
+                viewModel.dispatchViewIntent(OnClickStatusFilter)
+            }
         }
 
-        override fun onClickFilterStatus() {
-            viewModel.dispatchViewIntent(OnClickStatusFilter)
-        }
-    }
-
-    private val dateFilterDialogCallback = object : SelectItemDialog.Callback {
-        override fun onClickItem(item: SelectableItem) {
-            val date = item as DateFilterTaskHistorySelectableItem
-            viewModel.dispatchViewIntent(OnSelectDateFromFilter(date))
-        }
-    }
-
-    private val statusFilterDialogCallback = object : SelectItemDialog.Callback {
-        override fun onClickItem(item: SelectableItem) {
-            val status = item as TaskStatusSelectableItem
-            viewModel.dispatchViewIntent(OnSelectStatusFromFilter(status))
-        }
-    }
-
-    private val dateRangeSelectorDialogCallback = object : DateRangeSelectorFilterDialog.Callback {
-        override fun onClickOk(initialDate: Calendar, finalDate: Calendar) {
-            viewModel.dispatchViewIntent(OnSelectDateRange(initialDate, finalDate))
-        }
-    }
-
-    private val clearAllHistoryCallback = object : TwoOptionsDialog.Callback {
-        override fun onClickPositiveOption() {
-            viewModel.dispatchViewIntent(OnClickConfirmClearAllHistory)
+    private val dateFilterDialogCallback =
+        object : SelectItemDialog.Callback {
+            override fun onClickItem(item: SelectableItem) {
+                val date = item as DateFilterTaskHistorySelectableItem
+                viewModel.dispatchViewIntent(OnSelectDateFromFilter(date))
+            }
         }
 
-        override fun onClickNegativeOption() {}
-    }
-
-    private val deleteTaskHistoryCallback = object : DeleteTaskHistoryDialog.Callback {
-        override fun onConfirmDeleteTaskHistory(position: Int) {
-            viewModel.dispatchViewIntent(OnClickConfirmDeleteTaskHistory(position))
+    private val statusFilterDialogCallback =
+        object : SelectItemDialog.Callback {
+            override fun onClickItem(item: SelectableItem) {
+                val status = item as TaskStatusSelectableItem
+                viewModel.dispatchViewIntent(OnSelectStatusFromFilter(status))
+            }
         }
-    }
+
+    private val dateRangeSelectorDialogCallback =
+        object : DateRangeSelectorFilterDialog.Callback {
+            override fun onClickOk(
+                initialDate: Calendar,
+                finalDate: Calendar,
+            ) {
+                viewModel.dispatchViewIntent(OnSelectDateRange(initialDate, finalDate))
+            }
+        }
+
+    private val clearAllHistoryCallback =
+        object : TwoOptionsDialog.Callback {
+            override fun onClickPositiveOption() {
+                viewModel.dispatchViewIntent(OnClickConfirmClearAllHistory)
+            }
+
+            override fun onClickNegativeOption() {}
+        }
+
+    private val deleteTaskHistoryCallback =
+        object : DeleteTaskHistoryDialog.Callback {
+            override fun onConfirmDeleteTaskHistory(position: Int) {
+                viewModel.dispatchViewIntent(OnClickConfirmDeleteTaskHistory(position))
+            }
+        }
 
     companion object {
         fun newInstance() = TaskHistoryFragment()
 
-        fun newInstance(taskId: Long): TaskHistoryFragment = with(TaskHistoryFragment()) {
-            val bundle = Bundle()
-            bundle.putTaskId(taskId)
-            arguments = bundle
-            return this
-        }
+        fun newInstance(taskId: Long): TaskHistoryFragment =
+            with(TaskHistoryFragment()) {
+                val bundle = Bundle()
+                bundle.putTaskId(taskId)
+                arguments = bundle
+                return this
+            }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FrgTaskHistoryBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
@@ -240,48 +252,53 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     }
 
     private fun navigateToMenuFilter(viewAction: TaskHistoryViewAction.NavigateToMenuFilter) {
-        taskHistoryFilterDialog = TaskHistoryFilterDialog.show(
-            childFragmentManager,
-            viewAction.dateRangeType,
-            viewAction.status,
-            taskHistoryFilterDialogCallback,
-        )
+        taskHistoryFilterDialog =
+            TaskHistoryFilterDialog.show(
+                childFragmentManager,
+                viewAction.dateRangeType,
+                viewAction.status,
+                taskHistoryFilterDialogCallback,
+            )
     }
 
     private fun navigateToDateFilter(viewAction: TaskHistoryViewAction.NavigateToDateFilter) {
-        dateFilterDialog = DateFilterDialog.show(
-            childFragmentManager,
-            getString(UiR.string.filter),
-            DateFilterTaskHistorySelectableItem.getItems(),
-            viewAction.dateFilterType,
-            dateFilterDialogCallback,
-        )
+        dateFilterDialog =
+            DateFilterDialog.show(
+                childFragmentManager,
+                getString(UiR.string.filter),
+                DateFilterTaskHistorySelectableItem.getItems(),
+                viewAction.dateFilterType,
+                dateFilterDialogCallback,
+            )
     }
 
     private fun navigateToDateRangeFilter(action: TaskHistoryViewAction.NavigateToDateRangeFilter) {
-        dateRangeSelectorFilterDialog = DateRangeSelectorFilterDialog.show(
-            childFragmentManager,
-            action.initialDate,
-            action.finalDate,
-            dateRangeSelectorDialogCallback,
-        )
+        dateRangeSelectorFilterDialog =
+            DateRangeSelectorFilterDialog.show(
+                childFragmentManager,
+                action.initialDate,
+                action.finalDate,
+                dateRangeSelectorDialogCallback,
+            )
     }
 
     private fun navigateToStatusFilter(action: TaskHistoryViewAction.NavigateToStatusFilter) {
-        statusFilterDialog = StatusFilterDialog.show(
-            childFragmentManager,
-            getString(UiR.string.filter_status),
-            TaskStatusSelectableItem.getItems(),
-            action.status,
-            statusFilterDialogCallback,
-        )
+        statusFilterDialog =
+            StatusFilterDialog.show(
+                childFragmentManager,
+                getString(UiR.string.filter_status),
+                TaskStatusSelectableItem.getItems(),
+                action.status,
+                statusFilterDialogCallback,
+            )
     }
 
     private fun navigateToClearAllHistoryConfirmation() {
-        clearAllHistoryDialog = TwoOptionsDialog.newInstance(
-            message = getString(UiR.string.msg_ask_clear_all_history),
-            positiveMsg = UiR.string.clear,
-        )
+        clearAllHistoryDialog =
+            TwoOptionsDialog.newInstance(
+                message = getString(UiR.string.msg_ask_clear_all_history),
+                positiveMsg = UiR.string.clear,
+            )
         clearAllHistoryDialog?.callback = clearAllHistoryCallback
         clearAllHistoryDialog?.show(childFragmentManager, "CLEAR_HISTORY")
     }
@@ -317,27 +334,31 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     private fun initRecyclerView() {
         binding.rvTaskHistory.run {
             val formatter = br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatterImpl(requireContext())
-            adapter = TaskHistoryAdapter(formatter, object : TaskHistoryAdapter.Callback {
-                override fun onClickMarkTaskAsDone(position: Int) {
-                    viewModel.dispatchViewIntent(OnClickMarkTaskAsDone(position))
-                }
+            adapter =
+                TaskHistoryAdapter(
+                    formatter,
+                    object : TaskHistoryAdapter.Callback {
+                        override fun onClickMarkTaskAsDone(position: Int) {
+                            viewModel.dispatchViewIntent(OnClickMarkTaskAsDone(position))
+                        }
 
-                override fun onClickMarkTaskAsNotDone(position: Int) {
-                    viewModel.dispatchViewIntent(OnClickMarkTaskAsNotDone(position))
-                }
+                        override fun onClickMarkTaskAsNotDone(position: Int) {
+                            viewModel.dispatchViewIntent(OnClickMarkTaskAsNotDone(position))
+                        }
 
-                override fun onClickHistory(position: Int) {
-                    viewModel.dispatchViewIntent(OnClickTaskHistory(position))
-                }
+                        override fun onClickHistory(position: Int) {
+                            viewModel.dispatchViewIntent(OnClickTaskHistory(position))
+                        }
 
-                override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
+                        override fun isShowingOptions(position: Int) = viewModel.isShowingOptions(position)
 
-                override fun onClickDelete(position: Int) {
-                    viewModel.dispatchViewIntent(OnClickDeleteTaskHistoryItem(position))
+                        override fun onClickDelete(position: Int) {
+                            viewModel.dispatchViewIntent(OnClickDeleteTaskHistoryItem(position))
+                        }
+                    },
+                ).apply {
+                    taskHistoryAdapter = this
                 }
-            }).apply {
-                taskHistoryAdapter = this
-            }
             layoutManager = LinearLayoutManager(activity)
         }
     }
@@ -360,25 +381,31 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     }
 
     private fun addMenuProvider() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(TaskHistoryR.menu.menu_task_history_list, menu)
-                addSearchMenu(menu, ::onSubmitSearch)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    TaskHistoryR.id.menu_filter -> {
-                        viewModel.dispatchViewIntent(OnClickFilter)
-                        true
-                    }
-                    TaskHistoryR.id.menu_clear_history -> {
-                        viewModel.dispatchViewIntent(OnClickClearAllHistory)
-                        true
-                    }
-                    else -> false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater,
+                ) {
+                    menuInflater.inflate(TaskHistoryR.menu.menu_task_history_list, menu)
+                    addSearchMenu(menu, ::onSubmitSearch)
                 }
-            }
-        }, viewLifecycleOwner)
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        TaskHistoryR.id.menu_filter -> {
+                            viewModel.dispatchViewIntent(OnClickFilter)
+                            true
+                        }
+                        TaskHistoryR.id.menu_clear_history -> {
+                            viewModel.dispatchViewIntent(OnClickClearAllHistory)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+        )
     }
 }

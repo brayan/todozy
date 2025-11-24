@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 class DateTimeSelectorViewModel(
     override val viewState: DateTimeSelectorViewState = DateTimeSelectorViewState(),
 ) : BaseViewModel<DateTimeSelectorViewState, DateTimeSelectorViewAction>() {
-
     override fun dispatchViewIntent(viewIntent: DateTimeSelectorViewAction) {
         when (viewIntent) {
             is DateTimeSelectorViewAction.OnStart -> onStart(viewIntent)

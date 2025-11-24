@@ -6,15 +6,15 @@ import br.com.sailboat.todozy.domain.model.Task
 import java.util.Calendar
 
 object TaskMockFactory {
-
     fun makeTask(
         id: Long = 45L,
         name: String = "Task Name",
         notes: String? = "Task Notes",
-        alarm: Alarm? = Alarm(
-            dateTime = Calendar.getInstance(),
-            repeatType = RepeatType.WEEK,
-        )
+        alarm: Alarm? =
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.WEEK,
+            ),
     ): Task {
         return Task(
             id = id,

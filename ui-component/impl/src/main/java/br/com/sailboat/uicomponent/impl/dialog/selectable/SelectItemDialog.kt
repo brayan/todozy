@@ -16,7 +16,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SelectItemDialog :
     BaseDialogFragment(),
     SelectableItemAdapter.Callback {
-
     override var selectableItems: List<SelectableItem> = emptyList()
     override var selectedItem: SelectableItem? = null
     var callback: Callback? = null
@@ -29,9 +28,10 @@ class SelectItemDialog :
         binding = DialogRecyclerBinding.inflate(LayoutInflater.from(requireContext()))
 
         binding.rvDialogRecycler.layoutManager = LinearLayoutManager(activity)
-        binding.rvDialogRecycler.adapter = SelectableItemAdapter(this).apply {
-            submitList(selectableItems)
-        }
+        binding.rvDialogRecycler.adapter =
+            SelectableItemAdapter(this).apply {
+                submitList(selectableItems)
+            }
 
         observeViewModel()
         viewModel.dispatchViewIntent(SelectItemViewAction.OnStart(title, selectableItems, selectedItem))

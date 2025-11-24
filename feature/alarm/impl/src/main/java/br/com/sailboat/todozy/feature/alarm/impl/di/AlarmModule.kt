@@ -28,34 +28,37 @@ import br.com.sailboat.todozy.feature.alarm.impl.presentation.formatter.AlarmDat
 import br.com.sailboat.todozy.feature.alarm.impl.presentation.formatter.AlarmDateTimeFormatterImpl
 import br.com.sailboat.todozy.feature.alarm.impl.presentation.mapper.AlarmToAlarmUiModelMapperImpl
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
-import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import br.com.sailboat.todozy.utility.kotlin.StringProvider
+import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    factory<AlarmDateTimeFormatter> { AlarmDateTimeFormatterImpl(get()) }
-    factory { WeekDaysHelper(get<StringProvider>()) }
-    factory<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get(), get<StringProvider>(), get()) }
-}
+private val presentation =
+    module {
+        factory<AlarmDateTimeFormatter> { AlarmDateTimeFormatterImpl(get()) }
+        factory { WeekDaysHelper(get<StringProvider>()) }
+        factory<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get(), get<StringProvider>(), get()) }
+    }
 
-private val domain = module {
-    factory<ScheduleAlarmUseCase> { ScheduleAlarmUseCaseImpl(get()) }
-    factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarmsUseCaseImpl(get(), get(), get()) }
-    factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdatesUseCaseImpl(get()) }
-    factory<CancelAlarmScheduleUseCase> { CancelAlarmScheduleUseCaseImpl(get()) }
-    factory<SaveAlarmUseCase> { SaveAlarmUseCaseImpl(get(), get(), get()) }
-    factory<GetAlarmUseCase> { GetAlarmUseCaseImpl(get()) }
-    factory<DeleteAlarmUseCase> { DeleteAlarmUseCaseImpl(get(), get()) }
-    factory<GetNextAlarmUseCase> { GetNextAlarmUseCaseImpl() }
-}
+private val domain =
+    module {
+        factory<ScheduleAlarmUseCase> { ScheduleAlarmUseCaseImpl(get()) }
+        factory<ScheduleAllAlarmsUseCase> { ScheduleAllAlarmsUseCaseImpl(get(), get(), get()) }
+        factory<ScheduleAlarmUpdatesUseCase> { ScheduleAlarmUpdatesUseCaseImpl(get()) }
+        factory<CancelAlarmScheduleUseCase> { CancelAlarmScheduleUseCaseImpl(get()) }
+        factory<SaveAlarmUseCase> { SaveAlarmUseCaseImpl(get(), get(), get()) }
+        factory<GetAlarmUseCase> { GetAlarmUseCaseImpl(get()) }
+        factory<DeleteAlarmUseCase> { DeleteAlarmUseCaseImpl(get(), get()) }
+        factory<GetNextAlarmUseCase> { GetNextAlarmUseCaseImpl() }
+    }
 
-private val data = module {
-    factory<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
-    factory<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
-    factory<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
-    factory { AlarmDataToAlarmMapper() }
-    factory { AlarmToAlarmDataMapper() }
-}
+private val data =
+    module {
+        factory<AlarmRepository> { AlarmRepositoryImpl(get(), get(), get()) }
+        factory<AlarmLocalDataSource> { AlarmLocalDataSourceSQLite(get()) }
+        factory<AlarmManagerService> { AlarmManagerServiceImpl(get()) }
+        factory { AlarmDataToAlarmMapper() }
+        factory { AlarmToAlarmDataMapper() }
+    }
 
 val alarmModule: List<Module> = listOf(presentation, domain, data)

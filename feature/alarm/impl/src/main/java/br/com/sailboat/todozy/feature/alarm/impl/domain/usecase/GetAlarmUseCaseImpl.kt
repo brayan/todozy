@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 internal class GetAlarmUseCaseImpl(
     private val alarmRepository: AlarmRepository,
 ) : GetAlarmUseCase {
-
     override suspend operator fun invoke(taskId: Long): Result<Alarm?> {
         return alarmRepository.getAlarmByTaskId(taskId)
     }

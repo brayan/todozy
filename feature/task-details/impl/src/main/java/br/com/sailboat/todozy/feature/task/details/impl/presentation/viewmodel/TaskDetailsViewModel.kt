@@ -20,7 +20,6 @@ internal class TaskDetailsViewModel(
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
-
     override fun dispatchViewIntent(viewIntent: TaskDetailsViewIntent) {
         when (viewIntent) {
             is TaskDetailsViewIntent.OnStart -> onStart(viewIntent)
@@ -40,16 +39,17 @@ internal class TaskDetailsViewModel(
         viewState.viewAction.value = TaskDetailsViewAction.ConfirmDeleteTask
     }
 
-    private fun onClickConfirmDeleteTask() = viewModelScope.launch {
-        try {
-            val task = getTaskUseCase(viewState.taskId).getOrThrow()
-            disableTaskUseCase(task).getOrThrow()
-            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = true)
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
+    private fun onClickConfirmDeleteTask() =
+        viewModelScope.launch {
+            try {
+                val task = getTaskUseCase(viewState.taskId).getOrThrow()
+                disableTaskUseCase(task).getOrThrow()
+                viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = true)
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
+            }
         }
-    }
 
     private fun onClickEditTask() {
         viewState.viewAction.value = TaskDetailsViewAction.NavigateToTaskForm(viewState.taskId)
@@ -59,32 +59,34 @@ internal class TaskDetailsViewModel(
         loadDetails()
     }
 
-    private fun loadDetails() = viewModelScope.launch {
-        try {
-            viewState.loading.postValue(true)
+    private fun loadDetails() =
+        viewModelScope.launch {
+            try {
+                viewState.loading.postValue(true)
 
-            val task = getTaskUseCase(viewState.taskId).getOrThrow()
-            val taskDetails = taskDetailsUiModelFactory.create(task)
+                val task = getTaskUseCase(viewState.taskId).getOrThrow()
+                val taskDetails = taskDetailsUiModelFactory.create(task)
 
-            viewState.taskDetails.postValue(taskDetails)
+                viewState.taskDetails.postValue(taskDetails)
 
-            val taskMetrics: TaskMetrics? = task.alarm?.run {
-                if (RepeatType.isAlarmRepeating(this)) {
-                    val filter = TaskHistoryFilter(taskId = viewState.taskId)
-                    val taskMetrics = getTaskMetricsUseCase(filter)
-                    return@run taskMetrics.getOrNull()
-                } else {
-                    return@run null
-                }
+                val taskMetrics: TaskMetrics? =
+                    task.alarm?.run {
+                        if (RepeatType.isAlarmRepeating(this)) {
+                            val filter = TaskHistoryFilter(taskId = viewState.taskId)
+                            val taskMetrics = getTaskMetricsUseCase(filter)
+                            return@run taskMetrics.getOrNull()
+                        } else {
+                            return@run null
+                        }
+                    }
+
+                viewState.taskMetrics.postValue(taskMetrics)
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
+                viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = false)
+            } finally {
+                viewState.loading.postValue(false)
             }
-
-            viewState.taskMetrics.postValue(taskMetrics)
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
-            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = false)
-        } finally {
-            viewState.loading.postValue(false)
         }
-    }
 }

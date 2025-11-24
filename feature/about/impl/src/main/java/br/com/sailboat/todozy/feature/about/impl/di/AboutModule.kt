@@ -9,15 +9,16 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    viewModel {
-        AboutViewModel(
-            getAboutViewUseCase = get(),
-            logService = get(),
-        )
+private val presentation =
+    module {
+        viewModel {
+            AboutViewModel(
+                getAboutViewUseCase = get(),
+                logService = get(),
+            )
+        }
+        factory<GetAboutViewUseCase> { GetAboutView(get()) }
+        factory<AboutNavigator> { AboutNavigatorImpl() }
     }
-    factory<GetAboutViewUseCase> { GetAboutView(get()) }
-    factory<AboutNavigator> { AboutNavigatorImpl() }
-}
 
 val aboutModule: List<Module> = listOf(presentation)

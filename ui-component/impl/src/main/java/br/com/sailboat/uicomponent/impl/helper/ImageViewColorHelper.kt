@@ -7,23 +7,34 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 
 class ImageViewColorHelper {
-
-    fun setColorOfVector(context: Context, imageView: ImageView, colorId: Int) {
+    fun setColorOfVector(
+        context: Context,
+        imageView: ImageView,
+        colorId: Int,
+    ) {
         imageView.setColorFilter(
             ContextCompat.getColor(context, colorId),
-            android.graphics.PorterDuff.Mode.SRC_IN
+            android.graphics.PorterDuff.Mode.SRC_IN,
         )
     }
 
-    fun setColorOfImage(context: Context, imageView: ImageView, colorId: Int) {
+    fun setColorOfImage(
+        context: Context,
+        imageView: ImageView,
+        colorId: Int,
+    ) {
         imageView.setColorFilter(
             ContextCompat.getColor(context, colorId),
-            android.graphics.PorterDuff.Mode.MULTIPLY
+            android.graphics.PorterDuff.Mode.MULTIPLY,
         )
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun setBackgroundTint(context: Context, imageView: ImageView, colorId: Int) {
+    fun setBackgroundTint(
+        context: Context,
+        imageView: ImageView,
+        colorId: Int,
+    ) {
         imageView.backgroundTintList = ContextCompat.getColorStateList(context, colorId)
     }
 }

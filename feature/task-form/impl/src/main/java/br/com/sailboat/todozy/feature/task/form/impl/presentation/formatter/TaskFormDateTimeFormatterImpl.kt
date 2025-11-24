@@ -8,7 +8,6 @@ import java.util.Calendar
 internal class TaskFormDateTimeFormatterImpl(
     private val context: Context,
 ) : TaskFormDateTimeFormatter {
-
     override fun formatDate(calendar: Calendar): String = calendar.getFullDateName(context)
 
     override fun formatTime(calendar: Calendar): String = calendar.formatTimeWithAndroidFormat(context)

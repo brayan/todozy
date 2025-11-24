@@ -9,34 +9,34 @@ import br.com.sailboat.uicomponent.model.DayUiModel
 
 class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<DayUiModel, VhWeekDayBinding>(
-        VhWeekDayBinding.inflate(getInflater(parent), parent, false)
+        VhWeekDayBinding.inflate(getInflater(parent), parent, false),
     ) {
-
     init {
         binding.root.setOnClickListener { callback.onClickDay(bindingAdapterPosition) }
     }
 
-    override fun bind(item: DayUiModel) = with(binding) {
-        tvWeekDayName.text = item.name
+    override fun bind(item: DayUiModel) =
+        with(binding) {
+            tvWeekDayName.text = item.name
 
-        if (callback.isDaySelected(item.id)) {
-            tvWeekDayName.setBackgroundResource(R.drawable.shape_circle_blue)
-            tvWeekDayName.setTextColor(
-                ContextCompat.getColor(
-                    itemView.context,
-                    android.R.color.white
+            if (callback.isDaySelected(item.id)) {
+                tvWeekDayName.setBackgroundResource(R.drawable.shape_circle_blue)
+                tvWeekDayName.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        android.R.color.white,
+                    ),
                 )
-            )
-        } else {
-            tvWeekDayName.setBackgroundResource(R.drawable.shape_circle)
-            tvWeekDayName.setTextColor(
-                ContextCompat.getColor(
-                    itemView.context,
-                    R.color.md_blue_grey_500
+            } else {
+                tvWeekDayName.setBackgroundResource(R.drawable.shape_circle)
+                tvWeekDayName.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.md_blue_grey_500,
+                    ),
                 )
-            )
+            }
         }
-    }
 
     interface Callback {
         fun isDaySelected(id: Int): Boolean

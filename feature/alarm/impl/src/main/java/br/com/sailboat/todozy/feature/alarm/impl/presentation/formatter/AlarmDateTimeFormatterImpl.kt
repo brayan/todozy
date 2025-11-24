@@ -8,7 +8,6 @@ import java.util.Calendar
 internal class AlarmDateTimeFormatterImpl(
     private val context: Context,
 ) : AlarmDateTimeFormatter {
-
     override fun formatDate(calendar: Calendar): String = calendar.getFullDateName(context)
 
     override fun formatTime(calendar: Calendar): String = calendar.formatTimeWithAndroidFormat(context)

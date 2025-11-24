@@ -8,8 +8,10 @@ import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseC
 internal class AddHistoryUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : AddHistoryUseCase {
-
-    override suspend operator fun invoke(task: Task, status: TaskStatus): Result<Unit?> {
+    override suspend operator fun invoke(
+        task: Task,
+        status: TaskStatus,
+    ): Result<Unit?> {
         return taskHistoryRepository.insert(task, status)
     }
 }

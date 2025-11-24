@@ -7,8 +7,10 @@ import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
 import br.com.sailboat.todozy.feature.settings.impl.presentation.startSettingsActivity
 
 internal class SettingsNavigatorImpl : SettingsNavigator {
-
-    override fun navigateToSettings(context: Context, launcher: ActivityResultLauncher<Intent>) {
+    override fun navigateToSettings(
+        context: Context,
+        launcher: ActivityResultLauncher<Intent>,
+    ) {
         context.startSettingsActivity(launcher)
     }
 }

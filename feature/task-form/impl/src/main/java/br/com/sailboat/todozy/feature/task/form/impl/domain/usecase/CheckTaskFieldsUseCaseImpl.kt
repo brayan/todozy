@@ -6,7 +6,6 @@ import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeNow
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 
 internal class CheckTaskFieldsUseCaseImpl : CheckTaskFieldsUseCase {
-
     override operator fun invoke(task: Task): List<TaskFieldsConditions> {
         val conditions = mutableListOf<TaskFieldsConditions>()
 

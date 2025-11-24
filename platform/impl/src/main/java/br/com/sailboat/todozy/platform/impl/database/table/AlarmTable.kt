@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.platform.impl.database.table
 
 object AlarmTable {
-    const val table =
+    const val TABLE =
         " CREATE TABLE Alarm ( " +
             " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " fkTaskId INTEGER, " +

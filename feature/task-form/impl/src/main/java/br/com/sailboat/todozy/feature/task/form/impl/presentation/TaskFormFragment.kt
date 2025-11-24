@@ -43,13 +43,12 @@ import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 import java.util.TimeZone
 import br.com.sailboat.uicomponent.impl.R as UiR
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TaskFormFragment : Fragment() {
-
     private val viewModel: TaskFormViewModel by viewModel()
 
     private lateinit var binding: FragmentTaskFormBinding
@@ -60,23 +59,27 @@ internal class TaskFormFragment : Fragment() {
 
         fun newInstance() = TaskFormFragment()
 
-        fun newInstance(taskId: Long): TaskFormFragment = with(TaskFormFragment()) {
-            val bundle = Bundle()
-            bundle.putTaskId(taskId)
-            arguments = bundle
-            return this
-        }
+        fun newInstance(taskId: Long): TaskFormFragment =
+            with(TaskFormFragment()) {
+                val bundle = Bundle()
+                bundle.putTaskId(taskId)
+                arguments = bundle
+                return this
+            }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentTaskFormBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
@@ -134,11 +137,12 @@ internal class TaskFormFragment : Fragment() {
     }
 
     private fun closeTaskForm(action: TaskFormViewAction.CloseTaskForm) {
-        val result = if (action.success) {
-            Activity.RESULT_OK
-        } else {
-            Activity.RESULT_CANCELED
-        }
+        val result =
+            if (action.success) {
+                Activity.RESULT_OK
+            } else {
+                Activity.RESULT_CANCELED
+            }
         activity?.setResult(result)
         activity?.finish()
     }
@@ -148,12 +152,13 @@ internal class TaskFormFragment : Fragment() {
         activity?.showKeyboard(binding.etTaskFormName)
     }
 
-    private fun setTaskDetails(action: TaskFormViewAction.SetTaskDetails) = with(binding) {
-        etTaskFormNotes.setText(action.taskNotes)
+    private fun setTaskDetails(action: TaskFormViewAction.SetTaskDetails) =
+        with(binding) {
+            etTaskFormNotes.setText(action.taskNotes)
 
-        etTaskFormName.setText(action.taskName)
-        etTaskFormName.setSelection(etTaskFormName.length())
-    }
+            etTaskFormName.setText(action.taskName)
+            etTaskFormName.setSelection(etTaskFormName.length())
+        }
 
     private fun showErrorSavingTask() {
         Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
@@ -164,34 +169,42 @@ internal class TaskFormFragment : Fragment() {
     }
 
     private fun addMenuProvider() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(UiR.menu.menu_insert, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    UiR.id.menu_save -> {
-                        val action = OnClickSaveTask(
-                            taskName = binding.etTaskFormName.text.toString(),
-                            taskNotes = binding.etTaskFormNotes.text.toString(),
-                        )
-                        viewModel.dispatchViewIntent(action)
-                        true
-                    }
-                    else -> false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater,
+                ) {
+                    menuInflater.inflate(UiR.menu.menu_insert, menu)
                 }
-            }
-        }, viewLifecycleOwner)
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        UiR.id.menu_save -> {
+                            val action =
+                                OnClickSaveTask(
+                                    taskName = binding.etTaskFormName.text.toString(),
+                                    taskNotes = binding.etTaskFormNotes.text.toString(),
+                                )
+                            viewModel.dispatchViewIntent(action)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+        )
     }
 
     private fun navigateToAlarmDateSelector(action: TaskFormViewAction.NavigateToAlarmDateSelector) {
         if (childFragmentManager.findFragmentByTag(DATE_PICKER_TAG) != null) return
 
-        val picker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(getString(UiR.string.label_date))
-            .setSelection(action.currentDate.timeInMillis)
-            .build()
+        val picker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText(getString(UiR.string.label_date))
+                .setSelection(action.currentDate.timeInMillis)
+                .build()
 
         picker.addOnPositiveButtonClickListener { selection ->
             handleDateSelection(selection)
@@ -203,18 +216,19 @@ internal class TaskFormFragment : Fragment() {
     private fun navigateToAlarmTimeSelector(action: TaskFormViewAction.NavigateToAlarmTimeSelector) {
         if (childFragmentManager.findFragmentByTag(TIME_PICKER_TAG) != null) return
 
-        val picker = MaterialTimePicker.Builder()
-            .setTitleText(UiR.string.label_time)
-            .setTimeFormat(
-                if (DateFormat.is24HourFormat(requireContext())) {
-                    TimeFormat.CLOCK_24H
-                } else {
-                    TimeFormat.CLOCK_12H
-                }
-            )
-            .setHour(action.currentTime.get(Calendar.HOUR_OF_DAY))
-            .setMinute(action.currentTime.get(Calendar.MINUTE))
-            .build()
+        val picker =
+            MaterialTimePicker.Builder()
+                .setTitleText(UiR.string.label_time)
+                .setTimeFormat(
+                    if (DateFormat.is24HourFormat(requireContext())) {
+                        TimeFormat.CLOCK_24H
+                    } else {
+                        TimeFormat.CLOCK_12H
+                    },
+                )
+                .setHour(action.currentTime.get(Calendar.HOUR_OF_DAY))
+                .setMinute(action.currentTime.get(Calendar.MINUTE))
+                .build()
 
         picker.addOnPositiveButtonClickListener {
             handleTimeSelection(picker.hour, picker.minute)
@@ -232,7 +246,7 @@ internal class TaskFormFragment : Fragment() {
             RepeatAlarmSelectableItem.getFromId(action.repeatType.ordinal),
             object : SelectItemDialog.Callback {
                 override fun onClickItem(item: SelectableItem) = onSelectItemRepeatAlarm(item)
-            }
+            },
         )
     }
 
@@ -248,7 +262,7 @@ internal class TaskFormFragment : Fragment() {
                         viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.NOT_REPEAT))
                     }
                 }
-            }
+            },
         )
     }
 
@@ -270,24 +284,28 @@ internal class TaskFormFragment : Fragment() {
 
     private fun handleDateSelection(selection: Any?) {
         val millis = selection as? Long ?: return
-        val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
-            timeInMillis = millis
-        }
+        val utcCalendar =
+            Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                timeInMillis = millis
+            }
         viewModel.dispatchViewIntent(
             OnSelectAlarmDate(
                 year = utcCalendar.get(Calendar.YEAR),
                 month = utcCalendar.get(Calendar.MONTH),
                 day = utcCalendar.get(Calendar.DAY_OF_MONTH),
-            )
+            ),
         )
     }
 
-    private fun handleTimeSelection(hourOfDay: Int, minute: Int) {
+    private fun handleTimeSelection(
+        hourOfDay: Int,
+        minute: Int,
+    ) {
         viewModel.dispatchViewIntent(
             OnSelectAlarmTime(
                 hourOfDay = hourOfDay,
                 minute = minute,
-            )
+            ),
         )
     }
 
@@ -315,20 +333,21 @@ internal class TaskFormFragment : Fragment() {
         Toast.makeText(activity, getString(UiR.string.alarm_not_valid), Toast.LENGTH_SHORT).show()
     }
 
-    private fun initAlarmViews() = with(binding) {
-        rlTaskFormAddAlarm.setOnClickListener {
-            viewModel.dispatchViewIntent(OnClickAddAlarm)
+    private fun initAlarmViews() =
+        with(binding) {
+            rlTaskFormAddAlarm.setOnClickListener {
+                viewModel.dispatchViewIntent(OnClickAddAlarm)
+            }
+            alarmDetails.tvAlarmDate.setOnClickListener {
+                viewModel.dispatchViewIntent(OnClickAlarmDate)
+            }
+            alarmDetails.tvAlarmTime.setOnClickListener {
+                viewModel.dispatchViewIntent(OnClickAlarmTime)
+            }
+            alarmDetails.tvAlarmRepeat.setOnClickListener {
+                viewModel.dispatchViewIntent(OnClickRepeatAlarm)
+            }
         }
-        alarmDetails.tvAlarmDate.setOnClickListener {
-            viewModel.dispatchViewIntent(OnClickAlarmDate)
-        }
-        alarmDetails.tvAlarmTime.setOnClickListener {
-            viewModel.dispatchViewIntent(OnClickAlarmTime)
-        }
-        alarmDetails.tvAlarmRepeat.setOnClickListener {
-            viewModel.dispatchViewIntent(OnClickRepeatAlarm)
-        }
-    }
 
     private fun initEditTexts() {
         binding.etTaskFormName.setOnKeyListener(
@@ -338,7 +357,7 @@ internal class TaskFormFragment : Fragment() {
                     return@OnKeyListener true
                 }
                 false
-            }
+            },
         )
     }
 
@@ -365,7 +384,10 @@ internal class TaskFormFragment : Fragment() {
         }
     }
 
-    private fun updateAlarmVisibility(visible: Boolean, animate: Boolean) {
+    private fun updateAlarmVisibility(
+        visible: Boolean,
+        animate: Boolean,
+    ) {
         if (visible) {
             if (animate) showAlarmWithAnimation() else showAlarm()
         } else {

@@ -67,34 +67,48 @@ allprojects {
             showStackTraces = true
             showStandardStreams = true
 
-            addTestListener(object : TestListener {
-                override fun beforeSuite(suite: TestDescriptor) {}
-                override fun beforeTest(testDescriptor: TestDescriptor) {}
-                override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {}
-                override fun afterSuite(suite: TestDescriptor, result: TestResult) {
-                    if (suite.parent == null) {
-                        println("\nTest result: ${result.resultType}")
-                        println(
-                            "Test summary: ${result.testCount} tests, " +
-                                "${result.successfulTestCount} succeeded, " +
-                                "${result.failedTestCount} failed, " +
-                                "${result.skippedTestCount} skipped"
-                        )
-
-                        testsTotal += result.testCount
-                        testsSuccess += result.successfulTestCount
-                        testsFailed += result.failedTestCount
-                        testsSkipped += result.skippedTestCount
-
-                        println(
-                            "Total: $testsTotal tests, " +
-                                "$testsSuccess succeeded, " +
-                                "$testsFailed failed, " +
-                                "$testsSkipped skipped"
-                        )
+            addTestListener(
+                object : TestListener {
+                    override fun beforeSuite(suite: TestDescriptor) {
                     }
-                }
-            })
+
+                    override fun beforeTest(testDescriptor: TestDescriptor) {
+                    }
+
+                    override fun afterTest(
+                        testDescriptor: TestDescriptor,
+                        result: TestResult,
+                    ) {
+                    }
+
+                    override fun afterSuite(
+                        suite: TestDescriptor,
+                        result: TestResult,
+                    ) {
+                        if (suite.parent == null) {
+                            println("\nTest result: ${result.resultType}")
+                            println(
+                                "Test summary: ${result.testCount} tests, " +
+                                    "${result.successfulTestCount} succeeded, " +
+                                    "${result.failedTestCount} failed, " +
+                                    "${result.skippedTestCount} skipped",
+                            )
+
+                            testsTotal += result.testCount
+                            testsSuccess += result.successfulTestCount
+                            testsFailed += result.failedTestCount
+                            testsSkipped += result.skippedTestCount
+
+                            println(
+                                "Total: $testsTotal tests, " +
+                                    "$testsSuccess succeeded, " +
+                                    "$testsFailed failed, " +
+                                    "$testsSkipped skipped",
+                            )
+                        }
+                    }
+                },
+            )
         }
     }
 }
@@ -107,10 +121,11 @@ tasks.register("forbidSimpleDateFormat") {
     group = "verification"
     description = "Fails if legacy java.text.SimpleDateFormat is used."
     doLast {
-        val forbidden = fileTree(rootDir) {
-            include("**/*.kt", "**/*.java")
-            exclude("**/build/**")
-        }.files.filter { it.readText().contains("SimpleDateFormat") }
+        val forbidden =
+            fileTree(rootDir) {
+                include("**/*.kt", "**/*.java")
+                exclude("**/build/**")
+            }.files.filter { it.readText().contains("SimpleDateFormat") }
 
         if (forbidden.isNotEmpty()) {
             val files = forbidden.joinToString(separator = "\n") { " - ${it.relativeTo(rootDir)}" }
@@ -123,10 +138,11 @@ tasks.register("checkCrossModuleRImports") {
     group = "verification"
     description = "Fails if app R is imported outside the app module."
     doLast {
-        val offenders = fileTree(rootDir) {
-            include("**/*.kt", "**/*.java")
-            exclude("**/build/**", "app/**")
-        }.files.filter { it.readText().contains("import br.com.sailboat.todozy.R") }
+        val offenders =
+            fileTree(rootDir) {
+                include("**/*.kt", "**/*.java")
+                exclude("**/build/**", "app/**")
+            }.files.filter { it.readText().contains("import br.com.sailboat.todozy.R") }
 
         if (offenders.isNotEmpty()) {
             val files = offenders.joinToString(separator = "\n") { " - ${it.relativeTo(rootDir)}" }

@@ -12,7 +12,10 @@ interface TaskHistoryRepository {
     suspend fun getTodayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
     suspend fun getYesterdayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
     suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
-    suspend fun insert(task: Task, status: TaskStatus): Result<Unit?>
+    suspend fun insert(
+        task: Task,
+        status: TaskStatus,
+    ): Result<Unit?>
     suspend fun update(taskHistory: TaskHistory): Result<Unit?>
     suspend fun delete(taskHistory: TaskHistory): Result<Unit?>
     suspend fun deleteAll(): Result<Unit?>

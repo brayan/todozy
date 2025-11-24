@@ -15,7 +15,6 @@ internal class TaskDetailsUiModelFactory(
     private val stringProvider: StringProvider,
     private val alarmToAlarmUiModelMapper: AlarmToAlarmUiModelMapper,
 ) {
-
     fun create(task: Task): List<UiModel> {
         val uiModelList = mutableListOf<UiModel>()
 
@@ -28,12 +27,18 @@ internal class TaskDetailsUiModelFactory(
         return uiModelList
     }
 
-    private fun addTitle(uiModelList: MutableList<UiModel>, task: Task) {
+    private fun addTitle(
+        uiModelList: MutableList<UiModel>,
+        task: Task,
+    ) {
         val item = TitleUiModel(task.name)
         uiModelList.add(item)
     }
 
-    private fun addAlarm(alarm: Alarm, uiModelList: MutableList<UiModel>) {
+    private fun addAlarm(
+        alarm: Alarm,
+        uiModelList: MutableList<UiModel>,
+    ) {
         val item = LabelUiModel(stringProvider.getString(UiR.string.alarm), UiModelType.LABEL.ordinal)
         uiModelList.add(item)
 

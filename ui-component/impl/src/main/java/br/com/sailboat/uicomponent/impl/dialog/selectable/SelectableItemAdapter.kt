@@ -7,14 +7,19 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 
 class SelectableItemAdapter(private val callback: Callback) :
     ListAdapter<SelectableItem, SelectableItemViewHolder>(
-        SelectableItemDiffUtilCallback()
+        SelectableItemDiffUtilCallback(),
     ) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectableItemViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): SelectableItemViewHolder {
         return SelectableItemViewHolder(parent, callback)
     }
 
-    override fun onBindViewHolder(holder: SelectableItemViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SelectableItemViewHolder,
+        position: Int,
+    ) {
         val item = callback.selectableItems[position]
         holder.bind(item)
     }

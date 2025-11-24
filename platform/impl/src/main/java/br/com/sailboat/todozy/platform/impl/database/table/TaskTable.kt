@@ -1,7 +1,7 @@
 package br.com.sailboat.todozy.platform.impl.database.table
 
 object TaskTable {
-    const val table =
+    const val TABLE =
         " CREATE TABLE Task ( " +
             " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " name TEXT NOT NULL, " +

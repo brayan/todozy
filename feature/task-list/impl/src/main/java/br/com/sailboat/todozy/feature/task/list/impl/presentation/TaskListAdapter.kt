@@ -14,16 +14,21 @@ import br.com.sailboat.uicomponent.model.UiModelType
 
 internal class TaskListAdapter(private val callback: Callback) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
-
     interface Callback : TaskViewHolder.Callback
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ) = when (viewType) {
         UiModelType.TASK.ordinal -> TaskViewHolder(parent, callback)
         UiModelType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
         else -> EmptyViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         when (val item = getItem(position)) {
             is TaskUiModel -> (holder as TaskViewHolder).bind(item)
             is SubheadUiModel -> (holder as SubheadViewHolder).bind(item)

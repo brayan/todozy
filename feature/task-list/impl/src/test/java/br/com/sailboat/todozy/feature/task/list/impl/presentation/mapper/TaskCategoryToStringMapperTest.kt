@@ -9,52 +9,56 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class TaskCategoryToStringMapperTest {
-
     private val stringProvider: StringProvider = mockk(relaxed = true)
 
-    private val taskCategoryToStringMapper = TaskCategoryToStringMapper(
-        stringProvider = stringProvider
-    )
+    private val taskCategoryToStringMapper =
+        TaskCategoryToStringMapper(
+            stringProvider = stringProvider,
+        )
 
     @Test
-    fun `should map String from task category BEFORE_TODAY`() = runBlocking {
-        val taskCategoryString = "Before today"
-        prepareScenario(taskCategoryString = taskCategoryString)
+    fun `should map String from task category BEFORE_TODAY`() =
+        runBlocking {
+            val taskCategoryString = "Before today"
+            prepareScenario(taskCategoryString = taskCategoryString)
 
-        val result = taskCategoryToStringMapper.map(TaskCategory.BEFORE_TODAY)
+            val result = taskCategoryToStringMapper.map(TaskCategory.BEFORE_TODAY)
 
-        assertEquals(taskCategoryString, result)
-    }
-
-    @Test
-    fun `should map String from task category TODAY`() = runBlocking {
-        val taskCategoryString = "Today"
-        prepareScenario(taskCategoryString = taskCategoryString)
-
-        val result = taskCategoryToStringMapper.map(TaskCategory.TODAY)
-
-        assertEquals(taskCategoryString, result)
-    }
+            assertEquals(taskCategoryString, result)
+        }
 
     @Test
-    fun `should map String from task category TOMORROW`() = runBlocking {
-        val taskCategoryString = "Tomorrow"
-        prepareScenario(taskCategoryString = taskCategoryString)
+    fun `should map String from task category TODAY`() =
+        runBlocking {
+            val taskCategoryString = "Today"
+            prepareScenario(taskCategoryString = taskCategoryString)
 
-        val result = taskCategoryToStringMapper.map(TaskCategory.TOMORROW)
+            val result = taskCategoryToStringMapper.map(TaskCategory.TODAY)
 
-        assertEquals(taskCategoryString, result)
-    }
+            assertEquals(taskCategoryString, result)
+        }
 
     @Test
-    fun `should map String from task category NEXT_DAYS`() = runBlocking {
-        val taskCategoryString = "Next days"
-        prepareScenario(taskCategoryString = taskCategoryString)
+    fun `should map String from task category TOMORROW`() =
+        runBlocking {
+            val taskCategoryString = "Tomorrow"
+            prepareScenario(taskCategoryString = taskCategoryString)
 
-        val result = taskCategoryToStringMapper.map(TaskCategory.NEXT_DAYS)
+            val result = taskCategoryToStringMapper.map(TaskCategory.TOMORROW)
 
-        assertEquals(taskCategoryString, result)
-    }
+            assertEquals(taskCategoryString, result)
+        }
+
+    @Test
+    fun `should map String from task category NEXT_DAYS`() =
+        runBlocking {
+            val taskCategoryString = "Next days"
+            prepareScenario(taskCategoryString = taskCategoryString)
+
+            val result = taskCategoryToStringMapper.map(TaskCategory.NEXT_DAYS)
+
+            assertEquals(taskCategoryString, result)
+        }
 
     private fun prepareScenario(taskCategoryString: String = "Today") {
         coEvery { stringProvider.getString(any()) } returns taskCategoryString

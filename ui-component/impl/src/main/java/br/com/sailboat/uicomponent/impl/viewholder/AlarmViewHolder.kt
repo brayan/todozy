@@ -10,28 +10,28 @@ import br.com.sailboat.uicomponent.model.AlarmUiModel
 
 class AlarmViewHolder(parent: ViewGroup) :
     BaseViewHolder<AlarmUiModel, AlarmDetailsBinding>(
-        AlarmDetailsBinding.inflate(getInflater(parent), parent, false)
+        AlarmDetailsBinding.inflate(getInflater(parent), parent, false),
     ) {
+    override fun bind(item: AlarmUiModel): Unit =
+        with(binding) {
+            try {
+                tvAlarmDate.text = item.date
+                tvAlarmTime.text = item.time
 
-    override fun bind(item: AlarmUiModel): Unit = with(binding) {
-        try {
-            tvAlarmDate.text = item.date
-            tvAlarmTime.text = item.time
-
-            updateAlarmRepeatType(item)
-        } catch (e: Exception) {
-            e.log()
+                updateAlarmRepeatType(item)
+            } catch (e: Exception) {
+                e.log()
+            }
         }
-    }
 
-    private fun updateAlarmRepeatType(alarm: AlarmUiModel) = with(binding) {
+    private fun updateAlarmRepeatType(alarm: AlarmUiModel) =
+        with(binding) {
+            if (alarm.shouldRepeat) {
+                tvAlarmRepeat.visible()
 
-        if (alarm.shouldRepeat) {
-            tvAlarmRepeat.visible()
-
-            tvAlarmRepeat.text = alarm.description
-        } else {
-            tvAlarmRepeat.gone()
+                tvAlarmRepeat.text = alarm.description
+            } else {
+                tvAlarmRepeat.gone()
+            }
         }
-    }
 }

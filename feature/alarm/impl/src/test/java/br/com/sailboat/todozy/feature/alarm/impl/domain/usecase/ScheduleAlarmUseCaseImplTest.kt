@@ -11,19 +11,19 @@ import org.junit.Test
 import java.util.Calendar
 
 internal class ScheduleAlarmUseCaseImplTest {
-
     private val alarmManagerService: AlarmManagerService = mockk(relaxed = true)
 
     private val scheduleAlarmUseCase = ScheduleAlarmUseCaseImpl(alarmManagerService)
 
     @Test
-    fun `should schedule alarm on alarmManagerService`() = runBlocking {
-        val taskId = 45L
-        val alarm = Alarm(dateTime = Calendar.getInstance(), repeatType = RepeatType.WEEK)
+    fun `should schedule alarm on alarmManagerService`() =
+        runBlocking {
+            val taskId = 45L
+            val alarm = Alarm(dateTime = Calendar.getInstance(), repeatType = RepeatType.WEEK)
 
-        scheduleAlarmUseCase(alarm, taskId)
+            scheduleAlarmUseCase(alarm, taskId)
 
-        coVerify { alarmManagerService.scheduleAlarm(alarm.dateTime, taskId) }
-        confirmVerified(alarmManagerService)
-    }
+            coVerify { alarmManagerService.scheduleAlarm(alarm.dateTime, taskId) }
+            confirmVerified(alarmManagerService)
+        }
 }

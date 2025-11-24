@@ -9,9 +9,8 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 
 class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<SelectableItem, VhSelectableItemBinding>(
-        VhSelectableItemBinding.inflate(getInflater(parent), parent, false)
+        VhSelectableItemBinding.inflate(getInflater(parent), parent, false),
     ) {
-
     interface Callback {
         val selectedItem: SelectableItem?
         fun onClickItem(position: Int)
@@ -21,14 +20,15 @@ class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback
         itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
     }
 
-    override fun bind(item: SelectableItem) = with(binding) {
-        tvSelectableItemName.setText(item.getName())
+    override fun bind(item: SelectableItem) =
+        with(binding) {
+            tvSelectableItemName.setText(item.getName())
 
-        val selectedItem = callback.selectedItem
-        if (selectedItem != null && selectedItem === item) {
-            ivSelectableItemSelected.visible()
-        } else {
-            ivSelectableItemSelected.gone()
+            val selectedItem = callback.selectedItem
+            if (selectedItem != null && selectedItem === item) {
+                ivSelectableItemSelected.visible()
+            } else {
+                ivSelectableItemSelected.gone()
+            }
         }
-    }
 }

@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistory
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 
 internal class TaskHistoryToTaskHistoryUiModelMapper {
-
     fun map(taskHistoryList: List<TaskHistory>) = taskHistoryList.map { map(it) }
 
     private fun map(taskHistory: TaskHistory): TaskHistoryUiModel {
@@ -15,7 +14,7 @@ internal class TaskHistoryToTaskHistoryUiModelMapper {
             id = taskHistory.id,
             taskName = taskHistory.taskName,
             done = done,
-            insertingDate = taskHistory.insertingDate
+            insertingDate = taskHistory.insertingDate,
         )
     }
 }

@@ -12,7 +12,6 @@ internal class AlarmServiceImpl(
     private val dateTimeFormatter: TaskFormDateTimeFormatter,
     private val weekDaysHelper: WeekDaysHelper,
 ) : AlarmService {
-
     override fun getRepeatTypeDescription(repeatType: RepeatType): String {
         val repeatTypeUiModel = RepeatTypeUiModel.getFromRepeatType(repeatType)
         return stringProvider.getString(repeatTypeUiModel.description)

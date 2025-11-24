@@ -1,16 +1,17 @@
 package br.com.sailboat.todozy.utility.android.view
 
 import android.content.Context
-import android.graphics.Point
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-fun LinearLayoutManager.scrollPositionToMiddleScreen(ctx: Context, position: Int) {
+fun LinearLayoutManager.scrollPositionToMiddleScreen(
+    ctx: Context,
+    position: Int,
+) {
     val height = ctx.resources.displayMetrics.heightPixels
     scrollToPositionWithOffset(position, height / 4)
 }
@@ -31,19 +32,28 @@ fun Toolbar.enableScroll() {
 }
 
 fun RecyclerView.hideFabWhenScrolling(fab: FloatingActionButton) {
-    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (dy > 0 && fab.isShown) {
-                fab.hide()
-            } else {
-                fab.show()
+    addOnScrollListener(
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(
+                recyclerView: RecyclerView,
+                dx: Int,
+                dy: Int,
+            ) {
+                if (dy > 0 && fab.isShown) {
+                    fab.hide()
+                } else {
+                    fab.show()
+                }
             }
-        }
 
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-        }
-    })
+            override fun onScrollStateChanged(
+                recyclerView: RecyclerView,
+                newState: Int,
+            ) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        },
+    )
 }
 
 fun View.scaleUp() {

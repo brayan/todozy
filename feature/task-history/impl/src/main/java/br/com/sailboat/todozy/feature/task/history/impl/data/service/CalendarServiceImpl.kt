@@ -6,9 +6,8 @@ import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import java.util.Calendar
 
 internal class CalendarServiceImpl(
-    private val context: Context
+    private val context: Context,
 ) : CalendarService {
-
     override fun getShortDate(calendar: Calendar): String {
         return calendar.toShortDateView(context)
     }

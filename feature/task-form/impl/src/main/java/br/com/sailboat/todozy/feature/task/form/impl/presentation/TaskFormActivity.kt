@@ -20,7 +20,7 @@ fun Context.startTaskFormActivity(launcher: ActivityResultLauncher<Intent>) {
 
 fun Context.startTaskFormActivity(
     taskId: Long,
-    launcher: ActivityResultLauncher<Intent>
+    launcher: ActivityResultLauncher<Intent>,
 ) {
     val intent = Intent(this, TaskFormActivity::class.java)
     val bundle = Bundle()
@@ -32,7 +32,6 @@ fun Context.startTaskFormActivity(
 }
 
 internal class TaskFormActivity : BaseActivity() {
-
     override fun newFragmentInstance(): TaskFormFragment {
         val bundle = intent.getBundle()
 

@@ -13,7 +13,6 @@ internal class ScheduleAllAlarmsUseCaseImpl(
     private val getNextAlarmUseCase: GetNextAlarmUseCase,
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
 ) : ScheduleAllAlarmsUseCase {
-
     override suspend operator fun invoke() {
         val taskFilter = TaskFilter(category = TaskCategory.WITH_ALARMS)
         val tasksWithAlarms = getTasksUseCase(taskFilter).getOrDefault(emptyList())

@@ -17,12 +17,12 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class TaskHistoryRepositoryImplTest {
-
     private val taskHistoryLocalDataSource: TaskHistoryLocalDataSource = mockk(relaxed = true)
 
-    private val taskHistoryRepository = TaskHistoryRepositoryImpl(
-        taskHistoryLocalDataSource = taskHistoryLocalDataSource,
-    )
+    private val taskHistoryRepository =
+        TaskHistoryRepositoryImpl(
+            taskHistoryLocalDataSource = taskHistoryLocalDataSource,
+        )
 
     @Test
     fun `should call getTotalOfNotDoneTasks from local data source when getTotalOfNotDoneTasks is called from repository`() =
@@ -59,15 +59,16 @@ internal class TaskHistoryRepositoryImplTest {
 
             val result = taskHistoryRepository.getTodayHistory(taskHistoryFilter).getOrNull()
 
-            val expected = listOf(
-                TaskHistory(
-                    id = taskHistoryData.id,
-                    taskId = taskHistoryData.taskId,
-                    taskName = taskHistoryData.taskName.orEmpty(),
-                    status = TaskStatus.DONE,
-                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+            val expected =
+                listOf(
+                    TaskHistory(
+                        id = taskHistoryData.id,
+                        taskId = taskHistoryData.taskId,
+                        taskName = taskHistoryData.taskName.orEmpty(),
+                        status = TaskStatus.DONE,
+                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskHistoryLocalDataSource.getTodayHistory(taskHistoryFilter) }
         }
@@ -81,15 +82,16 @@ internal class TaskHistoryRepositoryImplTest {
 
             val result = taskHistoryRepository.getYesterdayHistory(taskHistoryFilter).getOrNull()
 
-            val expected = listOf(
-                TaskHistory(
-                    id = taskHistoryData.id,
-                    taskId = taskHistoryData.taskId,
-                    taskName = taskHistoryData.taskName.orEmpty(),
-                    status = TaskStatus.DONE,
-                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+            val expected =
+                listOf(
+                    TaskHistory(
+                        id = taskHistoryData.id,
+                        taskId = taskHistoryData.taskId,
+                        taskName = taskHistoryData.taskName.orEmpty(),
+                        status = TaskStatus.DONE,
+                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskHistoryLocalDataSource.getYesterdayHistory(taskHistoryFilter) }
         }
@@ -103,15 +105,16 @@ internal class TaskHistoryRepositoryImplTest {
 
             val result = taskHistoryRepository.getPreviousDaysHistory(taskHistoryFilter).getOrNull()
 
-            val expected = listOf(
-                TaskHistory(
-                    id = taskHistoryData.id,
-                    taskId = taskHistoryData.taskId,
-                    taskName = taskHistoryData.taskName.orEmpty(),
-                    status = TaskStatus.DONE,
-                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+            val expected =
+                listOf(
+                    TaskHistory(
+                        id = taskHistoryData.id,
+                        taskId = taskHistoryData.taskId,
+                        taskName = taskHistoryData.taskName.orEmpty(),
+                        status = TaskStatus.DONE,
+                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskHistoryLocalDataSource.getPreviousDaysHistory(taskHistoryFilter) }
         }
@@ -124,15 +127,16 @@ internal class TaskHistoryRepositoryImplTest {
 
             val result = taskHistoryRepository.getTaskHistory(taskHistoryData.taskId).getOrNull()
 
-            val expected = listOf(
-                TaskHistory(
-                    id = taskHistoryData.id,
-                    taskId = taskHistoryData.taskId,
-                    taskName = taskHistoryData.taskName.orEmpty(),
-                    status = TaskStatus.DONE,
-                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+            val expected =
+                listOf(
+                    TaskHistory(
+                        id = taskHistoryData.id,
+                        taskId = taskHistoryData.taskId,
+                        taskName = taskHistoryData.taskName.orEmpty(),
+                        status = TaskStatus.DONE,
+                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskHistoryLocalDataSource.getTaskHistoryByTask(taskHistoryData.taskId) }
         }
@@ -152,14 +156,15 @@ internal class TaskHistoryRepositoryImplTest {
     fun `should call update from local data source when update is called from repository`() =
         runBlocking {
             val taskHistory = makeTaskHistory()
-            val taskHistoryData = TaskHistoryData(
-                id = taskHistory.id,
-                taskId = taskHistory.taskId,
-                taskName = taskHistory.taskName,
-                status = 1,
-                insertingDate = taskHistory.insertingDate,
-                enabled = true,
-            )
+            val taskHistoryData =
+                TaskHistoryData(
+                    id = taskHistory.id,
+                    taskId = taskHistory.taskId,
+                    taskName = taskHistory.taskName,
+                    status = 1,
+                    insertingDate = taskHistory.insertingDate,
+                    enabled = true,
+                )
             prepareScenario()
 
             taskHistoryRepository.update(taskHistory)

@@ -14,17 +14,16 @@ import br.com.sailboat.todozy.utility.android.fragment.BaseDialogFragment
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
 import br.com.sailboat.uicomponent.impl.databinding.DialogDateRangeSelectorBinding
 import br.com.sailboat.uicomponent.impl.dialog.MessageDialog
-import br.com.sailboat.uicomponent.impl.R as UiR
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.google.android.material.datepicker.MaterialDatePicker
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 import java.util.TimeZone
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 private const val INITIAL_DATE_SELECTOR = "INITIAL_DATE_SELECTOR"
 private const val FINAL_DATE_SELECTOR = "FINAL_DATE_SELECTOR"
 
 internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
-
     private var initialDate: Calendar? = null
     private var finalDate: Calendar? = null
     private var initialPicker: MaterialDatePicker<Long>? = null
@@ -51,39 +50,42 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         reattachPickers()
     }
 
-    private fun initViews() = with(binding) {
-        llDateRangeSelectorInitialDate.setOnClickListener {
-            if (childFragmentManager.findFragmentByTag(INITIAL_DATE_SELECTOR) != null) return@setOnClickListener
+    private fun initViews() =
+        with(binding) {
+            llDateRangeSelectorInitialDate.setOnClickListener {
+                if (childFragmentManager.findFragmentByTag(INITIAL_DATE_SELECTOR) != null) return@setOnClickListener
 
-            val picker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(getString(UiR.string.label_starting_date))
-                .setSelection(initialDate.orNewCalendar().timeInMillis)
-                .build()
+                val picker =
+                    MaterialDatePicker.Builder.datePicker()
+                        .setTitleText(getString(UiR.string.label_starting_date))
+                        .setSelection(initialDate.orNewCalendar().timeInMillis)
+                        .build()
 
-            picker.addOnPositiveButtonClickListener { millis ->
-                handleInitialDateSelection(millis)
+                picker.addOnPositiveButtonClickListener { millis ->
+                    handleInitialDateSelection(millis)
+                }
+
+                picker.show(childFragmentManager, INITIAL_DATE_SELECTOR)
+                initialPicker = picker
             }
 
-            picker.show(childFragmentManager, INITIAL_DATE_SELECTOR)
-            initialPicker = picker
-        }
+            llDateRangeSelectorFinalDate.setOnClickListener {
+                if (childFragmentManager.findFragmentByTag(FINAL_DATE_SELECTOR) != null) return@setOnClickListener
 
-        llDateRangeSelectorFinalDate.setOnClickListener {
-            if (childFragmentManager.findFragmentByTag(FINAL_DATE_SELECTOR) != null) return@setOnClickListener
+                val picker =
+                    MaterialDatePicker.Builder.datePicker()
+                        .setTitleText(getString(UiR.string.final_date))
+                        .setSelection(finalDate.orNewCalendar().timeInMillis)
+                        .build()
 
-            val picker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(getString(UiR.string.final_date))
-                .setSelection(finalDate.orNewCalendar().timeInMillis)
-                .build()
+                picker.addOnPositiveButtonClickListener { millis ->
+                    handleFinalDateSelection(millis)
+                }
 
-            picker.addOnPositiveButtonClickListener { millis ->
-                handleFinalDateSelection(millis)
+                picker.show(childFragmentManager, FINAL_DATE_SELECTOR)
+                finalPicker = picker
             }
-
-            picker.show(childFragmentManager, FINAL_DATE_SELECTOR)
-            finalPicker = picker
         }
-    }
 
     private fun observeViewModel() {
         viewModel.viewState.action.observe(this) { action ->
@@ -131,7 +133,7 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
         MessageDialog.showMessage(
             childFragmentManager,
             getString(UiR.string.msg_end_date),
-            "Ops..."
+            "Ops...",
         )
     }
 
@@ -173,7 +175,7 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH),
-            )
+            ),
         )
         initialPicker = null
     }
@@ -186,13 +188,16 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH),
-            )
+            ),
         )
         finalPicker = null
     }
 
     interface Callback {
-        fun onClickOk(initialDate: Calendar, finalDate: Calendar)
+        fun onClickOk(
+            initialDate: Calendar,
+            finalDate: Calendar,
+        )
     }
 
     companion object {
@@ -202,7 +207,7 @@ internal class DateRangeSelectorFilterDialog : BaseDialogFragment() {
             manager: FragmentManager,
             initialDate: Calendar?,
             finalDate: Calendar?,
-            callback: Callback
+            callback: Callback,
         ): DateRangeSelectorFilterDialog {
             val dialog = DateRangeSelectorFilterDialog()
             dialog.callback = callback

@@ -5,15 +5,15 @@ import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class TaskCategoryToStringMapper(private val stringProvider: StringProvider) {
-
     fun map(taskCategory: TaskCategory): String {
-        val category = when (taskCategory) {
-            TaskCategory.BEFORE_TODAY -> UiR.string.previous_days
-            TaskCategory.TODAY -> UiR.string.today
-            TaskCategory.TOMORROW -> UiR.string.tomorrow
-            TaskCategory.NEXT_DAYS -> UiR.string.next_days
-            else -> UiR.string.empty
-        }
+        val category =
+            when (taskCategory) {
+                TaskCategory.BEFORE_TODAY -> UiR.string.previous_days
+                TaskCategory.TODAY -> UiR.string.today
+                TaskCategory.TOMORROW -> UiR.string.tomorrow
+                TaskCategory.NEXT_DAYS -> UiR.string.next_days
+                else -> UiR.string.empty
+            }
         return stringProvider.getString(category)
     }
 }

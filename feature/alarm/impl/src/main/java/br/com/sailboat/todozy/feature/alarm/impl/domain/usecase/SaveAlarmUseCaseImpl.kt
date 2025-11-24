@@ -9,13 +9,13 @@ internal class SaveAlarmUseCaseImpl(
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
     private val scheduleAlarmUseCase: ScheduleAlarmUseCase,
 ) : SaveAlarmUseCase {
-
     override suspend operator fun invoke(
         alarm: Alarm,
         taskId: Long,
-    ): Result<Unit?> = runCatching {
-        alarmRepository.save(alarm, taskId).getOrThrow()
-        cancelAlarmScheduleUseCase(taskId)
-        scheduleAlarmUseCase(alarm, taskId)
-    }
+    ): Result<Unit?> =
+        runCatching {
+            alarmRepository.save(alarm, taskId).getOrThrow()
+            cancelAlarmScheduleUseCase(taskId)
+            scheduleAlarmUseCase(alarm, taskId)
+        }
 }

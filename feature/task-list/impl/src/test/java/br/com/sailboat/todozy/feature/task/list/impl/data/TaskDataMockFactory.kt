@@ -5,7 +5,6 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
 import java.util.Calendar
 
 internal object TaskDataMockFactory {
-
     fun makeTaskData(
         id: Long = 45L,
         name: String = "Task Name",

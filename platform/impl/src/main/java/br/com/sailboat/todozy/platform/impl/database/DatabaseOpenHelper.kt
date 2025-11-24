@@ -15,8 +15,12 @@ internal class DatabaseOpenHelper(
     context: Context,
 ) : DatabaseOpenHelperService,
     KoinComponent,
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
+    SQLiteOpenHelper(
+        context,
+        DATABASE_NAME,
+        null,
+        DATABASE_VERSION,
+    ) {
     private val databaseTableFactory: DatabaseTableFactory by inject()
 
     override val readable: SQLiteDatabase
@@ -33,5 +37,9 @@ internal class DatabaseOpenHelper(
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+    override fun onUpgrade(
+        db: SQLiteDatabase,
+        oldVersion: Int,
+        newVersion: Int,
+    ) {}
 }

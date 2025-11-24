@@ -14,7 +14,6 @@ internal class AlarmToAlarmUiModelMapperImpl(
     private val stringProvider: StringProvider,
     private val weekDaysHelper: WeekDaysHelper,
 ) : AlarmToAlarmUiModelMapper {
-
     override fun map(alarm: Alarm): AlarmUiModel {
         val date = formatter.formatDate(alarm.dateTime)
         val time = formatter.formatTime(alarm.dateTime)
@@ -29,22 +28,26 @@ internal class AlarmToAlarmUiModelMapperImpl(
         )
     }
 
-    private fun mapRepeatTypeDescription(repeatType: RepeatType, customDays: String?): String {
+    private fun mapRepeatTypeDescription(
+        repeatType: RepeatType,
+        customDays: String?,
+    ): String {
         if (repeatType == RepeatType.CUSTOM && !customDays.isNullOrEmpty()) {
             return weekDaysHelper.getCustomRepeat(customDays)
         }
 
-        val descriptionId = when (repeatType) {
-            RepeatType.NOT_REPEAT -> UiR.string.not_repeat
-            RepeatType.DAY -> UiR.string.every_day
-            RepeatType.WEEK -> UiR.string.every_week
-            RepeatType.MONTH -> UiR.string.every_month
-            RepeatType.YEAR -> UiR.string.every_year
-            RepeatType.SECOND -> UiR.string.every_second
-            RepeatType.MINUTE -> UiR.string.every_minute
-            RepeatType.HOUR -> UiR.string.every_hour
-            RepeatType.CUSTOM -> UiR.string.custom
-        }
+        val descriptionId =
+            when (repeatType) {
+                RepeatType.NOT_REPEAT -> UiR.string.not_repeat
+                RepeatType.DAY -> UiR.string.every_day
+                RepeatType.WEEK -> UiR.string.every_week
+                RepeatType.MONTH -> UiR.string.every_month
+                RepeatType.YEAR -> UiR.string.every_year
+                RepeatType.SECOND -> UiR.string.every_second
+                RepeatType.MINUTE -> UiR.string.every_minute
+                RepeatType.HOUR -> UiR.string.every_hour
+                RepeatType.CUSTOM -> UiR.string.custom
+            }
         return stringProvider.getString(descriptionId)
     }
 }

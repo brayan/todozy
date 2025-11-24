@@ -13,7 +13,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 class TimeSelectorDialog : DialogFragment(), TimePickerDialog.OnTimeSetListener {
-
     private var calendar: Calendar? = null
 
     var callback: Callback? = null
@@ -21,7 +20,10 @@ class TimeSelectorDialog : DialogFragment(), TimePickerDialog.OnTimeSetListener 
     private val viewModel: DateTimeSelectorViewModel by viewModel()
 
     interface Callback {
-        fun onTimeSelected(hourOfDay: Int, minute: Int)
+        fun onTimeSelected(
+            hourOfDay: Int,
+            minute: Int,
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +43,11 @@ class TimeSelectorDialog : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         )
     }
 
-    override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+    override fun onTimeSet(
+        view: TimePicker,
+        hourOfDay: Int,
+        minute: Int,
+    ) {
         if (view.isShown) {
             callback?.onTimeSelected(hourOfDay, minute)
         }

@@ -14,25 +14,27 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    viewModel {
-        TaskDetailsViewModel(
-            getTaskMetricsUseCase = get(),
-            getTaskUseCase = get(),
-            disableTaskUseCase = get(),
-            taskDetailsUiModelFactory = get(),
-            logService = get(),
-        )
+private val presentation =
+    module {
+        viewModel {
+            TaskDetailsViewModel(
+                getTaskMetricsUseCase = get(),
+                getTaskUseCase = get(),
+                disableTaskUseCase = get(),
+                taskDetailsUiModelFactory = get(),
+                logService = get(),
+            )
+        }
+
+        factory { TaskDetailsUiModelFactory(get(), get()) }
+        factory<TaskDetailsNavigator> { TaskDetailsNavigatorImpl() }
     }
 
-    factory { TaskDetailsUiModelFactory(get(), get()) }
-    factory<TaskDetailsNavigator> { TaskDetailsNavigatorImpl() }
-}
-
-private val domain = module {
-    factory<GetTaskUseCase> { GetTaskUseCaseImpl(get()) }
-    factory<GetTaskMetricsUseCase> { GetTaskMetricsUseCaseImpl(get()) }
-    factory<DisableTaskUseCase> { DisableTaskUseCaseImpl(get(), get()) }
-}
+private val domain =
+    module {
+        factory<GetTaskUseCase> { GetTaskUseCaseImpl(get()) }
+        factory<GetTaskMetricsUseCase> { GetTaskMetricsUseCaseImpl(get()) }
+        factory<DisableTaskUseCase> { DisableTaskUseCaseImpl(get(), get()) }
+    }
 
 val taskDetailsModule: List<Module> = listOf(presentation, domain)

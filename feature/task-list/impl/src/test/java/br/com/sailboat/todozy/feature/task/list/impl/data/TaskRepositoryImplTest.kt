@@ -18,14 +18,14 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class TaskRepositoryImplTest {
-
     private val alarmRepository: AlarmRepository = mockk(relaxed = true)
     private val taskLocalDataSource: TaskLocalDataSource = mockk(relaxed = true)
 
-    private val taskRepository = TaskRepositoryImpl(
-        alarmRepository = alarmRepository,
-        taskLocalDataSource = taskLocalDataSource,
-    )
+    private val taskRepository =
+        TaskRepositoryImpl(
+            alarmRepository = alarmRepository,
+            taskLocalDataSource = taskLocalDataSource,
+        )
 
     @Test
     fun `should call getTask from taskLocalDataSource when getTask is called from taskRepository`() =
@@ -40,14 +40,15 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getTask(taskId)
 
-            val expected = Result.success(
-                Task(
-                    id = taskData.id,
-                    name = taskData.name.orEmpty(),
-                    notes = taskData.notes,
-                    alarm = alarm
+            val expected =
+                Result.success(
+                    Task(
+                        id = taskData.id,
+                        name = taskData.name.orEmpty(),
+                        notes = taskData.notes,
+                        alarm = alarm,
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTask(taskId) }
         }
@@ -65,16 +66,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getBeforeTodayTasks(taskFilter)
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getBeforeTodayTasks(taskFilter) }
         }
@@ -92,16 +94,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getTodayTasks(taskFilter)
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTodayTasks(taskFilter) }
         }
@@ -119,16 +122,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getTomorrowTasks(taskFilter)
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTomorrowTasks(taskFilter) }
         }
@@ -146,16 +150,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getNextDaysTasks(taskFilter)
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getNextDaysTasks(taskFilter) }
         }
@@ -172,16 +177,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getBeforeNowTasks()
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTasksThrowBeforeNow() }
         }
@@ -198,16 +204,17 @@ internal class TaskRepositoryImplTest {
 
             val result = taskRepository.getTasksWithAlarms()
 
-            val expected = Result.success(
-                listOf(
-                    Task(
-                        id = taskDataResult.id,
-                        name = taskDataResult.name.orEmpty(),
-                        notes = taskDataResult.notes,
-                        alarm = alarm
-                    )
+            val expected =
+                Result.success(
+                    listOf(
+                        Task(
+                            id = taskDataResult.id,
+                            name = taskDataResult.name.orEmpty(),
+                            notes = taskDataResult.notes,
+                            alarm = alarm,
+                        ),
+                    ),
                 )
-            )
             assertEquals(expected, result)
             coVerify { taskLocalDataSource.getTasksWithAlarms() }
         }
@@ -227,7 +234,7 @@ internal class TaskRepositoryImplTest {
                         id = taskId,
                         name = task.name,
                         notes = task.notes,
-                    )
+                    ),
                 )
             }
         }
@@ -242,11 +249,12 @@ internal class TaskRepositoryImplTest {
 
             coVerify {
                 taskLocalDataSource.update(
-                    taskData = TaskData(
-                        id = task.id,
-                        name = task.name,
-                        notes = task.notes,
-                    ),
+                    taskData =
+                        TaskData(
+                            id = task.id,
+                            name = task.name,
+                            notes = task.notes,
+                        ),
                     enabled = true,
                 )
             }
@@ -262,11 +270,12 @@ internal class TaskRepositoryImplTest {
 
             coVerify {
                 taskLocalDataSource.update(
-                    taskData = TaskData(
-                        id = task.id,
-                        name = task.name,
-                        notes = task.notes,
-                    ),
+                    taskData =
+                        TaskData(
+                            id = task.id,
+                            name = task.name,
+                            notes = task.notes,
+                        ),
                     enabled = false,
                 )
             }
@@ -274,9 +283,10 @@ internal class TaskRepositoryImplTest {
 
     private fun prepareScenario(
         taskDataResult: Result<TaskData> = Result.success(TaskDataMockFactory.makeTaskData()),
-        taskDataListResult: Result<List<TaskData>> = Result.success(
-            TaskDataMockFactory.makeTaskDataList()
-        ),
+        taskDataListResult: Result<List<TaskData>> =
+            Result.success(
+                TaskDataMockFactory.makeTaskDataList(),
+            ),
         alarmResult: Result<Alarm?> = Result.success(AlarmMockFactory.makeAlarm()),
         insertResult: Result<Long> = Result.success(42L),
         updateResult: Result<Unit?> = Result.success(Unit),

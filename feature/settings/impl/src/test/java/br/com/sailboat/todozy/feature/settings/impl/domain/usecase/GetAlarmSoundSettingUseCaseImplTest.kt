@@ -8,16 +8,16 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class GetAlarmSoundSettingUseCaseImplTest {
-
     private val repository: SettingsRepository = mockk(relaxed = true)
 
     private val getAlarmSoundSettingUseCase = GetAlarmSoundSettingUseCaseImpl(repository)
 
     @Test
-    fun `should get alarm sound setting from repository`() = runBlocking {
-        getAlarmSoundSettingUseCase()
+    fun `should get alarm sound setting from repository`() =
+        runBlocking {
+            getAlarmSoundSettingUseCase()
 
-        coVerify { repository.getAlarmTone() }
-        confirmVerified(repository)
-    }
+            coVerify { repository.getAlarmTone() }
+            confirmVerified(repository)
+        }
 }

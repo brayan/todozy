@@ -14,23 +14,24 @@ internal class SaveTaskUseCaseImpl(
     private val saveAlarmUseCase: SaveAlarmUseCase,
     private val checkTaskFieldsUseCase: CheckTaskFieldsUseCase,
 ) : SaveTaskUseCase {
+    override suspend operator fun invoke(task: Task): Result<Task> =
+        runCatching {
+            val conditions = checkTaskFieldsUseCase(task)
 
-    override suspend operator fun invoke(task: Task): Result<Task> = runCatching {
-        val conditions = checkTaskFieldsUseCase(task)
+            if (conditions.isNotEmpty()) {
+                throw TaskFieldsException(conditions)
+            }
 
-        if (conditions.isNotEmpty()) {
-            throw TaskFieldsException(conditions)
+            val result =
+                if (task.id == Entity.NO_ID) {
+                    taskRepository.insert(task).getOrThrow()
+                } else {
+                    deleteAlarmUseCase(task.id)
+                    taskRepository.update(task).getOrThrow()
+                }
+
+            task.alarm?.run { saveAlarmUseCase(this, result.id) }
+
+            return@runCatching result
         }
-
-        val result = if (task.id == Entity.NO_ID) {
-            taskRepository.insert(task).getOrThrow()
-        } else {
-            deleteAlarmUseCase(task.id)
-            taskRepository.update(task).getOrThrow()
-        }
-
-        task.alarm?.run { saveAlarmUseCase(this, result.id) }
-
-        return@runCatching result
-    }
 }

@@ -24,7 +24,6 @@ fun Context.startTaskDetailsActivity(
 }
 
 internal class TaskDetailsActivity : BaseActivity() {
-
     override fun newFragmentInstance(): TaskDetailsFragment {
         val taskId = intent.getBundle()?.getTaskId() ?: throw NullPointerException()
         return TaskDetailsFragment.newInstance(taskId)

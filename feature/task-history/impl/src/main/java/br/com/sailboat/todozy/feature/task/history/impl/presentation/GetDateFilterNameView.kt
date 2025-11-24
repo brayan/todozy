@@ -4,7 +4,6 @@ import android.content.Context
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 
 internal class GetDateFilterNameView(private val context: Context) : GetDateFilterNameViewUseCase {
-
     override operator fun invoke(dateRangeType: DateFilterTaskHistorySelectableItem): String {
         return context.getString(dateRangeType.getName()).uppercase()
     }

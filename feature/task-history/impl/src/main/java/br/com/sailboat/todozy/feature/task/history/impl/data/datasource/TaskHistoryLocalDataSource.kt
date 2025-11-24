@@ -10,7 +10,10 @@ internal interface TaskHistoryLocalDataSource {
     fun getTaskHistoryByTask(taskId: Long): Result<List<TaskHistoryData>>
     fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int>
     fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int>
-    fun save(taskId: Long, taskStatus: Int): Result<Long>
+    fun save(
+        taskId: Long,
+        taskStatus: Int,
+    ): Result<Long>
     fun update(taskHistoryData: TaskHistoryData): Result<Unit?>
     fun delete(taskHistoryId: Long): Result<Unit?>
     fun deleteAllHistory(): Result<Unit?>

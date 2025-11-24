@@ -11,7 +11,6 @@ import android.view.animation.Transformation
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
 class AnimationHelper {
-
     fun performScaleUpAnimation(view: View) {
         view.animate().scaleX(1f)
             .scaleY(1f).interpolator = FastOutSlowInInterpolator()
@@ -29,19 +28,25 @@ class AnimationHelper {
         v.layoutParams.height = 1
         v.visibility = View.VISIBLE
 
-        val a = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
-                v.layoutParams.height = if (interpolatedTime == 1f)
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                else
-                    (targetHeight * interpolatedTime).toInt()
-                v.requestLayout()
-            }
+        val a =
+            object : Animation() {
+                override fun applyTransformation(
+                    interpolatedTime: Float,
+                    t: Transformation,
+                ) {
+                    v.layoutParams.height =
+                        if (interpolatedTime == 1f) {
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        } else {
+                            (targetHeight * interpolatedTime).toInt()
+                        }
+                    v.requestLayout()
+                }
 
-            override fun willChangeBounds(): Boolean {
-                return true
+                override fun willChangeBounds(): Boolean {
+                    return true
+                }
             }
-        }
 
         a.duration = (targetHeight / v.context.resources.displayMetrics.density).toInt().toLong()
         v.startAnimation(a)
@@ -50,21 +55,25 @@ class AnimationHelper {
     fun collapse(v: View) {
         val initialHeight = v.measuredHeight
 
-        val a = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
-                if (interpolatedTime == 1f) {
-                    v.visibility = View.GONE
-                } else {
-                    v.layoutParams.height =
-                        initialHeight - (initialHeight * interpolatedTime).toInt()
-                    v.requestLayout()
+        val a =
+            object : Animation() {
+                override fun applyTransformation(
+                    interpolatedTime: Float,
+                    t: Transformation,
+                ) {
+                    if (interpolatedTime == 1f) {
+                        v.visibility = View.GONE
+                    } else {
+                        v.layoutParams.height =
+                            initialHeight - (initialHeight * interpolatedTime).toInt()
+                        v.requestLayout()
+                    }
+                }
+
+                override fun willChangeBounds(): Boolean {
+                    return true
                 }
             }
-
-            override fun willChangeBounds(): Boolean {
-                return true
-            }
-        }
 
         // 1dp/ms
         a.duration = (initialHeight / v.context.resources.displayMetrics.density).toInt().toLong()
@@ -76,22 +85,24 @@ class AnimationHelper {
         colorFrom: Int,
         colorTo: Int,
         duration: Int,
-        callback: BackgroundColorCallback
+        callback: BackgroundColorCallback,
     ) {
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
         colorAnimation.duration = duration.toLong()
         colorAnimation.addUpdateListener { animator -> callback.onAnimationUpdate(animator) }
-        colorAnimation.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {
-            }
-            override fun onAnimationEnd(animation: Animator) {
-                callback.onAnimationEnd(animation)
-            }
-            override fun onAnimationCancel(animation: Animator) {
-            }
-            override fun onAnimationRepeat(animation: Animator) {
-            }
-        })
+        colorAnimation.addListener(
+            object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                }
+                override fun onAnimationEnd(animation: Animator) {
+                    callback.onAnimationEnd(animation)
+                }
+                override fun onAnimationCancel(animation: Animator) {
+                }
+                override fun onAnimationRepeat(animation: Animator) {
+                }
+            },
+        )
         colorAnimation.start()
     }
 

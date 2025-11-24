@@ -14,8 +14,10 @@ internal class CompleteTaskUseCaseImpl(
     private val disableTaskUseCase: DisableTaskUseCase,
     private val addHistoryUseCase: AddHistoryUseCase,
 ) : CompleteTaskUseCase {
-
-    override suspend operator fun invoke(taskId: Long, status: TaskStatus) {
+    override suspend operator fun invoke(
+        taskId: Long,
+        status: TaskStatus,
+    ) {
         val task = getTaskUseCase(taskId).getOrThrow()
 
         task.alarm?.takeIf { it.isAlarmRepeating() }?.run {

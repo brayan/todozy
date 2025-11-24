@@ -32,5 +32,5 @@ internal fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData =
         taskName = taskName,
         status = status.id,
         insertingDate = insertingDate,
-        enabled = true
+        enabled = true,
     )

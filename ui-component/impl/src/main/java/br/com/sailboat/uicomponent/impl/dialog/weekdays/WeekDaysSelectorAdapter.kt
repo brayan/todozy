@@ -6,16 +6,21 @@ import br.com.sailboat.uicomponent.model.DayUiModel
 
 class WeekDaysSelectorAdapter(private val callback: Callback) :
     RecyclerView.Adapter<WeekDayViewHolder>() {
-
     interface Callback : WeekDayViewHolder.Callback {
         val days: List<DayUiModel>
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekDayViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): WeekDayViewHolder {
         return WeekDayViewHolder(parent, callback)
     }
 
-    override fun onBindViewHolder(holder: WeekDayViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: WeekDayViewHolder,
+        position: Int,
+    ) {
         val day = callback.days[position]
         holder.bind(day)
     }

@@ -7,7 +7,6 @@ import br.com.sailboat.todozy.utility.kotlin.extension.getInitialCalendarForTomo
 internal class ScheduleAlarmUpdatesUseCaseImpl(
     private val alarmManagerService: AlarmManagerService,
 ) : ScheduleAlarmUpdatesUseCase {
-
     override suspend operator fun invoke() {
         val calendar = getInitialCalendarForTomorrow()
         alarmManagerService.scheduleAlarmUpdates(calendar)

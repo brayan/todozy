@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.MenuProvider
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,13 +29,12 @@ import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
-import br.com.sailboat.todozy.feature.task.list.impl.R as TaskListR
-import br.com.sailboat.uicomponent.impl.R as UiR
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import br.com.sailboat.todozy.feature.task.list.impl.R as TaskListR
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
-
     private val viewModel: TaskListViewModel by viewModel()
     private val taskDetailsNavigator: TaskDetailsNavigator by inject()
     private val taskHistoryNavigator: TaskHistoryNavigator by inject()
@@ -54,12 +53,15 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FrgTaskListBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
@@ -88,26 +90,32 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     }
 
     private fun addMenuProvider() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: android.view.Menu, menuInflater: android.view.MenuInflater) {
-                menuInflater.inflate(TaskListR.menu.menu_task_list, menu)
-                addSearchMenu(menu, ::onSubmitSearch)
-            }
-
-            override fun onMenuItemSelected(menuItem: android.view.MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    TaskListR.id.menu_fragments_history -> {
-                        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
-                        true
-                    }
-                    TaskListR.id.menu_fragments_settings -> {
-                        viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
-                        true
-                    }
-                    else -> false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: android.view.Menu,
+                    menuInflater: android.view.MenuInflater,
+                ) {
+                    menuInflater.inflate(TaskListR.menu.menu_task_list, menu)
+                    addSearchMenu(menu, ::onSubmitSearch)
                 }
-            }
-        }, viewLifecycleOwner)
+
+                override fun onMenuItemSelected(menuItem: android.view.MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        TaskListR.id.menu_fragments_history -> {
+                            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
+                            true
+                        }
+                        TaskListR.id.menu_fragments_settings -> {
+                            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+        )
     }
 
     private fun observeViewModel() {
@@ -222,40 +230,44 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
     private fun initRecyclerView() {
         binding.rvTaskList.run {
-            adapter = TaskListAdapter(object : TaskListAdapter.Callback {
-                override fun onClickTask(taskId: Long) {
-                    viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
+            adapter =
+                TaskListAdapter(
+                    object : TaskListAdapter.Callback {
+                        override fun onClickTask(taskId: Long) {
+                            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
+                        }
+                    },
+                ).apply {
+                    taskListAdapter = this
                 }
-            }).apply {
-                taskListAdapter = this
-            }
             layoutManager = LinearLayoutManager(activity)
         }
 
-        val itemTouchHelper = ItemTouchHelper(
-            SwipeTaskLeftRight(
-                requireContext(),
-                object : SwipeTaskLeftRight.Callback {
-                    override fun onSwipeLeft(position: Int) {
-                        viewModel.dispatchViewIntent(
-                            TaskListViewIntent.OnSwipeTask(
-                                position = position,
-                                status = TaskStatus.NOT_DONE
+        val itemTouchHelper =
+            ItemTouchHelper(
+                SwipeTaskLeftRight(
+                    requireContext(),
+                    object : SwipeTaskLeftRight.Callback {
+                        override fun onSwipeLeft(position: Int) {
+                            viewModel.dispatchViewIntent(
+                                TaskListViewIntent.OnSwipeTask(
+                                    position = position,
+                                    status = TaskStatus.NOT_DONE,
+                                ),
                             )
-                        )
-                    }
+                        }
 
-                    override fun onSwipeRight(position: Int) {
-                        viewModel.dispatchViewIntent(
-                            TaskListViewIntent.OnSwipeTask(
-                                position = position,
-                                status = TaskStatus.DONE
+                        override fun onSwipeRight(position: Int) {
+                            viewModel.dispatchViewIntent(
+                                TaskListViewIntent.OnSwipeTask(
+                                    position = position,
+                                    status = TaskStatus.DONE,
+                                ),
                             )
-                        )
-                    }
-                }
+                        }
+                    },
+                ),
             )
-        )
 
         itemTouchHelper.attachToRecyclerView(binding.rvTaskList)
 

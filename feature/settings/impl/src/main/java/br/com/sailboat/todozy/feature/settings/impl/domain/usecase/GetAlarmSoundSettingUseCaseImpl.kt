@@ -6,6 +6,5 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.repository.SettingsRe
 internal class GetAlarmSoundSettingUseCaseImpl(
     private val settingsRepository: SettingsRepository,
 ) : GetAlarmSoundSettingUseCase {
-
     override suspend operator fun invoke() = settingsRepository.getAlarmTone()
 }

@@ -12,7 +12,6 @@ import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TaskHistoryFilterDialog : DialogFragment() {
-
     var status: TaskStatusSelectableItem? = null
     var date: DateFilterTaskHistorySelectableItem? = null
     var callback: Callback? = null
@@ -33,17 +32,18 @@ internal class TaskHistoryFilterDialog : DialogFragment() {
         return buildDialog()
     }
 
-    private fun initViews() = with(binding) {
-        llDialogFilterTaskHistoryDate.setOnClickListener {
-            callback?.onClickFilterDate()
-            dialog?.dismiss()
-        }
+    private fun initViews() =
+        with(binding) {
+            llDialogFilterTaskHistoryDate.setOnClickListener {
+                callback?.onClickFilterDate()
+                dialog?.dismiss()
+            }
 
-        llDialogFilterTaskHistoryStatus.setOnClickListener {
-            callback?.onClickFilterStatus()
-            dialog?.dismiss()
+            llDialogFilterTaskHistoryStatus.setOnClickListener {
+                callback?.onClickFilterStatus()
+                dialog?.dismiss()
+            }
         }
-    }
 
     private fun observeViewModel() {
         viewModel.viewState.status.observe(this) { status ->

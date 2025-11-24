@@ -13,7 +13,6 @@ import java.util.Calendar
 class TaskHistoryDateTimeFormatterImpl(
     private val context: Context,
 ) : TaskHistoryDateTimeFormatter {
-
     override fun formatFull(calendar: Calendar): String {
         val formattedTime = calendar.formatTimeWithAndroidFormat(context)
         val formattedDate = calendar.getFullDateName(context)

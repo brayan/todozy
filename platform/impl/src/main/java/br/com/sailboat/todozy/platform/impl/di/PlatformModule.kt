@@ -13,15 +13,17 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val helper = module {
-    factory<LogService> { LogServiceImpl() }
-    factory<StringProvider> { StringProviderImpl(get()) }
-    factory<DatabaseTableFactory> { DatabaseTableFactoryImpl() }
-    single<DatabaseOpenHelperService> { DatabaseOpenHelper(get()) }
-}
+private val helper =
+    module {
+        factory<LogService> { LogServiceImpl() }
+        factory<StringProvider> { StringProviderImpl(get()) }
+        factory<DatabaseTableFactory> { DatabaseTableFactoryImpl() }
+        single<DatabaseOpenHelperService> { DatabaseOpenHelper(get()) }
+    }
 
-private val presentation = module {
-    viewModel { DateTimeSelectorViewModel() }
-}
+private val presentation =
+    module {
+        viewModel { DateTimeSelectorViewModel() }
+    }
 
 val platformModule: List<Module> = listOf(helper, presentation)

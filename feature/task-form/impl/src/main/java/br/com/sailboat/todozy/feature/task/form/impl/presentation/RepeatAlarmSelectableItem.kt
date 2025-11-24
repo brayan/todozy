@@ -2,11 +2,10 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
-import br.com.sailboat.uicomponent.impl.R as UiR
 import java.util.Arrays
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal enum class RepeatAlarmSelectableItem : SelectableItem {
-
     NOT_REPEAT {
         override fun getId(): Int {
             return ordinal
@@ -54,11 +53,10 @@ internal enum class RepeatAlarmSelectableItem : SelectableItem {
         override fun getName(): Int {
             return UiR.string.custom
         }
-    };
+    }, ;
 
     companion object {
         fun getFromId(id: Int): RepeatAlarmSelectableItem {
-
             when (RepeatType.indexOf(id)) {
                 RepeatType.DAY -> {
                     return DAY

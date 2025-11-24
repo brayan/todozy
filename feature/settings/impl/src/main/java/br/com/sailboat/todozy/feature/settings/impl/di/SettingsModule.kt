@@ -21,29 +21,32 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val presentation = module {
-    viewModel {
-        SettingsViewModel(
-            getAlarmSoundSettingUseCase = get(),
-            setAlarmSoundSettingUseCase = get(),
-            getAlarmVibrateSettingUseCase = get(),
-            setAlarmVibrateSettingUseCase = get(),
-        )
+private val presentation =
+    module {
+        viewModel {
+            SettingsViewModel(
+                getAlarmSoundSettingUseCase = get(),
+                setAlarmSoundSettingUseCase = get(),
+                getAlarmVibrateSettingUseCase = get(),
+                setAlarmVibrateSettingUseCase = get(),
+            )
+        }
+        factory<SettingsNavigator> { SettingsNavigatorImpl() }
     }
-    factory<SettingsNavigator> { SettingsNavigatorImpl() }
-}
 
-private val domain = module {
-    factory<SetAlarmSoundSettingUseCase> { SetAlarmSoundSettingUseCaseImpl(get()) }
-    factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSettingUseCaseImpl(get()) }
-    factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSettingUseCaseImpl(get()) }
-    factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSettingUseCaseImpl(get()) }
-    factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettingsUseCaseImpl(get(), get()) }
-}
+private val domain =
+    module {
+        factory<SetAlarmSoundSettingUseCase> { SetAlarmSoundSettingUseCaseImpl(get()) }
+        factory<GetAlarmSoundSettingUseCase> { GetAlarmSoundSettingUseCaseImpl(get()) }
+        factory<SetAlarmVibrateSettingUseCase> { SetAlarmVibrateSettingUseCaseImpl(get()) }
+        factory<GetAlarmVibrateSettingUseCase> { GetAlarmVibrateSettingUseCaseImpl(get()) }
+        factory<CheckAndSetUpInitialSettingsUseCase> { CheckAndSetUpInitialSettingsUseCaseImpl(get(), get()) }
+    }
 
-private val data = module {
-    factory<SettingsRepository> { SettingsRepositoryImpl(get()) }
-    factory<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
-}
+private val data =
+    module {
+        factory<SettingsRepository> { SettingsRepositoryImpl(get()) }
+        factory<SettingsLocalDataSource> { SettingsLocalDataSourceImpl(get()) }
+    }
 
 val settingsModule: List<Module> = listOf(presentation, domain, data)

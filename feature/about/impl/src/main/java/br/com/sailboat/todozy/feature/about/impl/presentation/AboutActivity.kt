@@ -11,7 +11,6 @@ fun Context.startAboutActivity() {
 }
 
 internal class AboutActivity : BaseActivity() {
-
     override fun newFragmentInstance(): Fragment {
         return AboutFragment.newInstance()
     }

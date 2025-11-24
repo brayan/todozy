@@ -11,7 +11,6 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 internal class App : Application() {
-
     override fun onCreate() {
         super.onCreate()
         startKoin {

@@ -9,7 +9,6 @@ import br.com.sailboat.uicomponent.impl.R as UiR
 private const val TASK_HISTORY_POSITION = "TASK_HISTORY_POSITION"
 
 class DeleteTaskHistoryDialog : BaseDialogFragment() {
-
     var callback: Callback? = null
     private var position: Int? = null
 
@@ -20,11 +19,13 @@ class DeleteTaskHistoryDialog : BaseDialogFragment() {
     companion object {
         val TAG: String = DeleteTaskHistoryDialog::class.java.name
 
-        fun newInstance(taskHistoryPosition: Int) = DeleteTaskHistoryDialog().apply {
-            arguments = Bundle().apply {
-                putInt(TASK_HISTORY_POSITION, taskHistoryPosition)
+        fun newInstance(taskHistoryPosition: Int) =
+            DeleteTaskHistoryDialog().apply {
+                arguments =
+                    Bundle().apply {
+                        putInt(TASK_HISTORY_POSITION, taskHistoryPosition)
+                    }
             }
-        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
