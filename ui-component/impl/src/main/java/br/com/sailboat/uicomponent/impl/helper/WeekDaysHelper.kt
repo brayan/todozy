@@ -1,21 +1,21 @@
 package br.com.sailboat.uicomponent.impl.helper
 
-import android.content.Context
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.model.DayUiModel
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import java.util.Calendar
 
-class WeekDaysHelper {
+class WeekDaysHelper(private val stringProvider: StringProvider) {
 
-    fun getCustomRepeat(ctx: Context, days: String?): String {
+    fun getCustomRepeat(days: String?): String {
         var days = days
         if (days.isNullOrEmpty()) {
-            return ctx.getString(R.string.custom)
+            return stringProvider.getString(R.string.custom)
         } else {
             days = orderStartingWithSunday(days)
 
             val sb = StringBuilder()
-            sb.append(getDayViewFromId(ctx, Integer.valueOf(days[0].toString())).name)
+            sb.append(getDayViewFromId(Integer.valueOf(days[0].toString())).name)
 
             if (days.length > 1) {
                 for (i in 1 until days.length) {
@@ -24,11 +24,11 @@ class WeekDaysHelper {
                         sb.append(", ")
                     } else {
                         sb.append(" ")
-                        sb.append(ctx.getString(R.string.and))
+                        sb.append(stringProvider.getString(R.string.and))
                         sb.append(" ")
                     }
 
-                    sb.append(getDayViewFromId(ctx, Integer.valueOf(days[i].toString())).name)
+                    sb.append(getDayViewFromId(Integer.valueOf(days[i].toString())).name)
                 }
             }
 
@@ -36,28 +36,28 @@ class WeekDaysHelper {
         }
     }
 
-    fun getDayViewFromId(ctx: Context, id: Int): DayUiModel {
+    fun getDayViewFromId(id: Int): DayUiModel {
         when (id) {
             Calendar.SUNDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.sunday))
+                return DayUiModel(id, stringProvider.getString(R.string.sunday))
             }
             Calendar.MONDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.monday))
+                return DayUiModel(id, stringProvider.getString(R.string.monday))
             }
             Calendar.TUESDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.tuesday))
+                return DayUiModel(id, stringProvider.getString(R.string.tuesday))
             }
             Calendar.WEDNESDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.wednesday))
+                return DayUiModel(id, stringProvider.getString(R.string.wednesday))
             }
             Calendar.THURSDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.thursday))
+                return DayUiModel(id, stringProvider.getString(R.string.thursday))
             }
             Calendar.FRIDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.friday))
+                return DayUiModel(id, stringProvider.getString(R.string.friday))
             }
             Calendar.SATURDAY -> {
-                return DayUiModel(id, ctx.getString(R.string.saturday))
+                return DayUiModel(id, stringProvider.getString(R.string.saturday))
             }
             else -> {
                 throw IllegalArgumentException("Invalid Day ID")

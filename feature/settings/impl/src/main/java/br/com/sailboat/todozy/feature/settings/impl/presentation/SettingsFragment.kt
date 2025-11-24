@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
-import br.com.sailboat.todozy.feature.settings.impl.R
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewIntent
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
+import br.com.sailboat.uicomponent.impl.R as UiR
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,7 +55,7 @@ internal class SettingsFragment : Fragment() {
         observeActions()
         viewModel.viewState.alarmSound.observe(viewLifecycleOwner) { alarmSound ->
             if (alarmSound == null) {
-                binding.tvSettingsCurrentTone.setText(R.string.none)
+                binding.tvSettingsCurrentTone.setText(UiR.string.none)
             } else {
                 val ringtone = RingtoneManager.getRingtone(activity, alarmSound)
                 binding.tvSettingsCurrentTone.text = ringtone.getTitle(activity)
@@ -84,9 +84,9 @@ internal class SettingsFragment : Fragment() {
     }
 
     private fun initToolbar() = with(binding) {
-        appbar.toolbar.setTitle(R.string.settings)
-        appbar.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        appbar.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        appbar.toolbar.setTitle(UiR.string.settings)
+        appbar.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
+        appbar.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun initToneViews() = activity?.run {

@@ -1,44 +1,50 @@
 package br.com.sailboat.todozy.feature.alarm.impl.presentation.mapper
 
-import android.content.Context
 import br.com.sailboat.todozy.domain.model.Alarm
 import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.feature.alarm.impl.R
+import br.com.sailboat.todozy.feature.alarm.impl.presentation.formatter.AlarmDateTimeFormatter
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
-import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
-import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
+import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
 import br.com.sailboat.uicomponent.model.AlarmUiModel
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class AlarmToAlarmUiModelMapperImpl(
-    // TODO: Add string provider
-    private val context: Context,
+    private val formatter: AlarmDateTimeFormatter,
+    private val stringProvider: StringProvider,
+    private val weekDaysHelper: WeekDaysHelper,
 ) : AlarmToAlarmUiModelMapper {
 
     override fun map(alarm: Alarm): AlarmUiModel {
-        val date = alarm.dateTime.getFullDateName(context)
-        val time = alarm.dateTime.formatTimeWithAndroidFormat(context)
+        val date = formatter.formatDate(alarm.dateTime)
+        val time = formatter.formatTime(alarm.dateTime)
 
         return AlarmUiModel(
             date = date,
             time = time,
-            description = mapRepeatTypeDescription(alarm.repeatType),
+            description = mapRepeatTypeDescription(alarm.repeatType, alarm.customDays),
             isCustom = alarm.repeatType == RepeatType.CUSTOM,
             shouldRepeat = alarm.repeatType != RepeatType.NOT_REPEAT,
             customDays = alarm.customDays,
         )
     }
 
-    private fun mapRepeatTypeDescription(repeatType: RepeatType): String {
-        return when (repeatType) {
-            RepeatType.NOT_REPEAT -> R.string.not_repeat
-            RepeatType.DAY -> R.string.every_day
-            RepeatType.WEEK -> R.string.every_week
-            RepeatType.MONTH -> R.string.every_month
-            RepeatType.YEAR -> R.string.every_year
-            RepeatType.SECOND -> R.string.every_second
-            RepeatType.MINUTE -> R.string.every_minute
-            RepeatType.HOUR -> R.string.every_hour
-            RepeatType.CUSTOM -> R.string.custom
-        }.run { context.getString(this) }
+    private fun mapRepeatTypeDescription(repeatType: RepeatType, customDays: String?): String {
+        if (repeatType == RepeatType.CUSTOM && !customDays.isNullOrEmpty()) {
+            return weekDaysHelper.getCustomRepeat(customDays)
+        }
+
+        val descriptionId = when (repeatType) {
+            RepeatType.NOT_REPEAT -> UiR.string.not_repeat
+            RepeatType.DAY -> UiR.string.every_day
+            RepeatType.WEEK -> UiR.string.every_week
+            RepeatType.MONTH -> UiR.string.every_month
+            RepeatType.YEAR -> UiR.string.every_year
+            RepeatType.SECOND -> UiR.string.every_second
+            RepeatType.MINUTE -> UiR.string.every_minute
+            RepeatType.HOUR -> UiR.string.every_hour
+            RepeatType.CUSTOM -> UiR.string.custom
+        }
+        return stringProvider.getString(descriptionId)
     }
 }

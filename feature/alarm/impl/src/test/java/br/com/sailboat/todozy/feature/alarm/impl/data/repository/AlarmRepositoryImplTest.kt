@@ -15,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 internal class AlarmRepositoryImplTest {
 
@@ -72,6 +73,22 @@ internal class AlarmRepositoryImplTest {
 
             coVerify { alarmLocalDataSource.deleteByTask(taskId) }
         }
+
+    @Test
+    fun `should return null alarm when mapping fails`() = runBlocking {
+        val taskId = 99L
+        val alarmData = makeAlarmData(
+            taskId = taskId,
+            nextAlarmDate = "invalid-date",
+        )
+        coEvery { alarmLocalDataSource.getAlarmByTask(taskId) } returns Result.success(alarmData)
+        coEvery { alarmDataToAlarmMapper.map(alarmData) } returns null
+
+        val result = alarmRepository.getAlarmByTaskId(taskId).getOrThrow()
+
+        assertNull(result)
+        coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
+    }
 
     @Test
     fun `should call save from data source when save is called from repository`() =

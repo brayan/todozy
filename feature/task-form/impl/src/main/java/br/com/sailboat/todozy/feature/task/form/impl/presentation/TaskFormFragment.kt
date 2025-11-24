@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,9 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAddAlarm
@@ -30,8 +31,6 @@ import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
-import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.DateSelectorDialog
-import br.com.sailboat.todozy.utility.android.dialog.datetimeselector.TimeSelectorDialog
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
@@ -41,6 +40,12 @@ import br.com.sailboat.uicomponent.impl.dialog.weekdays.WeekDaysSelectorDialog
 import br.com.sailboat.uicomponent.impl.helper.AnimationHelper
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import java.util.Calendar
+import java.util.TimeZone
+import br.com.sailboat.uicomponent.impl.R as UiR
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TaskFormFragment : Fragment() {
@@ -49,31 +54,10 @@ internal class TaskFormFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskFormBinding
 
-    private var dateSelectorDialog: DateSelectorDialog? = null
-    private var timeSelectorDialog: TimeSelectorDialog? = null
-
-    private val dateSelectorDialogCallback = object : DateSelectorDialog.Callback {
-        override fun onDateSelected(year: Int, month: Int, day: Int) {
-            val onSelectAlarmDateAction = OnSelectAlarmDate(
-                year = year,
-                month = month,
-                day = day,
-            )
-            viewModel.dispatchViewIntent(onSelectAlarmDateAction)
-        }
-    }
-
-    private val timeSelectorDialogCallback = object : TimeSelectorDialog.Callback {
-        override fun onTimeSelected(hourOfDay: Int, minute: Int) {
-            val onSelectAlarmTimeAction = OnSelectAlarmTime(
-                hourOfDay = hourOfDay,
-                minute = minute,
-            )
-            viewModel.dispatchViewIntent(onSelectAlarmTimeAction)
-        }
-    }
-
     companion object {
+        private const val DATE_PICKER_TAG = "TASK_FORM_DATE_PICKER"
+        private const val TIME_PICKER_TAG = "TASK_FORM_TIME_PICKER"
+
         fun newInstance() = TaskFormFragment()
 
         fun newInstance(taskId: Long): TaskFormFragment = with(TaskFormFragment()) {
@@ -82,11 +66,6 @@ internal class TaskFormFragment : Fragment() {
             arguments = bundle
             return this
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -101,42 +80,17 @@ internal class TaskFormFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeViewModel()
-        updateCallbacksFromDialogs()
+        reattachMaterialPickers()
 
         val taskId = arguments?.getTaskId() ?: Entity.NO_ID
         viewModel.dispatchViewIntent(OnStart(taskId))
     }
 
-    private fun updateCallbacksFromDialogs() {
-        dateSelectorDialog = childFragmentManager.findFragmentByTag(DateSelectorDialog.TAG) as? DateSelectorDialog
-        dateSelectorDialog?.callback = dateSelectorDialogCallback
-
-        timeSelectorDialog = childFragmentManager.findFragmentByTag(TimeSelectorDialog.TAG) as? TimeSelectorDialog
-        timeSelectorDialog?.callback = timeSelectorDialogCallback
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_insert, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_save -> {
-                val action = OnClickSaveTask(
-                    taskName = binding.etTaskFormName.text.toString(),
-                    taskNotes = binding.etTaskFormNotes.text.toString(),
-                )
-                viewModel.dispatchViewIntent(action)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
-
     private fun initViews() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbarTaskForm)
-        binding.toolbarTaskForm.setNavigationIcon(R.drawable.ic_close_white_24dp)
-        binding.toolbarTaskForm.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbarTaskForm.setNavigationIcon(UiR.drawable.ic_close_white_24dp)
+        binding.toolbarTaskForm.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+        addMenuProvider()
 
         initEditTexts()
         initAlarmViews()
@@ -154,9 +108,9 @@ internal class TaskFormFragment : Fragment() {
 
         viewModel.viewState.isEditingTask.observe(viewLifecycleOwner) { isEditingTask ->
             if (isEditingTask) {
-                binding.toolbarTaskForm.setTitle(R.string.edit_task)
+                binding.toolbarTaskForm.setTitle(UiR.string.edit_task)
             } else {
-                binding.toolbarTaskForm.setTitle(R.string.new_task)
+                binding.toolbarTaskForm.setTitle(UiR.string.new_task)
             }
         }
     }
@@ -202,36 +156,78 @@ internal class TaskFormFragment : Fragment() {
     }
 
     private fun showErrorSavingTask() {
-        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 
     private fun hideKeyboard() {
         activity?.hideKeyboard()
     }
 
+    private fun addMenuProvider() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(UiR.menu.menu_insert, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    UiR.id.menu_save -> {
+                        val action = OnClickSaveTask(
+                            taskName = binding.etTaskFormName.text.toString(),
+                            taskNotes = binding.etTaskFormNotes.text.toString(),
+                        )
+                        viewModel.dispatchViewIntent(action)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+    }
+
     private fun navigateToAlarmDateSelector(action: TaskFormViewAction.NavigateToAlarmDateSelector) {
-        // TODO: EXPERIMENT WITH MATERIAL DATE PICKER
-        // https://material.io/components/date-pickers/android
-        dateSelectorDialog = DateSelectorDialog.show(
-            fragmentManager = childFragmentManager,
-            calendar = action.currentDate,
-            callback = dateSelectorDialogCallback,
-        )
+        if (childFragmentManager.findFragmentByTag(DATE_PICKER_TAG) != null) return
+
+        val picker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(getString(UiR.string.label_date))
+            .setSelection(action.currentDate.timeInMillis)
+            .build()
+
+        picker.addOnPositiveButtonClickListener { selection ->
+            handleDateSelection(selection)
+        }
+
+        picker.show(childFragmentManager, DATE_PICKER_TAG)
     }
 
     private fun navigateToAlarmTimeSelector(action: TaskFormViewAction.NavigateToAlarmTimeSelector) {
-        timeSelectorDialog = TimeSelectorDialog.show(
-            fragmentManager = childFragmentManager,
-            calendar = action.currentTime,
-            callback = timeSelectorDialogCallback,
-        )
+        if (childFragmentManager.findFragmentByTag(TIME_PICKER_TAG) != null) return
+
+        val picker = MaterialTimePicker.Builder()
+            .setTitleText(UiR.string.label_time)
+            .setTimeFormat(
+                if (DateFormat.is24HourFormat(requireContext())) {
+                    TimeFormat.CLOCK_24H
+                } else {
+                    TimeFormat.CLOCK_12H
+                }
+            )
+            .setHour(action.currentTime.get(Calendar.HOUR_OF_DAY))
+            .setMinute(action.currentTime.get(Calendar.MINUTE))
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            handleTimeSelection(picker.hour, picker.minute)
+        }
+
+        picker.show(childFragmentManager, TIME_PICKER_TAG)
     }
 
     private fun navigateToRepeatAlarmSelector(action: TaskFormViewAction.NavigateToRepeatAlarmSelector) {
         SelectItemDialog.show(
             "TAGZERA",
             childFragmentManager,
-            getString(R.string.repeat_alarm),
+            getString(UiR.string.repeat_alarm),
             RepeatAlarmSelectableItem.getItems(),
             RepeatAlarmSelectableItem.getFromId(action.repeatType.ordinal),
             object : SelectItemDialog.Callback {
@@ -256,6 +252,45 @@ internal class TaskFormFragment : Fragment() {
         )
     }
 
+    private fun reattachMaterialPickers() {
+        (childFragmentManager.findFragmentByTag(DATE_PICKER_TAG) as? MaterialDatePicker<*>)?.let { picker ->
+            picker.clearOnPositiveButtonClickListeners()
+            picker.addOnPositiveButtonClickListener { selection ->
+                handleDateSelection(selection)
+            }
+        }
+
+        (childFragmentManager.findFragmentByTag(TIME_PICKER_TAG) as? MaterialTimePicker)?.let { picker ->
+            picker.clearOnPositiveButtonClickListeners()
+            picker.addOnPositiveButtonClickListener {
+                handleTimeSelection(picker.hour, picker.minute)
+            }
+        }
+    }
+
+    private fun handleDateSelection(selection: Any?) {
+        val millis = selection as? Long ?: return
+        val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            timeInMillis = millis
+        }
+        viewModel.dispatchViewIntent(
+            OnSelectAlarmDate(
+                year = utcCalendar.get(Calendar.YEAR),
+                month = utcCalendar.get(Calendar.MONTH),
+                day = utcCalendar.get(Calendar.DAY_OF_MONTH),
+            )
+        )
+    }
+
+    private fun handleTimeSelection(hourOfDay: Int, minute: Int) {
+        viewModel.dispatchViewIntent(
+            OnSelectAlarmTime(
+                hourOfDay = hourOfDay,
+                minute = minute,
+            )
+        )
+    }
+
     private fun showAlarm() {
         binding.alarmDetails.llAlarmOptions.visible()
     }
@@ -273,11 +308,11 @@ internal class TaskFormFragment : Fragment() {
     }
 
     private fun showErrorTaskNameCantBeBlank() {
-        binding.etTaskFormName.error = getString(R.string.exception_task_name)
+        binding.etTaskFormName.error = getString(UiR.string.exception_task_name)
     }
 
     private fun showErrorAlarmNotValid() {
-        Toast.makeText(activity, getString(R.string.alarm_not_valid), Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(UiR.string.alarm_not_valid), Toast.LENGTH_SHORT).show()
     }
 
     private fun initAlarmViews() = with(binding) {

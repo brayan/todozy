@@ -1,6 +1,8 @@
 package br.com.sailboat.todozy.feature.task.history.impl.data.repository
 
 import br.com.sailboat.todozy.feature.task.history.impl.data.model.TaskHistoryData
+import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeString
+import java.util.Calendar
 
 internal object TaskHistoryDataMockFactory {
 
@@ -9,7 +11,7 @@ internal object TaskHistoryDataMockFactory {
         taskId: Long = 45L,
         taskName: String = "Task Name",
         status: Int = 1,
-        insertingDate: String? = null, // TODO: ADD A VALID INSERTING DATE
+        insertingDate: String? = Calendar.getInstance().toDateTimeString(),
         enabled: Boolean = true,
     ) = TaskHistoryData(
         id = id,

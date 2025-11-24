@@ -24,13 +24,19 @@ import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUpd
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAlarmUseCaseImpl
 import br.com.sailboat.todozy.feature.alarm.impl.domain.usecase.ScheduleAllAlarmsUseCaseImpl
+import br.com.sailboat.todozy.feature.alarm.impl.presentation.formatter.AlarmDateTimeFormatter
+import br.com.sailboat.todozy.feature.alarm.impl.presentation.formatter.AlarmDateTimeFormatterImpl
 import br.com.sailboat.todozy.feature.alarm.impl.presentation.mapper.AlarmToAlarmUiModelMapperImpl
 import br.com.sailboat.todozy.feature.alarm.presentation.mapper.AlarmToAlarmUiModelMapper
+import br.com.sailboat.uicomponent.impl.helper.WeekDaysHelper
+import br.com.sailboat.todozy.utility.kotlin.StringProvider
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private val presentation = module {
-    factory<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get()) }
+    factory<AlarmDateTimeFormatter> { AlarmDateTimeFormatterImpl(get()) }
+    factory { WeekDaysHelper(get<StringProvider>()) }
+    factory<AlarmToAlarmUiModelMapper> { AlarmToAlarmUiModelMapperImpl(get(), get<StringProvider>(), get()) }
 }
 
 private val domain = module {

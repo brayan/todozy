@@ -1,20 +1,28 @@
 package br.com.sailboat.todozy.utility.kotlin.extension
 
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Calendar
+import java.util.GregorianCalendar
+import java.util.Locale
 
 private const val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
 fun String.toDateTimeCalendar(): Calendar {
-    val calendar = Calendar.getInstance()
-    val sdf = SimpleDateFormat(DATE_TIME_FORMAT)
-    calendar.time = sdf.parse(this)!!
-
-    return calendar
+    val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+    val localDateTime = LocalDateTime.parse(this, formatter)
+    val zoneId = ZoneId.systemDefault()
+    val zonedDateTime = localDateTime.atZone(zoneId)
+    return GregorianCalendar.from(zonedDateTime)
 }
 
 fun Calendar.toDateTimeString(): String {
-    return SimpleDateFormat(DATE_TIME_FORMAT).format(time)
+    val zoneId = ZoneId.systemDefault()
+    val dateTime = LocalDateTime.ofInstant(toInstant(), zoneId)
+    val formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+    return dateTime.format(formatter)
 }
 
 fun Calendar.isCurrentYear(): Boolean {
@@ -77,8 +85,9 @@ fun getInitialAlarm(): Calendar {
 }
 
 fun Calendar.getDayName(): String {
-    val day = SimpleDateFormat("EEEE").format(time)
-    return day.capitalize()
+    val zoneId = ZoneId.systemDefault()
+    val day = toInstant().atZone(zoneId).dayOfWeek
+    return day.getDisplayName(TextStyle.FULL, Locale.getDefault()).replaceFirstChar { it.titlecase(Locale.getDefault()) }
 }
 
 fun getInitialCalendarForToday() = Calendar.getInstance().clearTime()

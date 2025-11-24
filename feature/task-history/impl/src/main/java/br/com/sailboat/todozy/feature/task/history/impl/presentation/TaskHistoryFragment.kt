@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.feature.task.history.impl.R
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.DateFilterDialog
@@ -41,12 +40,16 @@ import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
 import br.com.sailboat.todozy.utility.android.view.visible
+import br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatterImpl
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
+import br.com.sailboat.todozy.feature.task.history.impl.R as TaskHistoryR
+import br.com.sailboat.uicomponent.impl.R as UiR
+import androidx.core.view.MenuProvider
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
@@ -123,11 +126,6 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -148,29 +146,11 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
         updateCallbacksFromDialogs()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_task_history_list, menu)
-        addSearchMenu(menu, ::onSubmitSearch)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_filter -> {
-                viewModel.dispatchViewIntent(OnClickFilter)
-            }
-            R.id.menu_clear_history -> {
-                viewModel.dispatchViewIntent(OnClickClearAllHistory)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
-
     private fun initViews() {
         initToolbar()
         initRecyclerView()
         initEmptyState()
+        addMenuProvider()
     }
 
     private fun onSubmitSearch(search: String) {
@@ -271,7 +251,7 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     private fun navigateToDateFilter(viewAction: TaskHistoryViewAction.NavigateToDateFilter) {
         dateFilterDialog = DateFilterDialog.show(
             childFragmentManager,
-            getString(R.string.filter),
+            getString(UiR.string.filter),
             DateFilterTaskHistorySelectableItem.getItems(),
             viewAction.dateFilterType,
             dateFilterDialogCallback,
@@ -290,7 +270,7 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     private fun navigateToStatusFilter(action: TaskHistoryViewAction.NavigateToStatusFilter) {
         statusFilterDialog = StatusFilterDialog.show(
             childFragmentManager,
-            getString(R.string.filter_status),
+            getString(UiR.string.filter_status),
             TaskStatusSelectableItem.getItems(),
             action.status,
             statusFilterDialogCallback,
@@ -299,8 +279,8 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
 
     private fun navigateToClearAllHistoryConfirmation() {
         clearAllHistoryDialog = TwoOptionsDialog.newInstance(
-            message = getString(R.string.msg_ask_clear_all_history),
-            positiveMsg = R.string.clear,
+            message = getString(UiR.string.msg_ask_clear_all_history),
+            positiveMsg = UiR.string.clear,
         )
         clearAllHistoryDialog?.callback = clearAllHistoryCallback
         clearAllHistoryDialog?.show(childFragmentManager, "CLEAR_HISTORY")
@@ -327,16 +307,17 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     }
 
     private fun showGenericError() {
-        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 
     private fun initEmptyState() {
-        binding.eptView.tvEmptyViewMessagePrimary.setText(R.string.no_history_found)
+        binding.eptView.tvEmptyViewMessagePrimary.setText(UiR.string.no_history_found)
     }
 
     private fun initRecyclerView() {
         binding.rvTaskHistory.run {
-            adapter = TaskHistoryAdapter(object : TaskHistoryAdapter.Callback {
+            val formatter = br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatterImpl(requireContext())
+            adapter = TaskHistoryAdapter(formatter, object : TaskHistoryAdapter.Callback {
                 override fun onClickMarkTaskAsDone(position: Int) {
                     viewModel.dispatchViewIntent(OnClickMarkTaskAsDone(position))
                 }
@@ -364,9 +345,9 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     private fun initToolbar() {
         val toolbar = binding.appbarTaskHistory.toolbarScroll.toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        toolbar.setTitle(R.string.history)
+        toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
+        toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+        toolbar.setTitle(UiR.string.history)
     }
 
     private fun showEmptyView() {
@@ -376,5 +357,28 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
 
     private fun hideEmptyView() {
         binding.eptView.root.gone()
+    }
+
+    private fun addMenuProvider() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(TaskHistoryR.menu.menu_task_history_list, menu)
+                addSearchMenu(menu, ::onSubmitSearch)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    TaskHistoryR.id.menu_filter -> {
+                        viewModel.dispatchViewIntent(OnClickFilter)
+                        true
+                    }
+                    TaskHistoryR.id.menu_clear_history -> {
+                        viewModel.dispatchViewIntent(OnClickClearAllHistory)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
     }
 }

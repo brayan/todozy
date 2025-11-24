@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="end|bottom"
     android:layout_margin="@dimen/spacing_medium"
-    app:backgroundTint="?attr/colorAccent"
+    app:backgroundTint="?attr/colorPrimary"
     app:fabSize="normal"
+    app:tint="@android:color/white"
+    app:rippleColor="?attr/colorOnPrimary"
     app:srcCompat="@drawable/ic_add_white_48dp" />

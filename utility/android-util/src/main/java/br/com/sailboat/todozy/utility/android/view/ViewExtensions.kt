@@ -11,13 +11,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 fun LinearLayoutManager.scrollPositionToMiddleScreen(ctx: Context, position: Int) {
-    val wm = ctx.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val display = wm.defaultDisplay
-
-    val point = Point()
-    display.getSize(point)
-
-    scrollToPositionWithOffset(position, point.y / 4)
+    val height = ctx.resources.displayMetrics.heightPixels
+    scrollToPositionWithOffset(position, height / 4)
 }
 
 fun LinearLayoutManager.scrollToTop() {

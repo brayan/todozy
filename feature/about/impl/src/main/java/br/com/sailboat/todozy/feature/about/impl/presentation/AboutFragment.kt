@@ -8,11 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.todozy.feature.about.impl.databinding.FragmentAboutBinding
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewAction
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewIntent
 import br.com.sailboat.todozy.feature.about.impl.presentation.viewmodel.AboutViewModel
+import br.com.sailboat.uicomponent.impl.R as UiR
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class AboutFragment : Fragment() {
@@ -66,8 +66,8 @@ internal class AboutFragment : Fragment() {
         val appCompatActivity = activity as AppCompatActivity
         appCompatActivity.setSupportActionBar(toolbar)
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        toolbar.setTitle(R.string.about)
+        toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+        toolbar.setTitle(UiR.string.about)
     }
 
     private fun initRecyclerView() = with(binding) {
@@ -78,6 +78,6 @@ internal class AboutFragment : Fragment() {
     }
 
     private fun showErrorLoadingAbout() {
-        Toast.makeText(activity, R.string.msg_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 }

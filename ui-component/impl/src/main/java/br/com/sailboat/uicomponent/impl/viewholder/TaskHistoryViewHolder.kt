@@ -3,24 +3,22 @@ package br.com.sailboat.uicomponent.impl.viewholder
 import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
-import br.com.sailboat.todozy.utility.android.calendar.getFullDateName
-import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
-import br.com.sailboat.todozy.utility.android.calendar.getMonthDayAndYearShort
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.todozy.utility.kotlin.extension.isCurrentYear
-import br.com.sailboat.todozy.utility.kotlin.extension.isToday
-import br.com.sailboat.todozy.utility.kotlin.extension.isYesterday
 import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
+import br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatter
 import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.databinding.VhTaskHistoryBinding
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import java.text.ParseException
 import java.util.Calendar
 
-class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
+class TaskHistoryViewHolder(
+    parent: ViewGroup,
+    private val formatter: TaskHistoryDateTimeFormatter,
+    val callback: Callback,
+) :
     BaseViewHolder<TaskHistoryUiModel, VhTaskHistoryBinding>(
         VhTaskHistoryBinding.inflate(getInflater(parent), parent, false)
     ) {
@@ -52,28 +50,11 @@ class TaskHistoryViewHolder(parent: ViewGroup, val callback: Callback) :
     private fun setDateTimeTask(history: TaskHistoryUiModel) = with(binding) {
         try {
             val calendar = history.insertingDate.toDateTimeCalendar()
-            tvTaskHistoryLongDateTime.text = getFullDateTime(calendar)
-            tvTaskHistoryShortDateTime.text = getShortDateTime(calendar)
+            tvTaskHistoryLongDateTime.text = formatter.formatFull(calendar)
+            tvTaskHistoryShortDateTime.text = formatter.formatShort(calendar)
         } catch (e: ParseException) {
             e.printStackTrace()
             tvTaskHistoryShortDateTime.gone()
-        }
-    }
-
-    private fun getFullDateTime(insertingDate: Calendar): String {
-        val formattedTime = insertingDate.formatTimeWithAndroidFormat(itemView.context)
-        val formattedDate = insertingDate.getFullDateName(itemView.context)
-
-        return "$formattedTime - $formattedDate"
-    }
-
-    private fun getShortDateTime(insertingDate: Calendar): String {
-        return if (insertingDate.isToday() || insertingDate.isYesterday()) {
-            insertingDate.formatTimeWithAndroidFormat(itemView.context)
-        } else if (insertingDate.isCurrentYear()) {
-            insertingDate.getMonthAndDayShort(itemView.context)
-        } else {
-            insertingDate.getMonthDayAndYearShort(itemView.context)
         }
     }
 

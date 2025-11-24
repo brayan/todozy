@@ -13,7 +13,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
-import br.com.sailboat.todozy.feature.alarm.impl.R
 import br.com.sailboat.todozy.feature.navigation.android.SplashNavigator
 import br.com.sailboat.todozy.feature.settings.android.domain.usecase.GetAlarmSoundSettingUseCase
 import br.com.sailboat.todozy.feature.settings.domain.usecase.GetAlarmVibrateSettingUseCase
@@ -24,6 +23,7 @@ import br.com.sailboat.todozy.utility.android.log.log
 import br.com.sailboat.todozy.utility.android.log.logDebug
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
+import br.com.sailboat.uicomponent.impl.R as UiR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -72,12 +72,12 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
-            .setSmallIcon(R.drawable.ic_vec_notification_icon)
+            .setSmallIcon(UiR.drawable.ic_vec_notification_icon)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(resultPendingIntent)
             .setAutoCancel(true)
             .apply { priority = NotificationCompat.PRIORITY_HIGH }
-            .apply { color = ContextCompat.getColor(context, R.color.md_blue_500) }
+            .apply { color = ContextCompat.getColor(context, UiR.color.md_blue_500) }
 
         initContentTextAndTitle(context, intent, builder)
 
@@ -105,8 +105,8 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             }
         } catch (e: Exception) {
             e.log()
-            builder.setContentTitle(context.getString(R.string.new_task))
-            builder.setContentText(context.getString(R.string.touch_to_check))
+            builder.setContentTitle(context.getString(UiR.string.new_task))
+            builder.setContentText(context.getString(UiR.string.touch_to_check))
         }
     }
 
@@ -126,8 +126,8 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         builder: NotificationCompat.Builder,
         tasksQuantity: Int
     ) {
-        builder.setContentTitle(tasksQuantity.toString() + " " + context.getString(R.string.tasks_to_do))
-        builder.setContentText(context.getString(R.string.touch_to_check))
+        builder.setContentTitle(tasksQuantity.toString() + " " + context.getString(UiR.string.tasks_to_do))
+        builder.setContentText(context.getString(UiR.string.touch_to_check))
     }
 
     private suspend fun initVibrate(builder: NotificationCompat.Builder) {
@@ -143,7 +143,7 @@ internal class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         createNotificationChannel(
             NotificationChannel(
                 CHANNEL_ID_ALARM,
-                context.getString(R.string.notification_title_task_alarms),
+                context.getString(UiR.string.notification_title_task_alarms),
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC

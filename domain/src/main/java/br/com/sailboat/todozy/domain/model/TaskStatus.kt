@@ -7,14 +7,7 @@ enum class TaskStatus(val id: Int) {
 
     companion object {
 
-        fun getById(id: Int): TaskStatus {
-            for (value in values()) {
-                if (value.id == id) {
-                    return value
-                }
-            }
-
-            throw IndexOutOfBoundsException()
-        }
+        fun getById(id: Int): TaskStatus =
+            values().firstOrNull { it.id == id } ?: NOT_DONE
     }
 }

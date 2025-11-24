@@ -1,19 +1,33 @@
-# Todozy - Tasks & Habits 🚀
+# Todozy – Tasks & Habits
 
-![example workflow](https://github.com/brayan/todozy/actions/workflows/android.yml/badge.svg)
+[![CI](https://github.com/brayan/todozy/actions/workflows/ci.yml/badge.svg)](https://github.com/brayan/todozy/actions/workflows/ci.yml)
 
-## Description
-Todozy is a minimalist task management app that helps you to be more productive and build new habits.
+Minimalist task manager built with a modular Android stack (Java 17, Kotlin 1.9, AGP 8.x, compile/targetSdk 36, minSdk 24) and MaterialComponents.
 
-## Architecture, tools and frameworks
-* Clean Architecture
-* MVVM
-* Koin
-* Coroutines
-* JUnit
-* Mockk
+## Architecture & Modules
+- Clean Architecture + MVVM, DI via Koin.
+- Domain rules in `domain/`; shared helpers in `utility/kotlin-util` and `utility/android-util`.
+- UI kit split into `ui-component/public` (contracts) and `ui-component/impl` (views/resources).
+- Features under `feature/<name>/{public,impl}` (task-list, task-form, task-history, task-details, alarm, settings, about, splash, navigation) with data/domain/presentation layers.
+- Platform integrations (DB, logging, Crashlytics) in `platform/impl`. Non-transitive R enforced.
 
-## Design and development principles
-* [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) ∙ A book on best practices for writing clean, testable, and maintainable code.
-* [Getting Real](https://basecamp.com/books/getting-real) ∙ A book packed with keep-it-simple insights, contrarian points of view, and unconventional approaches to software design.
-* [Minimalism](https://visme.co/blog/minimalist-graphic-design/) ∙ The main idea in minimalist design is to say more by showing less. Minimalist design is clean and timeless. Only the absolutely necessary is included to get the message across.
+## Build & Test
+- `./gradlew assembleDebug` – build the app.
+- `./gradlew test` – run JVM unit tests across modules.
+- `./gradlew ktlintCheck` – style check; `ktlintFormat` to fix.
+- `./gradlew checkCrossModuleRImports` – guard against importing the app `R` outside `app/`.
+
+## Tech Stack
+- Kotlin coroutines, Flow
+- AndroidX: AppCompat/Activity/Fragment, Lifecycle 2.7, Material Components
+- Koin 3.x for DI
+- Testing: JUnit4, MockK, coroutine-test, Arch core test
+
+## UI/UX
+- Theme: `Theme.MaterialComponents.DayNight.NoActionBar` with Material date/time pickers.
+- FABs tinted with `colorPrimary` and white icons; toolbar uses Material toolbar style.
+
+## Development Notes
+- Follow module boundaries; import resources from the correct module R (UI alias `UiR`).
+- Avoid `SimpleDateFormat`; `java.time` is enabled via coreLibraryDesugaring.
+- Pre-commit hooks run ktlint; ensure `assembleDebug` and `test` pass before PRs.

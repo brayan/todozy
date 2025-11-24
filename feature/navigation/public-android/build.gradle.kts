@@ -5,10 +5,10 @@ plugins {
 
 android {
     compileSdk = BuildVersion.compileSdk
+    namespace = "br.com.sailboat.todozy.feature.navigation.android"
 
     defaultConfig {
         minSdk = BuildVersion.minSdk
-        targetSdk = BuildVersion.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -21,11 +21,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 

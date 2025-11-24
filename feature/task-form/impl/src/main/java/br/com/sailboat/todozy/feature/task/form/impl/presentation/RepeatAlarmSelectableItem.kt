@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.feature.task.form.impl.presentation
 
 import br.com.sailboat.todozy.domain.model.RepeatType
-import br.com.sailboat.todozy.feature.task.form.impl.R
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.SelectableItem
+import br.com.sailboat.uicomponent.impl.R as UiR
 import java.util.Arrays
 
 internal enum class RepeatAlarmSelectableItem : SelectableItem {
@@ -13,7 +13,7 @@ internal enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return R.string.not_repeat
+            return UiR.string.not_repeat
         }
     },
     DAY {
@@ -22,7 +22,7 @@ internal enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return R.string.every_day
+            return UiR.string.every_day
         }
     },
     WEEK {
@@ -31,28 +31,28 @@ internal enum class RepeatAlarmSelectableItem : SelectableItem {
         }
 
         override fun getName(): Int {
-            return R.string.every_week
+            return UiR.string.every_week
         }
     },
     MONTH {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return R.string.every_month
+            return UiR.string.every_month
         }
     },
     YEAR {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return R.string.every_year
+            return UiR.string.every_year
         }
     },
     CUSTOM {
         override fun getId() = ordinal
 
         override fun getName(): Int {
-            return R.string.custom
+            return UiR.string.custom
         }
     };
 

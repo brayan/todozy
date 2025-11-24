@@ -7,11 +7,16 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toDateTimeCalendar
 
 internal class AlarmDataToAlarmMapper {
 
-    fun map(alarmData: AlarmData) =
-        Alarm(
-            // TODO: Refactor this
-            dateTime = alarmData.nextAlarmDate!!.toDateTimeCalendar(),
+    fun map(alarmData: AlarmData): Alarm? {
+        val alarmDate = alarmData.nextAlarmDate
+            ?.takeIf { it.isNotBlank() }
+            ?.let { runCatching { it.toDateTimeCalendar() }.getOrNull() }
+            ?: return null
+
+        return Alarm(
+            dateTime = alarmDate,
             repeatType = RepeatType.indexOf(alarmData.repeatType),
             customDays = alarmData.days
         )
+    }
 }

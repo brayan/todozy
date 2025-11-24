@@ -1,10 +1,10 @@
 package br.com.sailboat.todozy.feature.about.impl.presentation
 
 import android.content.Context
-import br.com.sailboat.todozy.feature.about.impl.R
 import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 import br.com.sailboat.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.uicomponent.model.UiModel
+import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class GetAboutView(private val context: Context) : GetAboutViewUseCase {
 
@@ -20,28 +20,28 @@ internal class GetAboutView(private val context: Context) : GetAboutViewUseCase 
 
     private fun getImageWithTitle(): ImageTitleDividerUiModel {
         return ImageTitleDividerUiModel(
-            imageRes = R.drawable.ic_todozy_128px,
-            title = context.getString(R.string.app_full_name)
+            imageRes = UiR.drawable.ic_todozy_128px,
+            title = context.getString(UiR.string.app_full_name)
         )
     }
 
     private fun getAppDescription(): UiModel {
         return LabelValueUiModel(
-            label = context.getString(R.string.label_description),
-            value = context.getString(R.string.app_description)
+            label = context.getString(UiR.string.label_description),
+            value = context.getString(UiR.string.app_description)
         )
     }
 
     private fun getVersion(): LabelValueUiModel {
         return LabelValueUiModel(
-            label = context.getString(R.string.version),
+            label = context.getString(UiR.string.version),
             value = "1.5.0"
         )
     }
 
     private fun getDevelopedBy(): LabelValueUiModel {
         return LabelValueUiModel(
-            label = context.getString(R.string.developed_by),
+            label = context.getString(UiR.string.developed_by),
             value = "Brayan Bedritchuk"
         )
     }

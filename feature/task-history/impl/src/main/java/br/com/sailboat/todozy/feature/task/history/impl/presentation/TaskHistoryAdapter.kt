@@ -7,18 +7,22 @@ import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
 import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
 import br.com.sailboat.uicomponent.impl.viewholder.SubheadViewHolder
 import br.com.sailboat.uicomponent.impl.viewholder.TaskHistoryViewHolder
+import br.com.sailboat.uicomponent.impl.formatter.TaskHistoryDateTimeFormatter
 import br.com.sailboat.uicomponent.model.SubheadUiModel
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-internal class TaskHistoryAdapter(private val callback: Callback) :
+internal class TaskHistoryAdapter(
+    private val formatter: TaskHistoryDateTimeFormatter,
+    private val callback: Callback,
+) :
     ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
 
     interface Callback : TaskHistoryViewHolder.Callback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        UiModelType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, callback)
+        UiModelType.TASK_HISTORY.ordinal -> TaskHistoryViewHolder(parent, formatter, callback)
         UiModelType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
         else -> EmptyViewHolder(parent)
     }
