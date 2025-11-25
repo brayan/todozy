@@ -9,6 +9,7 @@ interface TaskHistoryRepository {
     suspend fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int>
     suspend fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int>
     suspend fun getTaskHistory(taskId: Long): Result<List<TaskHistory>>
+    suspend fun getHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
     suspend fun getTodayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
     suspend fun getYesterdayHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>
     suspend fun getPreviousDaysHistory(filter: TaskHistoryFilter): Result<List<TaskHistory>>

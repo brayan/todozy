@@ -32,6 +32,7 @@ private val presentation =
                 getAlarmUseCase = get(),
                 scheduleAllAlarmsUseCase = get(),
                 getTaskMetricsUseCase = get(),
+                getTaskProgressUseCase = get(),
                 completeTaskUseCase = get(),
                 taskListUiModelFactory = get(),
                 logService = get(),

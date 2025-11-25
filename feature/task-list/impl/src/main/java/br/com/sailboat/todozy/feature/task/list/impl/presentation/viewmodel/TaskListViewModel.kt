@@ -4,11 +4,14 @@ import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilter
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
@@ -17,11 +20,13 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuSettings
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickNewTask
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSelectProgressRange
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnStart
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSubmitSearchTerm
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSwipeTask
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -40,11 +45,13 @@ internal class TaskListViewModel(
     private val getAlarmUseCase: GetAlarmUseCase,
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase,
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
+    private val getTaskProgressUseCase: GetTaskProgressUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
     private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
     private var filter = TaskFilter(category = TaskCategory.TODAY)
+    private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
 
     override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
@@ -57,6 +64,7 @@ internal class TaskListViewModel(
             is OnClickTask -> onClickTask(viewIntent.taskId)
             is OnSubmitSearchTerm -> onSubmitSearchTerm(viewIntent.term)
             is OnSwipeTask -> onSwipeTask(viewIntent.position, viewIntent.status)
+            is OnSelectProgressRange -> onSelectProgressRange(viewIntent.range)
         }
     }
 
@@ -66,6 +74,7 @@ internal class TaskListViewModel(
                 viewState.loading.postValue(true)
                 viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
                 loadTasks()
+                loadProgress()
                 scheduleAllAlarmsUseCase()
             } catch (e: Exception) {
                 logService.error(e)
@@ -108,6 +117,32 @@ internal class TaskListViewModel(
                 viewState.loading.postValue(false)
             }
         }
+
+    private fun onSelectProgressRange(range: TaskProgressRange) =
+        viewModelScope.launch {
+            try {
+                selectedProgressRange = range
+                viewState.taskProgressRange.postValue(range)
+                loadProgress()
+            } catch (e: Exception) {
+                logService.error(e)
+            }
+        }
+
+    private suspend fun loadProgress() {
+        try {
+            val filter =
+                TaskProgressFilter(
+                    range = selectedProgressRange,
+                    taskId = Entity.NO_ID,
+                )
+            val progress = getTaskProgressUseCase(filter).getOrThrow()
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.postValue(progress)
+        } catch (e: Exception) {
+            logService.error(e)
+        }
+    }
 
     private suspend fun loadTasks() =
         coroutineScope {
@@ -168,6 +203,7 @@ internal class TaskListViewModel(
             if (swipeTaskAsyncJobs.size == 1) {
                 loadTasks()
                 viewState.taskMetrics.value = null
+                loadProgress()
             }
         } catch (e: Exception) {
             logService.error(e)

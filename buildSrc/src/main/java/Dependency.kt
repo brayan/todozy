@@ -183,6 +183,7 @@ object Compose {
         const val core = "1.6.7"
         const val lifecycleRuntime = "2.7.0"
         const val activity = "1.9.0"
+        const val compiler = "1.5.10"
     }
 
     const val ui = "androidx.compose.ui:ui:${Version.core}"

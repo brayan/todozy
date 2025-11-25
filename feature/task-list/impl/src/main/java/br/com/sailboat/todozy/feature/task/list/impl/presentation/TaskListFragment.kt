@@ -9,9 +9,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
@@ -21,6 +24,7 @@ import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
 import br.com.sailboat.todozy.feature.task.list.impl.databinding.FrgTaskListBinding
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewAction
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSelectProgressRange
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
@@ -29,6 +33,7 @@ import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
+import br.com.sailboat.uicomponent.impl.progress.TaskProgressHeaderAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.todozy.feature.task.list.impl.R as TaskListR
@@ -44,6 +49,7 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
     private lateinit var binding: FrgTaskListBinding
     private var taskListAdapter: TaskListAdapter? = null
+    private lateinit var progressAdapter: TaskProgressHeaderAdapter
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -143,6 +149,14 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
+        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { progressDays ->
+            val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+            renderProgress(progressDays, range)
+        }
+        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { range ->
+            val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
+            renderProgress(progressDays, range)
+        }
     }
 
     private fun observeActions() {
@@ -174,6 +188,7 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     }
 
     private fun hideMetrics() {
+        binding.taskMetrics.root.gone()
         binding.appbarTaskListFlMetrics.gone()
     }
 
@@ -194,6 +209,7 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
         binding.appbar.setExpanded(true, true)
         binding.appbarTaskListFlMetrics.visible()
+        binding.taskMetrics.root.visible()
     }
 
     private fun navigateToTaskForm() {
@@ -228,18 +244,30 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         activity?.run { aboutNavigator.navigateToAbout(this) }
     }
 
+    private fun renderProgress(
+        progressDays: List<TaskProgressDay>,
+        range: TaskProgressRange,
+    ) {
+        progressAdapter.submit(progressDays, range)
+    }
+
     private fun initRecyclerView() {
+        progressAdapter =
+            TaskProgressHeaderAdapter { selectedRange ->
+                viewModel.dispatchViewIntent(OnSelectProgressRange(selectedRange))
+            }
+
         binding.rvTaskList.run {
-            adapter =
+            val listAdapter =
                 TaskListAdapter(
                     object : TaskListAdapter.Callback {
                         override fun onClickTask(taskId: Long) {
                             viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
                         }
                     },
-                ).apply {
-                    taskListAdapter = this
-                }
+                ).apply { taskListAdapter = this }
+
+            adapter = ConcatAdapter(progressAdapter, listAdapter)
             layoutManager = LinearLayoutManager(activity)
         }
 
