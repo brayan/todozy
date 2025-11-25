@@ -3,11 +3,14 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilter
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import kotlinx.coroutines.launch
@@ -15,11 +18,15 @@ import kotlinx.coroutines.launch
 internal class TaskDetailsViewModel(
     override val viewState: TaskDetailsViewState = TaskDetailsViewState(),
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
+    private val getTaskProgressUseCase: GetTaskProgressUseCase,
     private val getTaskUseCase: GetTaskUseCase,
     private val disableTaskUseCase: DisableTaskUseCase,
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory,
     private val logService: LogService,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
+    private var selectedProgressRange = TaskProgressRange.LAST_YEAR
+    private var shouldShowProgress = false
+
     override fun dispatchViewIntent(viewIntent: TaskDetailsViewIntent) {
         when (viewIntent) {
             is TaskDetailsViewIntent.OnStart -> onStart(viewIntent)
@@ -27,6 +34,7 @@ internal class TaskDetailsViewModel(
             is TaskDetailsViewIntent.OnClickConfirmDeleteTask -> onClickConfirmDeleteTask()
             is TaskDetailsViewIntent.OnClickEditTask -> onClickEditTask()
             is TaskDetailsViewIntent.OnReturnToDetails -> onReturnToDetails()
+            is TaskDetailsViewIntent.OnSelectProgressRange -> onSelectProgressRange(viewIntent.range)
         }
     }
 
@@ -69,18 +77,22 @@ internal class TaskDetailsViewModel(
 
                 viewState.taskDetails.postValue(taskDetails)
 
+                shouldShowProgress = false
                 val taskMetrics: TaskMetrics? =
                     task.alarm?.run {
-                        if (RepeatType.isAlarmRepeating(this)) {
+                        shouldShowProgress = RepeatType.isAlarmRepeating(this)
+                        if (shouldShowProgress) {
                             val filter = TaskHistoryFilter(taskId = viewState.taskId)
                             val taskMetrics = getTaskMetricsUseCase(filter)
                             return@run taskMetrics.getOrNull()
                         } else {
+                            shouldShowProgress = false
                             return@run null
                         }
                     }
 
                 viewState.taskMetrics.postValue(taskMetrics)
+                loadProgress()
             } catch (e: Exception) {
                 logService.error(e)
                 viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
@@ -89,4 +101,35 @@ internal class TaskDetailsViewModel(
                 viewState.loading.postValue(false)
             }
         }
+
+    private fun onSelectProgressRange(range: TaskProgressRange) {
+        selectedProgressRange = range
+        viewState.taskProgressRange.postValue(range)
+
+        viewModelScope.launch {
+            loadProgress(force = true)
+        }
+    }
+
+    private suspend fun loadProgress(force: Boolean = false) {
+        if (force.not() && shouldShowProgress.not()) {
+            viewState.taskProgressDays.postValue(emptyList())
+            return
+        }
+
+        runCatching {
+            val progress =
+                getTaskProgressUseCase(
+                    TaskProgressFilter(
+                        range = selectedProgressRange,
+                        taskId = viewState.taskId,
+                    ),
+                ).getOrThrow()
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.postValue(progress)
+        }.onFailure { throwable ->
+            logService.error(throwable)
+            viewState.taskProgressDays.postValue(emptyList())
+        }
+    }
 }

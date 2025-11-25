@@ -38,6 +38,12 @@ internal class TaskHistoryRepositoryImpl(
             return@runCatching taskHistoryList.mapToTaskHistoryList()
         }
 
+    override suspend fun getHistory(filter: TaskHistoryFilter) =
+        runCatching {
+            val taskHistoryList = taskHistoryLocalDataSource.getHistory(filter).getOrThrow()
+            return@runCatching taskHistoryList.mapToTaskHistoryList()
+        }
+
     override suspend fun getTaskHistory(taskId: Long) =
         runCatching {
             val taskHistoryList = taskHistoryLocalDataSource.getTaskHistoryByTask(taskId).getOrThrow()

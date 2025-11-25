@@ -19,6 +19,7 @@ private val presentation =
         viewModel {
             TaskDetailsViewModel(
                 getTaskMetricsUseCase = get(),
+                getTaskProgressUseCase = get(),
                 getTaskUseCase = get(),
                 disableTaskUseCase = get(),
                 taskDetailsUiModelFactory = get(),

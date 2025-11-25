@@ -3,6 +3,7 @@ package br.com.sailboat.todozy.feature.task.history.impl.di
 import br.com.sailboat.todozy.feature.navigation.android.TaskHistoryNavigator
 import br.com.sailboat.todozy.feature.task.history.domain.repository.TaskHistoryRepository
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.AddHistoryUseCase
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSource
 import br.com.sailboat.todozy.feature.task.history.impl.data.datasource.TaskHistoryLocalDataSourceSQLite
 import br.com.sailboat.todozy.feature.task.history.impl.data.repository.TaskHistoryRepositoryImpl
@@ -15,6 +16,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHis
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.DeleteHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskHistoryUseCaseImpl
+import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.GetTaskProgressUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCase
 import br.com.sailboat.todozy.feature.task.history.impl.domain.usecase.UpdateHistoryUseCaseImpl
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.GetDateFilterNameView
@@ -63,6 +65,7 @@ private val presentation =
 private val domain =
     module {
         factory<GetTaskHistoryUseCase> { GetTaskHistoryUseCaseImpl(get()) }
+        factory<GetTaskProgressUseCase> { GetTaskProgressUseCaseImpl(get()) }
         factory<AddHistoryUseCase> { AddHistoryUseCaseImpl(get()) }
         factory<UpdateHistoryUseCase> { UpdateHistoryUseCaseImpl(get()) }
         factory<DeleteHistoryUseCase> { DeleteHistoryUseCaseImpl(get()) }

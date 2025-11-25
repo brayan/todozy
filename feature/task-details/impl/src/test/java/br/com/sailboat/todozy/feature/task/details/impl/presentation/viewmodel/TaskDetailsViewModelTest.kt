@@ -4,12 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.factory.TaskDetailsUiModelFactory
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilter
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.AlarmUiModel
@@ -35,6 +38,7 @@ internal class TaskDetailsViewModelTest {
     val coroutinesTestRule = CoroutinesTestRule()
 
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase = mockk(relaxed = true)
+    private val getTaskProgressUseCase: GetTaskProgressUseCase = mockk(relaxed = true)
     private val getTaskUseCase: GetTaskUseCase = mockk(relaxed = true)
     private val disableTaskUseCase: DisableTaskUseCase = mockk(relaxed = true)
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory = mockk(relaxed = true)
@@ -43,6 +47,7 @@ internal class TaskDetailsViewModelTest {
     private val viewModel =
         TaskDetailsViewModel(
             getTaskMetricsUseCase = getTaskMetricsUseCase,
+            getTaskProgressUseCase = getTaskProgressUseCase,
             getTaskUseCase = getTaskUseCase,
             disableTaskUseCase = disableTaskUseCase,
             taskDetailsUiModelFactory = taskDetailsUiModelFactory,
@@ -91,6 +96,16 @@ internal class TaskDetailsViewModelTest {
     }
 
     @Test
+    fun `should call getTaskProgressUseCase when dispatchViewAction is called with OnStart`() {
+        val taskId = 42L
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+
+        coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR, taskId)) }
+    }
+
+    @Test
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnStart when alarm is null`() {
         val taskId = 42L
         prepareScenario(
@@ -103,6 +118,7 @@ internal class TaskDetailsViewModelTest {
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
+        coVerify(exactly = 0) { getTaskProgressUseCase(any()) }
     }
 
     @Test
@@ -224,6 +240,20 @@ internal class TaskDetailsViewModelTest {
     }
 
     @Test
+    fun `should reload progress when dispatchViewAction is called with OnSelectProgressRange`() {
+        val taskId = 42L
+        viewModel.viewState.taskId = taskId
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS))
+
+        coVerify {
+            getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_30_DAYS, taskId))
+        }
+        assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+    }
+
+    @Test
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnReturnToDetails when alarm is null`() {
         val taskId = 42L
         viewModel.viewState.taskId = taskId
@@ -237,6 +267,7 @@ internal class TaskDetailsViewModelTest {
         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
 
         coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
+        coVerify(exactly = 0) { getTaskProgressUseCase(any()) }
     }
 
     private fun prepareScenario(
@@ -265,5 +296,6 @@ internal class TaskDetailsViewModelTest {
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { taskDetailsUiModelFactory.create(any()) } returns taskDetailsResult
         coEvery { getTaskMetricsUseCase(any()) } returns taskMetricsResult
+        coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
     }
 }

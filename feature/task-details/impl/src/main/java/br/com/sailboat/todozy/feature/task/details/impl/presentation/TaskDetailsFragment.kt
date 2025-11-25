@@ -13,8 +13,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewAction
@@ -27,6 +30,7 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
+import br.com.sailboat.uicomponent.impl.progress.TaskProgressHeaderAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.todozy.feature.task.details.impl.R as TaskDetailsR
@@ -46,6 +50,7 @@ internal class TaskDetailsFragment : Fragment() {
             override fun onClickNegativeOption() {}
         }
     private var taskDetailsAdapter: TaskDetailsAdapter? = null
+    private lateinit var progressAdapter: TaskProgressHeaderAdapter
     private var deleteTaskDialog: TwoOptionsDialog? = null
 
     private val editTaskLauncher =
@@ -94,10 +99,15 @@ internal class TaskDetailsFragment : Fragment() {
         }
 
         binding.rvTaskDetails.run {
-            adapter =
+            progressAdapter =
+                TaskProgressHeaderAdapter { selectedRange ->
+                    viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnSelectProgressRange(selectedRange))
+                }
+            val detailsAdapter =
                 TaskDetailsAdapter().apply {
                     taskDetailsAdapter = this
                 }
+            adapter = ConcatAdapter(progressAdapter, detailsAdapter)
             layoutManager = LinearLayoutManager(activity)
         }
 
@@ -123,6 +133,14 @@ internal class TaskDetailsFragment : Fragment() {
         }
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
+        }
+        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { progressDays ->
+            val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+            renderProgress(progressDays, range)
+        }
+        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { range ->
+            val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
+            renderProgress(progressDays, range)
         }
     }
 
@@ -203,10 +221,19 @@ internal class TaskDetailsFragment : Fragment() {
 
         binding.appbar.setExpanded(true, true)
         binding.appbarTaskDetailsFlMetrics.visible()
+        binding.taskMetrics.root.visible()
     }
 
     private fun hideMetrics() {
+        binding.taskMetrics.root.gone()
         binding.appbarTaskDetailsFlMetrics.gone()
+    }
+
+    private fun renderProgress(
+        progressDays: List<TaskProgressDay>,
+        range: TaskProgressRange,
+    ) {
+        progressAdapter.submit(progressDays, range)
     }
 
     private fun updateCallbacksFromDialogs() {

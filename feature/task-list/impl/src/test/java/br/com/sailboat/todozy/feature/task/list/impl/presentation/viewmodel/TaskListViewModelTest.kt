@@ -7,11 +7,14 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
+import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilter
+import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
@@ -46,6 +49,7 @@ internal class TaskListViewModelTest {
     private val getAlarmUseCase: GetAlarmUseCase = mockk(relaxed = true)
     private val scheduleAllAlarmsUseCase: ScheduleAllAlarmsUseCase = mockk(relaxed = true)
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase = mockk(relaxed = true)
+    private val getTaskProgressUseCase: GetTaskProgressUseCase = mockk(relaxed = true)
     private val completeTaskUseCase: CompleteTaskUseCase = mockk(relaxed = true)
     private val taskListUiModelFactory: TaskListUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
@@ -56,6 +60,7 @@ internal class TaskListViewModelTest {
             getAlarmUseCase = getAlarmUseCase,
             scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
             getTaskMetricsUseCase = getTaskMetricsUseCase,
+            getTaskProgressUseCase = getTaskProgressUseCase,
             completeTaskUseCase = completeTaskUseCase,
             taskListUiModelFactory = taskListUiModelFactory,
             logService = logService,
@@ -109,6 +114,7 @@ internal class TaskListViewModelTest {
             viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
 
             coVerify(exactly = 1) { scheduleAllAlarmsUseCase() }
+            coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR)) }
         }
     }
 
@@ -279,6 +285,19 @@ internal class TaskListViewModelTest {
         }
     }
 
+    @Test
+    fun `should reload progress when progress range changes`() =
+        runTest {
+            prepareScenario()
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS))
+
+            coVerify {
+                getTaskProgressUseCase(TaskProgressFilter(range = TaskProgressRange.LAST_30_DAYS))
+            }
+            assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+        }
+
     private fun prepareScenario(
         tasksView: List<UiModel> =
             listOf(
@@ -308,5 +327,6 @@ internal class TaskListViewModelTest {
         coEvery { getTasksUseCase(any()) } returns tasksResult
         coEvery { getAlarmUseCase(any()) } returns alarmResult
         coEvery { taskListUiModelFactory.create(any(), any()) } returns tasksView
+        coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
     }
 }

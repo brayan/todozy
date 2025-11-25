@@ -67,6 +67,20 @@ internal class TaskHistoryLocalDataSourceSQLite(
             delete(compileStatement(delete))
         }
 
+    override fun getHistory(filter: TaskHistoryFilter) =
+        runCatching {
+            val query = TaskHistoryQueryBuilder()
+            query.bindDefaultSelect()
+            query.bindDefaultInnerJoin()
+            query.bindDefaultWhere()
+            query.bindWhereEnabled()
+            query.bindWhereFilter(filter)
+            query.bindWhereDateRange(filter)
+            query.bindDefaultOrderBy()
+
+            return@runCatching getTaskHistoryList(query.toString(), filter)
+        }
+
     override fun getTodayHistory(filter: TaskHistoryFilter) =
         runCatching {
             val query = TaskHistoryQueryBuilder()
