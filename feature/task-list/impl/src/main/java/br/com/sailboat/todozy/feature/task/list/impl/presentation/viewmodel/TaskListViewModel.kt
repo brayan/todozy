@@ -139,10 +139,7 @@ internal class TaskListViewModel(
                             range = selectedProgressRange,
                             taskId = Entity.NO_ID,
                         )
-                    val progress =
-                        withContext(Dispatchers.Default) {
-                            getTaskProgressUseCase(filter).getOrThrow()
-                        }
+                    val progress = getTaskProgressUseCase(filter).getOrThrow()
                     viewState.taskProgressRange.postValue(selectedProgressRange)
                     viewState.taskProgressDays.postValue(progress)
                 } catch (e: Exception) {

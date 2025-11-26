@@ -32,6 +32,11 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    testOptions {
+        unitTests.all {
+            it.systemProperty("kotlinx.coroutines.fast.service.loader", "false")
+        }
+    }
 }
 
 configurations.matching { it.name.contains("UnitTest") }.configureEach {
@@ -67,6 +72,7 @@ dependencies {
     testImplementation(Kotlin.test)
     testImplementation(Coroutines.test)
     testImplementation(Lifecycle.test)
+    testRuntimeOnly(Coroutines.test)
 
     androidTestImplementation(MockK.android)
     androidTestImplementation(AndroidXTest.espresso)
