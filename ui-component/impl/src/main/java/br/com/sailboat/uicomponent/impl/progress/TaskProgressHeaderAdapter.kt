@@ -9,20 +9,29 @@ import br.com.sailboat.uicomponent.impl.databinding.ItemTaskProgressBinding
 
 class TaskProgressHeaderAdapter(
     private val onRangeSelected: (TaskProgressRange) -> Unit,
+    private val onDayClick: ((TaskProgressDay) -> Unit)? = null,
 ) : RecyclerView.Adapter<TaskProgressHeaderAdapter.ViewHolder>() {
     private var days: List<TaskProgressDay> = emptyList()
     private var range: TaskProgressRange = TaskProgressRange.LAST_YEAR
+    private var isLoading: Boolean = false
 
     fun submit(
         days: List<TaskProgressDay>,
         range: TaskProgressRange,
+        isLoading: Boolean = false,
     ) {
         this.days = days
         this.range = range
+        this.isLoading = isLoading
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int = if (days.isEmpty()) 0 else 1
+    override fun getItemCount(): Int =
+        if (days.isEmpty() && isLoading.not()) {
+            0
+        } else {
+            1
+        }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,7 +46,7 @@ class TaskProgressHeaderAdapter(
         holder: ViewHolder,
         position: Int,
     ) {
-        holder.bind(days, range, onRangeSelected)
+        holder.bind(days, range, isLoading, onRangeSelected, onDayClick)
     }
 
     class ViewHolder(
@@ -46,13 +55,17 @@ class TaskProgressHeaderAdapter(
         fun bind(
             days: List<TaskProgressDay>,
             range: TaskProgressRange,
+            isLoading: Boolean,
             onRangeSelected: (TaskProgressRange) -> Unit,
+            onDayClick: ((TaskProgressDay) -> Unit)?,
         ) {
             binding.taskProgress.render(
                 days = days,
                 range = range,
                 onRangeSelected = onRangeSelected,
-                onDayClick = null,
+                onDayClick = onDayClick,
+                isLoading = isLoading,
+                enableDayDetails = true,
             )
         }
     }

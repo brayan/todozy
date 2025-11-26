@@ -15,6 +15,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 internal class GetTaskProgressUseCaseImplTest {
     private val taskHistoryRepository: TaskHistoryRepository = mockk(relaxed = true)
@@ -75,6 +76,50 @@ internal class GetTaskProgressUseCaseImplTest {
                         assertEquals(10L, it.taskId)
                         assertEquals(LocalDate.of(2024, 8, 9), it.initialDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
                         assertEquals(LocalDate.of(2024, 8, 15), it.finalDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
+                    },
+                )
+            }
+        }
+
+    @Test
+    fun `should map progress from earliest history when range is all`() =
+        runTest {
+            val filter = TaskProgressFilter(range = TaskProgressRange.ALL, taskId = 5L)
+            val history =
+                listOf(
+                    TaskHistory(
+                        id = 1,
+                        taskId = 5L,
+                        taskName = "Task",
+                        status = TaskStatus.DONE,
+                        insertingDate = "2024-08-10 08:00:00",
+                    ),
+                    TaskHistory(
+                        id = 2,
+                        taskId = 5L,
+                        taskName = "Task",
+                        status = TaskStatus.NOT_DONE,
+                        insertingDate = "2024-08-12 09:00:00",
+                    ),
+                )
+
+            coEvery { taskHistoryRepository.getHistory(any()) } returns Result.success(history)
+
+            val progressDays = getTaskProgressUseCase(filter).getOrThrow()
+
+            assertEquals(LocalDate.of(2024, 8, 10), progressDays.first().date)
+            assertEquals(LocalDate.of(2024, 8, 15), progressDays.last().date)
+
+            val august10 = progressDays.first { it.date == LocalDate.of(2024, 8, 10) }
+            assertEquals(1, august10.doneCount)
+            assertEquals(1, august10.totalCount)
+
+            coVerify {
+                taskHistoryRepository.getHistory(
+                    withArg {
+                        assertNull(it.initialDate)
+                        assertNull(it.finalDate)
+                        assertEquals(5L, it.taskId)
                     },
                 )
             }

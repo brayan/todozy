@@ -29,6 +29,7 @@ import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -36,6 +37,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
@@ -53,6 +55,7 @@ internal class TaskListViewModel(
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
+    private var progressJob: Job? = null
 
     override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
         when (viewIntent) {
@@ -118,30 +121,36 @@ internal class TaskListViewModel(
             }
         }
 
-    private fun onSelectProgressRange(range: TaskProgressRange) =
-        viewModelScope.launch {
-            try {
-                selectedProgressRange = range
-                viewState.taskProgressRange.postValue(range)
-                loadProgress()
-            } catch (e: Exception) {
-                logService.error(e)
-            }
-        }
+    private fun onSelectProgressRange(range: TaskProgressRange) {
+        selectedProgressRange = range
+        viewState.taskProgressRange.postValue(range)
+        loadProgress()
+    }
 
-    private suspend fun loadProgress() {
-        try {
-            val filter =
-                TaskProgressFilter(
-                    range = selectedProgressRange,
-                    taskId = Entity.NO_ID,
-                )
-            val progress = getTaskProgressUseCase(filter).getOrThrow()
-            viewState.taskProgressRange.postValue(selectedProgressRange)
-            viewState.taskProgressDays.postValue(progress)
-        } catch (e: Exception) {
-            logService.error(e)
-        }
+    private fun loadProgress() {
+        progressJob?.cancel()
+        progressJob =
+            viewModelScope.launch {
+                try {
+                    viewState.taskProgressLoading.postValue(true)
+
+                    val filter =
+                        TaskProgressFilter(
+                            range = selectedProgressRange,
+                            taskId = Entity.NO_ID,
+                        )
+                    val progress =
+                        withContext(Dispatchers.Default) {
+                            getTaskProgressUseCase(filter).getOrThrow()
+                        }
+                    viewState.taskProgressRange.postValue(selectedProgressRange)
+                    viewState.taskProgressDays.postValue(progress)
+                } catch (e: Exception) {
+                    logService.error(e)
+                } finally {
+                    viewState.taskProgressLoading.postValue(false)
+                }
+            }
     }
 
     private suspend fun loadTasks() =

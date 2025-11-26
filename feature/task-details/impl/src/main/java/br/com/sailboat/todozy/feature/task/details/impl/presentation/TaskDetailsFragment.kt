@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
-import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
@@ -100,9 +99,12 @@ internal class TaskDetailsFragment : Fragment() {
 
         binding.rvTaskDetails.run {
             progressAdapter =
-                TaskProgressHeaderAdapter { selectedRange ->
-                    viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnSelectProgressRange(selectedRange))
-                }
+                TaskProgressHeaderAdapter(
+                    onRangeSelected = { selectedRange ->
+                        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnSelectProgressRange(selectedRange))
+                    },
+                    onDayClick = { /* tooltip handled inside component */ },
+                )
             val detailsAdapter =
                 TaskDetailsAdapter().apply {
                     taskDetailsAdapter = this
@@ -134,14 +136,9 @@ internal class TaskDetailsFragment : Fragment() {
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
-        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { progressDays ->
-            val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
-            renderProgress(progressDays, range)
-        }
-        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { range ->
-            val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
-            renderProgress(progressDays, range)
-        }
+        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { renderProgress() }
+        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { renderProgress() }
+        viewModel.viewState.taskProgressLoading.observe(viewLifecycleOwner) { renderProgress() }
     }
 
     private fun observeActions() {
@@ -229,11 +226,12 @@ internal class TaskDetailsFragment : Fragment() {
         binding.appbarTaskDetailsFlMetrics.gone()
     }
 
-    private fun renderProgress(
-        progressDays: List<TaskProgressDay>,
-        range: TaskProgressRange,
-    ) {
-        progressAdapter.submit(progressDays, range)
+    private fun renderProgress() {
+        val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
+        val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+        val isLoading = viewModel.viewState.taskProgressLoading.value ?: false
+
+        progressAdapter.submit(progressDays, range, isLoading)
     }
 
     private fun updateCallbacksFromDialogs() {

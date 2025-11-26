@@ -14,6 +14,7 @@ internal class TaskDetailsViewState {
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val taskProgressDays = MutableLiveData<List<TaskProgressDay>>(emptyList())
     val taskProgressRange = MutableLiveData(TaskProgressRange.LAST_YEAR)
+    val taskProgressLoading = MutableLiveData(false)
     val taskDetails = MutableLiveData<List<UiModel>>()
     var taskId: Long = Entity.NO_ID
 }
