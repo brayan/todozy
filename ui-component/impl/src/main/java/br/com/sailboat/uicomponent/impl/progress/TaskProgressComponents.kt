@@ -18,11 +18,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,12 +36,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.uicomponent.impl.R
 import java.time.DayOfWeek
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -48,9 +55,13 @@ internal fun TaskProgressContent(
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
     onDayClick: ((TaskProgressDay) -> Unit)?,
+    isLoading: Boolean = false,
+    enableDayDetails: Boolean = false,
 ) {
     val palette = rememberProgressPalette()
     val totalDone = remember(days) { days.sumOf { it.doneCount } }
+    val formatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM) }
+    val (selectedDay, onSelectDay) = remember { mutableStateOf<TaskProgressDay?>(null) }
 
     Column(
         modifier =
@@ -62,23 +73,43 @@ internal fun TaskProgressContent(
             onRangeSelected = onRangeSelected,
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Text(
-            text = stringResource(R.string.tasks_done_format, totalDone),
-            style =
-                MaterialTheme.typography.caption.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
-                ),
-            color = colorResource(id = R.color.md_blue_grey_700),
-        )
+        if (isLoading) {
+            TaskProgressSkeleton()
+        } else {
+            Text(
+                text = stringResource(R.string.tasks_done_format, totalDone),
+                style =
+                    MaterialTheme.typography.caption.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp,
+                    ),
+                color = colorResource(id = R.color.md_blue_grey_700),
+            )
 
-        Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
-        TaskProgressGrid(
-            days = days,
-            palette = palette,
-            onDayClick = onDayClick,
-        )
+            val dayClickHandler: ((TaskProgressDay) -> Unit)? =
+                when {
+                    enableDayDetails && onDayClick != null -> {
+                        { day ->
+                            onDayClick(day)
+                            onSelectDay(if (selectedDay == day) null else day)
+                        }
+                    }
+                    enableDayDetails -> { day -> onSelectDay(if (selectedDay == day) null else day) }
+                    else -> onDayClick
+                }
+
+            TaskProgressGrid(
+                days = days,
+                palette = palette,
+                onDayClick = dayClickHandler,
+                selectedDay = selectedDay,
+                onDismissTooltip = { onSelectDay(null) },
+                formatter = formatter,
+                enableDayDetails = enableDayDetails,
+            )
+        }
     }
 }
 
@@ -90,6 +121,7 @@ private fun TaskProgressRangeSelector(
     val ranges =
         remember {
             listOf(
+                TaskProgressRange.ALL,
                 TaskProgressRange.LAST_YEAR,
                 TaskProgressRange.LAST_30_DAYS,
                 TaskProgressRange.LAST_7_DAYS,
@@ -142,6 +174,10 @@ private fun TaskProgressGrid(
     days: List<TaskProgressDay>,
     palette: List<Color>,
     onDayClick: ((TaskProgressDay) -> Unit)?,
+    selectedDay: TaskProgressDay?,
+    onDismissTooltip: () -> Unit,
+    formatter: DateTimeFormatter,
+    enableDayDetails: Boolean,
 ) {
     if (days.isEmpty()) {
         Text(
@@ -197,9 +233,84 @@ private fun TaskProgressGrid(
                                     .semantics {
                                         semanticsDescription?.let { desc -> contentDescription = desc }
                                     },
-                        )
+                        ) {
+                            if (enableDayDetails && day != null && selectedDay == day) {
+                                DayTooltip(
+                                    day = day,
+                                    formatter = formatter,
+                                    onDismiss = onDismissTooltip,
+                                )
+                            }
+                        }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TaskProgressSkeleton() {
+    val placeholderColor = MaterialTheme.colors.onSurface.copy(alpha = 0.08f)
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth(0.3f)
+                    .height(16.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(placeholderColor),
+        )
+
+        Row(verticalAlignment = Alignment.Top) {
+            WeekdayLabels()
+
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                repeat(5) {
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        repeat(7) {
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .size(16.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(placeholderColor),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DayTooltip(
+    day: TaskProgressDay,
+    formatter: DateTimeFormatter,
+    onDismiss: () -> Unit,
+) {
+    val summary = stringResource(R.string.tooltip_tasks_summary, day.doneCount, day.totalCount)
+
+    DropdownMenu(
+        expanded = true,
+        onDismissRequest = onDismiss,
+        offset = DpOffset(0.dp, (-8).dp),
+    ) {
+        DropdownMenuItem(onClick = onDismiss) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = formatter.format(day.date),
+                    style = MaterialTheme.typography.subtitle2,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = summary,
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onSurface,
+                )
             }
         }
     }
@@ -274,8 +385,13 @@ private fun rememberProgressPalette(): List<Color> {
     return listOf(
         muted,
         base.copy(alpha = 0.2f),
-        base.copy(alpha = 0.45f),
+        base.copy(alpha = 0.3f),
+        base.copy(alpha = 0.4f),
+        base.copy(alpha = 0.5f),
+        base.copy(alpha = 0.6f),
         base.copy(alpha = 0.7f),
+        base.copy(alpha = 0.8f),
+        base.copy(alpha = 0.9f),
         base,
     )
 }
@@ -283,12 +399,15 @@ private fun rememberProgressPalette(): List<Color> {
 @Composable
 private fun TaskProgressRange.toLabel(): String =
     when (this) {
+        TaskProgressRange.ALL -> stringResource(R.string.all_days)
         TaskProgressRange.LAST_YEAR -> stringResource(R.string.last_12_months)
         TaskProgressRange.LAST_30_DAYS -> stringResource(R.string.last_30_days)
         TaskProgressRange.LAST_7_DAYS -> stringResource(R.string.last_7_days)
     }
 
 private fun TaskProgressDay.paletteIndex(): Int {
-    if (doneCount <= 0) return 0
-    return doneCount.coerceAtMost(4)
+    if (doneCount <= 0) {
+        return 0
+    }
+    return doneCount.coerceAtMost(9)
 }

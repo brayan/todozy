@@ -13,7 +13,10 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilt
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 internal class TaskDetailsViewModel(
     override val viewState: TaskDetailsViewState = TaskDetailsViewState(),
@@ -26,6 +29,7 @@ internal class TaskDetailsViewModel(
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private var shouldShowProgress = false
+    private var progressJob: Job? = null
 
     override fun dispatchViewIntent(viewIntent: TaskDetailsViewIntent) {
         when (viewIntent) {
@@ -106,30 +110,40 @@ internal class TaskDetailsViewModel(
         selectedProgressRange = range
         viewState.taskProgressRange.postValue(range)
 
-        viewModelScope.launch {
-            loadProgress(force = true)
-        }
+        loadProgress(force = true)
     }
 
-    private suspend fun loadProgress(force: Boolean = false) {
-        if (force.not() && shouldShowProgress.not()) {
+    private fun loadProgress(force: Boolean = false) {
+        val shouldFetch = force || shouldShowProgress
+        if (shouldFetch.not()) {
             viewState.taskProgressDays.postValue(emptyList())
+            viewState.taskProgressLoading.postValue(false)
             return
         }
 
-        runCatching {
-            val progress =
-                getTaskProgressUseCase(
-                    TaskProgressFilter(
-                        range = selectedProgressRange,
-                        taskId = viewState.taskId,
-                    ),
-                ).getOrThrow()
-            viewState.taskProgressRange.postValue(selectedProgressRange)
-            viewState.taskProgressDays.postValue(progress)
-        }.onFailure { throwable ->
-            logService.error(throwable)
-            viewState.taskProgressDays.postValue(emptyList())
-        }
+        progressJob?.cancel()
+        progressJob =
+            viewModelScope.launch {
+                try {
+                    viewState.taskProgressLoading.postValue(true)
+
+                    val progress =
+                        withContext(Dispatchers.Default) {
+                            getTaskProgressUseCase(
+                                TaskProgressFilter(
+                                    range = selectedProgressRange,
+                                    taskId = viewState.taskId,
+                                ),
+                            ).getOrThrow()
+                        }
+                    viewState.taskProgressRange.postValue(selectedProgressRange)
+                    viewState.taskProgressDays.postValue(progress)
+                } catch (throwable: Exception) {
+                    logService.error(throwable)
+                    viewState.taskProgressDays.postValue(emptyList())
+                } finally {
+                    viewState.taskProgressLoading.postValue(false)
+                }
+            }
     }
 }

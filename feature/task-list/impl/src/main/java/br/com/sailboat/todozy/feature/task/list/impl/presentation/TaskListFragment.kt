@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.domain.model.TaskMetrics
-import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
@@ -149,14 +148,9 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
-        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { progressDays ->
-            val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
-            renderProgress(progressDays, range)
-        }
-        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { range ->
-            val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
-            renderProgress(progressDays, range)
-        }
+        viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { renderProgress() }
+        viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { renderProgress() }
+        viewModel.viewState.taskProgressLoading.observe(viewLifecycleOwner) { renderProgress() }
     }
 
     private fun observeActions() {
@@ -244,18 +238,21 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         activity?.run { aboutNavigator.navigateToAbout(this) }
     }
 
-    private fun renderProgress(
-        progressDays: List<TaskProgressDay>,
-        range: TaskProgressRange,
-    ) {
-        progressAdapter.submit(progressDays, range)
+    private fun renderProgress() {
+        val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
+        val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+        val isLoading = viewModel.viewState.taskProgressLoading.value ?: false
+        progressAdapter.submit(progressDays, range, isLoading)
     }
 
     private fun initRecyclerView() {
         progressAdapter =
-            TaskProgressHeaderAdapter { selectedRange ->
-                viewModel.dispatchViewIntent(OnSelectProgressRange(selectedRange))
-            }
+            TaskProgressHeaderAdapter(
+                onRangeSelected = { selectedRange ->
+                    viewModel.dispatchViewIntent(OnSelectProgressRange(selectedRange))
+                },
+                onDayClick = { /* handled by tooltip inside component */ },
+            )
 
         binding.rvTaskList.run {
             val listAdapter =

@@ -29,8 +29,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Calendar
@@ -54,40 +55,46 @@ internal class TaskListViewModelTest {
     private val taskListUiModelFactory: TaskListUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
 
-    private val viewModel =
-        TaskListViewModel(
-            getTasksUseCase = getTasksUseCase,
-            getAlarmUseCase = getAlarmUseCase,
-            scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
-            getTaskMetricsUseCase = getTaskMetricsUseCase,
-            getTaskProgressUseCase = getTaskProgressUseCase,
-            completeTaskUseCase = completeTaskUseCase,
-            taskListUiModelFactory = taskListUiModelFactory,
-            logService = logService,
-        )
+    private lateinit var viewModel: TaskListViewModel
+
+    @Before
+    fun setup() {
+        viewModel =
+            TaskListViewModel(
+                getTasksUseCase = getTasksUseCase,
+                getAlarmUseCase = getAlarmUseCase,
+                scheduleAllAlarmsUseCase = scheduleAllAlarmsUseCase,
+                getTaskMetricsUseCase = getTaskMetricsUseCase,
+                getTaskProgressUseCase = getTaskProgressUseCase,
+                completeTaskUseCase = completeTaskUseCase,
+                taskListUiModelFactory = taskListUiModelFactory,
+                logService = logService,
+            )
+    }
 
     @Test
-    fun `should send CloseNotifications when dispatchViewAction is called with OnStart`() {
-        runBlocking {
+    fun `should send CloseNotifications when dispatchViewAction is called with OnStart`() =
+        runTest(coroutinesTestRule.dispatcher) {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
 
             assertEquals(
                 TaskListViewAction.CloseNotifications,
                 viewModel.viewState.viewAction.value,
             )
         }
-    }
 
     @Test
-    fun `should call getTasksUseCase when dispatchViewAction is called with OnStart`() {
-        runBlocking {
+    fun `should call getTasksUseCase when dispatchViewAction is called with OnStart`() =
+        runTest(coroutinesTestRule.dispatcher) {
             val tasksView =
                 mutableListOf<UiModel>(TaskUiModel(taskId = 543L, taskName = "Task 543"))
             prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
 
             coVerifyOrder {
                 getTasksUseCase(TaskFilter(category = TaskCategory.BEFORE_TODAY))
@@ -104,19 +111,18 @@ internal class TaskListViewModelTest {
                 )
             assertEquals(expected, viewModel.viewState.itemsView.value)
         }
-    }
 
     @Test
-    fun `should call scheduleAllAlarmsUseCase when dispatchViewAction is called with OnStart`() {
-        runBlocking {
+    fun `should call scheduleAllAlarmsUseCase when dispatchViewAction is called with OnStart`() =
+        runTest(coroutinesTestRule.dispatcher) {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
 
             coVerify(exactly = 1) { scheduleAllAlarmsUseCase() }
             coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR)) }
         }
-    }
 
     @Test
     fun `should navigate to about screen when dispatchViewAction is called with OnClickMenuAbout`() {
@@ -165,8 +171,8 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `should call getTasksUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() {
-        runBlocking {
+    fun `should call getTasksUseCase and search for tasks when dispatchViewAction is called with OnInputSearchTerm`() =
+        runTest(coroutinesTestRule.dispatcher) {
             val term = "Term"
             val tasksView =
                 mutableListOf<UiModel>(
@@ -178,6 +184,7 @@ internal class TaskListViewModelTest {
             prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = term))
+            advanceUntilIdle()
 
             coVerifyOrder {
                 getTasksUseCase(TaskFilter(text = term, category = TaskCategory.BEFORE_TODAY))
@@ -194,11 +201,10 @@ internal class TaskListViewModelTest {
                 )
             assertEquals(expected, viewModel.viewState.itemsView.value)
         }
-    }
 
     @Test
     fun `should call completeTaskUseCase when dispatchViewAction is called with OnSwipeTask`() {
-        runTest {
+        runTest(coroutinesTestRule.dispatcher) {
             val tasks =
                 mutableListOf<UiModel>(
                     TaskUiModel(taskId = 543L, taskName = "Task 543"),
@@ -210,6 +216,7 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceUntilIdle()
 
             coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
         }
@@ -217,7 +224,7 @@ internal class TaskListViewModelTest {
 
     @Test
     fun `should update removed task when dispatchViewAction is called with OnSwipeTask`() {
-        runTest {
+        runTest(coroutinesTestRule.dispatcher) {
             val task1 = TaskUiModel(taskId = 543L, taskName = "Task 543")
             val task2 = TaskUiModel(taskId = 978L, taskName = "Task 978")
             val tasks = mutableListOf<UiModel>(task1, task2)
@@ -234,6 +241,7 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceUntilIdle()
 
             val expected = TaskListViewAction.UpdateRemovedTask(position)
             assertTrue { list.contains(expected) }
@@ -242,7 +250,7 @@ internal class TaskListViewModelTest {
 
     @Test
     fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() =
-        runTest {
+        runTest(coroutinesTestRule.dispatcher) {
             val tasks =
                 mutableListOf<UiModel>(
                     TaskUiModel(taskId = 543L, taskName = "Task 543"),
@@ -254,13 +262,14 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceUntilIdle()
 
             coVerify { getAlarmUseCase(taskId = 978L) }
         }
 
     @Test
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnSwipeTask on a task with repetitive alarm`() {
-        runTest {
+        runTest(coroutinesTestRule.dispatcher) {
             val tasks =
                 mutableListOf<UiModel>(
                     TaskUiModel(taskId = 543L, taskName = "Task 543"),
@@ -280,6 +289,7 @@ internal class TaskListViewModelTest {
             prepareScenario(alarmResult = alarmResult)
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceUntilIdle()
 
             coVerify { getTaskMetricsUseCase(TaskHistoryFilter(taskId = 978L)) }
         }
@@ -287,10 +297,11 @@ internal class TaskListViewModelTest {
 
     @Test
     fun `should reload progress when progress range changes`() =
-        runTest {
+        runTest(coroutinesTestRule.dispatcher) {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS))
+            advanceUntilIdle()
 
             coVerify {
                 getTaskProgressUseCase(TaskProgressFilter(range = TaskProgressRange.LAST_30_DAYS))

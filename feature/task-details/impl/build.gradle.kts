@@ -66,3 +66,9 @@ dependencies {
     androidTestImplementation(AndroidXTest.runner)
     androidTestImplementation(AndroidXTest.rules)
 }
+
+configurations
+    .matching { it.name.contains("UnitTest") }
+    .configureEach {
+        exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-android")
+    }

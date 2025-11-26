@@ -31,6 +31,8 @@ class TaskProgressView
         private val rangeState = mutableStateOf(TaskProgressRange.LAST_YEAR)
         private val onRangeSelectedState = mutableStateOf<(TaskProgressRange) -> Unit>({})
         private val onDayClickState = mutableStateOf<((TaskProgressDay) -> Unit)?>(null)
+        private val loadingState = mutableStateOf(false)
+        private val enableDayDetailsState = mutableStateOf(false)
 
         init {
             addView(composeView)
@@ -42,6 +44,8 @@ class TaskProgressView
                             selectedRange = rangeState.value,
                             onRangeSelected = onRangeSelectedState.value,
                             onDayClick = onDayClickState.value,
+                            isLoading = loadingState.value,
+                            enableDayDetails = enableDayDetailsState.value,
                         )
                     }
                 }
@@ -53,10 +57,14 @@ class TaskProgressView
             range: TaskProgressRange,
             onRangeSelected: (TaskProgressRange) -> Unit,
             onDayClick: ((TaskProgressDay) -> Unit)? = null,
+            isLoading: Boolean = false,
+            enableDayDetails: Boolean = false,
         ) {
             onRangeSelectedState.value = onRangeSelected
             onDayClickState.value = onDayClick
             daysState.value = days
             rangeState.value = range
+            loadingState.value = isLoading
+            enableDayDetailsState.value = enableDayDetails
         }
     }

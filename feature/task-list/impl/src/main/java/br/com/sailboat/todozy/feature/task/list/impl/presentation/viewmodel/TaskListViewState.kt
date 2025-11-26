@@ -14,4 +14,5 @@ internal class TaskListViewState {
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val taskProgressDays = MutableLiveData<List<TaskProgressDay>>(emptyList())
     val taskProgressRange = MutableLiveData(TaskProgressRange.LAST_YEAR)
+    val taskProgressLoading = MutableLiveData(false)
 }

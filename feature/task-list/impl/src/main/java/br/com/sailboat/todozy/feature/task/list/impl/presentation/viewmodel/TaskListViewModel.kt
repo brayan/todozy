@@ -53,6 +53,7 @@ internal class TaskListViewModel(
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
+    private var progressJob: Job? = null
 
     override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
         when (viewIntent) {
@@ -118,30 +119,33 @@ internal class TaskListViewModel(
             }
         }
 
-    private fun onSelectProgressRange(range: TaskProgressRange) =
-        viewModelScope.launch {
-            try {
-                selectedProgressRange = range
-                viewState.taskProgressRange.postValue(range)
-                loadProgress()
-            } catch (e: Exception) {
-                logService.error(e)
-            }
-        }
+    private fun onSelectProgressRange(range: TaskProgressRange) {
+        selectedProgressRange = range
+        viewState.taskProgressRange.postValue(range)
+        loadProgress()
+    }
 
-    private suspend fun loadProgress() {
-        try {
-            val filter =
-                TaskProgressFilter(
-                    range = selectedProgressRange,
-                    taskId = Entity.NO_ID,
-                )
-            val progress = getTaskProgressUseCase(filter).getOrThrow()
-            viewState.taskProgressRange.postValue(selectedProgressRange)
-            viewState.taskProgressDays.postValue(progress)
-        } catch (e: Exception) {
-            logService.error(e)
-        }
+    private fun loadProgress() {
+        progressJob?.cancel()
+        progressJob =
+            viewModelScope.launch {
+                try {
+                    viewState.taskProgressLoading.postValue(true)
+
+                    val filter =
+                        TaskProgressFilter(
+                            range = selectedProgressRange,
+                            taskId = Entity.NO_ID,
+                        )
+                    val progress = getTaskProgressUseCase(filter).getOrThrow()
+                    viewState.taskProgressRange.postValue(selectedProgressRange)
+                    viewState.taskProgressDays.postValue(progress)
+                } catch (e: Exception) {
+                    logService.error(e)
+                } finally {
+                    viewState.taskProgressLoading.postValue(false)
+                }
+            }
     }
 
     private suspend fun loadTasks() =
