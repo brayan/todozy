@@ -34,6 +34,10 @@ android {
     }
 }
 
+configurations.matching { it.name.contains("UnitTest") }.configureEach {
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-android")
+}
+
 dependencies {
     implementation(project(Module.kotlinUtil))
     implementation(project(Module.androidUtil))

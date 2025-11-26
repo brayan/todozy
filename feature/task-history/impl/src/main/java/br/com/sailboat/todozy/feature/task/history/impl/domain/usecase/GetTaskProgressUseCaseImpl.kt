@@ -24,14 +24,18 @@ internal class GetTaskProgressUseCaseImpl(
             val history = taskHistoryRepository.getHistory(historyFilter).getOrThrow()
             val historyByDate =
                 history.groupBy { taskHistory ->
-                    taskHistory.insertingDate.toDateTimeCalendar().toInstant().atZone(clock.zone)
+                    taskHistory.insertingDate
+                        .toDateTimeCalendar()
+                        .toInstant()
+                        .atZone(clock.zone)
                         .toLocalDate()
                 }
 
-            val startDate = when (filter.range) {
-                TaskProgressRange.ALL -> historyByDate.keys.minOrNull() ?: today
-                else -> filter.range.startDate(today)
-            }
+            val startDate =
+                when (filter.range) {
+                    TaskProgressRange.ALL -> historyByDate.keys.minOrNull() ?: today
+                    else -> filter.range.startDate(today)
+                }
             val dateRange = buildDateRange(startDate, today)
 
             return@runCatching dateRange.map { date ->
