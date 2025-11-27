@@ -61,17 +61,21 @@
         android:paddingBottom="100dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/spacing_medium"
+        android:contentDescription="@string/fab_new_task"
+        android:text="@string/fab_new_task"
+        android:textColor="@android:color/white"
         app:backgroundTint="?attr/colorPrimary"
         app:fabSize="normal"
-        app:tint="@android:color/white"
-        app:rippleColor="?attr/colorOnPrimary"
-        app:srcCompat="@drawable/ic_add_white_48dp" />
+        app:icon="@drawable/ic_add_white_48dp"
+        app:iconGravity="textStart"
+        app:iconTint="@android:color/white"
+        app:rippleColor="?attr/colorOnPrimary" />
 
     <ProgressBar
         android:id="@+id/progressTaskList"

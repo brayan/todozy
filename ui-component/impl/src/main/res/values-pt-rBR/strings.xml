@@ -27,6 +27,8 @@
     <string name="ept_list_no_projects_found">Nenhum projeto encontrado</string>
     <string name="notifications">Notificações</string>
     <string name="notification_tone">Som de notificação</string>
+    <string name="notification_action_mark_done">Concluir</string>
+    <string name="notification_action_snooze">Adiar 10 min</string>
     <string name="vibrate">Vibração</string>
     <string name="tip">Dica</string>
     <string name="got_it">ENTENDI</string>
@@ -148,5 +150,10 @@
     <string name="exception_product_quantity">É necessário inserir a quantidade do produto</string>
     <string name="apply">Aplicar</string>
     <string name="notification_title_task_alarms">Alarmes das tarefas</string>
+    <string name="notification_channel_description_task_alarms">Lembretes e alarmes de tarefas</string>
     <string name="alarm_not_valid">Alarme inválido</string>
+    <plurals name="notification_tasks_due">
+        <item quantity="one">%d tarefa pendente</item>
+        <item quantity="other">%d tarefas pendentes</item>
+    </plurals>
 </resources>

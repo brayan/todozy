@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.floatingactionbutton.FloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end|bottom"
     android:layout_margin="@dimen/spacing_medium"
+    android:textColor="@android:color/white"
     app:backgroundTint="?attr/colorPrimary"
     app:fabSize="normal"
-    app:tint="@android:color/white"
     app:rippleColor="?attr/colorOnPrimary"
-    app:srcCompat="@drawable/ic_add_white_48dp" />
+    app:iconTint="@android:color/white" />

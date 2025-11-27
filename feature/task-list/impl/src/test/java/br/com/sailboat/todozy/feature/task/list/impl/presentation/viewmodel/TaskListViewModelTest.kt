@@ -69,6 +69,7 @@ internal class TaskListViewModelTest {
                 completeTaskUseCase = completeTaskUseCase,
                 taskListUiModelFactory = taskListUiModelFactory,
                 logService = logService,
+                dispatcherProvider = coroutinesTestRule.dispatcherProvider,
             )
     }
 

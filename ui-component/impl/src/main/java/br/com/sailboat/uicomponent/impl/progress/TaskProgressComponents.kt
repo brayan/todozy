@@ -31,6 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -62,6 +64,7 @@ internal fun TaskProgressContent(
     val totalDone = remember(days) { days.sumOf { it.doneCount } }
     val formatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM) }
     val (selectedDay, onSelectDay) = remember { mutableStateOf<TaskProgressDay?>(null) }
+    val haptic = LocalHapticFeedback.current
 
     Column(
         modifier =
@@ -92,11 +95,15 @@ internal fun TaskProgressContent(
                 when {
                     enableDayDetails && onDayClick != null -> {
                         { day ->
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onDayClick(day)
                             onSelectDay(if (selectedDay == day) null else day)
                         }
                     }
-                    enableDayDetails -> { day -> onSelectDay(if (selectedDay == day) null else day) }
+                    enableDayDetails -> { day ->
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onSelectDay(if (selectedDay == day) null else day)
+                    }
                     else -> onDayClick
                 }
 
@@ -104,6 +111,7 @@ internal fun TaskProgressContent(
                 days = days,
                 palette = palette,
                 onDayClick = dayClickHandler,
+                onDayHaptic = { haptic.performHapticFeedback(HapticFeedbackType.LongPress) },
                 selectedDay = selectedDay,
                 onDismissTooltip = { onSelectDay(null) },
                 formatter = formatter,
@@ -118,6 +126,7 @@ private fun TaskProgressRangeSelector(
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
     val ranges =
         remember {
             listOf(
@@ -133,8 +142,10 @@ private fun TaskProgressRangeSelector(
             val selected = range == selectedRange
             Surface(
                 modifier =
-                    Modifier
-                        .clickable { onRangeSelected(range) },
+                    Modifier.clickable {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onRangeSelected(range)
+                    },
                 color =
                     if (selected) {
                         colorResource(id = R.color.md_teal_100)
@@ -174,6 +185,7 @@ private fun TaskProgressGrid(
     days: List<TaskProgressDay>,
     palette: List<Color>,
     onDayClick: ((TaskProgressDay) -> Unit)?,
+    onDayHaptic: (() -> Unit)?,
     selectedDay: TaskProgressDay?,
     onDismissTooltip: () -> Unit,
     formatter: DateTimeFormatter,
@@ -188,6 +200,22 @@ private fun TaskProgressGrid(
         )
         return
     }
+
+    val locale = Locale.getDefault()
+    val dayMetadata =
+        remember(days, palette, locale) {
+            days.associateBy(
+                keySelector = { it.date },
+                valueTransform = { day ->
+                    val label = day.date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
+                    val description = "$label ${day.date} (${day.doneCount}/${day.totalCount})"
+                    DayHeatmapMetadata(
+                        color = palette[day.paletteIndex()],
+                        semanticsDescription = description,
+                    )
+                },
+            )
+        }
 
     val paddedDays = remember(days) { padDays(days) }
     val weeks = remember(paddedDays) { paddedDays.chunked(7) }
@@ -209,13 +237,9 @@ private fun TaskProgressGrid(
             items(weeks) { week ->
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     week.forEach { day ->
-                        val color = day?.let { palette[it.paletteIndex()] } ?: palette.first()
-                        val semanticsDescription =
-                            day?.let {
-                                val label =
-                                    it.date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-                                "$label ${it.date} (${it.doneCount}/${it.totalCount})"
-                            }
+                        val metadata = day?.let { dayMetadata[it.date] }
+                        val color = metadata?.color ?: palette.first()
+                        val semanticsDescription = metadata?.semanticsDescription
 
                         Box(
                             modifier =
@@ -225,7 +249,10 @@ private fun TaskProgressGrid(
                                     .background(color)
                                     .let {
                                         if (day != null && onDayClick != null) {
-                                            it.clickable { onDayClick(day) }
+                                            it.clickable {
+                                                onDayHaptic?.invoke()
+                                                onDayClick(day)
+                                            }
                                         } else {
                                             it
                                         }
@@ -382,19 +409,26 @@ private fun rememberProgressPalette(): List<Color> {
     val base = colorResource(id = R.color.md_teal_500)
     val muted = MaterialTheme.colors.onSurface.copy(alpha = 0.06f)
 
-    return listOf(
-        muted,
-        base.copy(alpha = 0.2f),
-        base.copy(alpha = 0.3f),
-        base.copy(alpha = 0.4f),
-        base.copy(alpha = 0.5f),
-        base.copy(alpha = 0.6f),
-        base.copy(alpha = 0.7f),
-        base.copy(alpha = 0.8f),
-        base.copy(alpha = 0.9f),
-        base,
-    )
+    return remember(base, muted) {
+        listOf(
+            muted,
+            base.copy(alpha = 0.2f),
+            base.copy(alpha = 0.3f),
+            base.copy(alpha = 0.4f),
+            base.copy(alpha = 0.5f),
+            base.copy(alpha = 0.6f),
+            base.copy(alpha = 0.7f),
+            base.copy(alpha = 0.8f),
+            base.copy(alpha = 0.9f),
+            base,
+        )
+    }
 }
+
+private data class DayHeatmapMetadata(
+    val color: Color,
+    val semanticsDescription: String,
+)
 
 @Composable
 private fun TaskProgressRange.toLabel(): String =

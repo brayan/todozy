@@ -28,6 +28,8 @@
     <string name="projects">Projects</string>
     <string name="notifications">Notifications</string>
     <string name="notification_tone">Notification tone</string>
+    <string name="notification_action_mark_done">Mark done</string>
+    <string name="notification_action_snooze">Snooze 10 min</string>
     <string name="vibrate">Vibrate</string>
     <string name="tip">Tip</string>
     <string name="got_it">GOT IT</string>
@@ -152,6 +154,12 @@
     <string name="exception_product_quantity">You must enter the quantity</string>
     <string name="apply">Apply</string>
     <string name="notification_title_task_alarms">Task alarms</string>
+    <string name="notification_channel_description_task_alarms">Task reminders and alarms</string>
     <string name="alarm_not_valid">Alarm not valid</string>
     <string name="empty" translatable="false" />
+
+    <plurals name="notification_tasks_due">
+        <item quantity="one">%d task to do</item>
+        <item quantity="other">%d tasks to do</item>
+    </plurals>
 </resources>

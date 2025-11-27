@@ -13,7 +13,8 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilt
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
-import kotlinx.coroutines.Dispatchers
+import br.com.sailboat.todozy.utility.kotlin.coroutines.DefaultDispatcherProvider
+import br.com.sailboat.todozy.utility.kotlin.coroutines.DispatcherProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,6 +27,7 @@ internal class TaskDetailsViewModel(
     private val disableTaskUseCase: DisableTaskUseCase,
     private val taskDetailsUiModelFactory: TaskDetailsUiModelFactory,
     private val logService: LogService,
+    private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private var shouldShowProgress = false
@@ -107,6 +109,9 @@ internal class TaskDetailsViewModel(
         }
 
     private fun onSelectProgressRange(range: TaskProgressRange) {
+        if (range == selectedProgressRange) {
+            return
+        }
         selectedProgressRange = range
         viewState.taskProgressRange.postValue(range)
 
@@ -122,13 +127,14 @@ internal class TaskDetailsViewModel(
         }
 
         progressJob?.cancel()
+        viewState.taskProgressDays.postValue(emptyList())
         progressJob =
             viewModelScope.launch {
                 try {
                     viewState.taskProgressLoading.postValue(true)
 
                     val progress =
-                        withContext(Dispatchers.Default) {
+                        withContext(dispatcherProvider.default()) {
                             getTaskProgressUseCase(
                                 TaskProgressFilter(
                                     range = selectedProgressRange,

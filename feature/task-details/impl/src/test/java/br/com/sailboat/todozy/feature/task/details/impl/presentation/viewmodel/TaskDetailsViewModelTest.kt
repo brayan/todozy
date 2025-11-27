@@ -54,6 +54,7 @@ internal class TaskDetailsViewModelTest {
             disableTaskUseCase = disableTaskUseCase,
             taskDetailsUiModelFactory = taskDetailsUiModelFactory,
             logService = logService,
+            dispatcherProvider = coroutinesTestRule.dispatcherProvider,
         )
 
     @Test

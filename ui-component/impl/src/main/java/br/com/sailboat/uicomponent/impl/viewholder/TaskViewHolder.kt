@@ -1,6 +1,7 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.ViewGroup
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
@@ -27,7 +28,10 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         with(binding) {
             task.tvTaskName.text = item.taskName
             bindTaskAlarm(item)
-            root.setOnClickListener { callback.onClickTask(item.taskId) }
+            root.setOnClickListener {
+                root.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                callback.onClickTask(item.taskId)
+            }
         }
 
     private fun bindTaskAlarm(item: TaskUiModel) {

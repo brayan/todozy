@@ -17,5 +17,8 @@
 
         <receiver android:name=".presentation.broadcastreceiver.AlarmReceiver" />
         <receiver android:name=".presentation.broadcastreceiver.ScheduleAlarmsReceiver" />
+        <receiver
+            android:name=".presentation.broadcastreceiver.NotificationActionReceiver"
+            android:exported="false" />
     </application>
 </manifest>

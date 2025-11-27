@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
@@ -92,7 +93,11 @@ internal class TaskDetailsFragment : Fragment() {
 
     private fun initViews() {
         binding.toolbar.setTitle(UiR.string.task_details)
-        binding.fab.root.setImageResource(UiR.drawable.ic_edit_white_24dp)
+        val fabLabel = getString(TaskDetailsR.string.fab_edit_task)
+        binding.fab.root.text = fabLabel
+        binding.fab.root.setIconResource(UiR.drawable.ic_edit_white_24dp)
+        binding.fab.root.contentDescription = fabLabel
+        TooltipCompat.setTooltipText(binding.fab.root, fabLabel)
         binding.fab.root.setOnClickListener {
             viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
         }

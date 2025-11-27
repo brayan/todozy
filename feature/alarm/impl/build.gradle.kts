@@ -43,6 +43,8 @@ dependencies {
     implementation(project(Module.alarmPublic))
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.taskDetailsPublic))
+    implementation(project(Module.taskFormPublic))
+    implementation(project(Module.taskHistoryPublic))
     implementation(project(Module.taskListPublic))
     implementation(project(Module.settingsPublic))
     implementation(project(Module.settingsPublicAndroid))
