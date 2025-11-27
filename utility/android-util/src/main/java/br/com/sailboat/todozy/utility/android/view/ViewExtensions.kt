@@ -6,7 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 fun LinearLayoutManager.scrollPositionToMiddleScreen(
     ctx: Context,
@@ -31,7 +31,7 @@ fun Toolbar.enableScroll() {
         AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 }
 
-fun RecyclerView.hideFabWhenScrolling(fab: FloatingActionButton) {
+fun RecyclerView.hideFabWhenScrolling(fab: ExtendedFloatingActionButton) {
     addOnScrollListener(
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(
@@ -41,16 +41,9 @@ fun RecyclerView.hideFabWhenScrolling(fab: FloatingActionButton) {
             ) {
                 if (dy > 0 && fab.isShown) {
                     fab.hide()
-                } else {
+                } else if (dy < 0 && fab.isShown.not()) {
                     fab.show()
                 }
-            }
-
-            override fun onScrollStateChanged(
-                recyclerView: RecyclerView,
-                newState: Int,
-            ) {
-                super.onScrollStateChanged(recyclerView, newState)
             }
         },
     )

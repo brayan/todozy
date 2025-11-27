@@ -226,6 +226,7 @@ internal class TaskFormFragment : Fragment() {
                         TimeFormat.CLOCK_12H
                     },
                 )
+                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setHour(action.currentTime.get(Calendar.HOUR_OF_DAY))
                 .setMinute(action.currentTime.get(Calendar.MINUTE))
                 .build()

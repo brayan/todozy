@@ -26,6 +26,8 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSwipeTask
 import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
+import br.com.sailboat.todozy.utility.kotlin.coroutines.DefaultDispatcherProvider
+import br.com.sailboat.todozy.utility.kotlin.coroutines.DispatcherProvider
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +38,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
@@ -49,6 +52,7 @@ internal class TaskListViewModel(
     private val completeTaskUseCase: CompleteTaskUseCase,
     private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
+    private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
     private var filter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
@@ -120,6 +124,9 @@ internal class TaskListViewModel(
         }
 
     private fun onSelectProgressRange(range: TaskProgressRange) {
+        if (range == selectedProgressRange) {
+            return
+        }
         selectedProgressRange = range
         viewState.taskProgressRange.postValue(range)
         loadProgress()
@@ -127,6 +134,7 @@ internal class TaskListViewModel(
 
     private fun loadProgress() {
         progressJob?.cancel()
+        viewState.taskProgressDays.postValue(emptyList())
         progressJob =
             viewModelScope.launch {
                 try {
@@ -137,7 +145,10 @@ internal class TaskListViewModel(
                             range = selectedProgressRange,
                             taskId = Entity.NO_ID,
                         )
-                    val progress = getTaskProgressUseCase(filter).getOrThrow()
+                    val progress =
+                        withContext(dispatcherProvider.default()) {
+                            getTaskProgressUseCase(filter).getOrThrow()
+                        }
                     viewState.taskProgressRange.postValue(selectedProgressRange)
                     viewState.taskProgressDays.postValue(progress)
                 } catch (e: Exception) {
