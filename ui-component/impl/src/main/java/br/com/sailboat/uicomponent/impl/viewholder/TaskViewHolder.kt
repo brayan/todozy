@@ -1,13 +1,13 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.ViewGroup
 import br.com.sailboat.todozy.utility.android.calendar.formatTimeWithAndroidFormat
 import br.com.sailboat.todozy.utility.android.calendar.getMonthAndDayShort
 import br.com.sailboat.todozy.utility.android.calendar.toShortDateView
 import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
 import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.extension.isAfterTomorrow
 import br.com.sailboat.todozy.utility.kotlin.extension.isBeforeToday
@@ -28,8 +28,7 @@ class TaskViewHolder(parent: ViewGroup, private val callback: Callback) :
         with(binding) {
             task.tvTaskName.text = item.taskName
             bindTaskAlarm(item)
-            root.setOnClickListener {
-                root.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            root.setSafeClickListener {
                 callback.onClickTask(item.taskId)
             }
         }

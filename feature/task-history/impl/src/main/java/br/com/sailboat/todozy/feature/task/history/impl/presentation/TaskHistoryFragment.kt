@@ -37,6 +37,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
@@ -394,12 +395,14 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         TaskHistoryR.id.menu_filter -> {
-                            viewModel.dispatchViewIntent(OnClickFilter)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(OnClickFilter)
+                            }
                         }
                         TaskHistoryR.id.menu_clear_history -> {
-                            viewModel.dispatchViewIntent(OnClickClearAllHistory)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(OnClickClearAllHistory)
+                            }
                         }
                         else -> false
                     }

@@ -24,7 +24,9 @@ import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent.OnClickConfirmDeleteTask
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
@@ -98,7 +100,7 @@ internal class TaskDetailsFragment : Fragment() {
         binding.fab.root.setIconResource(UiR.drawable.ic_edit_white_24dp)
         binding.fab.root.contentDescription = fabLabel
         TooltipCompat.setTooltipText(binding.fab.root, fabLabel)
-        binding.fab.root.setOnClickListener {
+        binding.fab.root.setSafeClickListener {
             viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
         }
 
@@ -120,7 +122,9 @@ internal class TaskDetailsFragment : Fragment() {
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
-        binding.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         addMenuProvider()
     }
 
@@ -199,8 +203,9 @@ internal class TaskDetailsFragment : Fragment() {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         TaskDetailsR.id.menu_delete -> {
-                            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
+                            }
                         }
                         else -> false
                     }

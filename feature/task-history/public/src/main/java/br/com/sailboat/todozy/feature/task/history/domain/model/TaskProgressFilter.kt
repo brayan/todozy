@@ -6,4 +6,5 @@ import br.com.sailboat.todozy.utility.kotlin.model.Entity
 data class TaskProgressFilter(
     val range: TaskProgressRange,
     val taskId: Long = Entity.NO_ID,
+    val text: String? = null,
 )

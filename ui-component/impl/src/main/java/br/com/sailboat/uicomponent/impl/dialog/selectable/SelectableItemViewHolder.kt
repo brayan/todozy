@@ -16,12 +16,9 @@ class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback
         fun onClickItem(position: Int)
     }
 
-    init {
-        itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
-    }
-
     override fun bind(item: SelectableItem) =
         with(binding) {
+            itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
             tvSelectableItemName.setText(item.getName())
 
             val selectedItem = callback.selectedItem

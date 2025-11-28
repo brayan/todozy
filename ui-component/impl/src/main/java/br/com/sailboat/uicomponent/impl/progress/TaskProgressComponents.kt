@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -24,9 +24,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -219,13 +219,11 @@ private fun TaskProgressGrid(
 
     val paddedDays = remember(days) { padDays(days) }
     val weeks = remember(paddedDays) { paddedDays.chunked(7) }
-    val lazyListState = rememberLazyListState()
-
-    LaunchedEffect(weeks.size) {
-        if (weeks.isNotEmpty()) {
-            lazyListState.scrollToItem(weeks.lastIndex)
+    val lastWeekIndex = remember(weeks.size) { weeks.lastIndex.coerceAtLeast(0) }
+    val lazyListState: LazyListState =
+        rememberSaveable(weeks.size, saver = LazyListState.Saver) {
+            LazyListState(lastWeekIndex)
         }
-    }
 
     Row(verticalAlignment = Alignment.Top) {
         WeekdayLabels()

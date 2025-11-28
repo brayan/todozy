@@ -3,6 +3,7 @@ package br.com.sailboat.todozy.feature.task.form.impl.presentation
 import android.app.Activity
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -31,7 +32,9 @@ import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewModel
 import br.com.sailboat.todozy.utility.android.activity.hideKeyboard
 import br.com.sailboat.todozy.utility.android.activity.showKeyboard
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
+import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.dialog.selectable.SelectItemDialog
@@ -181,14 +184,16 @@ internal class TaskFormFragment : Fragment() {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         UiR.id.menu_save -> {
-                            val action =
-                                OnClickSaveTask(
-                                    taskName = binding.etTaskFormName.text.toString(),
-                                    taskNotes = binding.etTaskFormNotes.text.toString(),
-                                )
-                            viewModel.dispatchViewIntent(action)
-                            true
+                            return hapticHandled {
+                                val action =
+                                    OnClickSaveTask(
+                                        taskName = binding.etTaskFormName.text.toString(),
+                                        taskNotes = binding.etTaskFormNotes.text.toString(),
+                                    )
+                                viewModel.dispatchViewIntent(action)
+                            }
                         }
+
                         else -> false
                     }
                 }
@@ -336,16 +341,16 @@ internal class TaskFormFragment : Fragment() {
 
     private fun initAlarmViews() =
         with(binding) {
-            rlTaskFormAddAlarm.setOnClickListener {
+            rlTaskFormAddAlarm.setSafeClickListener {
                 viewModel.dispatchViewIntent(OnClickAddAlarm)
             }
-            alarmDetails.tvAlarmDate.setOnClickListener {
+            alarmDetails.tvAlarmDate.setSafeClickListener {
                 viewModel.dispatchViewIntent(OnClickAlarmDate)
             }
-            alarmDetails.tvAlarmTime.setOnClickListener {
+            alarmDetails.tvAlarmTime.setSafeClickListener {
                 viewModel.dispatchViewIntent(OnClickAlarmTime)
             }
-            alarmDetails.tvAlarmRepeat.setOnClickListener {
+            alarmDetails.tvAlarmRepeat.setSafeClickListener {
                 viewModel.dispatchViewIntent(OnClickRepeatAlarm)
             }
         }
@@ -360,6 +365,11 @@ internal class TaskFormFragment : Fragment() {
                 false
             },
         )
+        binding.etTaskFormName.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            }
+        }
     }
 
     private fun onSelectItemRepeatAlarm(item: SelectableItem) {
@@ -367,18 +377,23 @@ internal class TaskFormFragment : Fragment() {
             RepeatAlarmSelectableItem.NOT_REPEAT -> {
                 viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.NOT_REPEAT))
             }
+
             RepeatAlarmSelectableItem.DAY -> {
                 viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.DAY))
             }
+
             RepeatAlarmSelectableItem.WEEK -> {
                 viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.WEEK))
             }
+
             RepeatAlarmSelectableItem.MONTH -> {
                 viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.MONTH))
             }
+
             RepeatAlarmSelectableItem.YEAR -> {
                 viewModel.dispatchViewIntent(OnSelectAlarmType(RepeatType.YEAR))
             }
+
             RepeatAlarmSelectableItem.CUSTOM -> {
                 viewModel.dispatchViewIntent(OnClickCustomRepeatAlarm)
             }

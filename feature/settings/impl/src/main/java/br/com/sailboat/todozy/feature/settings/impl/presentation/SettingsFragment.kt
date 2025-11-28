@@ -11,6 +11,7 @@ import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBindi
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewIntent
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
+import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.uicomponent.impl.R as UiR
@@ -95,13 +96,13 @@ internal class SettingsFragment : Fragment() {
 
     private fun initToneViews() =
         activity?.run {
-            binding.llSettingsTone.setOnClickListener {
+            binding.llSettingsTone.setSafeClickListener {
                 viewModel.dispatchViewIntent(SettingsViewIntent.OnClickMenuAlarmTone)
             }
         }
 
     private fun initAbout() {
-        binding.tvSettingsAbout.setOnClickListener {
+        binding.tvSettingsAbout.setSafeClickListener {
             viewModel.dispatchViewIntent(SettingsViewIntent.OnClickAbout)
         }
     }
@@ -115,6 +116,6 @@ internal class SettingsFragment : Fragment() {
 
     private fun initToneVibrate() =
         with(binding) {
-            flSettingsVibrate.setOnClickListener { cbSettingsVibrate.performClick() }
+            flSettingsVibrate.setSafeClickListener { cbSettingsVibrate.performClick() }
         }
 }

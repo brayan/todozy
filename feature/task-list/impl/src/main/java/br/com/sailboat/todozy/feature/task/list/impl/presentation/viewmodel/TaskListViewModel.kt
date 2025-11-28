@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
@@ -39,6 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
@@ -54,10 +56,11 @@ internal class TaskListViewModel(
     private val logService: LogService,
     private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
-    private var filter = TaskFilter(category = TaskCategory.TODAY)
+    private var taskFilter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
     private var progressJob: Job? = null
+    private val progressCache: MutableMap<ProgressCacheKey, List<TaskProgressDay>> = mutableMapOf()
 
     override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
         when (viewIntent) {
@@ -113,8 +116,13 @@ internal class TaskListViewModel(
         viewModelScope.launch {
             try {
                 viewState.loading.postValue(true)
-                filter = filter.copy(text = term)
+                val hasQueryChanged = taskFilter.text != term
+                taskFilter = taskFilter.copy(text = term)
+                if (hasQueryChanged) {
+                    clearProgressCache()
+                }
                 loadTasks()
+                loadProgress(force = true)
             } catch (e: Exception) {
                 logService.error(e)
                 viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
@@ -132,23 +140,33 @@ internal class TaskListViewModel(
         loadProgress()
     }
 
-    private fun loadProgress() {
+    private fun loadProgress(force: Boolean = false) {
+        val cacheKey = currentProgressCacheKey()
+        val cachedProgress = progressCache[cacheKey]
+        if (cachedProgress != null && force.not()) {
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.postValue(cachedProgress)
+            viewState.taskProgressLoading.postValue(false)
+            return
+        }
+
         progressJob?.cancel()
-        viewState.taskProgressDays.postValue(emptyList())
         progressJob =
             viewModelScope.launch {
                 try {
                     viewState.taskProgressLoading.postValue(true)
 
-                    val filter =
+                    val progressFilter =
                         TaskProgressFilter(
                             range = selectedProgressRange,
                             taskId = Entity.NO_ID,
+                            text = taskFilter.text,
                         )
                     val progress =
                         withContext(dispatcherProvider.default()) {
-                            getTaskProgressUseCase(filter).getOrThrow()
+                            getTaskProgressUseCase(progressFilter).getOrThrow()
                         }
+                    progressCache[cacheKey] = progress
                     viewState.taskProgressRange.postValue(selectedProgressRange)
                     viewState.taskProgressDays.postValue(progress)
                 } catch (e: Exception) {
@@ -174,7 +192,7 @@ internal class TaskListViewModel(
                     async {
                         val filter =
                             TaskFilter(
-                                text = filter.text,
+                                text = taskFilter.text,
                                 category = category,
                             )
                         val tasks = getTasksUseCase(filter).getOrThrow()
@@ -218,7 +236,7 @@ internal class TaskListViewModel(
             if (swipeTaskAsyncJobs.size == 1) {
                 loadTasks()
                 viewState.taskMetrics.value = null
-                loadProgress()
+                updateTodayProgress(status)
             }
         } catch (e: Exception) {
             logService.error(e)
@@ -234,4 +252,85 @@ internal class TaskListViewModel(
         swipeTaskAsyncJobs.add(job)
         job.invokeOnCompletion { swipeTaskAsyncJobs.remove(job) }
     }
+
+    private fun updateTodayProgress(status: TaskStatus) {
+        val today = LocalDate.now()
+        val cacheKey = currentProgressCacheKey()
+        progressCache.putIfAbsent(cacheKey, viewState.taskProgressDays.value.orEmpty())
+        val updatedCache =
+            progressCache.mapValues { (key, days) ->
+                if (key.searchTerm == taskFilter.text.orEmpty()) {
+                    updateProgressDays(days, today, status)
+                } else {
+                    days
+                }
+            }.toMutableMap()
+
+        progressCache.clear()
+        progressCache.putAll(updatedCache)
+
+        progressCache[cacheKey]?.let { updatedDays ->
+            viewState.taskProgressDays.postValue(updatedDays)
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+        }
+    }
+
+    private fun clearProgressCache() {
+        progressCache.clear()
+    }
+
+    private fun currentProgressCacheKey() =
+        ProgressCacheKey(
+            range = selectedProgressRange,
+            searchTerm = taskFilter.text.orEmpty(),
+        )
+
+    private fun updateProgressDays(
+        days: List<TaskProgressDay>,
+        today: LocalDate,
+        status: TaskStatus,
+    ): List<TaskProgressDay> {
+        if (days.isEmpty()) {
+            val doneCount = if (status == TaskStatus.DONE) 1 else 0
+            return listOf(
+                TaskProgressDay(
+                    date = today,
+                    doneCount = doneCount,
+                    totalCount = 1,
+                ),
+            )
+        }
+
+        val existingIndex = days.indexOfFirst { it.date == today }
+        val doneDelta = if (status == TaskStatus.DONE) 1 else 0
+
+        val updatedDay =
+            if (existingIndex >= 0) {
+                val current = days[existingIndex]
+                current.copy(
+                    doneCount = current.doneCount + doneDelta,
+                    totalCount = current.totalCount + 1,
+                )
+            } else {
+                TaskProgressDay(
+                    date = today,
+                    doneCount = doneDelta,
+                    totalCount = 1,
+                )
+            }
+
+        val updatedDays = days.toMutableList()
+        if (existingIndex >= 0) {
+            updatedDays[existingIndex] = updatedDay
+        } else {
+            updatedDays.add(updatedDay)
+        }
+
+        return updatedDays.sortedBy { it.date }
+    }
 }
+
+private data class ProgressCacheKey(
+    val range: TaskProgressRange,
+    val searchTerm: String,
+)
