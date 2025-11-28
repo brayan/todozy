@@ -55,12 +55,16 @@ internal class GetTaskProgressUseCaseImpl(
         today: LocalDate,
     ): TaskHistoryFilter {
         if (filter.range == TaskProgressRange.ALL) {
-            return TaskHistoryFilter(taskId = filter.taskId)
+            return TaskHistoryFilter(
+                text = filter.text,
+                taskId = filter.taskId,
+            )
         }
 
         val startDate = filter.range.startDate(today)
 
         return TaskHistoryFilter(
+            text = filter.text,
             initialDate = startDate.toStartOfDayCalendar(clock.zone),
             finalDate = today.toEndOfDayCalendar(clock.zone),
             taskId = filter.taskId,

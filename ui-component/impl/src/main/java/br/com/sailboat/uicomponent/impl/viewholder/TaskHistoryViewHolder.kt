@@ -21,15 +21,11 @@ class TaskHistoryViewHolder(
     BaseViewHolder<TaskHistoryUiModel, VhTaskHistoryBinding>(
             VhTaskHistoryBinding.inflate(getInflater(parent), parent, false),
         ) {
-    init {
-        binding.root.setOnClickListener { callback.onClickHistory(bindingAdapterPosition) }
-        binding.tvTaskHistoryDelete.setOnClickListener {
-            callback.onClickDelete(bindingAdapterPosition)
-        }
-    }
-
     override fun bind(item: TaskHistoryUiModel) =
         with(binding) {
+            root.setOnClickListener { callback.onClickHistory(bindingAdapterPosition) }
+            tvTaskHistoryDelete.setOnClickListener { callback.onClickDelete(bindingAdapterPosition) }
+
             tvTaskHistoryName.text = item.taskName
             setStatus(item)
             setOptions(item)
@@ -88,18 +84,14 @@ class TaskHistoryViewHolder(
         with(binding) {
             tvTaskHistoryMarkAsDone.gone()
             tvTaskHistoryMarkAsNotDone.visible()
-            tvTaskHistoryMarkAsNotDone.setOnClickListener {
-                callback.onClickMarkTaskAsNotDone(bindingAdapterPosition)
-            }
+            tvTaskHistoryMarkAsNotDone.setOnClickListener { callback.onClickMarkTaskAsNotDone(bindingAdapterPosition) }
         }
 
     private fun initViewMarkAsDone() =
         with(binding) {
             tvTaskHistoryMarkAsNotDone.gone()
             tvTaskHistoryMarkAsDone.visible()
-            tvTaskHistoryMarkAsDone.setOnClickListener {
-                callback.onClickMarkTaskAsDone(bindingAdapterPosition)
-            }
+            tvTaskHistoryMarkAsDone.setOnClickListener { callback.onClickMarkTaskAsDone(bindingAdapterPosition) }
         }
 
     interface Callback {

@@ -3,6 +3,7 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
@@ -32,6 +33,7 @@ internal class TaskDetailsViewModel(
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private var shouldShowProgress = false
     private var progressJob: Job? = null
+    private val progressCache: MutableMap<TaskProgressRange, List<TaskProgressDay>> = mutableMapOf()
 
     override fun dispatchViewIntent(viewIntent: TaskDetailsViewIntent) {
         when (viewIntent) {
@@ -77,6 +79,7 @@ internal class TaskDetailsViewModel(
         viewModelScope.launch {
             try {
                 viewState.loading.postValue(true)
+                progressCache.clear()
 
                 val task = getTaskUseCase(viewState.taskId).getOrThrow()
                 val taskDetails = taskDetailsUiModelFactory.create(task)
@@ -126,8 +129,15 @@ internal class TaskDetailsViewModel(
             return
         }
 
+        val cachedProgress = progressCache[selectedProgressRange]
+        if (cachedProgress != null && force.not()) {
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.postValue(cachedProgress)
+            viewState.taskProgressLoading.postValue(false)
+            return
+        }
+
         progressJob?.cancel()
-        viewState.taskProgressDays.postValue(emptyList())
         progressJob =
             viewModelScope.launch {
                 try {
@@ -142,6 +152,7 @@ internal class TaskDetailsViewModel(
                                 ),
                             ).getOrThrow()
                         }
+                    progressCache[selectedProgressRange] = progress
                     viewState.taskProgressRange.postValue(selectedProgressRange)
                     viewState.taskProgressDays.postValue(progress)
                 } catch (throwable: Exception) {

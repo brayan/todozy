@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.DateFilterDialog
@@ -394,12 +395,14 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         TaskHistoryR.id.menu_filter -> {
-                            viewModel.dispatchViewIntent(OnClickFilter)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(OnClickFilter)
+                            }
                         }
                         TaskHistoryR.id.menu_clear_history -> {
-                            viewModel.dispatchViewIntent(OnClickClearAllHistory)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(OnClickClearAllHistory)
+                            }
                         }
                         else -> false
                     }

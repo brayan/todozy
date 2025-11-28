@@ -11,12 +11,9 @@ class WeekDayViewHolder(parent: ViewGroup, private val callback: Callback) :
     BaseViewHolder<DayUiModel, VhWeekDayBinding>(
         VhWeekDayBinding.inflate(getInflater(parent), parent, false),
     ) {
-    init {
-        binding.root.setOnClickListener { callback.onClickDay(bindingAdapterPosition) }
-    }
-
     override fun bind(item: DayUiModel) =
         with(binding) {
+            root.setOnClickListener { callback.onClickDay(bindingAdapterPosition) }
             tvWeekDayName.text = item.name
 
             if (callback.isDaySelected(item.id)) {

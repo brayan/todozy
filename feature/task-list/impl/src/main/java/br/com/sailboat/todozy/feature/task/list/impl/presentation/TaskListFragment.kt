@@ -29,8 +29,10 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.hideFabWhenScrolling
+import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
@@ -94,8 +96,7 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         val fabLabel = getString(TaskListR.string.fab_new_task)
         binding.fab.contentDescription = fabLabel
         TooltipCompat.setTooltipText(binding.fab, fabLabel)
-        binding.fab.setOnClickListener {
-            binding.fab.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        binding.fab.setSafeClickListener {
             viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
         }
     }
@@ -114,12 +115,14 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
                 override fun onMenuItemSelected(menuItem: android.view.MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         TaskListR.id.menu_fragments_history -> {
-                            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
+                            }
                         }
                         TaskListR.id.menu_fragments_settings -> {
-                            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
-                            true
+                            return hapticHandled {
+                                viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
+                            }
                         }
                         else -> false
                     }

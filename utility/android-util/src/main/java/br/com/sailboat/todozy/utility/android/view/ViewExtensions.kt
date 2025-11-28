@@ -2,9 +2,11 @@ package br.com.sailboat.todozy.utility.android.view
 
 import android.content.Context
 import android.view.View
+import android.view.HapticFeedbackConstants
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.todozy.utility.android.click.SafeClick
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
@@ -65,4 +67,13 @@ fun View.visible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.setSafeClickListener(onClick: (View) -> Unit) {
+    setOnClickListener { view ->
+        if (SafeClick.canClick()) {
+            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            onClick(view)
+        }
+    }
 }
