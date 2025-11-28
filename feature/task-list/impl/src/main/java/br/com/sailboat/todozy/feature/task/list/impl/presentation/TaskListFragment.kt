@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -1,8 +1,8 @@
 package br.com.sailboat.todozy.utility.android.view
 
 import android.content.Context
-import android.view.View
 import android.view.HapticFeedbackConstants
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

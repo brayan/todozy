@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import android.view.HapticFeedbackConstants
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewAction

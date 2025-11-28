@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.date.DateFilterDialog
@@ -38,6 +37,7 @@ import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel.TaskHistoryViewModel
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenu
 import br.com.sailboat.todozy.utility.android.fragment.SearchMenuImpl
+import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.scrollPositionToMiddleScreen
 import br.com.sailboat.todozy.utility.android.view.scrollToTop
