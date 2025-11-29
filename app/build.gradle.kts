@@ -7,12 +7,13 @@ plugins {
     kotlin("kapt")
 }
 
-val localProps = Properties().apply {
-    val file = rootProject.file("local.properties")
-    if (file.exists()) {
-        file.inputStream().use { load(it) }
+val localProps =
+    Properties().apply {
+        val file = rootProject.file("local.properties")
+        if (file.exists()) {
+            file.inputStream().use { load(it) }
+        }
     }
-}
 
 android {
     signingConfigs {
