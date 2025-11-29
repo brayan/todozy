@@ -37,11 +37,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.uicomponent.impl.R
@@ -51,6 +50,17 @@ import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.util.Locale
 
+internal val DefaultTaskProgressDayOrder =
+    listOf(
+        DayOfWeek.MONDAY,
+        DayOfWeek.TUESDAY,
+        DayOfWeek.WEDNESDAY,
+        DayOfWeek.THURSDAY,
+        DayOfWeek.FRIDAY,
+        DayOfWeek.SATURDAY,
+        DayOfWeek.SUNDAY,
+    )
+
 @Composable
 internal fun TaskProgressContent(
     days: List<TaskProgressDay>,
@@ -59,12 +69,17 @@ internal fun TaskProgressContent(
     onDayClick: ((TaskProgressDay) -> Unit)?,
     isLoading: Boolean = false,
     enableDayDetails: Boolean = false,
+    visibleDaysOfWeek: List<DayOfWeek> = DefaultTaskProgressDayOrder,
+    highlightNotDone: Boolean = false,
+    flatColors: Boolean = highlightNotDone,
 ) {
-    val palette = rememberProgressPalette()
+    val palette = rememberProgressPalette(flatColors = flatColors || highlightNotDone)
     val totalDone = remember(days) { days.sumOf { it.doneCount } }
     val formatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM) }
     val (selectedDay, onSelectDay) = remember { mutableStateOf<TaskProgressDay?>(null) }
     val haptic = LocalHapticFeedback.current
+    val dayOrder = visibleDaysOfWeek.ifEmpty { DefaultTaskProgressDayOrder }
+    val cellSize = remember(dayOrder.size) { if (dayOrder.size <= 2) 24.dp else 16.dp }
 
     Column(
         modifier =
@@ -77,20 +92,8 @@ internal fun TaskProgressContent(
         )
         Spacer(modifier = Modifier.size(8.dp))
         if (isLoading) {
-            TaskProgressSkeleton()
+            TaskProgressSkeleton(dayOrder = dayOrder, cellSize = cellSize)
         } else {
-            Text(
-                text = stringResource(R.string.tasks_done_format, totalDone),
-                style =
-                    MaterialTheme.typography.caption.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 18.sp,
-                    ),
-                color = colorResource(id = R.color.md_blue_grey_700),
-            )
-
-            Spacer(modifier = Modifier.size(8.dp))
-
             val dayClickHandler: ((TaskProgressDay) -> Unit)? =
                 when {
                     enableDayDetails && onDayClick != null -> {
@@ -110,12 +113,15 @@ internal fun TaskProgressContent(
             TaskProgressGrid(
                 days = days,
                 palette = palette,
+                dayOrder = dayOrder,
+                cellSize = cellSize,
                 onDayClick = dayClickHandler,
                 onDayHaptic = { haptic.performHapticFeedback(HapticFeedbackType.LongPress) },
                 selectedDay = selectedDay,
                 onDismissTooltip = { onSelectDay(null) },
                 formatter = formatter,
                 enableDayDetails = enableDayDetails,
+                highlightNotDone = highlightNotDone,
             )
         }
     }
@@ -140,19 +146,22 @@ private fun TaskProgressRangeSelector(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(ranges) { range ->
             val selected = range == selectedRange
+            val shape = RoundedCornerShape(12.dp)
             Surface(
                 modifier =
-                    Modifier.clickable {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        onRangeSelected(range)
-                    },
+                    Modifier
+                        .clip(shape)
+                        .clickable {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onRangeSelected(range)
+                        },
                 color =
                     if (selected) {
                         colorResource(id = R.color.md_teal_100)
                     } else {
                         MaterialTheme.colors.surface
                     },
-                shape = RoundedCornerShape(12.dp),
+                shape = shape,
                 border =
                     BorderStroke(
                         width = 1.dp,
@@ -183,13 +192,16 @@ private fun TaskProgressRangeSelector(
 @Composable
 private fun TaskProgressGrid(
     days: List<TaskProgressDay>,
-    palette: List<Color>,
+    palette: ProgressPalette,
+    dayOrder: List<DayOfWeek>,
+    cellSize: Dp,
     onDayClick: ((TaskProgressDay) -> Unit)?,
     onDayHaptic: (() -> Unit)?,
     selectedDay: TaskProgressDay?,
     onDismissTooltip: () -> Unit,
     formatter: DateTimeFormatter,
     enableDayDetails: Boolean,
+    highlightNotDone: Boolean,
 ) {
     if (days.isEmpty()) {
         Text(
@@ -208,17 +220,24 @@ private fun TaskProgressGrid(
                 keySelector = { it.date },
                 valueTransform = { day ->
                     val label = day.date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
-                    val description = "$label ${day.date} (${day.doneCount}/${day.totalCount})"
+                    val description =
+                        buildString {
+                            append("$label ${day.date} (${day.doneCount}/${day.totalCount})")
+                            if (day.notDoneCount > 0) {
+                                append(" - ")
+                                append("${day.notDoneCount} not done")
+                            }
+                        }
                     DayHeatmapMetadata(
-                        color = palette[day.paletteIndex()],
+                        color = day.color(palette, highlightNotDone),
                         semanticsDescription = description,
                     )
                 },
             )
         }
 
-    val paddedDays = remember(days) { padDays(days) }
-    val weeks = remember(paddedDays) { paddedDays.chunked(7) }
+    val paddedDays = remember(days, dayOrder) { padDays(days, dayOrder) }
+    val weeks = remember(paddedDays, dayOrder.size) { paddedDays.chunked(dayOrder.size) }
     val lastWeekIndex = remember(weeks.size) { weeks.lastIndex.coerceAtLeast(0) }
     val lazyListState: LazyListState =
         rememberSaveable(weeks.size, saver = LazyListState.Saver) {
@@ -226,7 +245,7 @@ private fun TaskProgressGrid(
         }
 
     Row(verticalAlignment = Alignment.Top) {
-        WeekdayLabels()
+        WeekdayLabels(dayOrder = dayOrder, cellSize = cellSize)
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -236,13 +255,13 @@ private fun TaskProgressGrid(
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     week.forEach { day ->
                         val metadata = day?.let { dayMetadata[it.date] }
-                        val color = metadata?.color ?: palette.first()
+                        val color = metadata?.color ?: palette.neutral
                         val semanticsDescription = metadata?.semanticsDescription
 
                         Box(
                             modifier =
                                 Modifier
-                                    .size(16.dp)
+                                    .size(cellSize)
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(color)
                                     .let {
@@ -275,7 +294,10 @@ private fun TaskProgressGrid(
 }
 
 @Composable
-private fun TaskProgressSkeleton() {
+private fun TaskProgressSkeleton(
+    dayOrder: List<DayOfWeek> = DefaultTaskProgressDayOrder,
+    cellSize: Dp,
+) {
     val placeholderColor = MaterialTheme.colors.onSurface.copy(alpha = 0.08f)
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -289,16 +311,16 @@ private fun TaskProgressSkeleton() {
         )
 
         Row(verticalAlignment = Alignment.Top) {
-            WeekdayLabels()
+            WeekdayLabels(dayOrder = dayOrder, cellSize = cellSize)
 
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 repeat(5) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        repeat(7) {
+                        repeat(dayOrder.size) {
                             Box(
                                 modifier =
                                     Modifier
-                                        .size(16.dp)
+                                        .size(cellSize)
                                         .clip(RoundedCornerShape(4.dp))
                                         .background(placeholderColor),
                             )
@@ -342,32 +364,27 @@ private fun DayTooltip(
 }
 
 @Composable
-private fun WeekdayLabels() {
-    val dayOrder =
-        remember {
-            listOf(
-                DayOfWeek.MONDAY,
-                DayOfWeek.TUESDAY,
-                DayOfWeek.WEDNESDAY,
-                DayOfWeek.THURSDAY,
-                DayOfWeek.FRIDAY,
-                DayOfWeek.SATURDAY,
-                DayOfWeek.SUNDAY,
-            )
-        }
+private fun WeekdayLabels(
+    dayOrder: List<DayOfWeek>,
+    cellSize: Dp,
+) {
     val labeledDays =
-        remember {
-            setOf(
-                DayOfWeek.MONDAY,
-                DayOfWeek.WEDNESDAY,
-                DayOfWeek.FRIDAY,
-                DayOfWeek.SUNDAY,
-            )
+        remember(dayOrder) {
+            if (dayOrder.size < 7) {
+                dayOrder.toSet()
+            } else {
+                setOf(
+                    DayOfWeek.MONDAY,
+                    DayOfWeek.WEDNESDAY,
+                    DayOfWeek.FRIDAY,
+                    DayOfWeek.SUNDAY,
+                )
+            }
         }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         dayOrder.forEach { day ->
             Box(
-                modifier = Modifier.height(16.dp),
+                modifier = Modifier.height(cellSize),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 if (labeledDays.contains(day)) {
@@ -382,46 +399,70 @@ private fun WeekdayLabels() {
     }
 }
 
-private fun padDays(days: List<TaskProgressDay>): List<TaskProgressDay?> {
+private fun padDays(
+    days: List<TaskProgressDay>,
+    dayOrder: List<DayOfWeek>,
+): List<TaskProgressDay?> {
     if (days.isEmpty()) {
         return emptyList()
     }
 
-    val dayOfWeekOrder =
-        listOf(
-            DayOfWeek.MONDAY,
-            DayOfWeek.TUESDAY,
-            DayOfWeek.WEDNESDAY,
-            DayOfWeek.THURSDAY,
-            DayOfWeek.FRIDAY,
-            DayOfWeek.SATURDAY,
-            DayOfWeek.SUNDAY,
-        )
-    val offset = dayOfWeekOrder.indexOf(days.first().date.dayOfWeek).coerceAtLeast(0)
+    val offset = dayOrder.indexOf(days.first().date.dayOfWeek).coerceAtLeast(0)
 
     return List(offset) { null } + days
 }
 
 @Composable
-private fun rememberProgressPalette(): List<Color> {
+private fun rememberProgressPalette(flatColors: Boolean): ProgressPalette {
     val base = colorResource(id = R.color.md_teal_500)
     val muted = MaterialTheme.colors.onSurface.copy(alpha = 0.06f)
+    val notDoneBase = colorResource(id = R.color.md_red_500)
 
-    return remember(base, muted) {
-        listOf(
-            muted,
-            base.copy(alpha = 0.2f),
-            base.copy(alpha = 0.3f),
-            base.copy(alpha = 0.4f),
-            base.copy(alpha = 0.5f),
-            base.copy(alpha = 0.6f),
-            base.copy(alpha = 0.7f),
-            base.copy(alpha = 0.8f),
-            base.copy(alpha = 0.9f),
-            base,
+    return remember(base, muted, notDoneBase, flatColors) {
+        if (flatColors) {
+            return@remember ProgressPalette(
+                neutral = muted,
+                doneScale = List(10) { base },
+                notDoneScale = List(10) { notDoneBase },
+            )
+        }
+        ProgressPalette(
+            neutral = muted,
+            doneScale =
+                listOf(
+                    muted,
+                    base.copy(alpha = 0.2f),
+                    base.copy(alpha = 0.3f),
+                    base.copy(alpha = 0.4f),
+                    base.copy(alpha = 0.5f),
+                    base.copy(alpha = 0.6f),
+                    base.copy(alpha = 0.7f),
+                    base.copy(alpha = 0.8f),
+                    base.copy(alpha = 0.9f),
+                    base,
+                ),
+            notDoneScale =
+                listOf(
+                    muted,
+                    notDoneBase.copy(alpha = 0.2f),
+                    notDoneBase.copy(alpha = 0.3f),
+                    notDoneBase.copy(alpha = 0.4f),
+                    notDoneBase.copy(alpha = 0.5f),
+                    notDoneBase.copy(alpha = 0.6f),
+                    notDoneBase.copy(alpha = 0.7f),
+                    notDoneBase.copy(alpha = 0.8f),
+                    notDoneBase.copy(alpha = 0.9f),
+                    notDoneBase,
+                ),
         )
     }
 }
+
+private data class ProgressPalette(
+    val neutral: Color,
+    val doneScale: List<Color>,
+    val notDoneScale: List<Color>,
+)
 
 private data class DayHeatmapMetadata(
     val color: Color,
@@ -437,9 +478,17 @@ private fun TaskProgressRange.toLabel(): String =
         TaskProgressRange.LAST_7_DAYS -> stringResource(R.string.last_7_days)
     }
 
-private fun TaskProgressDay.paletteIndex(): Int {
-    if (doneCount <= 0) {
-        return 0
+private fun TaskProgressDay.color(
+    palette: ProgressPalette,
+    highlightNotDone: Boolean,
+): Color {
+    if (highlightNotDone && notDoneCount > 0) {
+        val index = notDoneCount.coerceAtMost(palette.notDoneScale.lastIndex)
+        return palette.notDoneScale[index]
     }
-    return doneCount.coerceAtMost(9)
+    if (doneCount <= 0) {
+        return palette.neutral
+    }
+    val index = doneCount.coerceAtMost(palette.doneScale.lastIndex)
+    return palette.doneScale[index]
 }

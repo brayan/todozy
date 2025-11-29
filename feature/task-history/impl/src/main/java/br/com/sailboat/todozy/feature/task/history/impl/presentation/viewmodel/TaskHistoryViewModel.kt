@@ -1,6 +1,7 @@
 package br.com.sailboat.todozy.feature.task.history.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryCategory
@@ -18,12 +19,15 @@ import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.extension.clearTime
 import br.com.sailboat.todozy.utility.kotlin.extension.orNewCalendar
 import br.com.sailboat.todozy.utility.kotlin.extension.setFinalTimeToCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.toEndOfDayCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.toStartOfDayCalendar
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.DateFilterTaskHistorySelectableItem
 import br.com.sailboat.uicomponent.impl.dialog.selectable.model.TaskStatusSelectableItem
 import br.com.sailboat.uicomponent.model.TaskHistoryUiModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Calendar
 
 internal class TaskHistoryViewModel(
@@ -247,44 +251,11 @@ internal class TaskHistoryViewModel(
     }
 
     private fun onClickFilterLastSevenDays() {
-        val initialDate =
-            Calendar.getInstance().apply {
-                add(Calendar.DAY_OF_MONTH, -7)
-                clearTime()
-            }
-        val finalDate =
-            Calendar.getInstance().apply {
-                setFinalTimeToCalendar()
-            }
-        filter =
-            filter.copy(
-                initialDate = initialDate,
-                finalDate = finalDate,
-            )
-
-        setDateFilterSubtitle()
-        loadHistoryTasks()
+        applyRangeFilter(TaskProgressRange.LAST_7_DAYS)
     }
 
     private fun onClickFilterLastThirtyDays() {
-        val initialDate =
-            Calendar.getInstance().apply {
-                add(Calendar.DAY_OF_MONTH, -30)
-                clearTime()
-            }
-
-        val finalDate =
-            Calendar.getInstance().apply {
-                setFinalTimeToCalendar()
-            }
-        filter =
-            filter.copy(
-                initialDate = initialDate,
-                finalDate = finalDate,
-            )
-
-        setDateFilterSubtitle()
-        loadHistoryTasks()
+        applyRangeFilter(TaskProgressRange.LAST_30_DAYS)
     }
 
     private fun onClickFilterDateRange() {
@@ -292,6 +263,18 @@ internal class TaskHistoryViewModel(
         val finalDate = filter.finalDate.orNewCalendar()
 
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToDateRangeFilter(initialDate, finalDate)
+    }
+
+    private fun applyRangeFilter(range: TaskProgressRange) {
+        val today = LocalDate.now()
+        filter =
+            filter.copy(
+                initialDate = range.startDate(today).toStartOfDayCalendar(),
+                finalDate = today.toEndOfDayCalendar(),
+            )
+
+        setDateFilterSubtitle()
+        loadHistoryTasks()
     }
 
     private fun loadHistoryTasks() =

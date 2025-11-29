@@ -81,8 +81,6 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     }
 
     private fun initViews() {
-        binding.toolbar.setTitle(UiR.string.app_name)
-
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
         addMenuProvider()
@@ -148,6 +146,9 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
             if (items.isEmpty()) {
                 binding.rvTaskList.gone()
                 showEmptyView()
+                hideMetrics()
+                val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+                progressAdapter.submit(emptyList(), range, isLoading = false)
             } else {
                 binding.rvTaskList.visible()
                 hideEmptyView()

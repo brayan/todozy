@@ -1,9 +1,10 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import br.com.sailboat.todozy.domain.model.RepeatType
+import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
@@ -29,6 +30,8 @@ import br.com.sailboat.todozy.utility.android.viewmodel.BaseViewModel
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.coroutines.DefaultDispatcherProvider
 import br.com.sailboat.todozy.utility.kotlin.coroutines.DispatcherProvider
+import br.com.sailboat.todozy.utility.kotlin.extension.toEndOfDayCalendar
+import br.com.sailboat.todozy.utility.kotlin.extension.toStartOfDayCalendar
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import kotlinx.coroutines.CoroutineScope
@@ -58,6 +61,7 @@ internal class TaskListViewModel(
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
     private var taskFilter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
+    private var currentTasks: List<Task> = emptyList()
     private val swipeTaskAsyncJobs: MutableList<Job> = mutableListOf()
     private var progressJob: Job? = null
     private val progressCache: MutableMap<ProgressCacheKey, List<TaskProgressDay>> = mutableMapOf()
@@ -82,6 +86,7 @@ internal class TaskListViewModel(
                 viewState.loading.postValue(true)
                 viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
                 loadTasks()
+                loadTaskMetrics()
                 loadProgress()
                 scheduleAllAlarmsUseCase()
             } catch (e: Exception) {
@@ -122,6 +127,7 @@ internal class TaskListViewModel(
                     clearProgressCache()
                 }
                 loadTasks()
+                loadTaskMetrics()
                 loadProgress(force = true)
             } catch (e: Exception) {
                 logService.error(e)
@@ -138,9 +144,19 @@ internal class TaskListViewModel(
         selectedProgressRange = range
         viewState.taskProgressRange.postValue(range)
         loadProgress()
+        viewModelScope.launch { loadTaskMetrics() }
     }
 
     private fun loadProgress(force: Boolean = false) {
+        if (currentTasks.isEmpty()) {
+            progressJob?.cancel()
+            progressCache.remove(currentProgressCacheKey())
+            viewState.taskProgressLoading.postValue(false)
+            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.postValue(emptyList())
+            return
+        }
+
         val cacheKey = currentProgressCacheKey()
         val cachedProgress = progressCache[cacheKey]
         if (cachedProgress != null && force.not()) {
@@ -151,58 +167,130 @@ internal class TaskListViewModel(
         }
 
         progressJob?.cancel()
-        progressJob =
-            viewModelScope.launch {
-                try {
-                    viewState.taskProgressLoading.postValue(true)
+        progressJob = viewModelScope.launch {
+            try {
+                viewState.taskProgressLoading.postValue(true)
 
-                    val progressFilter =
-                        TaskProgressFilter(
-                            range = selectedProgressRange,
-                            taskId = Entity.NO_ID,
-                            text = taskFilter.text,
-                        )
-                    val progress =
-                        withContext(dispatcherProvider.default()) {
-                            getTaskProgressUseCase(progressFilter).getOrThrow()
-                        }
-                    progressCache[cacheKey] = progress
-                    viewState.taskProgressRange.postValue(selectedProgressRange)
-                    viewState.taskProgressDays.postValue(progress)
-                } catch (e: Exception) {
-                    logService.error(e)
-                } finally {
-                    viewState.taskProgressLoading.postValue(false)
+                val progressFilter = TaskProgressFilter(
+                    range = selectedProgressRange,
+                    taskId = Entity.NO_ID,
+                    text = taskFilter.text,
+                )
+                val progress = withContext(dispatcherProvider.default()) {
+                    getTaskProgressUseCase(progressFilter).getOrThrow()
                 }
+                progressCache[cacheKey] = progress
+                viewState.taskProgressRange.postValue(selectedProgressRange)
+                viewState.taskProgressDays.postValue(progress)
+            } catch (e: Exception) {
+                logService.error(e)
+            } finally {
+                viewState.taskProgressLoading.postValue(false)
             }
+        }
     }
 
-    private suspend fun loadTasks() =
-        coroutineScope {
-            val taskCategories =
-                listOf(
-                    TaskCategory.BEFORE_TODAY,
-                    TaskCategory.TODAY,
-                    TaskCategory.TOMORROW,
-                    TaskCategory.NEXT_DAYS,
-                )
+    private suspend fun loadTasks() = coroutineScope {
+        val domainTasks = mutableListOf<Task>()
+        val taskCategories =
+            listOf(
+                TaskCategory.BEFORE_TODAY,
+                TaskCategory.TODAY,
+                TaskCategory.TOMORROW,
+                TaskCategory.NEXT_DAYS,
+            )
 
-            val tasks =
-                taskCategories.map { category ->
-                    async {
-                        val filter =
-                            TaskFilter(
-                                text = taskFilter.text,
-                                category = category,
-                            )
-                        val tasks = getTasksUseCase(filter).getOrThrow()
+        val tasks = taskCategories.map { category ->
+            async {
+                val filter =
+                    TaskFilter(
+                        text = taskFilter.text,
+                        category = category,
+                    )
+                val tasks = getTasksUseCase(filter).getOrThrow()
 
-                        taskListUiModelFactory.create(tasks, category)
-                    }
-                }.awaitAll().flatten()
+                domainTasks.addAll(tasks)
+                taskListUiModelFactory.create(tasks, category)
+            }
+        }.awaitAll().flatten()
 
-            viewState.itemsView.postValue(tasks.toMutableList())
+        currentTasks = domainTasks
+        viewState.itemsView.postValue(tasks.toMutableList())
+    }
+
+    private suspend fun loadTaskMetrics() {
+        if (currentTasks.isEmpty()) {
+            viewState.taskMetrics.postValue(null)
+            return
         }
+
+        runCatching {
+            coroutineScope {
+                val globalMetricsDeferred = async(dispatcherProvider.default()) {
+                    val filter = historyFilterForRange()
+                    getTaskMetricsUseCase(filter).getOrThrow()
+                }
+                val taskIds = if (currentTasks.isNotEmpty()) {
+                    currentTasks.map { it.id }
+                } else {
+                    viewState.itemsView.value
+                        ?.mapNotNull { (it as? TaskUiModel)?.taskId }
+                        .orEmpty()
+                }
+                val perTaskConsecutiveDeferred = async(dispatcherProvider.default()) {
+                    if (taskIds.isEmpty()) {
+                        emptyList()
+                    } else {
+                        taskIds.map { taskId ->
+                            async {
+                                val filter = historyFilterForRange(taskId, includeText = true)
+                                getTaskMetricsUseCase(filter).getOrThrow().consecutiveDone
+                            }
+                        }.awaitAll()
+                    }
+                }
+
+                val globalMetrics = globalMetricsDeferred.await()
+                val perTaskConsecutive = perTaskConsecutiveDeferred.await()
+                val totalConsecutive = perTaskConsecutive.sum()
+
+                TaskMetrics(
+                    doneTasks = globalMetrics.doneTasks,
+                    notDoneTasks = globalMetrics.notDoneTasks,
+                    consecutiveDone = totalConsecutive,
+                )
+            }
+        }.onSuccess { metrics ->
+            viewState.taskMetrics.postValue(metrics)
+        }.onFailure { throwable ->
+            logService.error(throwable)
+            viewState.taskMetrics.postValue(null)
+        }
+    }
+
+    private fun historyFilterForRange(
+        taskId: Long = Entity.NO_ID,
+        includeText: Boolean = true,
+    ): TaskHistoryFilter {
+        val textFilter = if (includeText) taskFilter.text else null
+
+        if (selectedProgressRange == TaskProgressRange.ALL) {
+            return TaskHistoryFilter(
+                text = textFilter,
+                taskId = taskId,
+            )
+        }
+
+        val today = LocalDate.now()
+        val startDate = selectedProgressRange.startDate(today)
+
+        return TaskHistoryFilter(
+            text = textFilter,
+            initialDate = startDate.toStartOfDayCalendar(),
+            finalDate = today.toEndOfDayCalendar(),
+            taskId = taskId,
+        )
+    }
 
     private fun onSwipeTask(
         position: Int,
@@ -216,26 +304,18 @@ internal class TaskListViewModel(
             val taskId = (itemsView?.get(position) as TaskUiModel).taskId
 
             completeTaskUseCase(taskId, status)
+            loadTaskMetrics()
 
             itemsView.removeAt(position)
             viewState.viewAction.postValue(TaskListViewAction.UpdateRemovedTask(position))
 
             viewState.itemsView.postValue(itemsView)
 
-            val alarm = getAlarmUseCase(taskId).getOrNull()
-
-            alarm?.run {
-                if (RepeatType.isAlarmRepeating(alarm)) {
-                    val filter = TaskHistoryFilter(taskId = taskId)
-                    viewState.taskMetrics.value = getTaskMetricsUseCase(filter).getOrNull()
-                }
-            }
-
             delay(TASK_SWIPE_DELAY_IN_MILLIS)
 
             if (swipeTaskAsyncJobs.size == 1) {
                 loadTasks()
-                viewState.taskMetrics.value = null
+                loadTaskMetrics()
                 updateTodayProgress(status)
             }
         } catch (e: Exception) {
@@ -292,10 +372,12 @@ internal class TaskListViewModel(
     ): List<TaskProgressDay> {
         if (days.isEmpty()) {
             val doneCount = if (status == TaskStatus.DONE) 1 else 0
+            val notDoneCount = if (status == TaskStatus.NOT_DONE) 1 else 0
             return listOf(
                 TaskProgressDay(
                     date = today,
                     doneCount = doneCount,
+                    notDoneCount = notDoneCount,
                     totalCount = 1,
                 ),
             )
@@ -303,21 +385,23 @@ internal class TaskListViewModel(
 
         val existingIndex = days.indexOfFirst { it.date == today }
         val doneDelta = if (status == TaskStatus.DONE) 1 else 0
+        val notDoneDelta = if (status == TaskStatus.NOT_DONE) 1 else 0
 
-        val updatedDay =
-            if (existingIndex >= 0) {
-                val current = days[existingIndex]
-                current.copy(
-                    doneCount = current.doneCount + doneDelta,
-                    totalCount = current.totalCount + 1,
-                )
-            } else {
-                TaskProgressDay(
-                    date = today,
-                    doneCount = doneDelta,
-                    totalCount = 1,
-                )
-            }
+        val updatedDay = if (existingIndex >= 0) {
+            val current = days[existingIndex]
+            current.copy(
+                doneCount = current.doneCount + doneDelta,
+                notDoneCount = current.notDoneCount + notDoneDelta,
+                totalCount = current.totalCount + 1,
+            )
+        } else {
+            TaskProgressDay(
+                date = today,
+                doneCount = doneDelta,
+                notDoneCount = notDoneDelta,
+                totalCount = 1,
+            )
+        }
 
         val updatedDays = days.toMutableList()
         if (existingIndex >= 0) {
