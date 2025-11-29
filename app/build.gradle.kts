@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("com.google.firebase.crashlytics")
@@ -5,7 +7,24 @@ plugins {
     kotlin("kapt")
 }
 
+val localProps =
+    Properties().apply {
+        val file = rootProject.file("local.properties")
+        if (file.exists()) {
+            file.inputStream().use { load(it) }
+        }
+    }
+
 android {
+    signingConfigs {
+        create("config") {
+            keyAlias = localProps.getProperty("KEY_ALIAS")
+            keyPassword = localProps.getProperty("KEY_PASSWORD")
+            storeFile = file(localProps.getProperty("STORE_FILE"))
+            storePassword = localProps.getProperty("STORE_PASSWORD")
+        }
+    }
+
     compileSdk = BuildVersion.compileSdk
     namespace = "br.com.sailboat.todozy"
 
@@ -20,6 +39,7 @@ android {
     }
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs.getByName("config")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -29,6 +49,7 @@ android {
         }
 
         getByName("debug") {
+            signingConfig = signingConfigs.getByName("config")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

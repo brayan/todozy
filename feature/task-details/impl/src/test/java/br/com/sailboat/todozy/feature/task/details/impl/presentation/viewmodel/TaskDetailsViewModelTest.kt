@@ -2,8 +2,11 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import br.com.sailboat.todozy.domain.model.Alarm
+import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.mock.TaskMockFactory
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.DisableTaskUseCase
@@ -28,7 +31,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.util.Calendar
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
@@ -86,7 +93,6 @@ internal class TaskDetailsViewModelTest {
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnStart`() =
         runTest(coroutinesTestRule.dispatcher) {
             val taskId = 42L
-            val filter = TaskHistoryFilter(taskId = taskId)
             val taskMetrics =
                 TaskMetrics(
                     doneTasks = 15,
@@ -98,7 +104,15 @@ internal class TaskDetailsViewModelTest {
             viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
             advanceUntilIdle()
 
-            coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
+            coVerify(exactly = 1) {
+                getTaskMetricsUseCase(
+                    withArg { filter ->
+                        assertEquals(taskId, filter.taskId)
+                        assertNotNull(filter.initialDate)
+                        assertNotNull(filter.finalDate)
+                    },
+                )
+            }
             assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
         }
 
@@ -258,7 +272,15 @@ internal class TaskDetailsViewModelTest {
             viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
             advanceUntilIdle()
 
-            coVerify(exactly = 1) { getTaskMetricsUseCase(filter) }
+            coVerify(exactly = 1) {
+                getTaskMetricsUseCase(
+                    withArg { filter ->
+                        assertEquals(taskId, filter.taskId)
+                        assertNotNull(filter.initialDate)
+                        assertNotNull(filter.finalDate)
+                    },
+                )
+            }
             assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
         }
 
@@ -278,6 +300,55 @@ internal class TaskDetailsViewModelTest {
                 getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_30_DAYS, taskId))
             }
             assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+        }
+
+    @Test
+    fun `should show progress only for scheduled repeat days`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            val taskId = 7L
+            val startDate = LocalDate.of(2024, 8, 12) // Monday
+            val progressDays =
+                (0..6).map { offset ->
+                    val date = startDate.plusDays(offset.toLong())
+                    TaskProgressDay(
+                        date = date,
+                        doneCount = if (date.dayOfWeek == DayOfWeek.MONDAY) 1 else 0,
+                        notDoneCount = if (date.dayOfWeek == DayOfWeek.TUESDAY) 1 else 0,
+                        totalCount =
+                            when (date.dayOfWeek) {
+                                DayOfWeek.MONDAY, DayOfWeek.TUESDAY -> 1
+                                else -> 0
+                            },
+                    )
+                }
+            val alarmCalendar =
+                Calendar.getInstance().apply {
+                    set(2024, Calendar.AUGUST, 12, 8, 0, 0)
+                }
+            val repeatingAlarm =
+                Alarm(
+                    dateTime = alarmCalendar,
+                    repeatType = RepeatType.CUSTOM,
+                    customDays = "${Calendar.MONDAY}${Calendar.WEDNESDAY}${Calendar.FRIDAY}",
+                )
+
+            prepareScenario(
+                taskResult = Result.success(TaskMockFactory.makeTask(id = taskId, alarm = repeatingAlarm)),
+                taskProgressResult = Result.success(progressDays),
+            )
+
+            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+            advanceUntilIdle()
+
+            val expectedDayOrder =
+                listOf(
+                    DayOfWeek.MONDAY,
+                    DayOfWeek.WEDNESDAY,
+                    DayOfWeek.FRIDAY,
+                )
+            assertEquals(expectedDayOrder, viewModel.viewState.taskProgressDayOrder.value)
+            val expectedProgress = progressDays.filter { it.date.dayOfWeek in expectedDayOrder }
+            assertEquals(expectedProgress, viewModel.viewState.taskProgressDays.value)
         }
 
     @Test
@@ -321,10 +392,11 @@ internal class TaskDetailsViewModelTest {
                     consecutiveDone = 5,
                 ),
             ),
+        taskProgressResult: Result<List<TaskProgressDay>> = Result.success(emptyList()),
     ) {
         coEvery { getTaskUseCase(any()) } returns taskResult
         coEvery { taskDetailsUiModelFactory.create(any()) } returns taskDetailsResult
         coEvery { getTaskMetricsUseCase(any()) } returns taskMetricsResult
-        coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
+        coEvery { getTaskProgressUseCase(any()) } returns taskProgressResult
     }
 }

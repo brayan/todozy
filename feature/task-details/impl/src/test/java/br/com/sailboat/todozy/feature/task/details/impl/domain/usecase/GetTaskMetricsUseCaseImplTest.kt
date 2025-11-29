@@ -25,7 +25,7 @@ internal class GetTaskMetricsUseCaseImplTest {
 
             val result = getTaskMetricsUseCase(TaskHistoryFilter(taskId = 22)).getOrNull()
 
-            coVerify { repository.getTaskHistory(any()) }
+            coVerify { repository.getHistory(any()) }
             coVerify { repository.getTotalOfDoneTasks(any()) }
             coVerify { repository.getTotalOfNotDoneTasks(any()) }
 
@@ -40,7 +40,7 @@ internal class GetTaskMetricsUseCaseImplTest {
 
             val result = getTaskMetricsUseCase(TaskHistoryFilter(taskId = Entity.NO_ID)).getOrNull()
 
-            coVerify(exactly = 0) { repository.getTaskHistory(any()) }
+            coVerify(exactly = 0) { repository.getHistory(any()) }
             coVerify { repository.getTotalOfDoneTasks(any()) }
             coVerify { repository.getTotalOfNotDoneTasks(any()) }
 
@@ -57,7 +57,7 @@ internal class GetTaskMetricsUseCaseImplTest {
                         taskId = 22,
                         taskName = "Task 1",
                         status = TaskStatus.DONE,
-                        insertingDate = "2020-08-29-13-26-56",
+                        insertingDate = "2020-08-29-13-27-39",
                     ),
                     TaskHistory(
                         id = 2,
@@ -71,14 +71,14 @@ internal class GetTaskMetricsUseCaseImplTest {
                         taskId = 22,
                         taskName = "Task 1",
                         status = TaskStatus.NOT_DONE,
-                        insertingDate = "2020-08-29-13-27-39",
+                        insertingDate = "2020-08-29-13-26-56",
                     ),
                 ),
             ),
         totalOfDoneTasksResult: Result<Int> = Result.success(10),
         totalOfNotDoneTasksResult: Result<Int> = Result.success(5),
     ) {
-        coEvery { repository.getTaskHistory(any()) } returns taskHistoryListResult
+        coEvery { repository.getHistory(any()) } returns taskHistoryListResult
         coEvery { repository.getTotalOfDoneTasks(any()) } returns totalOfDoneTasksResult
         coEvery { repository.getTotalOfNotDoneTasks(any()) } returns totalOfNotDoneTasksResult
     }

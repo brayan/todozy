@@ -7,18 +7,19 @@ import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
+import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.GetAlarmUseCase
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
 import br.com.sailboat.todozy.feature.task.details.domain.usecase.GetTaskMetricsUseCase
-import br.com.sailboat.todozy.feature.task.history.domain.model.TaskHistoryFilter
 import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilter
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.todozy.utility.kotlin.LogService
+import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.impl.helper.CoroutinesTestRule
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
@@ -123,6 +124,21 @@ internal class TaskListViewModelTest {
 
             coVerify(exactly = 1) { scheduleAllAlarmsUseCase() }
             coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR)) }
+        }
+
+    @Test
+    fun `should hide metrics and progress when no tasks are loaded`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            prepareScenario(tasksView = emptyList(), tasksResult = Result.success(emptyList()))
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
+
+            assertEquals(null, viewModel.viewState.taskMetrics.value)
+            assertTrue(viewModel.viewState.taskProgressDays.value?.isEmpty() == true)
+            assertEquals(false, viewModel.viewState.taskProgressLoading.value)
+            coVerify(exactly = 0) { getTaskMetricsUseCase(any()) }
+            coVerify(exactly = 0) { getTaskProgressUseCase(any()) }
         }
 
     @Test
@@ -250,7 +266,7 @@ internal class TaskListViewModelTest {
     }
 
     @Test
-    fun `should call getAlarmUseCase when dispatchViewAction is called with OnSwipeTask`() =
+    fun `should refresh metrics when dispatchViewAction is called with OnSwipeTask`() =
         runTest(coroutinesTestRule.dispatcher) {
             val tasks =
                 mutableListOf<UiModel>(
@@ -265,7 +281,15 @@ internal class TaskListViewModelTest {
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
             advanceUntilIdle()
 
-            coVerify { getAlarmUseCase(taskId = 978L) }
+            coVerify {
+                getTaskMetricsUseCase(
+                    match { filter ->
+                        filter.taskId == Entity.NO_ID &&
+                            filter.initialDate != null &&
+                            filter.finalDate != null
+                    },
+                )
+            }
         }
 
     @Test
@@ -292,7 +316,15 @@ internal class TaskListViewModelTest {
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
             advanceUntilIdle()
 
-            coVerify { getTaskMetricsUseCase(TaskHistoryFilter(taskId = 978L)) }
+            coVerify {
+                getTaskMetricsUseCase(
+                    match { filter ->
+                        filter.taskId == 978L &&
+                            filter.initialDate != null &&
+                            filter.finalDate != null
+                    },
+                )
+            }
         }
     }
 
@@ -308,6 +340,51 @@ internal class TaskListViewModelTest {
                 getTaskProgressUseCase(TaskProgressFilter(range = TaskProgressRange.LAST_30_DAYS))
             }
             assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+        }
+
+    @Test
+    fun `should sum consecutive done across tasks when loading metrics`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            val taskB =
+                Task(
+                    id = 101L,
+                    name = "Task B",
+                    notes = null,
+                )
+            val taskC =
+                Task(
+                    id = 202L,
+                    name = "Task C",
+                    notes = null,
+                )
+            val taskD =
+                Task(
+                    id = 303L,
+                    name = "Task D",
+                    notes = null,
+                )
+
+            coEvery { getTasksUseCase(match { it.category == TaskCategory.TODAY }) } returns
+                Result.success(listOf(taskB, taskC, taskD))
+            coEvery { getTasksUseCase(match { it.category != TaskCategory.TODAY }) } returns Result.success(emptyList())
+            coEvery { taskListUiModelFactory.create(any(), any()) } returns emptyList()
+            coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
+            coEvery { getTaskMetricsUseCase(match { it.taskId == Entity.NO_ID }) } returns
+                Result.success(TaskMetrics(doneTasks = 70, notDoneTasks = 5, consecutiveDone = 0))
+            coEvery { getTaskMetricsUseCase(match { it.taskId == taskB.id }) } returns
+                Result.success(TaskMetrics(doneTasks = 10, notDoneTasks = 0, consecutiveDone = 10))
+            coEvery { getTaskMetricsUseCase(match { it.taskId == taskC.id }) } returns
+                Result.success(TaskMetrics(doneTasks = 20, notDoneTasks = 0, consecutiveDone = 20))
+            coEvery { getTaskMetricsUseCase(match { it.taskId == taskD.id }) } returns
+                Result.success(TaskMetrics(doneTasks = 40, notDoneTasks = 0, consecutiveDone = 40))
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
+
+            assertEquals(
+                TaskMetrics(doneTasks = 70, notDoneTasks = 5, consecutiveDone = 70),
+                viewModel.viewState.taskMetrics.value,
+            )
         }
 
     private fun prepareScenario(
@@ -340,5 +417,6 @@ internal class TaskListViewModelTest {
         coEvery { getAlarmUseCase(any()) } returns alarmResult
         coEvery { taskListUiModelFactory.create(any(), any()) } returns tasksView
         coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
+        coEvery { getTaskMetricsUseCase(any()) } returns Result.success(TaskMetrics(0, 0, 0))
     }
 }

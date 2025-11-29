@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
+import java.time.DayOfWeek
 
 class TaskProgressView
     @JvmOverloads
@@ -33,6 +34,9 @@ class TaskProgressView
         private val onDayClickState = mutableStateOf<((TaskProgressDay) -> Unit)?>(null)
         private val loadingState = mutableStateOf(false)
         private val enableDayDetailsState = mutableStateOf(false)
+        private val daysOfWeekState = mutableStateOf(DefaultTaskProgressDayOrder)
+        private val highlightNotDoneState = mutableStateOf(false)
+        private val flatColorsState = mutableStateOf(false)
 
         init {
             addView(composeView)
@@ -46,6 +50,9 @@ class TaskProgressView
                             onDayClick = onDayClickState.value,
                             isLoading = loadingState.value,
                             enableDayDetails = enableDayDetailsState.value,
+                            visibleDaysOfWeek = daysOfWeekState.value,
+                            highlightNotDone = highlightNotDoneState.value,
+                            flatColors = flatColorsState.value,
                         )
                     }
                 }
@@ -59,6 +66,9 @@ class TaskProgressView
             onDayClick: ((TaskProgressDay) -> Unit)? = null,
             isLoading: Boolean = false,
             enableDayDetails: Boolean = false,
+            visibleDaysOfWeek: List<DayOfWeek> = DefaultTaskProgressDayOrder,
+            highlightNotDone: Boolean = false,
+            flatColors: Boolean = highlightNotDone,
         ) {
             onRangeSelectedState.value = onRangeSelected
             onDayClickState.value = onDayClick
@@ -66,5 +76,8 @@ class TaskProgressView
             rangeState.value = range
             loadingState.value = isLoading
             enableDayDetailsState.value = enableDayDetails
+            daysOfWeekState.value = visibleDaysOfWeek.ifEmpty { DefaultTaskProgressDayOrder }
+            highlightNotDoneState.value = highlightNotDone
+            flatColorsState.value = flatColors
         }
     }

@@ -60,14 +60,17 @@ internal class GetTaskProgressUseCaseImplTest {
 
             val august14 = progressDays.first { it.date == LocalDate.of(2024, 8, 14) }
             assertEquals(1, august14.doneCount)
+            assertEquals(0, august14.notDoneCount)
             assertEquals(1, august14.totalCount)
 
             val august13 = progressDays.first { it.date == LocalDate.of(2024, 8, 13) }
             assertEquals(1, august13.doneCount)
+            assertEquals(1, august13.notDoneCount)
             assertEquals(2, august13.totalCount)
 
             val august12 = progressDays.first { it.date == LocalDate.of(2024, 8, 12) }
             assertEquals(0, august12.doneCount)
+            assertEquals(0, august12.notDoneCount)
             assertEquals(0, august12.totalCount)
 
             coVerify {
@@ -112,6 +115,7 @@ internal class GetTaskProgressUseCaseImplTest {
 
             val august10 = progressDays.first { it.date == LocalDate.of(2024, 8, 10) }
             assertEquals(1, august10.doneCount)
+            assertEquals(0, august10.notDoneCount)
             assertEquals(1, august10.totalCount)
 
             coVerify {

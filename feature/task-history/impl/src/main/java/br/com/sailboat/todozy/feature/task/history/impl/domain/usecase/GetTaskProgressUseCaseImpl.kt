@@ -41,10 +41,12 @@ internal class GetTaskProgressUseCaseImpl(
             return@runCatching dateRange.map { date ->
                 val entries = historyByDate[date].orEmpty()
                 val doneCount = entries.count { it.status == TaskStatus.DONE }
+                val notDoneCount = entries.count { it.status == TaskStatus.NOT_DONE }
 
                 TaskProgressDay(
                     date = date,
                     doneCount = doneCount,
+                    notDoneCount = notDoneCount,
                     totalCount = entries.size,
                 )
             }

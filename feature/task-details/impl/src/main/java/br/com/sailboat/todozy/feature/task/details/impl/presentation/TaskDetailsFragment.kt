@@ -111,6 +111,8 @@ internal class TaskDetailsFragment : Fragment() {
                         viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnSelectProgressRange(selectedRange))
                     },
                     onDayClick = { /* tooltip handled inside component */ },
+                    highlightNotDone = true,
+                    flatColors = true,
                 )
             val detailsAdapter =
                 TaskDetailsAdapter().apply {
@@ -146,6 +148,7 @@ internal class TaskDetailsFragment : Fragment() {
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
         viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { renderProgress() }
+        viewModel.viewState.taskProgressDayOrder.observe(viewLifecycleOwner) { renderProgress() }
         viewModel.viewState.taskProgressRange.observe(viewLifecycleOwner) { renderProgress() }
         viewModel.viewState.taskProgressLoading.observe(viewLifecycleOwner) { renderProgress() }
     }
@@ -240,8 +243,9 @@ internal class TaskDetailsFragment : Fragment() {
         val progressDays = viewModel.viewState.taskProgressDays.value.orEmpty()
         val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
         val isLoading = viewModel.viewState.taskProgressLoading.value ?: false
+        val daysOfWeek = viewModel.viewState.taskProgressDayOrder.value.orEmpty()
 
-        progressAdapter.submit(progressDays, range, isLoading)
+        progressAdapter.submit(progressDays, range, isLoading, daysOfWeek)
     }
 
     private fun updateCallbacksFromDialogs() {
