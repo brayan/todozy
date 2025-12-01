@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:minHeight="64dp"
     android:paddingBottom="@dimen/spacing_medium">
 
@@ -57,5 +57,39 @@
             android:textSize="@dimen/text_size_xxxxlarge"
             tools:text="15:00" />
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/inline_metrics_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_small"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_task_name">
+
+        <include
+            android:id="@+id/inline_task_metrics"
+            layout="@layout/task_metrics"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_inline_undo"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:paddingHorizontal="@dimen/spacing_small"
+            android:paddingVertical="@dimen/spacing_xxsmall"
+            android:text="@string/undo"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -141,6 +141,7 @@
     <string name="label_status">Status</string>
     <string name="label_date_time">Date/Time</string>
     <string name="restore">Restore</string>
+    <string name="undo">UNDO</string>
     <string name="label_name">Name</string>
     <string name="label_quantity">Quantity</string>
     <string name="hint_enter_product_name">Enter the product name</string>

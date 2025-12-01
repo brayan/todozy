@@ -24,4 +24,7 @@
     <dimen name="spacing_xlarge">32dp</dimen>
     <dimen name="spacing_xxlarge">40dp</dimen>
     <dimen name="spacing_xxxlarge">48dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="task_inline_metrics_elevation">6dp</dimen>
 </resources>

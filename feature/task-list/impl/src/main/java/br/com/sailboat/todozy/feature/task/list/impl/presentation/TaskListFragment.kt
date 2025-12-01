@@ -270,6 +270,18 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
                         override fun onClickTask(taskId: Long) {
                             viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
                         }
+
+                        override fun onClickUndo(
+                            taskId: Long,
+                            status: TaskStatus,
+                        ) {
+                            viewModel.dispatchViewIntent(
+                                TaskListViewIntent.OnClickUndoTask(
+                                    taskId = taskId,
+                                    status = status,
+                                ),
+                            )
+                        }
                     },
                 ).apply { taskListAdapter = this }
 

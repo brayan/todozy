@@ -210,7 +210,7 @@ private fun TaskProgressGrid(
             style = MaterialTheme.typography.body2,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
             modifier = Modifier.padding(top = 4.dp),
-            )
+        )
         return
     }
 

@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/spacing_medium"
-            android:paddingTop="@dimen/spacing_small"
             android:paddingEnd="@dimen/spacing_medium"
             android:paddingBottom="@dimen/spacing_small"
             android:background="?attr/colorPrimary"

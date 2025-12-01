@@ -30,7 +30,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -38,6 +40,8 @@ import org.junit.Test
 import java.util.Calendar
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+
+private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
 
 @ExperimentalCoroutinesApi
 internal class TaskListViewModelTest {
@@ -233,6 +237,7 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
             advanceUntilIdle()
 
             coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
@@ -258,10 +263,16 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
             advanceUntilIdle()
 
             val expected = TaskListViewAction.UpdateRemovedTask(position)
             assertTrue { list.contains(expected) }
+            assertTrue {
+                viewModel.viewState.itemsView.value
+                    ?.filterIsInstance<TaskUiModel>()
+                    ?.none { it.taskId == task2.taskId } == true
+            }
         }
     }
 
@@ -279,6 +290,7 @@ internal class TaskListViewModelTest {
             prepareScenario()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
             advanceUntilIdle()
 
             coVerify {
@@ -290,6 +302,41 @@ internal class TaskListViewModelTest {
                     },
                 )
             }
+        }
+
+    @Test
+    fun `should show inline metrics when dispatchViewAction is called with OnSwipeTask`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            val taskId = 978L
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                    TaskUiModel(taskId = taskId, taskName = "Task 978"),
+                )
+            val inlineMetrics = TaskMetrics(doneTasks = 2, notDoneTasks = 1, consecutiveDone = 3)
+            prepareScenario(
+                tasksView = tasks,
+                tasksResult =
+                    Result.success(
+                        listOf(
+                            Task(id = 543L, name = "Task 543", notes = null),
+                            Task(id = taskId, name = "Task 978", notes = null),
+                        ),
+                    ),
+            )
+            coEvery {
+                getTaskMetricsUseCase(match { it.taskId == taskId })
+            } returns Result.success(inlineMetrics)
+
+            viewModel.viewState.itemsView.value = tasks
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(1, TaskStatus.DONE))
+            runCurrent()
+
+            val updatedTask = viewModel.viewState.itemsView.value?.get(1) as TaskUiModel
+            assertTrue(updatedTask.showInlineMetrics)
+            assertEquals(TaskMetrics(doneTasks = 3, notDoneTasks = 1, consecutiveDone = 4), updatedTask.inlineMetrics)
+            assertEquals(TaskStatus.DONE, updatedTask.inlineStatus)
         }
 
     @Test
@@ -329,9 +376,63 @@ internal class TaskListViewModelTest {
     }
 
     @Test
+    fun `should show optimistic metrics while commit is pending`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = 543L, taskName = "Task 543"),
+                )
+            prepareScenario(tasksView = tasks)
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position = 0, status = TaskStatus.DONE))
+            runCurrent()
+
+            assertEquals(TaskMetrics(doneTasks = 1, notDoneTasks = 0, consecutiveDone = 1), viewModel.viewState.taskMetrics.value)
+        }
+
+    @Test
+    fun `should undo swipe and restore task`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            val taskId = 978L
+            val tasks =
+                mutableListOf<UiModel>(
+                    TaskUiModel(taskId = taskId, taskName = "Task 978"),
+                )
+            prepareScenario(
+                tasksView = tasks,
+                tasksResult =
+                    Result.success(
+                        listOf(
+                            Task(id = taskId, name = "Task 978", notes = null),
+                        ),
+                    ),
+            )
+
+            viewModel.viewState.itemsView.value = tasks
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(0, TaskStatus.DONE))
+            runCurrent()
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnClickUndoTask(taskId, TaskStatus.DONE))
+            advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
+            advanceUntilIdle()
+
+            coVerify(exactly = 0) { completeTaskUseCase(taskId, any()) }
+            val restoredTask =
+                viewModel.viewState.itemsView.value?.filterIsInstance<TaskUiModel>()?.firstOrNull()
+            assertTrue(restoredTask?.showInlineMetrics == false)
+        }
+
+    @Test
     fun `should reload progress when progress range changes`() =
         runTest(coroutinesTestRule.dispatcher) {
             prepareScenario()
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            advanceUntilIdle()
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS))
             advanceUntilIdle()
