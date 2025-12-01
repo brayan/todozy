@@ -138,6 +138,7 @@
     <string name="label_status">Status</string>
     <string name="label_date_time">Data/Hora</string>
     <string name="restore">Restaurar</string>
+    <string name="undo">DESFAZER</string>
     <string name="label_name">Nome</string>
     <string name="label_quantity">Quantidade</string>
     <string name="hint_enter_product_name">Insira o nome do produto</string>

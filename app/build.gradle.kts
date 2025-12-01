@@ -15,13 +15,19 @@ val localProps =
         }
     }
 
+val hasSigningProps =
+    listOf("STORE_FILE", "STORE_PASSWORD", "KEY_ALIAS", "KEY_PASSWORD")
+        .all { key -> localProps.getProperty(key).isNullOrBlank().not() }
+
 android {
     signingConfigs {
-        create("config") {
-            keyAlias = localProps.getProperty("KEY_ALIAS")
-            keyPassword = localProps.getProperty("KEY_PASSWORD")
-            storeFile = file(localProps.getProperty("STORE_FILE"))
-            storePassword = localProps.getProperty("STORE_PASSWORD")
+        if (hasSigningProps) {
+            create("config") {
+                keyAlias = localProps.getProperty("KEY_ALIAS")
+                keyPassword = localProps.getProperty("KEY_PASSWORD")
+                storeFile = file(localProps.getProperty("STORE_FILE"))
+                storePassword = localProps.getProperty("STORE_PASSWORD")
+            }
         }
     }
 
@@ -39,7 +45,12 @@ android {
     }
     buildTypes {
         getByName("release") {
-            signingConfig = signingConfigs.getByName("config")
+            signingConfig =
+                if (hasSigningProps) {
+                    signingConfigs.getByName("config")
+                } else {
+                    signingConfigs.getByName("debug")
+                }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -49,7 +60,12 @@ android {
         }
 
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("config")
+            signingConfig =
+                if (hasSigningProps) {
+                    signingConfigs.getByName("config")
+                } else {
+                    signingConfigs.getByName("debug")
+                }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
