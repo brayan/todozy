@@ -48,6 +48,7 @@ import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
+import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 internal val DefaultTaskProgressDayOrder =
@@ -209,10 +210,11 @@ private fun TaskProgressGrid(
             style = MaterialTheme.typography.body2,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
             modifier = Modifier.padding(top = 4.dp),
-        )
+            )
         return
     }
 
+    val daySpacing = 6.dp
     val locale = Locale.getDefault()
     val dayMetadata =
         remember(days, palette, locale) {
@@ -236,8 +238,7 @@ private fun TaskProgressGrid(
             )
         }
 
-    val paddedDays = remember(days, dayOrder) { padDays(days, dayOrder) }
-    val weeks = remember(paddedDays, dayOrder.size) { paddedDays.chunked(dayOrder.size) }
+    val weeks = remember(days, dayOrder) { buildWeekColumns(days, dayOrder) }
     val lastWeekIndex = remember(weeks.size) { weeks.lastIndex.coerceAtLeast(0) }
     val lazyListState: LazyListState =
         rememberSaveable(weeks.size, saver = LazyListState.Saver) {
@@ -248,13 +249,19 @@ private fun TaskProgressGrid(
         WeekdayLabels(dayOrder = dayOrder, cellSize = cellSize)
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(daySpacing),
             state = lazyListState,
         ) {
             items(weeks) { week ->
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    week.forEach { day ->
-                        val metadata = day?.let { dayMetadata[it.date] }
+                Column(verticalArrangement = Arrangement.spacedBy(daySpacing)) {
+                    if (week.offset > 0) {
+                        Spacer(
+                            modifier =
+                                Modifier.height((cellSize + daySpacing) * week.offset - daySpacing),
+                        )
+                    }
+                    week.days.forEach { day ->
+                        val metadata = dayMetadata[day.date]
                         val color = metadata?.color ?: palette.neutral
                         val semanticsDescription = metadata?.semanticsDescription
 
@@ -265,7 +272,7 @@ private fun TaskProgressGrid(
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(color)
                                     .let {
-                                        if (day != null && onDayClick != null) {
+                                        if (onDayClick != null) {
                                             it.clickable {
                                                 onDayHaptic?.invoke()
                                                 onDayClick(day)
@@ -278,7 +285,7 @@ private fun TaskProgressGrid(
                                         semanticsDescription?.let { desc -> contentDescription = desc }
                                     },
                         ) {
-                            if (enableDayDetails && day != null && selectedDay == day) {
+                            if (enableDayDetails && selectedDay == day) {
                                 DayTooltip(
                                     day = day,
                                     formatter = formatter,
@@ -399,17 +406,47 @@ private fun WeekdayLabels(
     }
 }
 
-private fun padDays(
+internal data class WeekColumn(
+    val offset: Int,
+    val days: List<TaskProgressDay>,
+)
+
+internal fun buildWeekColumns(
     days: List<TaskProgressDay>,
     dayOrder: List<DayOfWeek>,
-): List<TaskProgressDay?> {
+): List<WeekColumn> {
     if (days.isEmpty()) {
         return emptyList()
     }
 
-    val offset = dayOrder.indexOf(days.first().date.dayOfWeek).coerceAtLeast(0)
+    val sortedDays = days.sortedBy { it.date }
+    val weekStartDay = dayOrder.firstOrNull() ?: DayOfWeek.MONDAY
+    val daysByWeekStart =
+        sortedDays.groupBy { day ->
+            day.date.with(TemporalAdjusters.previousOrSame(weekStartDay))
+        }
 
-    return List(offset) { null } + days
+    return daysByWeekStart
+        .toSortedMap()
+        .values
+        .map { weekDays ->
+            val sortedWeekDays =
+                weekDays.sortedWith(
+                    compareBy(
+                        { day ->
+                            val index = dayOrder.indexOf(day.date.dayOfWeek)
+                            if (index >= 0) index else day.date.dayOfWeek.value
+                        },
+                        { day -> day.date },
+                    ),
+                )
+            val offset = dayOrder.indexOf(sortedWeekDays.first().date.dayOfWeek).coerceAtLeast(0)
+
+            WeekColumn(
+                offset = offset,
+                days = sortedWeekDays,
+            )
+        }
 }
 
 @Composable
