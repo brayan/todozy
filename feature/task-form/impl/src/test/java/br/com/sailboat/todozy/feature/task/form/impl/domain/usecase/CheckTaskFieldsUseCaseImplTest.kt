@@ -14,59 +14,56 @@ internal class CheckTaskFieldsUseCaseImplTest {
     private val checkTaskFieldsUseCase = CheckTaskFieldsUseCaseImpl()
 
     @Test
-    fun `should get TASK_NAME_NOT_FILLED when task name is empty`() =
-        runBlocking {
-            val task = Task(id = Entity.NO_ID, name = "", notes = "Some notes")
+    fun `should get TASK_NAME_NOT_FILLED when task name is empty`() = runBlocking {
+        val task = Task(id = Entity.NO_ID, name = "", notes = "Some notes")
 
-            val result = checkTaskFieldsUseCase(task)
+        val result = checkTaskFieldsUseCase(task)
 
-            val expected = listOf(TaskFieldsConditions.TASK_NAME_NOT_FILLED)
-            assertEquals(expected, result)
-        }
-
-    @Test
-    fun `should get ALARM_NOT_VALID when task alarm is before now`() =
-        runBlocking {
-            val task =
-                Task(
-                    id = Entity.NO_ID,
-                    name = "Task",
-                    notes = "Some notes",
-                    alarm =
-                        Alarm(
-                            dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                            repeatType = RepeatType.NOT_REPEAT,
-                        ),
-                )
-
-            val result = checkTaskFieldsUseCase(task)
-
-            val expected = listOf(TaskFieldsConditions.ALARM_NOT_VALID)
-            assertEquals(expected, result)
-        }
+        val expected = listOf(TaskFieldsConditions.TASK_NAME_NOT_FILLED)
+        assertEquals(expected, result)
+    }
 
     @Test
-    fun `should get TASK_NAME_NOT_FILLED and ALARM_NOT_VALID when task alarm is before now`() =
-        runBlocking {
-            val task =
-                Task(
-                    id = Entity.NO_ID,
-                    name = "",
-                    notes = "Some notes",
-                    alarm =
-                        Alarm(
-                            dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                            repeatType = RepeatType.NOT_REPEAT,
-                        ),
-                )
+    fun `should get ALARM_NOT_VALID when task alarm is before now`() = runBlocking {
+        val task =
+            Task(
+                id = Entity.NO_ID,
+                name = "Task",
+                notes = "Some notes",
+                alarm =
+                    Alarm(
+                        dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+                        repeatType = RepeatType.NOT_REPEAT,
+                    ),
+            )
 
-            val result = checkTaskFieldsUseCase(task)
+        val result = checkTaskFieldsUseCase(task)
 
-            val expected =
-                listOf(
-                    TaskFieldsConditions.TASK_NAME_NOT_FILLED,
-                    TaskFieldsConditions.ALARM_NOT_VALID,
-                )
-            assertEquals(expected, result)
-        }
+        val expected = listOf(TaskFieldsConditions.ALARM_NOT_VALID)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should get TASK_NAME_NOT_FILLED and ALARM_NOT_VALID when task alarm is before now`() = runBlocking {
+        val task =
+            Task(
+                id = Entity.NO_ID,
+                name = "",
+                notes = "Some notes",
+                alarm =
+                    Alarm(
+                        dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+                        repeatType = RepeatType.NOT_REPEAT,
+                    ),
+            )
+
+        val result = checkTaskFieldsUseCase(task)
+
+        val expected =
+            listOf(
+                TaskFieldsConditions.TASK_NAME_NOT_FILLED,
+                TaskFieldsConditions.ALARM_NOT_VALID,
+            )
+        assertEquals(expected, result)
+    }
 }

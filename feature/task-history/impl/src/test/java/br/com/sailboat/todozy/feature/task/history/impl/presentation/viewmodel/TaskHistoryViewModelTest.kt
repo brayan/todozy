@@ -70,46 +70,44 @@ internal class TaskHistoryViewModelTest {
     }
 
     @Test
-    fun `should apply a 7-day inclusive range when last seven days filter is selected`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val metricsFilter = slot<TaskHistoryFilter>()
-            coEvery { getTaskMetricsUseCase(capture(metricsFilter)) } returns Result.success(TaskMetrics(0, 0, 0))
-            coEvery { getTaskHistoryUseCase(any()) } answers { Result.success(emptyList()) }
-            every { taskHistoryUiModelFactory.create(any(), any()) } returns emptyList()
+    fun `should apply a 7-day inclusive range when last seven days filter is selected`() = runTest(coroutinesTestRule.dispatcher) {
+        val metricsFilter = slot<TaskHistoryFilter>()
+        coEvery { getTaskMetricsUseCase(capture(metricsFilter)) } returns Result.success(TaskMetrics(0, 0, 0))
+        coEvery { getTaskHistoryUseCase(any()) } answers { Result.success(emptyList()) }
+        every { taskHistoryUiModelFactory.create(any(), any()) } returns emptyList()
 
-            viewModel.dispatchViewIntent(
-                TaskHistoryViewIntent.OnSelectDateFromFilter(DateFilterTaskHistorySelectableItem.LAST_7_DAYS),
-            )
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(
+            TaskHistoryViewIntent.OnSelectDateFromFilter(DateFilterTaskHistorySelectableItem.LAST_7_DAYS),
+        )
+        advanceUntilIdle()
 
-            val today = LocalDate.now()
-            val expectedInitialDate = TaskProgressRange.LAST_7_DAYS.startDate(today).toStartOfDayCalendar()
-            val expectedFinalDate = today.toEndOfDayCalendar()
-            val capturedFilter = metricsFilter.captured
+        val today = LocalDate.now()
+        val expectedInitialDate = TaskProgressRange.LAST_7_DAYS.startDate(today).toStartOfDayCalendar()
+        val expectedFinalDate = today.toEndOfDayCalendar()
+        val capturedFilter = metricsFilter.captured
 
-            assertEquals(expectedInitialDate.timeInMillis, capturedFilter.initialDate?.timeInMillis)
-            assertEquals(expectedFinalDate.timeInMillis, capturedFilter.finalDate?.timeInMillis)
-        }
+        assertEquals(expectedInitialDate.timeInMillis, capturedFilter.initialDate?.timeInMillis)
+        assertEquals(expectedFinalDate.timeInMillis, capturedFilter.finalDate?.timeInMillis)
+    }
 
     @Test
-    fun `should apply a 30-day inclusive range when last thirty days filter is selected`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val metricsFilter = slot<TaskHistoryFilter>()
-            coEvery { getTaskMetricsUseCase(capture(metricsFilter)) } returns Result.success(TaskMetrics(0, 0, 0))
-            coEvery { getTaskHistoryUseCase(any()) } answers { Result.success(emptyList()) }
-            every { taskHistoryUiModelFactory.create(any(), any()) } returns emptyList()
+    fun `should apply a 30-day inclusive range when last thirty days filter is selected`() = runTest(coroutinesTestRule.dispatcher) {
+        val metricsFilter = slot<TaskHistoryFilter>()
+        coEvery { getTaskMetricsUseCase(capture(metricsFilter)) } returns Result.success(TaskMetrics(0, 0, 0))
+        coEvery { getTaskHistoryUseCase(any()) } answers { Result.success(emptyList()) }
+        every { taskHistoryUiModelFactory.create(any(), any()) } returns emptyList()
 
-            viewModel.dispatchViewIntent(
-                TaskHistoryViewIntent.OnSelectDateFromFilter(DateFilterTaskHistorySelectableItem.LAST_30_DAYS),
-            )
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(
+            TaskHistoryViewIntent.OnSelectDateFromFilter(DateFilterTaskHistorySelectableItem.LAST_30_DAYS),
+        )
+        advanceUntilIdle()
 
-            val today = LocalDate.now()
-            val expectedInitialDate = TaskProgressRange.LAST_30_DAYS.startDate(today).toStartOfDayCalendar()
-            val expectedFinalDate = today.toEndOfDayCalendar()
-            val capturedFilter = metricsFilter.captured
+        val today = LocalDate.now()
+        val expectedInitialDate = TaskProgressRange.LAST_30_DAYS.startDate(today).toStartOfDayCalendar()
+        val expectedFinalDate = today.toEndOfDayCalendar()
+        val capturedFilter = metricsFilter.captured
 
-            assertEquals(expectedInitialDate.timeInMillis, capturedFilter.initialDate?.timeInMillis)
-            assertEquals(expectedFinalDate.timeInMillis, capturedFilter.finalDate?.timeInMillis)
-        }
+        assertEquals(expectedInitialDate.timeInMillis, capturedFilter.initialDate?.timeInMillis)
+        assertEquals(expectedFinalDate.timeInMillis, capturedFilter.finalDate?.timeInMillis)
+    }
 }

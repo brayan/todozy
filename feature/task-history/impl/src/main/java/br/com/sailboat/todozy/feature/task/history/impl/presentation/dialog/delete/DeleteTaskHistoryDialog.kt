@@ -19,13 +19,12 @@ class DeleteTaskHistoryDialog : BaseDialogFragment() {
     companion object {
         val TAG: String = DeleteTaskHistoryDialog::class.java.name
 
-        fun newInstance(taskHistoryPosition: Int) =
-            DeleteTaskHistoryDialog().apply {
-                arguments =
-                    Bundle().apply {
-                        putInt(TASK_HISTORY_POSITION, taskHistoryPosition)
-                    }
-            }
+        fun newInstance(taskHistoryPosition: Int) = DeleteTaskHistoryDialog().apply {
+            arguments =
+                Bundle().apply {
+                    putInt(TASK_HISTORY_POSITION, taskHistoryPosition)
+                }
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -24,108 +24,106 @@ internal class GetTaskProgressUseCaseImplTest {
     private val getTaskProgressUseCase = GetTaskProgressUseCaseImpl(taskHistoryRepository, clock)
 
     @Test
-    fun `should map progress grouped by day within selected range`() =
-        runTest {
-            val filter = TaskProgressFilter(range = TaskProgressRange.LAST_7_DAYS, taskId = 10L)
-            val history =
-                listOf(
-                    TaskHistory(
-                        id = 1,
-                        taskId = 10L,
-                        taskName = "Task",
-                        status = TaskStatus.DONE,
-                        insertingDate = "2024-08-14 08:00:00",
-                    ),
-                    TaskHistory(
-                        id = 2,
-                        taskId = 10L,
-                        taskName = "Task",
-                        status = TaskStatus.NOT_DONE,
-                        insertingDate = "2024-08-13 08:00:00",
-                    ),
-                    TaskHistory(
-                        id = 3,
-                        taskId = 10L,
-                        taskName = "Task",
-                        status = TaskStatus.DONE,
-                        insertingDate = "2024-08-13 10:00:00",
-                    ),
-                )
+    fun `should map progress grouped by day within selected range`() = runTest {
+        val filter = TaskProgressFilter(range = TaskProgressRange.LAST_7_DAYS, taskId = 10L)
+        val history =
+            listOf(
+                TaskHistory(
+                    id = 1,
+                    taskId = 10L,
+                    taskName = "Task",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2024-08-14 08:00:00",
+                ),
+                TaskHistory(
+                    id = 2,
+                    taskId = 10L,
+                    taskName = "Task",
+                    status = TaskStatus.NOT_DONE,
+                    insertingDate = "2024-08-13 08:00:00",
+                ),
+                TaskHistory(
+                    id = 3,
+                    taskId = 10L,
+                    taskName = "Task",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2024-08-13 10:00:00",
+                ),
+            )
 
-            coEvery { taskHistoryRepository.getHistory(any()) } returns Result.success(history)
+        coEvery { taskHistoryRepository.getHistory(any()) } returns Result.success(history)
 
-            val progressDays = getTaskProgressUseCase(filter).getOrThrow()
+        val progressDays = getTaskProgressUseCase(filter).getOrThrow()
 
-            assertEquals(7, progressDays.size)
+        assertEquals(7, progressDays.size)
 
-            val august14 = progressDays.first { it.date == LocalDate.of(2024, 8, 14) }
-            assertEquals(1, august14.doneCount)
-            assertEquals(0, august14.notDoneCount)
-            assertEquals(1, august14.totalCount)
+        val august14 = progressDays.first { it.date == LocalDate.of(2024, 8, 14) }
+        assertEquals(1, august14.doneCount)
+        assertEquals(0, august14.notDoneCount)
+        assertEquals(1, august14.totalCount)
 
-            val august13 = progressDays.first { it.date == LocalDate.of(2024, 8, 13) }
-            assertEquals(1, august13.doneCount)
-            assertEquals(1, august13.notDoneCount)
-            assertEquals(2, august13.totalCount)
+        val august13 = progressDays.first { it.date == LocalDate.of(2024, 8, 13) }
+        assertEquals(1, august13.doneCount)
+        assertEquals(1, august13.notDoneCount)
+        assertEquals(2, august13.totalCount)
 
-            val august12 = progressDays.first { it.date == LocalDate.of(2024, 8, 12) }
-            assertEquals(0, august12.doneCount)
-            assertEquals(0, august12.notDoneCount)
-            assertEquals(0, august12.totalCount)
+        val august12 = progressDays.first { it.date == LocalDate.of(2024, 8, 12) }
+        assertEquals(0, august12.doneCount)
+        assertEquals(0, august12.notDoneCount)
+        assertEquals(0, august12.totalCount)
 
-            coVerify {
-                taskHistoryRepository.getHistory(
-                    withArg {
-                        assertEquals(10L, it.taskId)
-                        assertEquals(LocalDate.of(2024, 8, 9), it.initialDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
-                        assertEquals(LocalDate.of(2024, 8, 15), it.finalDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
-                    },
-                )
-            }
+        coVerify {
+            taskHistoryRepository.getHistory(
+                withArg {
+                    assertEquals(10L, it.taskId)
+                    assertEquals(LocalDate.of(2024, 8, 9), it.initialDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
+                    assertEquals(LocalDate.of(2024, 8, 15), it.finalDate?.toInstant()?.atZone(ZoneId.of("UTC"))?.toLocalDate())
+                },
+            )
         }
+    }
 
     @Test
-    fun `should map progress from earliest history when range is all`() =
-        runTest {
-            val filter = TaskProgressFilter(range = TaskProgressRange.ALL, taskId = 5L)
-            val history =
-                listOf(
-                    TaskHistory(
-                        id = 1,
-                        taskId = 5L,
-                        taskName = "Task",
-                        status = TaskStatus.DONE,
-                        insertingDate = "2024-08-10 08:00:00",
-                    ),
-                    TaskHistory(
-                        id = 2,
-                        taskId = 5L,
-                        taskName = "Task",
-                        status = TaskStatus.NOT_DONE,
-                        insertingDate = "2024-08-12 09:00:00",
-                    ),
-                )
+    fun `should map progress from earliest history when range is all`() = runTest {
+        val filter = TaskProgressFilter(range = TaskProgressRange.ALL, taskId = 5L)
+        val history =
+            listOf(
+                TaskHistory(
+                    id = 1,
+                    taskId = 5L,
+                    taskName = "Task",
+                    status = TaskStatus.DONE,
+                    insertingDate = "2024-08-10 08:00:00",
+                ),
+                TaskHistory(
+                    id = 2,
+                    taskId = 5L,
+                    taskName = "Task",
+                    status = TaskStatus.NOT_DONE,
+                    insertingDate = "2024-08-12 09:00:00",
+                ),
+            )
 
-            coEvery { taskHistoryRepository.getHistory(any()) } returns Result.success(history)
+        coEvery { taskHistoryRepository.getHistory(any()) } returns Result.success(history)
 
-            val progressDays = getTaskProgressUseCase(filter).getOrThrow()
+        val progressDays = getTaskProgressUseCase(filter).getOrThrow()
 
-            assertEquals(LocalDate.of(2024, 8, 10), progressDays.first().date)
-            assertEquals(LocalDate.of(2024, 8, 15), progressDays.last().date)
+        assertEquals(LocalDate.of(2024, 8, 10), progressDays.first().date)
+        assertEquals(LocalDate.of(2024, 8, 15), progressDays.last().date)
 
-            val august10 = progressDays.first { it.date == LocalDate.of(2024, 8, 10) }
-            assertEquals(1, august10.doneCount)
-            assertEquals(0, august10.notDoneCount)
-            assertEquals(1, august10.totalCount)
+        val august10 = progressDays.first { it.date == LocalDate.of(2024, 8, 10) }
+        assertEquals(1, august10.doneCount)
+        assertEquals(0, august10.notDoneCount)
+        assertEquals(1, august10.totalCount)
 
-            coVerify {
-                taskHistoryRepository.getHistory(
-                    withArg {
-                        assertNull(it.initialDate)
-                        assertNull(it.finalDate)
-                        assertEquals(5L, it.taskId)
-                    },
-                )
-            }
+        coVerify {
+            taskHistoryRepository.getHistory(
+                withArg {
+                    assertNull(it.initialDate)
+                    assertNull(it.finalDate)
+                    assertEquals(5L, it.taskId)
+                },
+            )
         }
+    }
 }

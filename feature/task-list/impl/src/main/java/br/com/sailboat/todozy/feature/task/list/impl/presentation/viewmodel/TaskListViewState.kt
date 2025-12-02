@@ -9,7 +9,7 @@ import br.com.sailboat.uicomponent.model.UiModel
 
 internal class TaskListViewState {
     val viewAction = Event<TaskListViewAction>()
-    val loading = MutableLiveData(true)
+    val tasksLoading = MutableLiveData(false)
     val itemsView = MutableLiveData<MutableList<UiModel>>()
     val taskMetrics = MutableLiveData<TaskMetrics>()
     val taskProgressDays = MutableLiveData<List<TaskProgressDay>>(emptyList())

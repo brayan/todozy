@@ -12,17 +12,15 @@ internal data class TaskData(
     var enabled: Boolean = true,
 )
 
-internal fun TaskData.mapToTask(alarm: Alarm?) =
-    Task(
-        id = id,
-        name = name.orEmpty(),
-        notes = notes,
-        alarm = alarm,
-    )
+internal fun TaskData.mapToTask(alarm: Alarm?) = Task(
+    id = id,
+    name = name.orEmpty(),
+    notes = notes,
+    alarm = alarm,
+)
 
-internal fun Task.mapToTaskData() =
-    TaskData(
-        id = id,
-        name = name,
-        notes = notes,
-    )
+internal fun Task.mapToTaskData() = TaskData(
+    id = id,
+    name = name,
+    notes = notes,
+)

@@ -17,14 +17,28 @@ internal class CompleteTaskUseCaseImpl(
     override suspend operator fun invoke(
         taskId: Long,
         status: TaskStatus,
-    ) {
-        val task = getTaskUseCase(taskId).getOrThrow()
+    ): Result<Unit> {
+        val task = getTaskUseCase(taskId).getOrElse { throwable ->
+            return Result.failure(throwable)
+        }
 
-        task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
-            task.alarm = getNextAlarmUseCase(this)
-            saveTaskUseCase(task).getOrThrow()
-        } ?: disableTaskUseCase(task).getOrThrow()
+        val finalTask = task.alarm?.takeIf { it.isAlarmRepeating() }?.run {
+            val nextAlarm = getNextAlarmUseCase(this)
+            val updatedTask = task.copy(alarm = nextAlarm)
+            saveTaskUseCase(updatedTask).getOrElse { throwable ->
+                return Result.failure(throwable)
+            }
+            updatedTask
+        } ?: run {
+            disableTaskUseCase(task).getOrElse { throwable ->
+                return Result.failure(throwable)
+            }
+        }
 
-        addHistoryUseCase(task, status).getOrThrow()
+        addHistoryUseCase(finalTask, status).getOrElse { throwable ->
+            return Result.failure(throwable)
+        }
+
+        return Result.success(Unit)
     }
 }

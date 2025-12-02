@@ -62,13 +62,12 @@ internal class TaskFormFragment : Fragment() {
 
         fun newInstance() = TaskFormFragment()
 
-        fun newInstance(taskId: Long): TaskFormFragment =
-            with(TaskFormFragment()) {
-                val bundle = Bundle()
-                bundle.putTaskId(taskId)
-                arguments = bundle
-                return this
-            }
+        fun newInstance(taskId: Long): TaskFormFragment = with(TaskFormFragment()) {
+            val bundle = Bundle()
+            bundle.putTaskId(taskId)
+            arguments = bundle
+            return this
+        }
     }
 
     override fun onCreateView(
@@ -155,13 +154,12 @@ internal class TaskFormFragment : Fragment() {
         activity?.showKeyboard(binding.etTaskFormName)
     }
 
-    private fun setTaskDetails(action: TaskFormViewAction.SetTaskDetails) =
-        with(binding) {
-            etTaskFormNotes.setText(action.taskNotes)
+    private fun setTaskDetails(action: TaskFormViewAction.SetTaskDetails) = with(binding) {
+        etTaskFormNotes.setText(action.taskNotes)
 
-            etTaskFormName.setText(action.taskName)
-            etTaskFormName.setSelection(etTaskFormName.length())
-        }
+        etTaskFormName.setText(action.taskName)
+        etTaskFormName.setSelection(etTaskFormName.length())
+    }
 
     private fun showErrorSavingTask() {
         Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
@@ -339,21 +337,20 @@ internal class TaskFormFragment : Fragment() {
         Toast.makeText(activity, getString(UiR.string.alarm_not_valid), Toast.LENGTH_SHORT).show()
     }
 
-    private fun initAlarmViews() =
-        with(binding) {
-            rlTaskFormAddAlarm.setSafeClickListener {
-                viewModel.dispatchViewIntent(OnClickAddAlarm)
-            }
-            alarmDetails.tvAlarmDate.setSafeClickListener {
-                viewModel.dispatchViewIntent(OnClickAlarmDate)
-            }
-            alarmDetails.tvAlarmTime.setSafeClickListener {
-                viewModel.dispatchViewIntent(OnClickAlarmTime)
-            }
-            alarmDetails.tvAlarmRepeat.setSafeClickListener {
-                viewModel.dispatchViewIntent(OnClickRepeatAlarm)
-            }
+    private fun initAlarmViews() = with(binding) {
+        rlTaskFormAddAlarm.setSafeClickListener {
+            viewModel.dispatchViewIntent(OnClickAddAlarm)
         }
+        alarmDetails.tvAlarmDate.setSafeClickListener {
+            viewModel.dispatchViewIntent(OnClickAlarmDate)
+        }
+        alarmDetails.tvAlarmTime.setSafeClickListener {
+            viewModel.dispatchViewIntent(OnClickAlarmTime)
+        }
+        alarmDetails.tvAlarmRepeat.setSafeClickListener {
+            viewModel.dispatchViewIntent(OnClickRepeatAlarm)
+        }
+    }
 
     private fun initEditTexts() {
         binding.etTaskFormName.setOnKeyListener(

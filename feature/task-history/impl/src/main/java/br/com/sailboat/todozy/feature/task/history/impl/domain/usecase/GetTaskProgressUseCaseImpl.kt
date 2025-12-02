@@ -17,40 +17,39 @@ internal class GetTaskProgressUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
     private val clock: Clock = Clock.systemDefaultZone(),
 ) : GetTaskProgressUseCase {
-    override suspend fun invoke(filter: TaskProgressFilter): Result<List<TaskProgressDay>> =
-        runCatching {
-            val today = LocalDate.now(clock)
-            val historyFilter = buildHistoryFilter(filter, today)
-            val history = taskHistoryRepository.getHistory(historyFilter).getOrThrow()
-            val historyByDate =
-                history.groupBy { taskHistory ->
-                    taskHistory.insertingDate
-                        .toDateTimeCalendar()
-                        .toInstant()
-                        .atZone(clock.zone)
-                        .toLocalDate()
-                }
-
-            val startDate =
-                when (filter.range) {
-                    TaskProgressRange.ALL -> historyByDate.keys.minOrNull() ?: today
-                    else -> filter.range.startDate(today)
-                }
-            val dateRange = buildDateRange(startDate, today)
-
-            return@runCatching dateRange.map { date ->
-                val entries = historyByDate[date].orEmpty()
-                val doneCount = entries.count { it.status == TaskStatus.DONE }
-                val notDoneCount = entries.count { it.status == TaskStatus.NOT_DONE }
-
-                TaskProgressDay(
-                    date = date,
-                    doneCount = doneCount,
-                    notDoneCount = notDoneCount,
-                    totalCount = entries.size,
-                )
+    override suspend fun invoke(filter: TaskProgressFilter): Result<List<TaskProgressDay>> = runCatching {
+        val today = LocalDate.now(clock)
+        val historyFilter = buildHistoryFilter(filter, today)
+        val history = taskHistoryRepository.getHistory(historyFilter).getOrThrow()
+        val historyByDate =
+            history.groupBy { taskHistory ->
+                taskHistory.insertingDate
+                    .toDateTimeCalendar()
+                    .toInstant()
+                    .atZone(clock.zone)
+                    .toLocalDate()
             }
+
+        val startDate =
+            when (filter.range) {
+                TaskProgressRange.ALL -> historyByDate.keys.minOrNull() ?: today
+                else -> filter.range.startDate(today)
+            }
+        val dateRange = buildDateRange(startDate, today)
+
+        return@runCatching dateRange.map { date ->
+            val entries = historyByDate[date].orEmpty()
+            val doneCount = entries.count { it.status == TaskStatus.DONE }
+            val notDoneCount = entries.count { it.status == TaskStatus.NOT_DONE }
+
+            TaskProgressDay(
+                date = date,
+                doneCount = doneCount,
+                notDoneCount = notDoneCount,
+                totalCount = entries.size,
+            )
         }
+    }
 
     private fun buildHistoryFilter(
         filter: TaskProgressFilter,
@@ -76,10 +75,9 @@ internal class GetTaskProgressUseCaseImpl(
     private fun buildDateRange(
         startDate: LocalDate,
         endDate: LocalDate,
-    ): List<LocalDate> =
-        generateSequence(startDate) { currentDate ->
-            currentDate.plusDays(1)
-        }.takeWhile { currentDate ->
-            currentDate.isAfter(endDate).not()
-        }.toList()
+    ): List<LocalDate> = generateSequence(startDate) { currentDate ->
+        currentDate.plusDays(1)
+    }.takeWhile { currentDate ->
+        currentDate.isAfter(endDate).not()
+    }.toList()
 }

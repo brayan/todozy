@@ -127,13 +127,12 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     companion object {
         fun newInstance() = TaskHistoryFragment()
 
-        fun newInstance(taskId: Long): TaskHistoryFragment =
-            with(TaskHistoryFragment()) {
-                val bundle = Bundle()
-                bundle.putTaskId(taskId)
-                arguments = bundle
-                return this
-            }
+        fun newInstance(taskId: Long): TaskHistoryFragment = with(TaskHistoryFragment()) {
+            val bundle = Bundle()
+            bundle.putTaskId(taskId)
+            arguments = bundle
+            return this
+        }
     }
 
     override fun onCreateView(

@@ -25,197 +25,186 @@ internal class TaskHistoryRepositoryImplTest {
         )
 
     @Test
-    fun `should call getTotalOfNotDoneTasks from local data source when getTotalOfNotDoneTasks is called from repository`() =
-        runBlocking {
-            val taskHistoryFilter = TaskHistoryFilter()
-            val totalOfNotDoneTasks = 25
-            prepareScenario(totalOfNotDoneTasks = Result.success(totalOfNotDoneTasks))
+    fun `should call getTotalOfNotDoneTasks from local data source when getTotalOfNotDoneTasks is called from repository`() = runBlocking {
+        val taskHistoryFilter = TaskHistoryFilter()
+        val totalOfNotDoneTasks = 25
+        prepareScenario(totalOfNotDoneTasks = Result.success(totalOfNotDoneTasks))
 
-            val result = taskHistoryRepository.getTotalOfNotDoneTasks(taskHistoryFilter).getOrNull()
+        val result = taskHistoryRepository.getTotalOfNotDoneTasks(taskHistoryFilter).getOrNull()
 
-            assertEquals(totalOfNotDoneTasks, result)
-            coVerify { taskHistoryLocalDataSource.getTotalOfNotDoneTasks(taskHistoryFilter) }
-        }
-
-    @Test
-    fun `should call getTotalOfDoneTasks from local data source when getTotalOfDoneTasks is called from repository`() =
-        runBlocking {
-            val taskHistoryFilter = TaskHistoryFilter()
-            val totalOfDoneTasks = 25
-            prepareScenario(totalOfDoneTasks = Result.success(totalOfDoneTasks))
-
-            val result = taskHistoryRepository.getTotalOfDoneTasks(taskHistoryFilter).getOrNull()
-
-            assertEquals(totalOfDoneTasks, result)
-            coVerify { taskHistoryLocalDataSource.getTotalOfDoneTasks(taskHistoryFilter) }
-        }
+        assertEquals(totalOfNotDoneTasks, result)
+        coVerify { taskHistoryLocalDataSource.getTotalOfNotDoneTasks(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call getTodayHistory from local data source when getTodayHistory is called from repository`() =
-        runBlocking {
-            val taskHistoryData = makeTaskHistoryData()
-            val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
+    fun `should call getTotalOfDoneTasks from local data source when getTotalOfDoneTasks is called from repository`() = runBlocking {
+        val taskHistoryFilter = TaskHistoryFilter()
+        val totalOfDoneTasks = 25
+        prepareScenario(totalOfDoneTasks = Result.success(totalOfDoneTasks))
 
-            val result = taskHistoryRepository.getTodayHistory(taskHistoryFilter).getOrNull()
+        val result = taskHistoryRepository.getTotalOfDoneTasks(taskHistoryFilter).getOrNull()
 
-            val expected =
-                listOf(
-                    TaskHistory(
-                        id = taskHistoryData.id,
-                        taskId = taskHistoryData.taskId,
-                        taskName = taskHistoryData.taskName.orEmpty(),
-                        status = TaskStatus.DONE,
-                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
-                    ),
-                )
-            assertEquals(expected, result)
-            coVerify { taskHistoryLocalDataSource.getTodayHistory(taskHistoryFilter) }
-        }
+        assertEquals(totalOfDoneTasks, result)
+        coVerify { taskHistoryLocalDataSource.getTotalOfDoneTasks(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call getYesterdayHistory from local data source when getYesterdayHistory is called from repository`() =
-        runBlocking {
-            val taskHistoryData = makeTaskHistoryData()
-            val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
+    fun `should call getTodayHistory from local data source when getTodayHistory is called from repository`() = runBlocking {
+        val taskHistoryData = makeTaskHistoryData()
+        val taskHistoryFilter = TaskHistoryFilter()
+        prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getYesterdayHistory(taskHistoryFilter).getOrNull()
+        val result = taskHistoryRepository.getTodayHistory(taskHistoryFilter).getOrNull()
 
-            val expected =
-                listOf(
-                    TaskHistory(
-                        id = taskHistoryData.id,
-                        taskId = taskHistoryData.taskId,
-                        taskName = taskHistoryData.taskName.orEmpty(),
-                        status = TaskStatus.DONE,
-                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
-                    ),
-                )
-            assertEquals(expected, result)
-            coVerify { taskHistoryLocalDataSource.getYesterdayHistory(taskHistoryFilter) }
-        }
-
-    @Test
-    fun `should call getPreviousDaysHistory from local data source when getPreviousDaysHistory is called from repository`() =
-        runBlocking {
-            val taskHistoryData = makeTaskHistoryData()
-            val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
-
-            val result = taskHistoryRepository.getPreviousDaysHistory(taskHistoryFilter).getOrNull()
-
-            val expected =
-                listOf(
-                    TaskHistory(
-                        id = taskHistoryData.id,
-                        taskId = taskHistoryData.taskId,
-                        taskName = taskHistoryData.taskName.orEmpty(),
-                        status = TaskStatus.DONE,
-                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
-                    ),
-                )
-            assertEquals(expected, result)
-            coVerify { taskHistoryLocalDataSource.getPreviousDaysHistory(taskHistoryFilter) }
-        }
+        val expected =
+            listOf(
+                TaskHistory(
+                    id = taskHistoryData.id,
+                    taskId = taskHistoryData.taskId,
+                    taskName = taskHistoryData.taskName.orEmpty(),
+                    status = TaskStatus.DONE,
+                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                ),
+            )
+        assertEquals(expected, result)
+        coVerify { taskHistoryLocalDataSource.getTodayHistory(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call getHistory from local data source when getHistory is called from repository`() =
-        runBlocking {
-            val taskHistoryData = makeTaskHistoryData()
-            val taskHistoryFilter = TaskHistoryFilter()
-            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
+    fun `should call getYesterdayHistory from local data source when getYesterdayHistory is called from repository`() = runBlocking {
+        val taskHistoryData = makeTaskHistoryData()
+        val taskHistoryFilter = TaskHistoryFilter()
+        prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            val result = taskHistoryRepository.getHistory(taskHistoryFilter).getOrNull()
+        val result = taskHistoryRepository.getYesterdayHistory(taskHistoryFilter).getOrNull()
 
-            val expected =
-                listOf(
-                    TaskHistory(
-                        id = taskHistoryData.id,
-                        taskId = taskHistoryData.taskId,
-                        taskName = taskHistoryData.taskName.orEmpty(),
-                        status = TaskStatus.DONE,
-                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
-                    ),
-                )
-            assertEquals(expected, result)
-            coVerify { taskHistoryLocalDataSource.getHistory(taskHistoryFilter) }
-        }
-
-    @Test
-    fun `should call getTaskHistoryByTask from local data source when getTaskHistory is called from repository`() =
-        runBlocking {
-            val taskHistoryData = makeTaskHistoryData()
-            prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
-
-            val result = taskHistoryRepository.getTaskHistory(taskHistoryData.taskId).getOrNull()
-
-            val expected =
-                listOf(
-                    TaskHistory(
-                        id = taskHistoryData.id,
-                        taskId = taskHistoryData.taskId,
-                        taskName = taskHistoryData.taskName.orEmpty(),
-                        status = TaskStatus.DONE,
-                        insertingDate = taskHistoryData.insertingDate.orEmpty(),
-                    ),
-                )
-            assertEquals(expected, result)
-            coVerify { taskHistoryLocalDataSource.getTaskHistoryByTask(taskHistoryData.taskId) }
-        }
+        val expected =
+            listOf(
+                TaskHistory(
+                    id = taskHistoryData.id,
+                    taskId = taskHistoryData.taskId,
+                    taskName = taskHistoryData.taskName.orEmpty(),
+                    status = TaskStatus.DONE,
+                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                ),
+            )
+        assertEquals(expected, result)
+        coVerify { taskHistoryLocalDataSource.getYesterdayHistory(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call save from local data source when insert is called from repository`() =
-        runBlocking {
-            val task = makeTask()
-            prepareScenario()
+    fun `should call getPreviousDaysHistory from local data source when getPreviousDaysHistory is called from repository`() = runBlocking {
+        val taskHistoryData = makeTaskHistoryData()
+        val taskHistoryFilter = TaskHistoryFilter()
+        prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            taskHistoryRepository.insert(task, TaskStatus.DONE)
+        val result = taskHistoryRepository.getPreviousDaysHistory(taskHistoryFilter).getOrNull()
 
-            coVerify { taskHistoryLocalDataSource.save(task.id, 1) }
-        }
-
-    @Test
-    fun `should call update from local data source when update is called from repository`() =
-        runBlocking {
-            val taskHistory = makeTaskHistory()
-            val taskHistoryData =
-                TaskHistoryData(
-                    id = taskHistory.id,
-                    taskId = taskHistory.taskId,
-                    taskName = taskHistory.taskName,
-                    status = 1,
-                    insertingDate = taskHistory.insertingDate,
-                    enabled = true,
-                )
-            prepareScenario()
-
-            taskHistoryRepository.update(taskHistory)
-
-            coVerify { taskHistoryLocalDataSource.update(taskHistoryData) }
-        }
+        val expected =
+            listOf(
+                TaskHistory(
+                    id = taskHistoryData.id,
+                    taskId = taskHistoryData.taskId,
+                    taskName = taskHistoryData.taskName.orEmpty(),
+                    status = TaskStatus.DONE,
+                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                ),
+            )
+        assertEquals(expected, result)
+        coVerify { taskHistoryLocalDataSource.getPreviousDaysHistory(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call delete from local data source when delete is called from repository`() =
-        runBlocking {
-            val taskHistory = makeTaskHistory()
-            prepareScenario()
+    fun `should call getHistory from local data source when getHistory is called from repository`() = runBlocking {
+        val taskHistoryData = makeTaskHistoryData()
+        val taskHistoryFilter = TaskHistoryFilter()
+        prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            taskHistoryRepository.delete(taskHistory)
+        val result = taskHistoryRepository.getHistory(taskHistoryFilter).getOrNull()
 
-            coVerify { taskHistoryLocalDataSource.delete(taskHistory.id) }
-        }
+        val expected =
+            listOf(
+                TaskHistory(
+                    id = taskHistoryData.id,
+                    taskId = taskHistoryData.taskId,
+                    taskName = taskHistoryData.taskName.orEmpty(),
+                    status = TaskStatus.DONE,
+                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                ),
+            )
+        assertEquals(expected, result)
+        coVerify { taskHistoryLocalDataSource.getHistory(taskHistoryFilter) }
+    }
 
     @Test
-    fun `should call deleteAllHistory from local data source when deleteAll is called from repository`() =
-        runBlocking {
-            val taskHistory = makeTaskHistory()
-            prepareScenario()
+    fun `should call getTaskHistoryByTask from local data source when getTaskHistory is called from repository`() = runBlocking {
+        val taskHistoryData = makeTaskHistoryData()
+        prepareScenario(taskHistoryDataList = Result.success(listOf(taskHistoryData)))
 
-            taskHistoryRepository.deleteAll()
+        val result = taskHistoryRepository.getTaskHistory(taskHistoryData.taskId).getOrNull()
 
-            coVerify { taskHistoryLocalDataSource.deleteAllHistory() }
-        }
+        val expected =
+            listOf(
+                TaskHistory(
+                    id = taskHistoryData.id,
+                    taskId = taskHistoryData.taskId,
+                    taskName = taskHistoryData.taskName.orEmpty(),
+                    status = TaskStatus.DONE,
+                    insertingDate = taskHistoryData.insertingDate.orEmpty(),
+                ),
+            )
+        assertEquals(expected, result)
+        coVerify { taskHistoryLocalDataSource.getTaskHistoryByTask(taskHistoryData.taskId) }
+    }
+
+    @Test
+    fun `should call save from local data source when insert is called from repository`() = runBlocking {
+        val task = makeTask()
+        prepareScenario()
+
+        taskHistoryRepository.insert(task, TaskStatus.DONE)
+
+        coVerify { taskHistoryLocalDataSource.save(task.id, 1) }
+    }
+
+    @Test
+    fun `should call update from local data source when update is called from repository`() = runBlocking {
+        val taskHistory = makeTaskHistory()
+        val taskHistoryData =
+            TaskHistoryData(
+                id = taskHistory.id,
+                taskId = taskHistory.taskId,
+                taskName = taskHistory.taskName,
+                status = 1,
+                insertingDate = taskHistory.insertingDate,
+                enabled = true,
+            )
+        prepareScenario()
+
+        taskHistoryRepository.update(taskHistory)
+
+        coVerify { taskHistoryLocalDataSource.update(taskHistoryData) }
+    }
+
+    @Test
+    fun `should call delete from local data source when delete is called from repository`() = runBlocking {
+        val taskHistory = makeTaskHistory()
+        prepareScenario()
+
+        taskHistoryRepository.delete(taskHistory)
+
+        coVerify { taskHistoryLocalDataSource.delete(taskHistory.id) }
+    }
+
+    @Test
+    fun `should call deleteAllHistory from local data source when deleteAll is called from repository`() = runBlocking {
+        val taskHistory = makeTaskHistory()
+        prepareScenario()
+
+        taskHistoryRepository.deleteAll()
+
+        coVerify { taskHistoryLocalDataSource.deleteAllHistory() }
+    }
 
     private fun prepareScenario(
         totalOfNotDoneTasks: Result<Int> = Result.success(10),

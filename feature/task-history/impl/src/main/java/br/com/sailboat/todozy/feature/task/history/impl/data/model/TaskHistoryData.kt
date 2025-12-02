@@ -14,23 +14,21 @@ internal data class TaskHistoryData(
 )
 
 // TODO: Move mappers into a specific class
-internal fun TaskHistoryData.mapToTaskHistory() =
-    TaskHistory(
-        id = id,
-        taskId = taskId,
-        taskName = taskName.orEmpty(),
-        status = TaskStatus.getById(status),
-        insertingDate = insertingDate.orEmpty(),
-    )
+internal fun TaskHistoryData.mapToTaskHistory() = TaskHistory(
+    id = id,
+    taskId = taskId,
+    taskName = taskName.orEmpty(),
+    status = TaskStatus.getById(status),
+    insertingDate = insertingDate.orEmpty(),
+)
 
 internal fun List<TaskHistoryData>.mapToTaskHistoryList() = map { it.mapToTaskHistory() }
 
-internal fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData =
-    TaskHistoryData(
-        id = id,
-        taskId = taskId,
-        taskName = taskName,
-        status = status.id,
-        insertingDate = insertingDate,
-        enabled = true,
-    )
+internal fun TaskHistory.mapToTaskHistoryData(): TaskHistoryData = TaskHistoryData(
+    id = id,
+    taskId = taskId,
+    taskName = taskName,
+    status = status.id,
+    insertingDate = insertingDate,
+    enabled = true,
+)

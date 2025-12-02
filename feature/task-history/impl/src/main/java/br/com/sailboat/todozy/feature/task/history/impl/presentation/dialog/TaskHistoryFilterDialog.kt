@@ -32,18 +32,17 @@ internal class TaskHistoryFilterDialog : DialogFragment() {
         return buildDialog()
     }
 
-    private fun initViews() =
-        with(binding) {
-            llDialogFilterTaskHistoryDate.setOnClickListener {
-                callback?.onClickFilterDate()
-                dialog?.dismiss()
-            }
-
-            llDialogFilterTaskHistoryStatus.setOnClickListener {
-                callback?.onClickFilterStatus()
-                dialog?.dismiss()
-            }
+    private fun initViews() = with(binding) {
+        llDialogFilterTaskHistoryDate.setOnClickListener {
+            callback?.onClickFilterDate()
+            dialog?.dismiss()
         }
+
+        llDialogFilterTaskHistoryStatus.setOnClickListener {
+            callback?.onClickFilterStatus()
+            dialog?.dismiss()
+        }
+    }
 
     private fun observeViewModel() {
         viewModel.viewState.status.observe(this) { status ->
@@ -54,11 +53,10 @@ internal class TaskHistoryFilterDialog : DialogFragment() {
         }
     }
 
-    private fun buildDialog() =
-        AlertDialog.Builder(requireContext()).run {
-            setView(binding.root)
-            create()
-        }
+    private fun buildDialog() = AlertDialog.Builder(requireContext()).run {
+        setView(binding.root)
+        create()
+    }
 
     companion object {
         val TAG = TaskHistoryFilterDialog::class.java.name

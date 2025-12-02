@@ -18,22 +18,21 @@ internal class GetAlarmUseCaseImplTest {
     private val getAlarmUseCase = GetAlarmUseCaseImpl(repository)
 
     @Test
-    fun `should get alarm from repository`() =
-        runBlocking {
-            val taskId = 12L
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                    repeatType = RepeatType.NOT_REPEAT,
-                )
-            val alarmResult = Result.success(alarm)
+    fun `should get alarm from repository`() = runBlocking {
+        val taskId = 12L
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+                repeatType = RepeatType.NOT_REPEAT,
+            )
+        val alarmResult = Result.success(alarm)
 
-            coEvery { repository.getAlarmByTaskId(any()) } returns alarmResult
+        coEvery { repository.getAlarmByTaskId(any()) } returns alarmResult
 
-            val result = getAlarmUseCase(taskId)
+        val result = getAlarmUseCase(taskId)
 
-            coVerify { repository.getAlarmByTaskId(taskId) }
-            confirmVerified(repository)
-            assertEquals(result, alarmResult)
-        }
+        coVerify { repository.getAlarmByTaskId(taskId) }
+        confirmVerified(repository)
+        assertEquals(result, alarmResult)
+    }
 }

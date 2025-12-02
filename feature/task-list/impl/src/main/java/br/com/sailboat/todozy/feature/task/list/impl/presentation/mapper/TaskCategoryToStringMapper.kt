@@ -9,10 +9,11 @@ internal class TaskCategoryToStringMapper(private val stringProvider: StringProv
         val category =
             when (taskCategory) {
                 TaskCategory.BEFORE_TODAY -> UiR.string.previous_days
+                TaskCategory.BEFORE_NOW -> UiR.string.before_now
                 TaskCategory.TODAY -> UiR.string.today
                 TaskCategory.TOMORROW -> UiR.string.tomorrow
                 TaskCategory.NEXT_DAYS -> UiR.string.next_days
-                else -> UiR.string.empty
+                TaskCategory.WITH_ALARMS -> UiR.string.with_alarms
             }
         return stringProvider.getString(category)
     }

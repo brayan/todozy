@@ -31,98 +31,92 @@ internal class SaveTaskUseCaseImplTest {
         )
 
     @Test
-    fun `should insert task in the repository when task has no id`() =
-        runBlocking {
-            val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes")
-            prepareScenario()
+    fun `should insert task in the repository when task has no id`() = runBlocking {
+        val task = Task(id = Entity.NO_ID, name = "Task Name", notes = "Some notes")
+        prepareScenario()
 
-            saveTaskUseCase(task)
+        saveTaskUseCase(task)
 
-            coVerify(exactly = 1) { repository.insert(task) }
-            coVerify(exactly = 0) { repository.update(task) }
-            confirmVerified(repository)
-        }
-
-    @Test
-    fun `should update task in the repository when task has some id`() =
-        runBlocking {
-            prepareScenario()
-            val task = Task(id = 45, name = "Task Name", notes = "Some notes")
-
-            saveTaskUseCase(task)
-
-            coVerify(exactly = 0) { repository.insert(task) }
-            coVerify(exactly = 1) { repository.update(task) }
-            confirmVerified(repository)
-        }
+        coVerify(exactly = 1) { repository.insert(task) }
+        coVerify(exactly = 0) { repository.update(task) }
+        confirmVerified(repository)
+    }
 
     @Test
-    fun `should check task fields when save task is called`() =
-        runBlocking {
-            prepareScenario()
-            val task = Task(id = 45, name = "Task Name", notes = "Some notes")
+    fun `should update task in the repository when task has some id`() = runBlocking {
+        prepareScenario()
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes")
 
-            saveTaskUseCase(task)
+        saveTaskUseCase(task)
 
-            coVerify(exactly = 1) { checkTaskFieldsUseCase(task) }
-        }
-
-    @Test
-    fun `should delete alarm when update task`() =
-        runBlocking {
-            prepareScenario()
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
-                    repeatType = RepeatType.NOT_REPEAT,
-                )
-            val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
-
-            saveTaskUseCase(task)
-
-            coVerify { deleteAlarmUseCase(45) }
-            confirmVerified(deleteAlarmUseCase)
-        }
+        coVerify(exactly = 0) { repository.insert(task) }
+        coVerify(exactly = 1) { repository.update(task) }
+        confirmVerified(repository)
+    }
 
     @Test
-    fun `should save alarm when inserting task`() =
-        runBlocking {
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
-                    repeatType = RepeatType.NOT_REPEAT,
-                )
-            val task =
-                Task(
-                    id = Entity.NO_ID,
-                    name = "Task Name",
-                    notes = "Some notes",
-                    alarm = alarm,
-                )
-            prepareScenario(insertTaskResult = Result.success(task))
+    fun `should check task fields when save task is called`() = runBlocking {
+        prepareScenario()
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes")
 
-            saveTaskUseCase(task)
+        saveTaskUseCase(task)
 
-            coVerify { saveAlarmUseCase(alarm, task.id) }
-            confirmVerified(saveAlarmUseCase)
-        }
+        coVerify(exactly = 1) { checkTaskFieldsUseCase(task) }
+    }
 
     @Test
-    fun `should save alarm when updating task`() =
-        runBlocking {
-            prepareScenario()
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
-                    repeatType = RepeatType.NOT_REPEAT,
-                )
-            val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
+    fun `should delete alarm when update task`() = runBlocking {
+        prepareScenario()
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT,
+            )
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
 
-            saveTaskUseCase(task)
+        saveTaskUseCase(task)
 
-            coVerify { saveAlarmUseCase(alarm, task.id) }
-            confirmVerified(saveAlarmUseCase)
-        }
+        coVerify { deleteAlarmUseCase(45) }
+        confirmVerified(deleteAlarmUseCase)
+    }
+
+    @Test
+    fun `should save alarm when inserting task`() = runBlocking {
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT,
+            )
+        val task =
+            Task(
+                id = Entity.NO_ID,
+                name = "Task Name",
+                notes = "Some notes",
+                alarm = alarm,
+            )
+        prepareScenario(insertTaskResult = Result.success(task))
+
+        saveTaskUseCase(task)
+
+        coVerify { saveAlarmUseCase(alarm, task.id) }
+        confirmVerified(saveAlarmUseCase)
+    }
+
+    @Test
+    fun `should save alarm when updating task`() = runBlocking {
+        prepareScenario()
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.DATE, 1) },
+                repeatType = RepeatType.NOT_REPEAT,
+            )
+        val task = Task(id = 45, name = "Task Name", notes = "Some notes", alarm = alarm)
+
+        saveTaskUseCase(task)
+
+        coVerify { saveAlarmUseCase(alarm, task.id) }
+        confirmVerified(saveAlarmUseCase)
+    }
 
     private fun prepareScenario(
         insertTaskResult: Result<Task> = Result.success(TaskMockFactory.makeTask()),

@@ -124,17 +124,16 @@ internal class TaskHistoryViewModel(
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToClearAllHistoryConfirmation
     }
 
-    private fun onClickConfirmClearAllHistory() =
-        viewModelScope.launch {
-            try {
-                clearHistorySelectedPosition()
-                deleteAllHistoryUseCase()
-                loadHistoryTasks()
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
-            }
+    private fun onClickConfirmClearAllHistory() = viewModelScope.launch {
+        try {
+            clearHistorySelectedPosition()
+            deleteAllHistoryUseCase()
+            loadHistoryTasks()
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
         }
+    }
 
     private fun onClickDeleteTaskHistoryItem(viewAction: TaskHistoryViewIntent.OnClickDeleteTaskHistoryItem) {
         viewState.viewAction.value = TaskHistoryViewAction.NavigateToDeleteTaskHistoryConfirmation(viewAction.position)
@@ -277,43 +276,42 @@ internal class TaskHistoryViewModel(
         loadHistoryTasks()
     }
 
-    private fun loadHistoryTasks() =
-        viewModelScope.launch {
-            try {
-                viewState.loading.postValue(true)
+    private fun loadHistoryTasks() = viewModelScope.launch {
+        try {
+            viewState.loading.postValue(true)
 
-                val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
+            val taskMetrics = async { getTaskMetricsUseCase(filter).getOrNull() }
 
-                val taskHistoryCategories =
-                    listOf(
-                        TaskHistoryCategory.TODAY,
-                        TaskHistoryCategory.YESTERDAY,
-                        TaskHistoryCategory.PREVIOUS_DAYS,
-                    )
+            val taskHistoryCategories =
+                listOf(
+                    TaskHistoryCategory.TODAY,
+                    TaskHistoryCategory.YESTERDAY,
+                    TaskHistoryCategory.PREVIOUS_DAYS,
+                )
 
-                val taskHistoryList =
-                    taskHistoryCategories.map { category ->
-                        async {
-                            val searchFilter =
-                                filter.copy(
-                                    text = filter.text,
-                                    category = category,
-                                )
-                            val taskHistoryList = getTaskHistoryUseCase(searchFilter).getOrThrow()
+            val taskHistoryList =
+                taskHistoryCategories.map { category ->
+                    async {
+                        val searchFilter =
+                            filter.copy(
+                                text = filter.text,
+                                category = category,
+                            )
+                        val taskHistoryList = getTaskHistoryUseCase(searchFilter).getOrThrow()
 
-                            taskHistoryUiModelFactory.create(taskHistoryList, category)
-                        }
-                    }.awaitAll().flatten()
+                        taskHistoryUiModelFactory.create(taskHistoryList, category)
+                    }
+                }.awaitAll().flatten()
 
-                viewState.taskMetrics.postValue(taskMetrics.await())
-                viewState.taskHistoryList.postValue(taskHistoryList)
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
-            } finally {
-                viewState.loading.postValue(false)
-            }
+            viewState.taskMetrics.postValue(taskMetrics.await())
+            viewState.taskHistoryList.postValue(taskHistoryList)
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskHistoryViewAction.ShowGenericError
+        } finally {
+            viewState.loading.postValue(false)
         }
+    }
 
     private fun clearSubtitle() {
         viewState.subtitle.value = ""
@@ -323,12 +321,11 @@ internal class TaskHistoryViewModel(
         viewState.subtitle.value = getDateFilterNameViewUseCase(dateFilterType)
     }
 
-    private fun setDateRangeSubtitle() =
-        with(filter) {
-            val initial = initialDate?.run { calendarService.getShortDate(this) }.orEmpty()
-            val final = finalDate?.run { calendarService.getShortDate(this) }.orEmpty()
-            viewState.subtitle.value = "$initial - $final"
-        }
+    private fun setDateRangeSubtitle() = with(filter) {
+        val initial = initialDate?.run { calendarService.getShortDate(this) }.orEmpty()
+        val final = finalDate?.run { calendarService.getShortDate(this) }.orEmpty()
+        viewState.subtitle.value = "$initial - $final"
+    }
 
     private fun updateHistoryStatus(
         position: Int,

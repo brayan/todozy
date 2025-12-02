@@ -87,19 +87,17 @@ internal class SettingsFragment : Fragment() {
         activity?.run { aboutNavigator.navigateToAbout(this) }
     }
 
-    private fun initToolbar() =
-        with(binding) {
-            appbar.toolbar.setTitle(UiR.string.settings)
-            appbar.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
-            appbar.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-        }
+    private fun initToolbar() = with(binding) {
+        appbar.toolbar.setTitle(UiR.string.settings)
+        appbar.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
+        appbar.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+    }
 
-    private fun initToneViews() =
-        activity?.run {
-            binding.llSettingsTone.setSafeClickListener {
-                viewModel.dispatchViewIntent(SettingsViewIntent.OnClickMenuAlarmTone)
-            }
+    private fun initToneViews() = activity?.run {
+        binding.llSettingsTone.setSafeClickListener {
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickMenuAlarmTone)
         }
+    }
 
     private fun initAbout() {
         binding.tvSettingsAbout.setSafeClickListener {
@@ -107,15 +105,13 @@ internal class SettingsFragment : Fragment() {
         }
     }
 
-    private fun initCheckBoxVibrate() =
-        activity?.run {
-            binding.cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.dispatchViewIntent(SettingsViewIntent.OnClickVibrateAlarm(isChecked))
-            }
+    private fun initCheckBoxVibrate() = activity?.run {
+        binding.cbSettingsVibrate.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickVibrateAlarm(isChecked))
         }
+    }
 
-    private fun initToneVibrate() =
-        with(binding) {
-            flSettingsVibrate.setSafeClickListener { cbSettingsVibrate.performClick() }
-        }
+    private fun initToneVibrate() = with(binding) {
+        flSettingsVibrate.setSafeClickListener { cbSettingsVibrate.performClick() }
+    }
 }

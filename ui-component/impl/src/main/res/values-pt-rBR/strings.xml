@@ -66,6 +66,8 @@
     <string name="history_details">Detalhes do Histórico</string>
     <string name="msg_error">Ocorreu um erro ao efetuar a operação</string>
     <string name="previous_days">Dias anteriores</string>
+    <string name="before_now">Antes de agora</string>
+    <string name="with_alarms">Com alarmes</string>
     <string name="delete">Excluir</string>
     <string name="save">Salvar</string>
     <string name="default_string">---</string>

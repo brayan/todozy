@@ -7,9 +7,8 @@ internal class DeleteAlarmUseCaseImpl(
     private val alarmRepository: AlarmRepository,
     private val cancelAlarmScheduleUseCase: CancelAlarmScheduleUseCase,
 ) : DeleteAlarmUseCase {
-    override suspend operator fun invoke(taskId: Long): Result<Unit?> =
-        runCatching {
-            alarmRepository.deleteAlarmByTask(taskId).getOrThrow()
-            cancelAlarmScheduleUseCase(taskId)
-        }
+    override suspend operator fun invoke(taskId: Long): Result<Unit?> = runCatching {
+        alarmRepository.deleteAlarmByTask(taskId).getOrThrow()
+        cancelAlarmScheduleUseCase(taskId)
+    }
 }

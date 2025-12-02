@@ -29,7 +29,6 @@ private val presentation =
         viewModel {
             TaskListViewModel(
                 getTasksUseCase = get(),
-                getAlarmUseCase = get(),
                 scheduleAllAlarmsUseCase = get(),
                 getTaskMetricsUseCase = get(),
                 getTaskProgressUseCase = get(),

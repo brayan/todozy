@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.uicomponent.impl.helper.UiModelDiffUtilCallback
 import br.com.sailboat.uicomponent.impl.viewholder.EmptyViewHolder
 import br.com.sailboat.uicomponent.impl.viewholder.SubheadViewHolder
+import br.com.sailboat.uicomponent.impl.viewholder.TaskSkeletonViewHolder
 import br.com.sailboat.uicomponent.impl.viewholder.TaskViewHolder
 import br.com.sailboat.uicomponent.model.SubheadUiModel
+import br.com.sailboat.uicomponent.model.TaskSkeletonUiModel
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
@@ -22,6 +24,7 @@ internal class TaskListAdapter(private val callback: Callback) :
     ) = when (viewType) {
         UiModelType.TASK.ordinal -> TaskViewHolder(parent, callback)
         UiModelType.SUBHEADER.ordinal -> SubheadViewHolder(parent)
+        UiModelType.TASK_SKELETON.ordinal -> TaskSkeletonViewHolder(parent)
         else -> EmptyViewHolder(parent)
     }
 
@@ -32,6 +35,7 @@ internal class TaskListAdapter(private val callback: Callback) :
         when (val item = getItem(position)) {
             is TaskUiModel -> (holder as TaskViewHolder).bind(item)
             is SubheadUiModel -> (holder as SubheadViewHolder).bind(item)
+            is TaskSkeletonUiModel -> (holder as TaskSkeletonViewHolder).bind(item)
         }
     }
 

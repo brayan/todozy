@@ -14,20 +14,19 @@ internal class ScheduleAlarmUpdatesTest {
     private val scheduleAlarmUpdatesUseCase = ScheduleAlarmUpdatesUseCaseImpl(alarmManagerService)
 
     @Test
-    fun `should schedule alarm updates to the first hour of tomorrow on alarmManagerService`() =
-        runBlocking {
-            val calendar =
-                Calendar.getInstance().apply {
-                    add(Calendar.DAY_OF_YEAR, 1)
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
+    fun `should schedule alarm updates to the first hour of tomorrow on alarmManagerService`() = runBlocking {
+        val calendar =
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_YEAR, 1)
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
 
-            scheduleAlarmUpdatesUseCase()
+        scheduleAlarmUpdatesUseCase()
 
-            coVerify { alarmManagerService.scheduleAlarmUpdates(calendar) }
-            confirmVerified(alarmManagerService)
-        }
+        coVerify { alarmManagerService.scheduleAlarmUpdates(calendar) }
+        confirmVerified(alarmManagerService)
+    }
 }

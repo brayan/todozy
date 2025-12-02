@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.domain.model.Alarm
 
 interface AlarmRepository {
     suspend fun getAlarmByTaskId(taskId: Long): Result<Alarm?>
+    suspend fun getAlarmsByTaskIds(taskIds: List<Long>): Result<Map<Long, Alarm>>
     suspend fun deleteAlarmByTask(taskId: Long): Result<Unit?>
     suspend fun save(
         alarm: Alarm,

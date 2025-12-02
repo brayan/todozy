@@ -32,12 +32,11 @@ class TaskProgressHeaderAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int =
-        if (days.isEmpty() && isLoading.not()) {
-            0
-        } else {
-            1
-        }
+    override fun getItemCount(): Int = if (days.isEmpty() && isLoading.not()) {
+        0
+    } else {
+        1
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -30,113 +30,127 @@ internal class AlarmRepositoryImplTest {
         )
 
     @Test
-    fun `should call getAlarmByTask from data source when getAlarmByTaskId is called from repository`() =
-        runBlocking {
-            val taskId = 45L
-            val alarmData =
-                makeAlarmData(
-                    taskId = taskId,
-                    repeatType = RepeatType.WEEK.ordinal,
-                    nextAlarmDate = "2022-02-23 08:40:00",
-                )
-            val alarm =
-                Alarm(
-                    dateTime =
-                        with(Calendar.getInstance()) {
-                            set(Calendar.YEAR, 2022)
-                            set(Calendar.MONTH, 1)
-                            set(Calendar.HOUR_OF_DAY, 8)
-                            set(Calendar.DAY_OF_MONTH, 23)
-                            set(Calendar.MINUTE, 40)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                            this
-                        },
-                    repeatType = RepeatType.WEEK,
-                )
-            val alarmResult = Result.success(alarm)
-            prepareScenario(
-                alarmData = alarmData,
-                alarm = alarm,
+    fun `should call getAlarmByTask from data source when getAlarmByTaskId is called from repository`() = runBlocking {
+        val taskId = 45L
+        val alarmData =
+            makeAlarmData(
+                taskId = taskId,
+                repeatType = RepeatType.WEEK.ordinal,
+                nextAlarmDate = "2022-02-23 08:40:00",
             )
+        val alarm =
+            Alarm(
+                dateTime =
+                    with(Calendar.getInstance()) {
+                        set(Calendar.YEAR, 2022)
+                        set(Calendar.MONTH, 1)
+                        set(Calendar.HOUR_OF_DAY, 8)
+                        set(Calendar.DAY_OF_MONTH, 23)
+                        set(Calendar.MINUTE, 40)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                        this
+                    },
+                repeatType = RepeatType.WEEK,
+            )
+        val alarmResult = Result.success(alarm)
+        prepareScenario(
+            alarmData = alarmData,
+            alarm = alarm,
+        )
 
-            val result = alarmRepository.getAlarmByTaskId(taskId)
+        val result = alarmRepository.getAlarmByTaskId(taskId)
 
-            assertEquals(alarmResult, result)
-            coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
-        }
-
-    @Test
-    fun `should call deleteByTask from data source when deleteAlarmByTask is called from repository`() =
-        runBlocking {
-            val taskId = 45L
-            prepareScenario()
-
-            alarmRepository.deleteAlarmByTask(taskId)
-
-            coVerify { alarmLocalDataSource.deleteByTask(taskId) }
-        }
-
-    @Test
-    fun `should return null alarm when mapping fails`() =
-        runBlocking {
-            val taskId = 99L
-            val alarmData =
-                makeAlarmData(
-                    taskId = taskId,
-                    nextAlarmDate = "invalid-date",
-                )
-            coEvery { alarmLocalDataSource.getAlarmByTask(taskId) } returns Result.success(alarmData)
-            coEvery { alarmDataToAlarmMapper.map(alarmData) } returns null
-
-            val result = alarmRepository.getAlarmByTaskId(taskId).getOrThrow()
-
-            assertNull(result)
-            coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
-        }
+        assertEquals(alarmResult, result)
+        coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
+    }
 
     @Test
-    fun `should call save from data source when save is called from repository`() =
-        runBlocking {
-            val taskId = 45L
-            val alarmData =
-                makeAlarmData(
-                    id = -1,
-                    taskId = taskId,
-                    repeatType = RepeatType.WEEK.ordinal,
-                    nextAlarmDate = "2022-02-23 08:40:00",
-                    insertingDate = null,
-                )
-            val alarm =
-                makeAlarm(
-                    dateTime =
-                        with(Calendar.getInstance()) {
-                            set(Calendar.YEAR, 2022)
-                            set(Calendar.MONTH, 1)
-                            set(Calendar.HOUR_OF_DAY, 8)
-                            set(Calendar.DAY_OF_MONTH, 23)
-                            set(Calendar.MINUTE, 40)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                            this
-                        },
-                    repeatType = RepeatType.WEEK,
-                )
-            prepareScenario(alarmData = alarmData)
+    fun `should call deleteByTask from data source when deleteAlarmByTask is called from repository`() = runBlocking {
+        val taskId = 45L
+        prepareScenario()
 
-            alarmRepository.save(alarm, taskId)
+        alarmRepository.deleteAlarmByTask(taskId)
 
-            coVerify { alarmLocalDataSource.save(alarmData) }
-        }
+        coVerify { alarmLocalDataSource.deleteByTask(taskId) }
+    }
+
+    @Test
+    fun `should return null alarm when mapping fails`() = runBlocking {
+        val taskId = 99L
+        val alarmData =
+            makeAlarmData(
+                taskId = taskId,
+                nextAlarmDate = "invalid-date",
+            )
+        coEvery { alarmLocalDataSource.getAlarmByTask(taskId) } returns Result.success(alarmData)
+        coEvery { alarmDataToAlarmMapper.map(alarmData) } returns null
+
+        val result = alarmRepository.getAlarmByTaskId(taskId).getOrThrow()
+
+        assertNull(result)
+        coVerify { alarmLocalDataSource.getAlarmByTask(taskId) }
+    }
+
+    @Test
+    fun `should call save from data source when save is called from repository`() = runBlocking {
+        val taskId = 45L
+        val alarmData =
+            makeAlarmData(
+                id = -1,
+                taskId = taskId,
+                repeatType = RepeatType.WEEK.ordinal,
+                nextAlarmDate = "2022-02-23 08:40:00",
+                insertingDate = null,
+            )
+        val alarm =
+            makeAlarm(
+                dateTime =
+                    with(Calendar.getInstance()) {
+                        set(Calendar.YEAR, 2022)
+                        set(Calendar.MONTH, 1)
+                        set(Calendar.HOUR_OF_DAY, 8)
+                        set(Calendar.DAY_OF_MONTH, 23)
+                        set(Calendar.MINUTE, 40)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                        this
+                    },
+                repeatType = RepeatType.WEEK,
+            )
+        prepareScenario(alarmData = alarmData)
+
+        alarmRepository.save(alarm, taskId)
+
+        coVerify { alarmLocalDataSource.save(alarmData) }
+    }
+
+    @Test
+    fun `should map alarms by task ids`() = runBlocking {
+        val alarmDataA = makeAlarmData(taskId = 1L)
+        val alarmDataB = makeAlarmData(taskId = 2L)
+        val alarm = makeAlarm()
+        coEvery { alarmLocalDataSource.getAlarmsByTaskIds(listOf(1L, 2L)) } returns
+            Result.success(listOf(alarmDataA, alarmDataB))
+        coEvery { alarmDataToAlarmMapper.map(alarmDataA) } returns alarm
+        coEvery { alarmDataToAlarmMapper.map(alarmDataB) } returns alarm
+
+        val result = alarmRepository.getAlarmsByTaskIds(listOf(1L, 2L)).getOrThrow()
+
+        assertEquals(mapOf(1L to alarm, 2L to alarm), result)
+        coVerify { alarmLocalDataSource.getAlarmsByTaskIds(listOf(1L, 2L)) }
+    }
 
     private fun prepareScenario(
         alarm: Alarm = makeAlarm(),
         alarmData: AlarmData = makeAlarmData(),
         alarmDataResult: Result<AlarmData> = Result.success(makeAlarmData()),
+        alarmDataListResult: Result<List<AlarmData>> = Result.success(listOf(makeAlarmData())),
         deleteByTaskResult: Result<Unit?> = Result.success(Unit),
         saveResult: Result<Long> = Result.success(42L),
     ) {
         coEvery { alarmLocalDataSource.getAlarmByTask(any()) } returns alarmDataResult
+        coEvery { alarmLocalDataSource.getAlarmsByTaskIds(any()) } returns alarmDataListResult
         coEvery { alarmLocalDataSource.deleteByTask(any()) } returns deleteByTaskResult
         coEvery { alarmLocalDataSource.save(any()) } returns saveResult
         coEvery { alarmDataToAlarmMapper.map(any()) } returns alarm

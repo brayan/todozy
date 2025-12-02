@@ -62,17 +62,16 @@ internal class TaskDetailsViewModel(
         viewState.viewAction.value = TaskDetailsViewAction.ConfirmDeleteTask
     }
 
-    private fun onClickConfirmDeleteTask() =
-        viewModelScope.launch {
-            try {
-                val task = getTaskUseCase(viewState.taskId).getOrThrow()
-                disableTaskUseCase(task).getOrThrow()
-                viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = true)
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
-            }
+    private fun onClickConfirmDeleteTask() = viewModelScope.launch {
+        try {
+            val task = getTaskUseCase(viewState.taskId).getOrThrow()
+            disableTaskUseCase(task).getOrThrow()
+            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = true)
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
         }
+    }
 
     private fun onClickEditTask() {
         viewState.viewAction.value = TaskDetailsViewAction.NavigateToTaskForm(viewState.taskId)
@@ -82,42 +81,41 @@ internal class TaskDetailsViewModel(
         loadDetails()
     }
 
-    private fun loadDetails() =
-        viewModelScope.launch {
-            try {
-                viewState.loading.postValue(true)
-                progressCache.clear()
-                currentAlarm = null
+    private fun loadDetails() = viewModelScope.launch {
+        try {
+            viewState.loading.postValue(true)
+            progressCache.clear()
+            currentAlarm = null
 
-                val task = getTaskUseCase(viewState.taskId).getOrThrow()
-                val taskDetails = taskDetailsUiModelFactory.create(task)
-                currentAlarm = task.alarm
-                viewState.taskProgressDayOrder.postValue(dayOrderForAlarm(task.alarm))
+            val task = getTaskUseCase(viewState.taskId).getOrThrow()
+            val taskDetails = taskDetailsUiModelFactory.create(task)
+            currentAlarm = task.alarm
+            viewState.taskProgressDayOrder.postValue(dayOrderForAlarm(task.alarm))
 
-                viewState.taskDetails.postValue(taskDetails)
+            viewState.taskDetails.postValue(taskDetails)
 
-                shouldShowProgress = false
-                val taskMetrics: TaskMetrics? =
-                    task.alarm?.run {
-                        shouldShowProgress = RepeatType.isAlarmRepeating(this)
-                        if (shouldShowProgress) {
-                            val taskMetrics = getTaskMetricsUseCase(historyFilterForRange())
-                            return@run taskMetrics.getOrNull()
-                        }
-                        shouldShowProgress = false
-                        return@run null
+            shouldShowProgress = false
+            val taskMetrics: TaskMetrics? =
+                task.alarm?.run {
+                    shouldShowProgress = RepeatType.isAlarmRepeating(this)
+                    if (shouldShowProgress) {
+                        val taskMetrics = getTaskMetricsUseCase(historyFilterForRange())
+                        return@run taskMetrics.getOrNull()
                     }
+                    shouldShowProgress = false
+                    return@run null
+                }
 
-                viewState.taskMetrics.postValue(taskMetrics)
-                loadProgress()
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
-                viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = false)
-            } finally {
-                viewState.loading.postValue(false)
-            }
+            viewState.taskMetrics.postValue(taskMetrics)
+            loadProgress()
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskDetailsViewAction.ShowErrorLoadingTaskDetails
+            viewState.viewAction.value = TaskDetailsViewAction.CloseTaskDetails(success = false)
+        } finally {
+            viewState.loading.postValue(false)
         }
+    }
 
     private fun onSelectProgressRange(range: TaskProgressRange) {
         if (range == selectedProgressRange) {
@@ -174,23 +172,22 @@ internal class TaskDetailsViewModel(
             }
     }
 
-    private fun loadTaskMetrics() =
-        viewModelScope.launch {
-            if (shouldShowProgress.not()) {
-                viewState.taskMetrics.postValue(null)
-                return@launch
-            }
-
-            runCatching {
-                val filter = historyFilterForRange()
-                getTaskMetricsUseCase(filter).getOrThrow()
-            }.onSuccess { metrics ->
-                viewState.taskMetrics.postValue(metrics)
-            }.onFailure { throwable ->
-                logService.error(throwable)
-                viewState.taskMetrics.postValue(null)
-            }
+    private fun loadTaskMetrics() = viewModelScope.launch {
+        if (shouldShowProgress.not()) {
+            viewState.taskMetrics.postValue(null)
+            return@launch
         }
+
+        runCatching {
+            val filter = historyFilterForRange()
+            getTaskMetricsUseCase(filter).getOrThrow()
+        }.onSuccess { metrics ->
+            viewState.taskMetrics.postValue(metrics)
+        }.onFailure { throwable ->
+            logService.error(throwable)
+            viewState.taskMetrics.postValue(null)
+        }
+    }
 
     private fun historyFilterForRange(): TaskHistoryFilter {
         if (selectedProgressRange == TaskProgressRange.ALL) {
@@ -264,22 +261,20 @@ internal class TaskDetailsViewModel(
         }
     }
 
-    private fun parseCustomDays(customDays: String?): Set<DayOfWeek> =
-        customDays
-            ?.mapNotNull { it.digitToIntOrNull() }
-            ?.mapNotNull { dayId -> calendarDayToDayOfWeek(dayId) }
-            ?.toSet()
-            ?: emptySet()
+    private fun parseCustomDays(customDays: String?): Set<DayOfWeek> = customDays
+        ?.mapNotNull { it.digitToIntOrNull() }
+        ?.mapNotNull { dayId -> calendarDayToDayOfWeek(dayId) }
+        ?.toSet()
+        ?: emptySet()
 
-    private fun calendarDayToDayOfWeek(dayId: Int): DayOfWeek? =
-        when (dayId) {
-            Calendar.SUNDAY -> DayOfWeek.SUNDAY
-            Calendar.MONDAY -> DayOfWeek.MONDAY
-            Calendar.TUESDAY -> DayOfWeek.TUESDAY
-            Calendar.WEDNESDAY -> DayOfWeek.WEDNESDAY
-            Calendar.THURSDAY -> DayOfWeek.THURSDAY
-            Calendar.FRIDAY -> DayOfWeek.FRIDAY
-            Calendar.SATURDAY -> DayOfWeek.SATURDAY
-            else -> null
-        }
+    private fun calendarDayToDayOfWeek(dayId: Int): DayOfWeek? = when (dayId) {
+        Calendar.SUNDAY -> DayOfWeek.SUNDAY
+        Calendar.MONDAY -> DayOfWeek.MONDAY
+        Calendar.TUESDAY -> DayOfWeek.TUESDAY
+        Calendar.WEDNESDAY -> DayOfWeek.WEDNESDAY
+        Calendar.THURSDAY -> DayOfWeek.THURSDAY
+        Calendar.FRIDAY -> DayOfWeek.FRIDAY
+        Calendar.SATURDAY -> DayOfWeek.SATURDAY
+        else -> null
+    }
 }

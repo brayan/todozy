@@ -5,6 +5,7 @@ enum class UiModelType {
     TASK_HISTORY,
     ALARM,
     SUBHEADER,
+    TASK_SKELETON,
     EMPTY_LIST_TASK,
     DAY,
     TITLE,

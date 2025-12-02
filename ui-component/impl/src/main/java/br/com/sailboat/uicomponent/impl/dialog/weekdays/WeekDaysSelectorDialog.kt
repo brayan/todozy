@@ -35,12 +35,11 @@ class WeekDaysSelectorDialog(private val callback: Callback) :
         return buildDialog()
     }
 
-    private fun initViews() =
-        with(binding) {
-            recycler.layoutManager =
-                GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
-            recycler.adapter = WeekDaysSelectorAdapter(this@WeekDaysSelectorDialog)
-        }
+    private fun initViews() = with(binding) {
+        recycler.layoutManager =
+            GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false)
+        recycler.adapter = WeekDaysSelectorAdapter(this@WeekDaysSelectorDialog)
+    }
 
     private fun buildDialog(): Dialog {
         val builder = AlertDialog.Builder(requireContext())
@@ -103,17 +102,16 @@ class WeekDaysSelectorDialog(private val callback: Callback) :
         binding.recycler.adapter?.notifyItemChanged(position)
     }
 
-    private fun getDayViewFromId(id: Int) =
-        when (id) {
-            Calendar.SUNDAY -> DayUiModel(id, getString(R.string.sunday))
-            Calendar.MONDAY -> DayUiModel(id, getString(R.string.monday))
-            Calendar.TUESDAY -> DayUiModel(id, getString(R.string.tuesday))
-            Calendar.WEDNESDAY -> DayUiModel(id, getString(R.string.wednesday))
-            Calendar.THURSDAY -> DayUiModel(id, getString(R.string.thursday))
-            Calendar.FRIDAY -> DayUiModel(id, getString(R.string.friday))
-            Calendar.SATURDAY -> DayUiModel(id, getString(R.string.saturday))
-            else -> null
-        }
+    private fun getDayViewFromId(id: Int) = when (id) {
+        Calendar.SUNDAY -> DayUiModel(id, getString(R.string.sunday))
+        Calendar.MONDAY -> DayUiModel(id, getString(R.string.monday))
+        Calendar.TUESDAY -> DayUiModel(id, getString(R.string.tuesday))
+        Calendar.WEDNESDAY -> DayUiModel(id, getString(R.string.wednesday))
+        Calendar.THURSDAY -> DayUiModel(id, getString(R.string.thursday))
+        Calendar.FRIDAY -> DayUiModel(id, getString(R.string.friday))
+        Calendar.SATURDAY -> DayUiModel(id, getString(R.string.saturday))
+        else -> null
+    }
 
     interface Callback {
         fun onClickOk(selectedDays: String)

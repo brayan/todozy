@@ -13,11 +13,10 @@ internal class GetAlarmSoundSettingUseCaseImplTest {
     private val getAlarmSoundSettingUseCase = GetAlarmSoundSettingUseCaseImpl(repository)
 
     @Test
-    fun `should get alarm sound setting from repository`() =
-        runBlocking {
-            getAlarmSoundSettingUseCase()
+    fun `should get alarm sound setting from repository`() = runBlocking {
+        getAlarmSoundSettingUseCase()
 
-            coVerify { repository.getAlarmTone() }
-            confirmVerified(repository)
-        }
+        coVerify { repository.getAlarmTone() }
+        confirmVerified(repository)
+    }
 }

@@ -25,11 +25,10 @@ internal class SettingsViewModel(
         }
     }
 
-    private fun onStart() =
-        viewModelScope.launch {
-            viewState.alarmSound.value = getAlarmSoundSettingUseCase()
-            viewState.vibrate.value = getAlarmVibrateSettingUseCase()
-        }
+    private fun onStart() = viewModelScope.launch {
+        viewState.alarmSound.value = getAlarmSoundSettingUseCase()
+        viewState.vibrate.value = getAlarmVibrateSettingUseCase()
+    }
 
     private fun onClickMenuAlarmTone() {
         val alarmSound = viewState.alarmSound.value

@@ -6,5 +6,5 @@ internal interface CompleteTaskUseCase {
     suspend operator fun invoke(
         taskId: Long,
         status: TaskStatus,
-    )
+    ): Result<Unit>
 }

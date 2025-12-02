@@ -27,47 +27,46 @@ internal class TaskDetailsUiModelFactoryTest {
         )
 
     @Test
-    fun `should create task details list when create is called from taskDetailsUiModelFactory`() =
-        runBlocking {
-            val task =
-                Task(
-                    id = 45L,
-                    name = "Task Name",
-                    notes = "Task Notes",
-                    alarm =
-                        Alarm(
-                            dateTime = Calendar.getInstance(),
-                            repeatType = RepeatType.WEEK,
-                        ),
-                )
-            val alarmUiModel =
-                AlarmUiModel(
-                    date = "07/03/2022",
-                    time = "11:55",
-                    description = "Today, March 7, 2022",
-                    isCustom = false,
-                    shouldRepeat = true,
-                    customDays = null,
-                )
-            prepareScenario(
-                stringProviderResult = "Title",
-                alarmUiModel = alarmUiModel,
-            )
-
-            val result = taskDetailsUiModelFactory.create(task)
-
-            val expected =
-                listOf(
-                    TitleUiModel("Task Name"),
-                    LabelUiModel("Title"),
-                    alarmUiModel,
-                    LabelValueUiModel(
-                        label = "Title",
-                        value = "Task Notes",
+    fun `should create task details list when create is called from taskDetailsUiModelFactory`() = runBlocking {
+        val task =
+            Task(
+                id = 45L,
+                name = "Task Name",
+                notes = "Task Notes",
+                alarm =
+                    Alarm(
+                        dateTime = Calendar.getInstance(),
+                        repeatType = RepeatType.WEEK,
                     ),
-                )
-            assertEquals(expected, result)
-        }
+            )
+        val alarmUiModel =
+            AlarmUiModel(
+                date = "07/03/2022",
+                time = "11:55",
+                description = "Today, March 7, 2022",
+                isCustom = false,
+                shouldRepeat = true,
+                customDays = null,
+            )
+        prepareScenario(
+            stringProviderResult = "Title",
+            alarmUiModel = alarmUiModel,
+        )
+
+        val result = taskDetailsUiModelFactory.create(task)
+
+        val expected =
+            listOf(
+                TitleUiModel("Task Name"),
+                LabelUiModel("Title"),
+                alarmUiModel,
+                LabelValueUiModel(
+                    label = "Title",
+                    value = "Task Notes",
+                ),
+            )
+        assertEquals(expected, result)
+    }
 
     private fun prepareScenario(
         stringProviderResult: String = "Title",
