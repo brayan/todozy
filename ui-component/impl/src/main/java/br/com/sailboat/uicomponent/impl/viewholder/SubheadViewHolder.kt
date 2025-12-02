@@ -9,8 +9,7 @@ class SubheadViewHolder(parent: ViewGroup) :
     BaseViewHolder<SubheadUiModel, VhSubheaderBinding>(
         VhSubheaderBinding.inflate(getInflater(parent), parent, false),
     ) {
-    override fun bind(item: SubheadUiModel) =
-        with(binding) {
-            vhSubheaderTvName.text = item.subhead
-        }
+    override fun bind(item: SubheadUiModel) = with(binding) {
+        vhSubheaderTvName.text = item.subhead
+    }
 }

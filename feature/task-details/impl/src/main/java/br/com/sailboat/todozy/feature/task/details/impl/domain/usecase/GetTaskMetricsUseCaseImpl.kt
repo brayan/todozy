@@ -18,51 +18,48 @@ import java.util.GregorianCalendar
 internal class GetTaskMetricsUseCaseImpl(
     private val taskHistoryRepository: TaskHistoryRepository,
 ) : GetTaskMetricsUseCase {
-    override suspend operator fun invoke(filter: TaskHistoryFilter) =
-        runCatching {
-            coroutineScope {
-                val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter).getOrThrow() }
-                val notDone =
-                    async {
-                        taskHistoryRepository.getTotalOfNotDoneTasks(filter).getOrThrow()
-                    }
-                val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }
-
-                TaskMetrics(done.await(), notDone.await(), consecutiveDone.await().getOrThrow())
-            }
-        }
-
-    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> =
-        runCatching {
-            if (filter.taskId == Entity.NO_ID) {
-                return@runCatching 0
-            }
-
-            val history =
-                taskHistoryRepository
-                    .getHistory(filter)
-                    .getOrThrow()
-                    .sortedByDescending { it.insertingDateMillis() }
-
-            var cont = 0
-
-            history.forEach {
-                if (it.status == TaskStatus.NOT_DONE) {
-                    return@runCatching cont
+    override suspend operator fun invoke(filter: TaskHistoryFilter) = runCatching {
+        coroutineScope {
+            val done = async { taskHistoryRepository.getTotalOfDoneTasks(filter).getOrThrow() }
+            val notDone =
+                async {
+                    taskHistoryRepository.getTotalOfNotDoneTasks(filter).getOrThrow()
                 }
-                cont++
-            }
+            val consecutiveDone = async { getTotalOfConsecutiveDoneTasks(filter) }
 
-            return@runCatching cont
+            TaskMetrics(done.await(), notDone.await(), consecutiveDone.await().getOrThrow())
+        }
+    }
+
+    private suspend fun getTotalOfConsecutiveDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
+        if (filter.taskId == Entity.NO_ID) {
+            return@runCatching 0
         }
 
-    private fun TaskHistory.insertingDateMillis(): Long =
-        runCatching { insertingDate.toDateTimeCalendar().timeInMillis }
-            .getOrElse {
-                runCatching {
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
-                    val localDateTime = LocalDateTime.parse(insertingDate, formatter)
-                    GregorianCalendar.from(localDateTime.atZone(ZoneId.systemDefault())).timeInMillis
-                }.getOrElse { 0L }
+        val history =
+            taskHistoryRepository
+                .getHistory(filter)
+                .getOrThrow()
+                .sortedByDescending { it.insertingDateMillis() }
+
+        var cont = 0
+
+        history.forEach {
+            if (it.status == TaskStatus.NOT_DONE) {
+                return@runCatching cont
             }
+            cont++
+        }
+
+        return@runCatching cont
+    }
+
+    private fun TaskHistory.insertingDateMillis(): Long = runCatching { insertingDate.toDateTimeCalendar().timeInMillis }
+        .getOrElse {
+            runCatching {
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+                val localDateTime = LocalDateTime.parse(insertingDate, formatter)
+                GregorianCalendar.from(localDateTime.atZone(ZoneId.systemDefault())).timeInMillis
+            }.getOrElse { 0L }
+        }
 }

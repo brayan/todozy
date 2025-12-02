@@ -7,16 +7,15 @@ import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.impl.R as UiR
 
 internal class GetAboutView(private val context: Context) : GetAboutViewUseCase {
-    override suspend fun invoke(): Result<List<UiModel>> =
-        runCatching {
-            val items = ArrayList<UiModel>()
-            items.add(getImageWithTitle())
-            items.add(getAppDescription())
-            items.add(getVersion())
-            items.add(getDevelopedBy())
+    override suspend fun invoke(): Result<List<UiModel>> = runCatching {
+        val items = ArrayList<UiModel>()
+        items.add(getImageWithTitle())
+        items.add(getAppDescription())
+        items.add(getVersion())
+        items.add(getDevelopedBy())
 
-            return@runCatching items
-        }
+        return@runCatching items
+    }
 
     private fun getImageWithTitle(): ImageTitleDividerUiModel {
         return ImageTitleDividerUiModel(

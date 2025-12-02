@@ -18,133 +18,124 @@ import java.util.Calendar
 internal class TaskLocalDataSourceSQLite(
     database: DatabaseOpenHelperService,
 ) : BaseSQLite(database), TaskLocalDataSource {
-    override suspend fun getTask(taskId: Long): Result<TaskData> =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            sb.append(" WHERE taskId = $taskId")
+    override suspend fun getTask(taskId: Long): Result<TaskData> = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        sb.append(" WHERE taskId = $taskId")
 
-            val cursor = performQuery(sb.toString())
+        val cursor = performQuery(sb.toString())
 
-            if (cursor.moveToNext()) {
-                val task = cursor.mapTask()
-                cursor.close()
-                return@runCatching task
-            }
-
-            throw EntityNotFoundException()
+        if (cursor.moveToNext()) {
+            val task = cursor.mapTask()
+            cursor.close()
+            return@runCatching task
         }
 
-    override suspend fun getBeforeTodayTasks(filter: TaskFilter) =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            bindDefaultWhere(sb)
-            bindWhereBeforeToday(sb)
-            bindWhereFilter(sb, filter)
-            bindOrderBy(sb)
+        throw EntityNotFoundException()
+    }
 
-            return@runCatching getListFromQuery(sb.toString(), filter)
-        }
+    override suspend fun getBeforeTodayTasks(filter: TaskFilter) = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        bindDefaultWhere(sb)
+        bindWhereBeforeToday(sb)
+        bindWhereFilter(sb, filter)
+        bindOrderBy(sb)
 
-    override suspend fun getTodayTasks(filter: TaskFilter): Result<List<TaskData>> =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            bindDefaultWhere(sb)
-            bindWhereTodayTasks(sb)
-            bindWhereFilter(sb, filter)
-            bindOrderBy(sb)
+        return@runCatching getListFromQuery(sb.toString(), filter)
+    }
 
-            return@runCatching getListFromQuery(sb.toString(), filter)
-        }
-    override suspend fun getTomorrowTasks(filter: TaskFilter) =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            bindDefaultWhere(sb)
-            bindWhereTomorrowTasks(sb)
-            bindWhereFilter(sb, filter)
-            bindOrderBy(sb)
+    override suspend fun getTodayTasks(filter: TaskFilter): Result<List<TaskData>> = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        bindDefaultWhere(sb)
+        bindWhereTodayTasks(sb)
+        bindWhereFilter(sb, filter)
+        bindOrderBy(sb)
 
-            return@runCatching getListFromQuery(sb.toString(), filter)
-        }
+        return@runCatching getListFromQuery(sb.toString(), filter)
+    }
+    override suspend fun getTomorrowTasks(filter: TaskFilter) = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        bindDefaultWhere(sb)
+        bindWhereTomorrowTasks(sb)
+        bindWhereFilter(sb, filter)
+        bindOrderBy(sb)
 
-    override suspend fun getNextDaysTasks(filter: TaskFilter) =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            bindDefaultWhere(sb)
-            bindWhereNextDays(sb)
-            bindWhereFilter(sb, filter)
-            bindOrderBy(sb)
+        return@runCatching getListFromQuery(sb.toString(), filter)
+    }
 
-            return@runCatching getListFromQuery(sb.toString(), filter)
-        }
+    override suspend fun getNextDaysTasks(filter: TaskFilter) = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        bindDefaultWhere(sb)
+        bindWhereNextDays(sb)
+        bindWhereFilter(sb, filter)
+        bindOrderBy(sb)
 
-    override suspend fun getTasksThrowBeforeNow(): Result<List<TaskData>> =
-        runCatching {
-            val sb = StringBuilder()
-            bindSelect(sb)
-            sb.append(" WHERE (Alarm.nextAlarmDate <= '" + parseCalendarToString(Calendar.getInstance()) + "' ")
-            sb.append(" OR Alarm.nextAlarmDate is null) ")
-            sb.append(" AND Task.enabled = 1 ")
-            bindOrderBy(sb)
+        return@runCatching getListFromQuery(sb.toString(), filter)
+    }
 
-            return@runCatching getListFromQuery(sb.toString(), null)
-        }
+    override suspend fun getTasksThrowBeforeNow(): Result<List<TaskData>> = runCatching {
+        val sb = StringBuilder()
+        bindSelect(sb)
+        sb.append(" WHERE (Alarm.nextAlarmDate <= '" + parseCalendarToString(Calendar.getInstance()) + "' ")
+        sb.append(" OR Alarm.nextAlarmDate is null) ")
+        sb.append(" AND Task.enabled = 1 ")
+        bindOrderBy(sb)
 
-    override suspend fun insert(taskData: TaskData): Result<Long> =
-        runCatching {
-            val sql = StringBuilder()
+        return@runCatching getListFromQuery(sb.toString(), null)
+    }
 
-            sql.append(" INSERT INTO Task ")
-            sql.append(" (name, notes, insertingDate, enabled) ")
-            sql.append(" VALUES (?, ?, ?, ?); ")
+    override suspend fun insert(taskData: TaskData): Result<Long> = runCatching {
+        val sql = StringBuilder()
 
-            val statement = compileStatement(sql.toString())
-            statement.bindString(1, taskData.name)
-            statement.bindString(2, taskData.notes)
-            statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
-            statement.bindLong(4, parseBooleanToInt(true).toLong())
+        sql.append(" INSERT INTO Task ")
+        sql.append(" (name, notes, insertingDate, enabled) ")
+        sql.append(" VALUES (?, ?, ?, ?); ")
 
-            return@runCatching insert(statement)
-        }
+        val statement = compileStatement(sql.toString())
+        statement.bindString(1, taskData.name)
+        statement.bindString(2, taskData.notes)
+        statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
+        statement.bindLong(4, parseBooleanToInt(true).toLong())
+
+        return@runCatching insert(statement)
+    }
 
     override suspend fun update(
         taskData: TaskData,
         enabled: Boolean,
-    ): Result<Unit?> =
-        runCatching {
-            val sql = StringBuilder()
-            sql.append(" UPDATE Task SET ")
-            sql.append(" name = ?, ")
-            sql.append(" notes = ?, ")
-            sql.append(" insertingDate = ?, ")
-            sql.append(" enabled = ? ")
-            sql.append(" WHERE id = ? ")
+    ): Result<Unit?> = runCatching {
+        val sql = StringBuilder()
+        sql.append(" UPDATE Task SET ")
+        sql.append(" name = ?, ")
+        sql.append(" notes = ?, ")
+        sql.append(" insertingDate = ?, ")
+        sql.append(" enabled = ? ")
+        sql.append(" WHERE id = ? ")
 
-            val statement = compileStatement(sql.toString())
-            statement.bindString(1, taskData.name)
-            statement.bindString(2, taskData.notes)
-            statement.bindString(3, getCalendarToBind(Calendar.getInstance()))
-            statement.bindLong(4, parseBooleanToInt(enabled).toLong())
-            statement.bindLong(5, taskData.id)
+        val statement = compileStatement(sql.toString())
+        statement.bindString(1, taskData.name)
+        statement.bindString(2, taskData.notes)
+        statement.bindString(3, getCalendarToBind(Calendar.getInstance()))
+        statement.bindLong(4, parseBooleanToInt(enabled).toLong())
+        statement.bindLong(5, taskData.id)
 
-            update(statement)
-        }
+        update(statement)
+    }
 
-    override suspend fun getTasksWithAlarms(): Result<List<TaskData>> =
-        runCatching {
-            val sb = StringBuilder()
-            sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
-            sb.append(" Task.notes as taskNotes ")
-            sb.append(" FROM Task INNER JOIN Alarm ")
-            sb.append(" ON (Task.id = Alarm.fkTaskId) ")
-            sb.append(" WHERE Task.enabled = 1 ")
+    override suspend fun getTasksWithAlarms(): Result<List<TaskData>> = runCatching {
+        val sb = StringBuilder()
+        sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")
+        sb.append(" Task.notes as taskNotes ")
+        sb.append(" FROM Task INNER JOIN Alarm ")
+        sb.append(" ON (Task.id = Alarm.fkTaskId) ")
+        sb.append(" WHERE Task.enabled = 1 ")
 
-            return@runCatching getListFromQuery(sb.toString(), null)
-        }
+        return@runCatching getListFromQuery(sb.toString(), null)
+    }
 
     private fun getListFromQuery(
         query: String,
@@ -162,13 +153,12 @@ internal class TaskLocalDataSourceSQLite(
         return tasks
     }
 
-    private fun Cursor.mapTask() =
-        TaskData(
-            id = getLong(this, "taskId") ?: Entity.NO_ID,
-            name = getString(this, "taskName") ?: "",
-            notes = getString(this, "taskNotes"),
-            insertingDate = null,
-        )
+    private fun Cursor.mapTask() = TaskData(
+        id = getLong(this, "taskId") ?: Entity.NO_ID,
+        name = getString(this, "taskName") ?: "",
+        notes = getString(this, "taskNotes"),
+        insertingDate = null,
+    )
 
     private fun bindSelect(sb: StringBuilder) {
         sb.append(" SELECT Task.id as taskId, Task.name as taskName, ")

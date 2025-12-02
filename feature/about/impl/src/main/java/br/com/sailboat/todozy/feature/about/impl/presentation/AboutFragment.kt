@@ -64,23 +64,20 @@ internal class AboutFragment : Fragment() {
         initRecyclerView()
     }
 
-    private fun initToolbar() =
-        with(binding) {
-            val appCompatActivity = activity as AppCompatActivity
-            appCompatActivity.setSupportActionBar(toolbar)
-            appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-            toolbar.setTitle(UiR.string.about)
-        }
+    private fun initToolbar() = with(binding) {
+        val appCompatActivity = activity as AppCompatActivity
+        appCompatActivity.setSupportActionBar(toolbar)
+        appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+        toolbar.setTitle(UiR.string.about)
+    }
 
-    private fun initRecyclerView() =
-        with(binding) {
-            recycler.layoutManager = LinearLayoutManager(activity)
-            recycler.adapter =
-                AboutAdapter().apply {
-                    aboutAdapter = this
-                }
+    private fun initRecyclerView() = with(binding) {
+        recycler.layoutManager = LinearLayoutManager(activity)
+        recycler.adapter = AboutAdapter().apply {
+            aboutAdapter = this
         }
+    }
 
     private fun showErrorLoadingAbout() {
         Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()

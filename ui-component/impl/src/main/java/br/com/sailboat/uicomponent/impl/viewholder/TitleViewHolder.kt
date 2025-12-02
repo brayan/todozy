@@ -9,8 +9,7 @@ class TitleViewHolder(parent: ViewGroup) :
     BaseViewHolder<TitleUiModel, VhTitleBinding>(
         VhTitleBinding.inflate(getInflater(parent), parent, false),
     ) {
-    override fun bind(item: TitleUiModel) =
-        with(binding) {
-            vhTitleTvName.text = item.title
-        }
+    override fun bind(item: TitleUiModel) = with(binding) {
+        vhTitleTvName.text = item.title
+    }
 }

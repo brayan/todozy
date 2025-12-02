@@ -16,6 +16,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.Calendar
+import kotlin.test.assertTrue
 
 internal class CompleteTaskUseCaseImplTest {
     private val getTaskUseCase: GetTaskUseCase = mockk(relaxed = true)
@@ -34,104 +35,104 @@ internal class CompleteTaskUseCaseImplTest {
         )
 
     @Test
-    fun `should get task from id`() =
-        runBlocking {
-            val taskId = 42L
-            val task =
-                Task(
-                    id = taskId,
-                    name = "Task Name",
-                    notes = "Some notes",
-                )
-            prepareScenario(taskResult = Result.success(task))
-
-            completeTaskUseCase(taskId, TaskStatus.DONE)
-
-            coVerify { getTaskUseCase(taskId) }
-            confirmVerified(getTaskUseCase)
-        }
-
-    @Test
-    fun `should disable task when alarm is non-repetitive`() =
-        runBlocking {
-            val taskId = 42L
-            val task =
-                Task(
-                    id = taskId,
-                    name = "Task Name",
-                    notes = "Some notes",
-                )
-            prepareScenario(taskResult = Result.success(task))
-
-            completeTaskUseCase(taskId, TaskStatus.DONE)
-
-            coVerify { disableTaskUseCase(task) }
-            confirmVerified(disableTaskUseCase)
-        }
-
-    @Test
-    fun `should disable task when alarm is null`() =
-        runBlocking {
-            val taskId = 42L
-            val task =
-                Task(
-                    id = taskId,
-                    name = "Task Name",
-                    notes = "Some notes",
-                )
-            prepareScenario(taskResult = Result.success(task))
-
-            completeTaskUseCase(taskId, TaskStatus.DONE)
-
-            coVerify { disableTaskUseCase(task) }
-            confirmVerified(disableTaskUseCase)
-        }
-
-    @Test
-    fun `should get next alarm and save task when alarm is repetitive`() =
-        runBlocking {
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance(),
-                    repeatType = RepeatType.DAY,
-                )
-            val taskId = 42L
-            val task =
-                Task(
-                    id = taskId,
-                    name = "Task Name",
-                    notes = "Some notes",
-                    alarm = alarm,
-                )
-            prepareScenario(
-                taskResult = Result.success(task),
-                alarmResult = alarm,
+    fun `should get task from id`() = runBlocking {
+        val taskId = 42L
+        val task =
+            Task(
+                id = taskId,
+                name = "Task Name",
+                notes = "Some notes",
             )
+        prepareScenario(taskResult = Result.success(task))
 
-            completeTaskUseCase(taskId, TaskStatus.DONE)
+        val result = completeTaskUseCase(taskId, TaskStatus.DONE)
 
-            coVerify { getNextAlarmUseCase(alarm) }
-            coVerify { saveTaskUseCase(task) }
-            confirmVerified(saveTaskUseCase)
-            confirmVerified(getNextAlarmUseCase)
-        }
+        assertTrue(result.isSuccess)
+        coVerify { getTaskUseCase(taskId) }
+        confirmVerified(getTaskUseCase)
+    }
 
     @Test
-    fun `should add history after complete task`() =
-        runBlocking {
-            val task =
-                Task(
-                    id = 42L,
-                    name = "Task Name",
-                    notes = "Some notes",
-                )
-            prepareScenario(taskResult = Result.success(task))
+    fun `should disable task when alarm is non-repetitive`() = runBlocking {
+        val taskId = 42L
+        val task =
+            Task(
+                id = taskId,
+                name = "Task Name",
+                notes = "Some notes",
+            )
+        prepareScenario(taskResult = Result.success(task))
 
-            completeTaskUseCase(45, TaskStatus.DONE)
+        val result = completeTaskUseCase(taskId, TaskStatus.DONE)
 
-            coVerify { addHistoryUseCase(task, TaskStatus.DONE) }
-            confirmVerified(addHistoryUseCase)
-        }
+        assertTrue(result.isSuccess)
+        coVerify { disableTaskUseCase(task) }
+        confirmVerified(disableTaskUseCase)
+    }
+
+    @Test
+    fun `should disable task when alarm is null`() = runBlocking {
+        val taskId = 42L
+        val task =
+            Task(
+                id = taskId,
+                name = "Task Name",
+                notes = "Some notes",
+            )
+        prepareScenario(taskResult = Result.success(task))
+
+        val result = completeTaskUseCase(taskId, TaskStatus.DONE)
+
+        assertTrue(result.isSuccess)
+        coVerify { disableTaskUseCase(task) }
+        confirmVerified(disableTaskUseCase)
+    }
+
+    @Test
+    fun `should get next alarm and save task when alarm is repetitive`() = runBlocking {
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance(),
+                repeatType = RepeatType.DAY,
+            )
+        val taskId = 42L
+        val task =
+            Task(
+                id = taskId,
+                name = "Task Name",
+                notes = "Some notes",
+                alarm = alarm,
+            )
+        prepareScenario(
+            taskResult = Result.success(task),
+            alarmResult = alarm,
+        )
+
+        val result = completeTaskUseCase(taskId, TaskStatus.DONE)
+
+        assertTrue(result.isSuccess)
+        coVerify { getNextAlarmUseCase(alarm) }
+        coVerify { saveTaskUseCase(task) }
+        confirmVerified(saveTaskUseCase)
+        confirmVerified(getNextAlarmUseCase)
+    }
+
+    @Test
+    fun `should add history after complete task`() = runBlocking {
+        val task =
+            Task(
+                id = 42L,
+                name = "Task Name",
+                notes = "Some notes",
+            )
+        prepareScenario(taskResult = Result.success(task))
+
+        val result = completeTaskUseCase(45, TaskStatus.DONE)
+
+        assertTrue(result.isSuccess)
+        coVerify { addHistoryUseCase(task, TaskStatus.DONE) }
+        confirmVerified(addHistoryUseCase)
+    }
 
     private fun prepareScenario(
         taskResult: Result<Task> =
@@ -152,5 +153,6 @@ internal class CompleteTaskUseCaseImplTest {
         coEvery { getNextAlarmUseCase(any()) } returns alarmResult
         coEvery { disableTaskUseCase(any()) } returns taskResult
         coEvery { saveTaskUseCase(any()) } returns taskResult
+        coEvery { addHistoryUseCase(any(), any()) } returns Result.success(Unit)
     }
 }

@@ -61,13 +61,12 @@ internal class TaskDetailsFragment : Fragment() {
         }
 
     companion object {
-        fun newInstance(taskId: Long): TaskDetailsFragment =
-            with(TaskDetailsFragment()) {
-                val bundle = Bundle()
-                bundle.putTaskId(taskId)
-                arguments = bundle
-                return this
-            }
+        fun newInstance(taskId: Long): TaskDetailsFragment = with(TaskDetailsFragment()) {
+            val bundle = Bundle()
+            bundle.putTaskId(taskId)
+            arguments = bundle
+            return this
+        }
     }
 
     private lateinit var binding: FrgTaskDetailsBinding

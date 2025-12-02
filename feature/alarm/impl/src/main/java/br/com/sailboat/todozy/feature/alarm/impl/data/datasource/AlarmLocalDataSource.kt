@@ -4,6 +4,7 @@ import br.com.sailboat.todozy.feature.alarm.impl.data.model.AlarmData
 
 internal interface AlarmLocalDataSource {
     fun getAlarmByTask(taskId: Long): Result<AlarmData?>
+    fun getAlarmsByTaskIds(taskIds: List<Long>): Result<List<AlarmData>>
     fun deleteByTask(taskId: Long): Result<Unit?>
     fun update(alarmData: AlarmData): Result<Unit?>
     fun save(alarmData: AlarmData): Result<Long>

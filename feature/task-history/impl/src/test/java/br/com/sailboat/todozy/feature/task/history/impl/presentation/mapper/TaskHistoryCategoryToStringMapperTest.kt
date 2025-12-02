@@ -17,37 +17,34 @@ internal class TaskHistoryCategoryToStringMapperTest {
         )
 
     @Test
-    fun `should map String from task history category TODAY`() =
-        runBlocking {
-            val taskHistoryCategoryString = "Today"
-            prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
+    fun `should map String from task history category TODAY`() = runBlocking {
+        val taskHistoryCategoryString = "Today"
+        prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
 
-            val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.TODAY)
+        val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.TODAY)
 
-            assertEquals(taskHistoryCategoryString, result)
-        }
-
-    @Test
-    fun `should map String from task history category YESTERDAY`() =
-        runBlocking {
-            val taskHistoryCategoryString = "Yesterday"
-            prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
-
-            val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.YESTERDAY)
-
-            assertEquals(taskHistoryCategoryString, result)
-        }
+        assertEquals(taskHistoryCategoryString, result)
+    }
 
     @Test
-    fun `should map String from task history category PREVIOUS_DAYS`() =
-        runBlocking {
-            val taskHistoryCategoryString = "Previous days"
-            prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
+    fun `should map String from task history category YESTERDAY`() = runBlocking {
+        val taskHistoryCategoryString = "Yesterday"
+        prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
 
-            val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.PREVIOUS_DAYS)
+        val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.YESTERDAY)
 
-            assertEquals(taskHistoryCategoryString, result)
-        }
+        assertEquals(taskHistoryCategoryString, result)
+    }
+
+    @Test
+    fun `should map String from task history category PREVIOUS_DAYS`() = runBlocking {
+        val taskHistoryCategoryString = "Previous days"
+        prepareScenario(taskHistoryCategoryString = taskHistoryCategoryString)
+
+        val result = taskHistoryCategoryToStringMapper.map(TaskHistoryCategory.PREVIOUS_DAYS)
+
+        assertEquals(taskHistoryCategoryString, result)
+    }
 
     private fun prepareScenario(taskHistoryCategoryString: String = "Today") {
         coEvery { stringProvider.getString(any()) } returns taskHistoryCategoryString

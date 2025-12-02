@@ -17,126 +17,117 @@ internal class TaskHistoryLocalDataSourceSQLite(
     override fun save(
         taskId: Long,
         taskStatus: Int,
-    ): Result<Long> =
-        runCatching {
-            val sql = StringBuilder()
+    ): Result<Long> = runCatching {
+        val sql = StringBuilder()
 
-            sql.append(" INSERT INTO TaskHistory ")
-            sql.append(" (fkTaskId, status, insertingDate, enabled) ")
-            sql.append(" VALUES (?, ?, ?, ?); ")
+        sql.append(" INSERT INTO TaskHistory ")
+        sql.append(" (fkTaskId, status, insertingDate, enabled) ")
+        sql.append(" VALUES (?, ?, ?, ?); ")
 
-            val statement = compileStatement(sql.toString())
-            statement.bindLong(1, taskId)
-            statement.bindLong(2, taskStatus.toLong())
-            statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
-            statement.bindLong(4, parseBooleanToInt(true).toLong())
+        val statement = compileStatement(sql.toString())
+        statement.bindLong(1, taskId)
+        statement.bindLong(2, taskStatus.toLong())
+        statement.bindString(3, parseCalendarToString(Calendar.getInstance()))
+        statement.bindLong(4, parseBooleanToInt(true).toLong())
 
-            return@runCatching insert(statement)
-        }
+        return@runCatching insert(statement)
+    }
 
-    override fun update(taskHistoryData: TaskHistoryData) =
-        runCatching {
-            val sql = StringBuilder()
-            sql.append(" UPDATE TaskHistory SET ")
-            sql.append(" status = ?, ")
-            sql.append(" enabled = ? ")
-            sql.append(" WHERE id = ? ")
+    override fun update(taskHistoryData: TaskHistoryData) = runCatching {
+        val sql = StringBuilder()
+        sql.append(" UPDATE TaskHistory SET ")
+        sql.append(" status = ?, ")
+        sql.append(" enabled = ? ")
+        sql.append(" WHERE id = ? ")
 
-            val statement = compileStatement(sql.toString())
-            statement.bindLong(1, taskHistoryData.status.toLong())
-            statement.bindLong(2, parseBooleanToInt(taskHistoryData.enabled).toLong())
-            statement.bindLong(3, taskHistoryData.id)
+        val statement = compileStatement(sql.toString())
+        statement.bindLong(1, taskHistoryData.status.toLong())
+        statement.bindLong(2, parseBooleanToInt(taskHistoryData.enabled).toLong())
+        statement.bindLong(3, taskHistoryData.id)
 
-            update(statement)
-        }
+        update(statement)
+    }
 
-    override fun delete(taskHistoryId: Long) =
-        runCatching {
-            val sql = StringBuilder()
-            sql.append(" DELETE FROM TaskHistory WHERE TaskHistory.id = ?")
+    override fun delete(taskHistoryId: Long) = runCatching {
+        val sql = StringBuilder()
+        sql.append(" DELETE FROM TaskHistory WHERE TaskHistory.id = ?")
 
-            val statement = compileStatement(sql.toString())
-            statement.bindLong(1, taskHistoryId)
+        val statement = compileStatement(sql.toString())
+        statement.bindLong(1, taskHistoryId)
 
-            delete(statement)
-        }
+        delete(statement)
+    }
 
-    override fun deleteAllHistory() =
-        runCatching {
-            val delete = " DELETE FROM TaskHistory"
-            delete(compileStatement(delete))
-        }
+    override fun deleteAllHistory() = runCatching {
+        val delete = " DELETE FROM TaskHistory"
+        delete(compileStatement(delete))
+    }
 
-    override fun getHistory(filter: TaskHistoryFilter) =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindDefaultSelect()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereEnabled()
-            query.bindWhereFilter(filter)
-            query.bindWhereDateRange(filter)
-            query.bindDefaultOrderBy()
+    override fun getHistory(filter: TaskHistoryFilter) = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindDefaultSelect()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereEnabled()
+        query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
+        query.bindDefaultOrderBy()
 
-            return@runCatching getTaskHistoryList(query.toString(), filter)
-        }
+        return@runCatching getTaskHistoryList(query.toString(), filter)
+    }
 
-    override fun getTodayHistory(filter: TaskHistoryFilter) =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindDefaultSelect()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereToday()
-            query.bindWhereEnabled()
-            query.bindWhereFilter(filter)
-            query.bindWhereDateRange(filter)
-            query.bindDefaultOrderBy()
+    override fun getTodayHistory(filter: TaskHistoryFilter) = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindDefaultSelect()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereToday()
+        query.bindWhereEnabled()
+        query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
+        query.bindDefaultOrderBy()
 
-            return@runCatching getTaskHistoryList(query.toString(), filter)
-        }
+        return@runCatching getTaskHistoryList(query.toString(), filter)
+    }
 
-    override fun getYesterdayHistory(filter: TaskHistoryFilter) =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindDefaultSelect()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereYesterday()
-            query.bindWhereEnabled()
-            query.bindWhereFilter(filter)
-            query.bindWhereDateRange(filter)
-            query.bindDefaultOrderBy()
+    override fun getYesterdayHistory(filter: TaskHistoryFilter) = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindDefaultSelect()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereYesterday()
+        query.bindWhereEnabled()
+        query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
+        query.bindDefaultOrderBy()
 
-            return@runCatching getTaskHistoryList(query.toString(), filter)
-        }
+        return@runCatching getTaskHistoryList(query.toString(), filter)
+    }
 
-    override fun getPreviousDaysHistory(filter: TaskHistoryFilter) =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindDefaultSelect()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWherePreviousDays()
-            query.bindWhereEnabled()
-            query.bindWhereFilter(filter)
-            query.bindWhereDateRange(filter)
-            query.bindDefaultOrderBy()
+    override fun getPreviousDaysHistory(filter: TaskHistoryFilter) = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindDefaultSelect()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWherePreviousDays()
+        query.bindWhereEnabled()
+        query.bindWhereFilter(filter)
+        query.bindWhereDateRange(filter)
+        query.bindDefaultOrderBy()
 
-            return@runCatching getTaskHistoryList(query.toString(), filter)
-        }
+        return@runCatching getTaskHistoryList(query.toString(), filter)
+    }
 
-    override fun getTaskHistoryByTask(taskId: Long) =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindDefaultSelect()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereTaskId(taskId)
-            query.bindDefaultOrderBy()
+    override fun getTaskHistoryByTask(taskId: Long) = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindDefaultSelect()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereTaskId(taskId)
+        query.bindDefaultOrderBy()
 
-            return@runCatching getTaskHistoryList(query.toString(), null)
-        }
+        return@runCatching getTaskHistoryList(query.toString(), null)
+    }
 
     fun getPreviousDaysHistoryFromDate(
         initialDate: Calendar,
@@ -155,43 +146,40 @@ internal class TaskHistoryLocalDataSourceSQLite(
         return getTaskHistoryList(query.toString(), filter)
     }
 
-    override fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int> =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindSelectCount()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereDateRange(filter)
-            query.bindWhereTaskDone()
-            query.bindWhereFilter(filter)
+    override fun getTotalOfDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindSelectCount()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereDateRange(filter)
+        query.bindWhereTaskDone()
+        query.bindWhereFilter(filter)
 
-            return@runCatching getCountFromQuery(query.toString(), filter)
-        }
+        return@runCatching getCountFromQuery(query.toString(), filter)
+    }
 
-    override fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int> =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindSelectCount()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereDateRange(filter)
-            query.bindWhereTaskNotDone()
-            query.bindWhereFilter(filter)
+    override fun getTotalOfNotDoneTasks(filter: TaskHistoryFilter): Result<Int> = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindSelectCount()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereDateRange(filter)
+        query.bindWhereTaskNotDone()
+        query.bindWhereFilter(filter)
 
-            return@runCatching getCountFromQuery(query.toString(), filter)
-        }
+        return@runCatching getCountFromQuery(query.toString(), filter)
+    }
 
-    fun getTotalOfDoneTasks(taskId: Long): Result<Int> =
-        runCatching {
-            val query = TaskHistoryQueryBuilder()
-            query.bindSelectCount()
-            query.bindDefaultInnerJoin()
-            query.bindDefaultWhere()
-            query.bindWhereTaskId(taskId)
-            query.bindWhereTaskDone()
+    fun getTotalOfDoneTasks(taskId: Long): Result<Int> = runCatching {
+        val query = TaskHistoryQueryBuilder()
+        query.bindSelectCount()
+        query.bindDefaultInnerJoin()
+        query.bindDefaultWhere()
+        query.bindWhereTaskId(taskId)
+        query.bindWhereTaskDone()
 
-            return@runCatching getCountFromQuery(query.toString())
-        }
+        return@runCatching getCountFromQuery(query.toString())
+    }
 
     fun getTotalOfNotDoneTasks(taskId: Long): Int {
         val query = TaskHistoryQueryBuilder()
@@ -240,13 +228,12 @@ internal class TaskHistoryLocalDataSourceSQLite(
         return historyList
     }
 
-    private fun Cursor.mapToTaskHistoryData() =
-        TaskHistoryData(
-            id = getLong(this, "id") ?: Entity.NO_ID,
-            taskId = getLong(this, "fkTaskId") ?: Entity.NO_ID,
-            taskName = getString(this, "name"),
-            status = getInt(this, "status") ?: TaskStatus.DONE.id,
-            insertingDate = getString(this, "insertingDate"),
-            enabled = getBoolean(this, "enabled") ?: true,
-        )
+    private fun Cursor.mapToTaskHistoryData() = TaskHistoryData(
+        id = getLong(this, "id") ?: Entity.NO_ID,
+        taskId = getLong(this, "fkTaskId") ?: Entity.NO_ID,
+        taskName = getString(this, "name"),
+        status = getInt(this, "status") ?: TaskStatus.DONE.id,
+        insertingDate = getString(this, "insertingDate"),
+        enabled = getBoolean(this, "enabled") ?: true,
+    )
 }

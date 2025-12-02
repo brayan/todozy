@@ -17,13 +17,12 @@ internal class AboutViewModel(
         }
     }
 
-    private fun onStart() =
-        viewModelScope.launch {
-            try {
-                viewState.itemViews.value = getAboutViewUseCase().getOrThrow()
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = AboutViewAction.ShowErrorLoadingAbout
-            }
+    private fun onStart() = viewModelScope.launch {
+        try {
+            viewState.itemViews.value = getAboutViewUseCase().getOrThrow()
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = AboutViewAction.ShowErrorLoadingAbout
         }
+    }
 }

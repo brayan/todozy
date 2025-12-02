@@ -13,11 +13,10 @@ internal class SetAlarmVibrateSettingUseCaseImplTest {
     private val setAlarmVibrateSettingUseCase = SetAlarmVibrateSettingUseCaseImpl(repository)
 
     @Test
-    fun `should get alarm vibrate setting from repository`() =
-        runBlocking {
-            setAlarmVibrateSettingUseCase(true)
+    fun `should get alarm vibrate setting from repository`() = runBlocking {
+        setAlarmVibrateSettingUseCase(true)
 
-            coVerify { repository.setAlarmVibrate(true) }
-            confirmVerified(repository)
-        }
+        coVerify { repository.setAlarmVibrate(true) }
+        confirmVerified(repository)
+    }
 }

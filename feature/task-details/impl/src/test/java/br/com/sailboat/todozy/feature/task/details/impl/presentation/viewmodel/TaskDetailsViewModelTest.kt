@@ -65,68 +65,65 @@ internal class TaskDetailsViewModelTest {
         )
 
     @Test
-    fun `should call getTaskUseCase when dispatchViewAction is called with OnStart`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            val taskDetails =
-                listOf(
-                    TitleUiModel(title = "Task Name"),
-                    AlarmUiModel(
-                        date = "07/03/2022",
-                        time = "11:55",
-                        description = "Today, March 7, 2022",
-                        isCustom = false,
-                        shouldRepeat = true,
-                        customDays = null,
-                    ),
-                )
-            prepareScenario(taskDetailsResult = taskDetails)
+    fun `should call getTaskUseCase when dispatchViewAction is called with OnStart`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        val taskDetails =
+            listOf(
+                TitleUiModel(title = "Task Name"),
+                AlarmUiModel(
+                    date = "07/03/2022",
+                    time = "11:55",
+                    description = "Today, March 7, 2022",
+                    isCustom = false,
+                    shouldRepeat = true,
+                    customDays = null,
+                ),
+            )
+        prepareScenario(taskDetailsResult = taskDetails)
 
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        advanceUntilIdle()
 
-            coVerify(exactly = 1) { getTaskUseCase(taskId) }
-            assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
-        }
-
-    @Test
-    fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnStart`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            val taskMetrics =
-                TaskMetrics(
-                    doneTasks = 15,
-                    notDoneTasks = 2,
-                    consecutiveDone = 5,
-                )
-            prepareScenario(taskMetricsResult = Result.success(taskMetrics))
-
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
-            advanceUntilIdle()
-
-            coVerify(exactly = 1) {
-                getTaskMetricsUseCase(
-                    withArg { filter ->
-                        assertEquals(taskId, filter.taskId)
-                        assertNotNull(filter.initialDate)
-                        assertNotNull(filter.finalDate)
-                    },
-                )
-            }
-            assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
-        }
+        coVerify(exactly = 1) { getTaskUseCase(taskId) }
+        assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
+    }
 
     @Test
-    fun `should call getTaskProgressUseCase when dispatchViewAction is called with OnStart`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            prepareScenario()
+    fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnStart`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        val taskMetrics =
+            TaskMetrics(
+                doneTasks = 15,
+                notDoneTasks = 2,
+                consecutiveDone = 5,
+            )
+        prepareScenario(taskMetricsResult = Result.success(taskMetrics))
 
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        advanceUntilIdle()
 
-            coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR, taskId)) }
+        coVerify(exactly = 1) {
+            getTaskMetricsUseCase(
+                withArg { filter ->
+                    assertEquals(taskId, filter.taskId)
+                    assertNotNull(filter.initialDate)
+                    assertNotNull(filter.finalDate)
+                },
+            )
         }
+        assertEquals(taskMetrics, viewModel.viewState.taskMetrics.value)
+    }
+
+    @Test
+    fun `should call getTaskProgressUseCase when dispatchViewAction is called with OnStart`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        advanceUntilIdle()
+
+        coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR, taskId)) }
+    }
 
     @Test
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnStart when alarm is null`() =
@@ -216,44 +213,42 @@ internal class TaskDetailsViewModelTest {
     }
 
     @Test
-    fun `should navigate to task form when dispatchViewAction is called with OnClickEditTask`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            prepareScenario()
+    fun `should navigate to task form when dispatchViewAction is called with OnClickEditTask`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
-            advanceUntilIdle()
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        advanceUntilIdle()
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickEditTask)
 
-            val expected = TaskDetailsViewAction.NavigateToTaskForm(taskId)
-            assertEquals(expected, viewModel.viewState.viewAction.value)
-        }
+        val expected = TaskDetailsViewAction.NavigateToTaskForm(taskId)
+        assertEquals(expected, viewModel.viewState.viewAction.value)
+    }
 
     @Test
-    fun `should call getTaskUseCase when dispatchViewAction is called with OnReturnToDetails`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            val taskDetails =
-                listOf(
-                    TitleUiModel(title = "Task Name"),
-                    AlarmUiModel(
-                        date = "07/03/2022",
-                        time = "11:55",
-                        description = "Today, March 7, 2022",
-                        isCustom = false,
-                        shouldRepeat = true,
-                        customDays = null,
-                    ),
-                )
-            prepareScenario(taskDetailsResult = taskDetails)
-            viewModel.viewState.taskId = taskId
+    fun `should call getTaskUseCase when dispatchViewAction is called with OnReturnToDetails`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        val taskDetails =
+            listOf(
+                TitleUiModel(title = "Task Name"),
+                AlarmUiModel(
+                    date = "07/03/2022",
+                    time = "11:55",
+                    description = "Today, March 7, 2022",
+                    isCustom = false,
+                    shouldRepeat = true,
+                    customDays = null,
+                ),
+            )
+        prepareScenario(taskDetailsResult = taskDetails)
+        viewModel.viewState.taskId = taskId
 
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
+        advanceUntilIdle()
 
-            coVerify(exactly = 1) { getTaskUseCase(taskId) }
-            assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
-        }
+        coVerify(exactly = 1) { getTaskUseCase(taskId) }
+        assertEquals(taskDetails, viewModel.viewState.taskDetails.value)
+    }
 
     @Test
     fun `should call getTaskMetricsUseCase when dispatchViewAction is called with OnReturnToDetails`() =
@@ -285,71 +280,69 @@ internal class TaskDetailsViewModelTest {
         }
 
     @Test
-    fun `should reload progress when dispatchViewAction is called with OnSelectProgressRange`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 42L
-            viewModel.viewState.taskId = taskId
-            prepareScenario()
+    fun `should reload progress when dispatchViewAction is called with OnSelectProgressRange`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 42L
+        viewModel.viewState.taskId = taskId
+        prepareScenario()
 
-            viewModel.dispatchViewIntent(
-                TaskDetailsViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS),
-            )
-            advanceUntilIdle()
+        viewModel.dispatchViewIntent(
+            TaskDetailsViewIntent.OnSelectProgressRange(TaskProgressRange.LAST_30_DAYS),
+        )
+        advanceUntilIdle()
 
-            coVerify {
-                getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_30_DAYS, taskId))
-            }
-            assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+        coVerify {
+            getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_30_DAYS, taskId))
         }
+        assertEquals(TaskProgressRange.LAST_30_DAYS, viewModel.viewState.taskProgressRange.value)
+    }
 
     @Test
-    fun `should show progress only for scheduled repeat days`() =
-        runTest(coroutinesTestRule.dispatcher) {
-            val taskId = 7L
-            val startDate = LocalDate.of(2024, 8, 12) // Monday
-            val progressDays =
-                (0..6).map { offset ->
-                    val date = startDate.plusDays(offset.toLong())
-                    TaskProgressDay(
-                        date = date,
-                        doneCount = if (date.dayOfWeek == DayOfWeek.MONDAY) 1 else 0,
-                        notDoneCount = if (date.dayOfWeek == DayOfWeek.TUESDAY) 1 else 0,
-                        totalCount =
-                            when (date.dayOfWeek) {
-                                DayOfWeek.MONDAY, DayOfWeek.TUESDAY -> 1
-                                else -> 0
-                            },
-                    )
-                }
-            val alarmCalendar =
-                Calendar.getInstance().apply {
-                    set(2024, Calendar.AUGUST, 12, 8, 0, 0)
-                }
-            val repeatingAlarm =
-                Alarm(
-                    dateTime = alarmCalendar,
-                    repeatType = RepeatType.CUSTOM,
-                    customDays = "${Calendar.MONDAY}${Calendar.WEDNESDAY}${Calendar.FRIDAY}",
+    fun `should show progress only for scheduled repeat days`() = runTest(coroutinesTestRule.dispatcher) {
+        val taskId = 7L
+        val startDate = LocalDate.of(2024, 8, 12) // Monday
+        val progressDays =
+            (0..6).map { offset ->
+                val date = startDate.plusDays(offset.toLong())
+                TaskProgressDay(
+                    date = date,
+                    doneCount = if (date.dayOfWeek == DayOfWeek.MONDAY) 1 else 0,
+                    notDoneCount = if (date.dayOfWeek == DayOfWeek.TUESDAY) 1 else 0,
+                    totalCount =
+                        when (date.dayOfWeek) {
+                            DayOfWeek.MONDAY, DayOfWeek.TUESDAY -> 1
+                            else -> 0
+                        },
                 )
-
-            prepareScenario(
-                taskResult = Result.success(TaskMockFactory.makeTask(id = taskId, alarm = repeatingAlarm)),
-                taskProgressResult = Result.success(progressDays),
+            }
+        val alarmCalendar =
+            Calendar.getInstance().apply {
+                set(2024, Calendar.AUGUST, 12, 8, 0, 0)
+            }
+        val repeatingAlarm =
+            Alarm(
+                dateTime = alarmCalendar,
+                repeatType = RepeatType.CUSTOM,
+                customDays = "${Calendar.MONDAY}${Calendar.WEDNESDAY}${Calendar.FRIDAY}",
             )
 
-            viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
-            advanceUntilIdle()
+        prepareScenario(
+            taskResult = Result.success(TaskMockFactory.makeTask(id = taskId, alarm = repeatingAlarm)),
+            taskProgressResult = Result.success(progressDays),
+        )
 
-            val expectedDayOrder =
-                listOf(
-                    DayOfWeek.MONDAY,
-                    DayOfWeek.WEDNESDAY,
-                    DayOfWeek.FRIDAY,
-                )
-            assertEquals(expectedDayOrder, viewModel.viewState.taskProgressDayOrder.value)
-            val expectedProgress = progressDays.filter { it.date.dayOfWeek in expectedDayOrder }
-            assertEquals(expectedProgress, viewModel.viewState.taskProgressDays.value)
-        }
+        viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnStart(taskId))
+        advanceUntilIdle()
+
+        val expectedDayOrder =
+            listOf(
+                DayOfWeek.MONDAY,
+                DayOfWeek.WEDNESDAY,
+                DayOfWeek.FRIDAY,
+            )
+        assertEquals(expectedDayOrder, viewModel.viewState.taskProgressDayOrder.value)
+        val expectedProgress = progressDays.filter { it.date.dayOfWeek in expectedDayOrder }
+        assertEquals(expectedProgress, viewModel.viewState.taskProgressDays.value)
+    }
 
     @Test
     fun `should not call getTaskMetricsUseCase when dispatchViewAction is called with OnReturnToDetails when alarm is null`() =

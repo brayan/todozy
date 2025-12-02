@@ -13,11 +13,10 @@ internal class DeleteAllHistoryUseCaseImplTest {
     private val deleteAllHistoryUseCase = DeleteAllHistoryUseCaseImpl(repository)
 
     @Test
-    fun `should delete all history from repository`() =
-        runBlocking {
-            deleteAllHistoryUseCase()
+    fun `should delete all history from repository`() = runBlocking {
+        deleteAllHistoryUseCase()
 
-            coVerify { repository.deleteAll() }
-            confirmVerified(repository)
-        }
+        coVerify { repository.deleteAll() }
+        confirmVerified(repository)
+    }
 }

@@ -36,6 +36,7 @@ import br.com.sailboat.todozy.utility.android.view.visible
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
 import br.com.sailboat.uicomponent.impl.helper.SwipeTaskLeftRight
 import br.com.sailboat.uicomponent.impl.progress.TaskProgressHeaderAdapter
+import br.com.sailboat.uicomponent.model.TaskSkeletonUiModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.todozy.feature.task.list.impl.R as TaskListR
@@ -52,6 +53,8 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     private lateinit var binding: FrgTaskListBinding
     private var taskListAdapter: TaskListAdapter? = null
     private lateinit var progressAdapter: TaskProgressHeaderAdapter
+    private var lastTasksLoading = false
+    private var lastItems: List<br.com.sailboat.uicomponent.model.UiModel> = emptyList()
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -131,28 +134,13 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
 
     private fun observeViewModel() {
         observeActions()
-        viewModel.viewState.loading.observe(viewLifecycleOwner) { loading ->
-            if (loading) {
-                binding.progressTaskList.visible()
-                binding.rvTaskList.gone()
-            } else {
-                binding.progressTaskList.gone()
-                binding.rvTaskList.visible()
-            }
+        viewModel.viewState.tasksLoading.observe(viewLifecycleOwner) { loading ->
+            lastTasksLoading = loading
+            renderList()
         }
         viewModel.viewState.itemsView.observe(viewLifecycleOwner) { items ->
-            taskListAdapter?.submitList(items)
-
-            if (items.isEmpty()) {
-                binding.rvTaskList.gone()
-                showEmptyView()
-                hideMetrics()
-                val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
-                progressAdapter.submit(emptyList(), range, isLoading = false)
-            } else {
-                binding.rvTaskList.visible()
-                hideEmptyView()
-            }
+            lastItems = items
+            renderList()
         }
         viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
             taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
@@ -199,6 +187,29 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         binding.eptView.root.visible()
     }
 
+    private fun renderList() {
+        if (lastTasksLoading) {
+            hideEmptyView()
+            hideMetrics()
+            binding.rvTaskList.visible()
+            taskListAdapter?.submitList(skeletonItems())
+            return
+        }
+
+        taskListAdapter?.submitList(lastItems)
+
+        if (lastItems.isEmpty()) {
+            binding.rvTaskList.gone()
+            showEmptyView()
+            hideMetrics()
+            val range = viewModel.viewState.taskProgressRange.value ?: TaskProgressRange.LAST_YEAR
+            progressAdapter.submit(emptyList(), range, isLoading = false)
+        } else {
+            binding.rvTaskList.visible()
+            hideEmptyView()
+        }
+    }
+
     private fun showMetrics(taskMetrics: TaskMetrics) {
         binding.taskMetrics.tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
         binding.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
@@ -232,7 +243,7 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
     }
 
     private fun updateRemovedTask(position: Int) {
-        taskListAdapter?.notifyItemRemoved(position)
+        // ListAdapter + submitList already handles diff updates; no manual notify needed
     }
 
     private fun showErrorLoadingTasks() {
@@ -318,5 +329,14 @@ internal class TaskListFragment : Fragment(), SearchMenu by SearchMenuImpl() {
         itemTouchHelper.attachToRecyclerView(binding.rvTaskList)
 
         binding.rvTaskList.hideFabWhenScrolling(binding.fab)
+    }
+
+    private fun skeletonItems(): List<br.com.sailboat.uicomponent.model.UiModel> =
+        List(SKELETON_ITEMS_COUNT) { index -> TaskSkeletonUiModel(placeholderId = index.toLong()) }
+
+    companion object {
+        fun newInstance() = TaskListFragment()
+
+        private const val SKELETON_ITEMS_COUNT = 5
     }
 }

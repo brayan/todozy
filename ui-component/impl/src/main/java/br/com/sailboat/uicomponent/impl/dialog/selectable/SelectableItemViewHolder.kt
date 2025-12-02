@@ -16,16 +16,15 @@ class SelectableItemViewHolder(parent: ViewGroup, private val callback: Callback
         fun onClickItem(position: Int)
     }
 
-    override fun bind(item: SelectableItem) =
-        with(binding) {
-            itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
-            tvSelectableItemName.setText(item.getName())
+    override fun bind(item: SelectableItem) = with(binding) {
+        itemView.setOnClickListener { callback.onClickItem(bindingAdapterPosition) }
+        tvSelectableItemName.setText(item.getName())
 
-            val selectedItem = callback.selectedItem
-            if (selectedItem != null && selectedItem === item) {
-                ivSelectableItemSelected.visible()
-            } else {
-                ivSelectableItemSelected.gone()
-            }
+        val selectedItem = callback.selectedItem
+        if (selectedItem != null && selectedItem === item) {
+            ivSelectableItemSelected.visible()
+        } else {
+            ivSelectableItemSelected.gone()
         }
+    }
 }

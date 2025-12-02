@@ -44,14 +44,13 @@ internal class TaskProgressGridBuilderTest {
     private fun createProgressDays(
         start: LocalDate,
         count: Int,
-    ): List<TaskProgressDay> =
-        (0 until count).map { offset ->
-            val date = start.plusDays(offset.toLong())
-            TaskProgressDay(
-                date = date,
-                doneCount = 1,
-                notDoneCount = 0,
-                totalCount = 1,
-            )
-        }
+    ): List<TaskProgressDay> = (0 until count).map { offset ->
+        val date = start.plusDays(offset.toLong())
+        TaskProgressDay(
+            date = date,
+            doneCount = 1,
+            notDoneCount = 0,
+            totalCount = 1,
+        )
+    }
 }

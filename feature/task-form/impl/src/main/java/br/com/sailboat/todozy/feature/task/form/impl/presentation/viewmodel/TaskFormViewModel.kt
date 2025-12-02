@@ -156,28 +156,27 @@ internal class TaskFormViewModel(
         viewState.viewAction.value = TaskFormViewAction.NavigateToCustomRepeatAlarmSelector(viewState.selectedDays)
     }
 
-    private fun startEditingTask() =
-        viewModelScope.launch {
-            try {
-                val task = getTaskUseCase(viewState.taskId).getOrThrow()
+    private fun startEditingTask() = viewModelScope.launch {
+        try {
+            val task = getTaskUseCase(viewState.taskId).getOrThrow()
 
-                viewState.alarm = task.alarm?.dateTime
-                viewState.repeatAlarmType = task.alarm?.repeatType ?: RepeatType.NOT_REPEAT
-                viewState.selectedDays = task.alarm?.customDays
+            viewState.alarm = task.alarm?.dateTime
+            viewState.repeatAlarmType = task.alarm?.repeatType ?: RepeatType.NOT_REPEAT
+            viewState.selectedDays = task.alarm?.customDays
 
-                viewState.viewAction.value =
-                    TaskFormViewAction.SetTaskDetails(
-                        taskName = task.name,
-                        taskNotes = task.notes,
-                    )
+            viewState.viewAction.value =
+                TaskFormViewAction.SetTaskDetails(
+                    taskName = task.name,
+                    taskNotes = task.notes,
+                )
 
-                updateAlarm()
-            } catch (e: Exception) {
-                logService.error(e)
-                viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
-                viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = false)
-            }
+            updateAlarm()
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.value = TaskFormViewAction.ShowErrorSavingTask
+            viewState.viewAction.value = TaskFormViewAction.CloseTaskForm(success = false)
         }
+    }
 
     private fun updateAlarm(animate: Boolean = false) {
         val repeatType =

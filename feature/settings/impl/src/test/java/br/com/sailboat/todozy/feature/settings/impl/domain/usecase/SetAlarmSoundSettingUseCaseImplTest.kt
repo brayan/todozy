@@ -14,12 +14,11 @@ internal class SetAlarmSoundSettingUseCaseImplTest {
     private val setAlarmSoundSettingUseCase = SetAlarmSoundSettingUseCaseImpl(repository)
 
     @Test
-    fun `should set alarm sound setting from repository`() =
-        runBlocking {
-            val uriMock = mockk<Uri>()
-            setAlarmSoundSettingUseCase(uriMock)
+    fun `should set alarm sound setting from repository`() = runBlocking {
+        val uriMock = mockk<Uri>()
+        setAlarmSoundSettingUseCase(uriMock)
 
-            coVerify { repository.setAlarmTone(uriMock) }
-            confirmVerified(repository)
-        }
+        coVerify { repository.setAlarmTone(uriMock) }
+        confirmVerified(repository)
+    }
 }

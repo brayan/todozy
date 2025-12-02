@@ -28,88 +28,84 @@ internal class ScheduleAllAlarmsUseCaseImplTest {
         )
 
     @Test
-    fun `should get tasks with alarms`() =
-        runBlocking {
-            prepareScenario()
+    fun `should get tasks with alarms`() = runBlocking {
+        prepareScenario()
 
-            scheduleAllAlarmsUseCase()
+        scheduleAllAlarmsUseCase()
 
-            coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
-            confirmVerified(getTasksUseCase)
-        }
-
-    @Test
-    fun `should schedule next valid alarm when alarm is before now`() =
-        runBlocking {
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                    repeatType = RepeatType.WEEK,
-                )
-            val task =
-                Task(
-                    id = 42L,
-                    name = "Task 1",
-                    notes = "Some notes",
-                    alarm = alarm,
-                )
-            prepareScenario(tasksResult = Result.success(listOf(task)))
-
-            scheduleAllAlarmsUseCase()
-
-            coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
-            coVerify { getNextAlarmUseCase(alarm) }
-            confirmVerified(getTasksUseCase)
-            confirmVerified(getNextAlarmUseCase)
-        }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
+        confirmVerified(getTasksUseCase)
+    }
 
     @Test
-    fun `should schedule alarm`() =
-        runBlocking {
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, 1) },
-                    repeatType = RepeatType.WEEK,
-                )
-            val task =
-                Task(
-                    id = 42L,
-                    name = "Task 1",
-                    notes = "Some notes",
-                    alarm = alarm,
-                )
-            prepareScenario(tasksResult = Result.success(listOf(task)))
+    fun `should schedule next valid alarm when alarm is before now`() = runBlocking {
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+                repeatType = RepeatType.WEEK,
+            )
+        val task =
+            Task(
+                id = 42L,
+                name = "Task 1",
+                notes = "Some notes",
+                alarm = alarm,
+            )
+        prepareScenario(tasksResult = Result.success(listOf(task)))
 
-            scheduleAllAlarmsUseCase()
+        scheduleAllAlarmsUseCase()
 
-            coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
-            coVerify { scheduleAlarmUseCase(alarm, 42L) }
-            confirmVerified(getTasksUseCase)
-            confirmVerified(scheduleAlarmUseCase)
-        }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
+        coVerify { getNextAlarmUseCase(alarm) }
+        confirmVerified(getTasksUseCase)
+        confirmVerified(getNextAlarmUseCase)
+    }
 
     @Test
-    fun `should not schedule alarm when alarm is before now`() =
-        runBlocking {
-            val alarm =
-                Alarm(
-                    dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
-                    repeatType = RepeatType.NOT_REPEAT,
-                )
-            val task =
-                Task(
-                    id = 42L,
-                    name = "Task 1",
-                    notes = "Some notes",
-                    alarm = alarm,
-                )
-            prepareScenario(tasksResult = Result.success(listOf(task)))
+    fun `should schedule alarm`() = runBlocking {
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, 1) },
+                repeatType = RepeatType.WEEK,
+            )
+        val task =
+            Task(
+                id = 42L,
+                name = "Task 1",
+                notes = "Some notes",
+                alarm = alarm,
+            )
+        prepareScenario(tasksResult = Result.success(listOf(task)))
 
-            scheduleAllAlarmsUseCase()
+        scheduleAllAlarmsUseCase()
 
-            coVerify(exactly = 0) { scheduleAlarmUseCase(alarm, 42L) }
-            confirmVerified(scheduleAlarmUseCase)
-        }
+        coVerify { getTasksUseCase(TaskFilter(category = TaskCategory.WITH_ALARMS)) }
+        coVerify { scheduleAlarmUseCase(alarm, 42L) }
+        confirmVerified(getTasksUseCase)
+        confirmVerified(scheduleAlarmUseCase)
+    }
+
+    @Test
+    fun `should not schedule alarm when alarm is before now`() = runBlocking {
+        val alarm =
+            Alarm(
+                dateTime = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) },
+                repeatType = RepeatType.NOT_REPEAT,
+            )
+        val task =
+            Task(
+                id = 42L,
+                name = "Task 1",
+                notes = "Some notes",
+                alarm = alarm,
+            )
+        prepareScenario(tasksResult = Result.success(listOf(task)))
+
+        scheduleAllAlarmsUseCase()
+
+        coVerify(exactly = 0) { scheduleAlarmUseCase(alarm, 42L) }
+        confirmVerified(scheduleAlarmUseCase)
+    }
 
     private fun prepareScenario(
         tasksResult: Result<List<Task>> =

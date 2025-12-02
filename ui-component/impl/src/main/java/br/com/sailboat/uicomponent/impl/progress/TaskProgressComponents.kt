@@ -507,13 +507,12 @@ private data class DayHeatmapMetadata(
 )
 
 @Composable
-private fun TaskProgressRange.toLabel(): String =
-    when (this) {
-        TaskProgressRange.ALL -> stringResource(R.string.all_days)
-        TaskProgressRange.LAST_YEAR -> stringResource(R.string.last_12_months)
-        TaskProgressRange.LAST_30_DAYS -> stringResource(R.string.last_30_days)
-        TaskProgressRange.LAST_7_DAYS -> stringResource(R.string.last_7_days)
-    }
+private fun TaskProgressRange.toLabel(): String = when (this) {
+    TaskProgressRange.ALL -> stringResource(R.string.all_days)
+    TaskProgressRange.LAST_YEAR -> stringResource(R.string.last_12_months)
+    TaskProgressRange.LAST_30_DAYS -> stringResource(R.string.last_30_days)
+    TaskProgressRange.LAST_7_DAYS -> stringResource(R.string.last_7_days)
+}
 
 private fun TaskProgressDay.color(
     palette: ProgressPalette,

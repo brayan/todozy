@@ -26,29 +26,26 @@ internal class SaveAlarmUseCaseImplTest {
     private val alarm = Alarm(dateTime = Calendar.getInstance(), repeatType = RepeatType.WEEK)
 
     @Test
-    fun `should save alarm on repository`() =
-        runBlocking {
-            saveAlarmUseCase(alarm, taskId)
+    fun `should save alarm on repository`() = runBlocking {
+        saveAlarmUseCase(alarm, taskId)
 
-            coVerify { repository.save(alarm, taskId) }
-            confirmVerified(repository)
-        }
-
-    @Test
-    fun `should cancel current alarm schedule when saving`() =
-        runBlocking {
-            saveAlarmUseCase(alarm, taskId)
-
-            coVerify { cancelAlarmScheduleUseCase(taskId) }
-            confirmVerified(cancelAlarmScheduleUseCase)
-        }
+        coVerify { repository.save(alarm, taskId) }
+        confirmVerified(repository)
+    }
 
     @Test
-    fun `should schedule alarm when saving`() =
-        runBlocking {
-            saveAlarmUseCase(alarm, taskId)
+    fun `should cancel current alarm schedule when saving`() = runBlocking {
+        saveAlarmUseCase(alarm, taskId)
 
-            coVerify { scheduleAlarmUseCase(alarm, taskId) }
-            confirmVerified(scheduleAlarmUseCase)
-        }
+        coVerify { cancelAlarmScheduleUseCase(taskId) }
+        confirmVerified(cancelAlarmScheduleUseCase)
+    }
+
+    @Test
+    fun `should schedule alarm when saving`() = runBlocking {
+        saveAlarmUseCase(alarm, taskId)
+
+        coVerify { scheduleAlarmUseCase(alarm, taskId) }
+        confirmVerified(scheduleAlarmUseCase)
+    }
 }

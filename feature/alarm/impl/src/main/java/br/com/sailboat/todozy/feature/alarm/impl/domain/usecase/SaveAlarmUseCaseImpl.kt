@@ -12,10 +12,9 @@ internal class SaveAlarmUseCaseImpl(
     override suspend operator fun invoke(
         alarm: Alarm,
         taskId: Long,
-    ): Result<Unit?> =
-        runCatching {
-            alarmRepository.save(alarm, taskId).getOrThrow()
-            cancelAlarmScheduleUseCase(taskId)
-            scheduleAlarmUseCase(alarm, taskId)
-        }
+    ): Result<Unit?> = runCatching {
+        alarmRepository.save(alarm, taskId).getOrThrow()
+        cancelAlarmScheduleUseCase(taskId)
+        scheduleAlarmUseCase(alarm, taskId)
+    }
 }
