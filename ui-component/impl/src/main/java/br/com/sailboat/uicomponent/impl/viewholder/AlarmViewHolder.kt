@@ -1,35 +1,38 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.utility.android.log.log
-import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
-import br.com.sailboat.todozy.utility.android.view.gone
-import br.com.sailboat.todozy.utility.android.view.visible
-import br.com.sailboat.uicomponent.impl.databinding.AlarmDetailsBinding
+import androidx.compose.material.Surface
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.uicomponent.impl.alarm.AlarmItem
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.AlarmUiModel
 
 class AlarmViewHolder(parent: ViewGroup) :
-    BaseViewHolder<AlarmUiModel, AlarmDetailsBinding>(
-        AlarmDetailsBinding.inflate(getInflater(parent), parent, false),
+    RecyclerView.ViewHolder(
+        ComposeView(parent.context).apply {
+            layoutParams =
+                RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT,
+                )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        },
     ) {
-    override fun bind(item: AlarmUiModel): Unit = with(binding) {
-        try {
-            tvAlarmDate.text = item.date
-            tvAlarmTime.text = item.time
+    private val composeView get() = itemView as ComposeView
 
-            updateAlarmRepeatType(item)
-        } catch (e: Exception) {
-            e.log()
-        }
-    }
-
-    private fun updateAlarmRepeatType(alarm: AlarmUiModel) = with(binding) {
-        if (alarm.shouldRepeat) {
-            tvAlarmRepeat.visible()
-
-            tvAlarmRepeat.text = alarm.description
-        } else {
-            tvAlarmRepeat.gone()
+    fun bind(item: AlarmUiModel) {
+        composeView.setContent {
+            TodozyTheme {
+                Surface {
+                    AlarmItem(
+                        date = item.date,
+                        time = item.time,
+                        repeatDescription = item.description.takeIf { item.shouldRepeat },
+                    )
+                }
+            }
         }
     }
 }

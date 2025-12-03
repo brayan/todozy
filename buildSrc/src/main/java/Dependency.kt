@@ -191,6 +191,7 @@ object Compose {
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Version.core}"
     const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycleRuntime}"
     const val activity = "androidx.activity:activity-compose:${Version.activity}"
+    const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Version.core}"
 }
 
 object Desugar {

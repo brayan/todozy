@@ -37,7 +37,8 @@ internal class TaskDetailsViewModel(
     private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
 ) : BaseViewModel<TaskDetailsViewState, TaskDetailsViewIntent>() {
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
-    private var shouldShowProgress = false
+    private var shouldShowProgressGrid = false
+    private var shouldShowMetrics = false
     private var currentAlarm: Alarm? = null
     private var progressJob: Job? = null
     private val progressCache: MutableMap<TaskProgressRange, List<TaskProgressDay>> = mutableMapOf()
@@ -94,15 +95,21 @@ internal class TaskDetailsViewModel(
 
             viewState.taskDetails.postValue(taskDetails)
 
-            shouldShowProgress = false
+            shouldShowProgressGrid = false
+            shouldShowMetrics = false
             val taskMetrics: TaskMetrics? =
                 task.alarm?.run {
-                    shouldShowProgress = RepeatType.isAlarmRepeating(this)
-                    if (shouldShowProgress) {
+                    val repeatType = repeatType
+                    shouldShowMetrics = RepeatType.isAlarmRepeating(this)
+                    shouldShowProgressGrid =
+                        shouldShowMetrics && repeatType != RepeatType.MONTH && repeatType != RepeatType.YEAR
+
+                    if (shouldShowMetrics) {
                         val taskMetrics = getTaskMetricsUseCase(historyFilterForRange())
                         return@run taskMetrics.getOrNull()
                     }
-                    shouldShowProgress = false
+                    shouldShowMetrics = false
+                    shouldShowProgressGrid = false
                     return@run null
                 }
 
@@ -129,7 +136,7 @@ internal class TaskDetailsViewModel(
     }
 
     private fun loadProgress(force: Boolean = false) {
-        val shouldFetch = force || shouldShowProgress
+        val shouldFetch = force || shouldShowProgressGrid
         if (shouldFetch.not()) {
             viewState.taskProgressDays.postValue(emptyList())
             viewState.taskProgressLoading.postValue(false)
@@ -173,7 +180,7 @@ internal class TaskDetailsViewModel(
     }
 
     private fun loadTaskMetrics() = viewModelScope.launch {
-        if (shouldShowProgress.not()) {
+        if (shouldShowMetrics.not()) {
             viewState.taskMetrics.postValue(null)
             return@launch
         }
@@ -225,7 +232,7 @@ internal class TaskDetailsViewModel(
     }
 
     private fun filterProgressForAlarm(progress: List<TaskProgressDay>): List<TaskProgressDay> {
-        if (shouldShowProgress.not()) {
+        if (shouldShowProgressGrid.not()) {
             return progress
         }
 

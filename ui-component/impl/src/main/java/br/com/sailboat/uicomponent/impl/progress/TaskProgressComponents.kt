@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.uicomponent.impl.R
+import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -74,6 +75,7 @@ internal fun TaskProgressContent(
     highlightNotDone: Boolean = false,
     flatColors: Boolean = highlightNotDone,
 ) {
+    val spacing = LocalTodozySpacing.current
     val palette = rememberProgressPalette(flatColors = flatColors || highlightNotDone)
     val totalDone = remember(days) { days.sumOf { it.doneCount } }
     val formatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM) }
@@ -89,9 +91,9 @@ internal fun TaskProgressContent(
     ) {
         TaskProgressRangeSelector(
             selectedRange = selectedRange,
-            onRangeSelected = onRangeSelected,
-        )
-        Spacer(modifier = Modifier.size(8.dp))
+                onRangeSelected = onRangeSelected,
+            )
+        Spacer(modifier = Modifier.size(spacing.small))
         if (isLoading) {
             TaskProgressSkeleton(dayOrder = dayOrder, cellSize = cellSize)
         } else {
@@ -133,6 +135,7 @@ private fun TaskProgressRangeSelector(
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
 ) {
+    val spacing = LocalTodozySpacing.current
     val haptic = LocalHapticFeedback.current
     val ranges =
         remember {
@@ -144,7 +147,7 @@ private fun TaskProgressRangeSelector(
             )
         }
 
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
         items(ranges) { range ->
             val selected = range == selectedRange
             val shape = RoundedCornerShape(12.dp)
@@ -154,8 +157,8 @@ private fun TaskProgressRangeSelector(
                         .clip(shape)
                         .clickable {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            onRangeSelected(range)
-                        },
+                        onRangeSelected(range)
+                    },
                 color =
                     if (selected) {
                         colorResource(id = R.color.md_teal_100)
@@ -183,7 +186,11 @@ private fun TaskProgressRangeSelector(
                         } else {
                             MaterialTheme.colors.onSurface
                         },
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                    modifier =
+                        Modifier.padding(
+                            horizontal = spacing.small,
+                            vertical = spacing.xsmall,
+                        ),
                 )
             }
         }

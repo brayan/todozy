@@ -11,26 +11,29 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
 
 @Composable
 @Suppress("FunctionName")
 fun TaskSkeletonItem() {
-    val baseColor = Color(0xFFE6E6E6)
-    val cardColor = Color.White
+    val spacing = LocalTodozySpacing.current
+    val baseColor = MaterialTheme.colors.onSurface.copy(alpha = 0.08f)
+    val cardColor = MaterialTheme.colors.surface
 
     Row(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 6.dp)
+                .padding(horizontal = spacing.medium, vertical = spacing.xsmall)
                 .heightIn(min = 72.dp)
                 .background(color = cardColor, shape = RoundedCornerShape(12.dp))
-                .padding(16.dp),
+                .padding(spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
