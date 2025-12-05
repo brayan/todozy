@@ -1,7 +1,6 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
@@ -23,9 +22,7 @@ import br.com.sailboat.uicomponent.model.UiModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -221,16 +218,16 @@ internal class TaskListViewModelTest {
                     TaskUiModel(taskId = 543L, taskName = "Task 543"),
                     TaskUiModel(taskId = 978L, taskName = "Task 978"),
                 )
-            val position = 1
+            val taskId = 978L
             val status = TaskStatus.DONE
             viewModel.viewState.itemsView.value = tasks
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, status))
             advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
             advanceUntilIdle()
 
-            coVerify(exactly = 1) { completeTaskUseCase(taskId = 978L, status = status) }
+            coVerify(exactly = 1) { completeTaskUseCase(taskId = taskId, status = status) }
         }
     }
 
@@ -240,24 +237,15 @@ internal class TaskListViewModelTest {
             val task1 = TaskUiModel(taskId = 543L, taskName = "Task 543")
             val task2 = TaskUiModel(taskId = 978L, taskName = "Task 978")
             val tasks = mutableListOf<UiModel>(task1, task2)
-            val position = 1
+            val taskId = task2.taskId
             val status = TaskStatus.DONE
-            val observer = mockk<Observer<TaskListViewAction>>()
-            val slot = slot<TaskListViewAction>()
-            val list = arrayListOf<TaskListViewAction>()
-            viewModel.viewState.viewAction.observeForever(observer)
             viewModel.viewState.itemsView.value = tasks
-            every { observer.onChanged(capture(slot)) } answers {
-                list.add(slot.captured)
-            }
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, status))
             advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
             advanceUntilIdle()
 
-            val expected = TaskListViewAction.UpdateRemovedTask(position)
-            assertTrue { list.contains(expected) }
             assertTrue {
                 viewModel.viewState.itemsView.value
                     ?.filterIsInstance<TaskUiModel>()
@@ -273,12 +261,12 @@ internal class TaskListViewModelTest {
                 TaskUiModel(taskId = 543L, taskName = "Task 543"),
                 TaskUiModel(taskId = 978L, taskName = "Task 978"),
             )
-        val position = 1
+        val taskId = 978L
         val status = TaskStatus.DONE
         viewModel.viewState.itemsView.value = tasks
         prepareScenario()
 
-        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, status))
         advanceTimeBy(TASK_SWIPE_DELAY_IN_MILLIS)
         advanceUntilIdle()
 
@@ -318,7 +306,7 @@ internal class TaskListViewModelTest {
 
         viewModel.viewState.itemsView.value = tasks
 
-        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(1, TaskStatus.DONE))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, TaskStatus.DONE))
         runCurrent()
 
         val updatedTask = viewModel.viewState.itemsView.value?.get(1) as TaskUiModel
@@ -335,12 +323,12 @@ internal class TaskListViewModelTest {
                     TaskUiModel(taskId = 543L, taskName = "Task 543"),
                     TaskUiModel(taskId = 978L, taskName = "Task 978"),
                 )
-            val position = 1
+            val taskId = 978L
             val status = TaskStatus.DONE
             viewModel.viewState.itemsView.value = tasks
             prepareScenario()
 
-            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position, status))
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, status))
             advanceUntilIdle()
 
             coVerify {
@@ -366,7 +354,7 @@ internal class TaskListViewModelTest {
         viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
         advanceUntilIdle()
 
-        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(position = 0, status = TaskStatus.DONE))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId = 543L, status = TaskStatus.DONE))
         runCurrent()
 
         assertEquals(TaskMetrics(doneTasks = 1, notDoneTasks = 0, consecutiveDone = 1), viewModel.viewState.taskMetrics.value)
@@ -391,7 +379,7 @@ internal class TaskListViewModelTest {
 
         viewModel.viewState.itemsView.value = tasks
 
-        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(0, TaskStatus.DONE))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnSwipeTask(taskId, TaskStatus.DONE))
         runCurrent()
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickUndoTask(taskId, TaskStatus.DONE))

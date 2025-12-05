@@ -9,5 +9,4 @@ internal sealed class TaskListViewAction {
     object ShowErrorLoadingTasks : TaskListViewAction()
     object ShowErrorCompletingTask : TaskListViewAction()
     data class NavigateToTaskDetails(val taskId: Long) : TaskListViewAction()
-    data class UpdateRemovedTask(val position: Int) : TaskListViewAction()
 }

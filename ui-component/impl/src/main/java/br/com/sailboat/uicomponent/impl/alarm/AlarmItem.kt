@@ -9,13 +9,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.colorResource
+import br.com.sailboat.uicomponent.impl.R
 import br.com.sailboat.uicomponent.impl.theme.LocalTodozySemanticColors
 import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
-import br.com.sailboat.uicomponent.impl.R
 
 @Composable
 internal fun AlarmItem(

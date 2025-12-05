@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.uicomponent.impl.R
@@ -52,7 +53,7 @@ import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
-internal val DefaultTaskProgressDayOrder =
+val DefaultTaskProgressDayOrder =
     listOf(
         DayOfWeek.MONDAY,
         DayOfWeek.TUESDAY,
@@ -64,7 +65,8 @@ internal val DefaultTaskProgressDayOrder =
     )
 
 @Composable
-internal fun TaskProgressContent(
+fun TaskProgressContent(
+    modifier: Modifier = Modifier,
     days: List<TaskProgressDay>,
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
@@ -85,14 +87,12 @@ internal fun TaskProgressContent(
     val cellSize = remember(dayOrder.size) { if (dayOrder.size <= 2) 24.dp else 16.dp }
 
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         TaskProgressRangeSelector(
             selectedRange = selectedRange,
-                onRangeSelected = onRangeSelected,
-            )
+            onRangeSelected = onRangeSelected,
+        )
         Spacer(modifier = Modifier.size(spacing.small))
         if (isLoading) {
             TaskProgressSkeleton(dayOrder = dayOrder, cellSize = cellSize)
@@ -106,10 +106,12 @@ internal fun TaskProgressContent(
                             onSelectDay(if (selectedDay == day) null else day)
                         }
                     }
+
                     enableDayDetails -> { day ->
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onSelectDay(if (selectedDay == day) null else day)
                     }
+
                     else -> onDayClick
                 }
 
@@ -147,24 +149,24 @@ private fun TaskProgressRangeSelector(
             )
         }
 
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(spacing.small),
+    ) {
         items(ranges) { range ->
             val selected = range == selectedRange
             val shape = RoundedCornerShape(12.dp)
             Surface(
-                modifier =
-                    Modifier
-                        .clip(shape)
-                        .clickable {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                modifier = Modifier
+                    .clip(shape)
+                    .clickable {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onRangeSelected(range)
                     },
-                color =
-                    if (selected) {
-                        colorResource(id = R.color.md_teal_100)
-                    } else {
-                        MaterialTheme.colors.surface
-                    },
+                color = if (selected) {
+                    colorResource(id = R.color.md_teal_100)
+                } else {
+                    MaterialTheme.colors.surface
+                },
                 shape = shape,
                 border =
                     BorderStroke(
@@ -179,7 +181,7 @@ private fun TaskProgressRangeSelector(
             ) {
                 Text(
                     text = range.toLabel(),
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.caption.copy(fontSize = 13.sp),
                     color =
                         if (selected) {
                             colorResource(id = R.color.md_teal_700)
@@ -289,7 +291,9 @@ private fun TaskProgressGrid(
                                         }
                                     }
                                     .semantics {
-                                        semanticsDescription?.let { desc -> contentDescription = desc }
+                                        semanticsDescription?.let { desc ->
+                                            contentDescription = desc
+                                        }
                                     },
                         ) {
                             if (enableDayDetails && selectedDay == day) {

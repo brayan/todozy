@@ -30,7 +30,11 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
+        viewBinding = false
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Compose.Version.compiler
     }
     testOptions {
         unitTests.all {
@@ -66,6 +70,11 @@ dependencies {
     implementation(AndroidX.recyclerview)
     implementation(AndroidX.constraintLayout)
     implementation(AndroidX.materialDesign)
+    implementation(Compose.material)
+    implementation(Compose.ui)
+    implementation(Compose.uiToolingPreview)
+    implementation(Compose.runtimeLiveData)
+    implementation(Compose.materialIconsExtended)
 
     testImplementation(Junit.junit)
     testImplementation(MockK.core)

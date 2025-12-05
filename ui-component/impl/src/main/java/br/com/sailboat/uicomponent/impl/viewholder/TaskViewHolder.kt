@@ -1,14 +1,13 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.view.ViewGroup
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.todozy.domain.model.TaskStatus
-import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.impl.task.TaskItem
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.TaskUiModel
 
 class TaskViewHolder(

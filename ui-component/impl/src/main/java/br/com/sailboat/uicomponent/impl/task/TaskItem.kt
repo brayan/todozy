@@ -1,7 +1,14 @@
 package br.com.sailboat.uicomponent.impl.task
 
 import android.content.Context
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -53,10 +60,12 @@ import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import java.util.Calendar
 
+private val TASK_ROW_MIN_HEIGHT = 64.dp
+
 @Composable
 @Suppress("FunctionName")
 @OptIn(ExperimentalMaterialApi::class)
-internal fun TaskItem(
+fun TaskItem(
     task: TaskUiModel,
     modifier: Modifier = Modifier,
     onClick: (Long) -> Unit,
@@ -65,6 +74,13 @@ internal fun TaskItem(
     val context = LocalContext.current
     val spacing = LocalTodozySpacing.current
     val inlineElevation = 6.dp
+    val contentPadding =
+        PaddingValues(
+            start = spacing.medium,
+            end = spacing.medium,
+            top = spacing.small,
+            bottom = spacing.medium,
+        )
     val alarmInfo = remember(task.alarm, context) {
         resolveAlarmInfo(context, task.alarm)
     }
@@ -79,47 +95,57 @@ internal fun TaskItem(
         shape = MaterialTheme.shapes.medium.copy(all = ZeroCornerSize),
         onClick = { onClick(task.taskId) },
     ) {
-        if (task.showInlineMetrics) {
-            InlineMetrics(
-                metrics = task.inlineMetrics,
-                status = task.inlineStatus ?: TaskStatus.NOT_DONE,
-                onUndoClick = { status -> onUndoClick(task.taskId, status) },
-                spacingSmall = spacing.small,
-                spacingXSmall = spacing.xsmall,
-            )
-        } else {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 64.dp)
-                    .padding(
-                        start = spacing.medium,
-                        end = spacing.medium,
-                        top = spacing.small,
-                        bottom = spacing.medium,
-                ),
-                verticalAlignment = Alignment.Top,
-            ) {
-                Text(
-                    text = task.taskName,
-                    color = colorResource(id = R.color.md_blue_grey_700),
-                    style =
-                        MaterialTheme.typography.body1.copy(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Normal,
-                        ),
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+        AnimatedContent(
+            targetState = task.showInlineMetrics,
+            transitionSpec = {
+                (fadeIn(tween(150)) + expandVertically()) togetherWith
+                    (fadeOut(tween(150)) + shrinkVertically())
+            },
+            label = "task-inline-metrics",
+        ) { showInline ->
+            if (showInline) {
+                InlineMetrics(
+                    metrics = task.inlineMetrics,
+                    status = task.inlineStatus ?: TaskStatus.NOT_DONE,
+                    onUndoClick = { status -> onUndoClick(task.taskId, status) },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = TASK_ROW_MIN_HEIGHT)
+                            .background(MaterialTheme.colors.primary, shape = MaterialTheme.shapes.medium.copy(all = ZeroCornerSize))
+                            .padding(contentPadding),
+                    spacingSmall = spacing.small,
+                    spacingXSmall = spacing.xsmall,
                 )
-
-                if (alarmInfo != null) {
-                    Spacer(modifier = Modifier.width(spacing.small))
-                    TaskAlarm(
-                        alarmInfo = alarmInfo,
-                        color = alarmColor,
-                        spacingXSmall = spacing.xsmall,
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = TASK_ROW_MIN_HEIGHT)
+                        .padding(contentPadding),
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    Text(
+                        text = task.taskName,
+                        color = colorResource(id = R.color.md_blue_grey_700),
+                        style =
+                            MaterialTheme.typography.body1.copy(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                            ),
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f),
                     )
+
+                    if (alarmInfo != null) {
+                        Spacer(modifier = Modifier.width(spacing.small))
+                        TaskAlarm(
+                            alarmInfo = alarmInfo,
+                            color = alarmColor,
+                            spacingXSmall = spacing.xsmall,
+                        )
+                    }
                 }
             }
         }
@@ -159,20 +185,18 @@ private fun InlineMetrics(
     metrics: TaskMetrics?,
     status: TaskStatus,
     onUndoClick: (TaskStatus) -> Unit,
+    modifier: Modifier = Modifier,
     spacingSmall: Dp,
     spacingXSmall: Dp,
 ) {
     Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.primary, shape = MaterialTheme.shapes.medium.copy(all = ZeroCornerSize))
-                .padding(all = spacingSmall),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(spacingSmall),
     ) {
         MetricsContent(
             metrics = metrics,
+            modifier = Modifier.weight(1f),
             spacingSmall = spacingSmall,
             spacingXSmall = spacingXSmall,
         )
@@ -201,34 +225,50 @@ private fun InlineMetrics(
 @Composable
 private fun MetricsContent(
     metrics: TaskMetrics?,
+    modifier: Modifier = Modifier,
     spacingSmall: Dp,
     spacingXSmall: Dp,
 ) {
+    val metricChips =
+        listOfNotNull(
+            metrics?.consecutiveDone?.takeIf { it > 0 }?.let {
+                MetricData(
+                    icon = R.drawable.ic_fire_black_24dp,
+                    tint = colorResource(id = R.color.md_orange_500),
+                    label = it.toString(),
+                )
+            },
+            metrics?.doneTasks?.let {
+                MetricData(
+                    icon = R.drawable.ic_vec_thumb_up_white_24dp,
+                    tint = colorResource(id = R.color.md_teal_300),
+                    label = it.toString(),
+                )
+            },
+            metrics?.notDoneTasks?.let {
+                MetricData(
+                    icon = R.drawable.ic_vect_thumb_down_white_24dp,
+                    tint = colorResource(id = R.color.md_red_300),
+                    label = it.toString(),
+                )
+            },
+        ).filter { it.label.isNotEmpty() }
+
+    if (metricChips.isEmpty()) return
+
     Row(
-        modifier = Modifier.defaultMinSize(minHeight = 40.dp),
+        modifier = modifier.defaultMinSize(minHeight = 40.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacingSmall),
     ) {
-        MetricChip(
-            icon = R.drawable.ic_fire_black_24dp,
-            iconTint = colorResource(id = R.color.md_orange_500),
-            label = metrics?.consecutiveDone?.takeIf { it > 0 }?.toString().orEmpty(),
-            spacingXSmall = spacingXSmall,
-        )
-
-        MetricChip(
-            icon = R.drawable.ic_vec_thumb_up_white_24dp,
-            iconTint = colorResource(id = R.color.md_teal_300),
-            label = metrics?.doneTasks?.toString().orEmpty(),
-            spacingXSmall = spacingXSmall,
-        )
-
-        MetricChip(
-            icon = R.drawable.ic_vect_thumb_down_white_24dp,
-            iconTint = colorResource(id = R.color.md_red_300),
-            label = metrics?.notDoneTasks?.toString().orEmpty(),
-            spacingXSmall = spacingXSmall,
-        )
+        metricChips.forEach { chip ->
+            MetricChip(
+                icon = chip.icon,
+                iconTint = chip.tint,
+                label = chip.label,
+                spacingXSmall = spacingXSmall,
+            )
+        }
     }
 }
 
@@ -238,17 +278,17 @@ private fun MetricChip(
     iconTint: Color,
     label: String,
     spacingXSmall: Dp,
+    modifier: Modifier = Modifier,
 ) {
-    if (label.isEmpty()) return
-
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacingXSmall),
     ) {
         Surface(
             shape = CircleShape,
             color = Color.White,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(28.dp),
             elevation = 0.dp,
         ) {
             Icon(
@@ -262,12 +302,16 @@ private fun MetricChip(
         Text(
             text = label,
             color = Color.White,
-            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
         )
     }
 }
+
+private data class MetricData(
+    val icon: Int,
+    val tint: Color,
+    val label: String,
+)
 
 private fun resolveAlarmInfo(
     context: Context,

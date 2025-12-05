@@ -14,7 +14,7 @@ import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
 import java.util.Locale
 
 @Composable
-internal fun SubheadItem(
+fun SubheadItem(
     text: String,
     modifier: Modifier = Modifier,
 ) {

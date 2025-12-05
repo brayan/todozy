@@ -1,7 +1,7 @@
 object BuildPlugin {
     object Version {
         const val gradlePlugin = "8.10.1"
-        const val kotlin = "1.9.22"
+        const val kotlin = "1.9.25"
         const val googleServices = "4.4.2"
         const val crashlytics = "2.9.9"
     }
@@ -136,7 +136,7 @@ object Firebase {
 
 object Kotlin {
     object Version {
-        const val kotlin = "1.9.22"
+        const val kotlin = "1.9.25"
     }
 
     const val test = "org.jetbrains.kotlin:kotlin-test-junit:${Version.kotlin}"
@@ -180,18 +180,19 @@ object Hilt {
 
 object Compose {
     object Version {
-        const val core = "1.6.7"
+        const val core = "1.10.0"
+        const val materialIcons = "1.7.8"
         const val lifecycleRuntime = "2.7.0"
-        const val activity = "1.9.0"
-        const val compiler = "1.5.10"
+        const val compiler = "1.5.15"
     }
 
     const val ui = "androidx.compose.ui:ui:${Version.core}"
     const val material = "androidx.compose.material:material:${Version.core}"
+    const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${Version.materialIcons}"
     const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Version.core}"
     const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycleRuntime}"
-    const val activity = "androidx.activity:activity-compose:${Version.activity}"
     const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Version.core}"
+    const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${Version.core}"
 }
 
 object Desugar {

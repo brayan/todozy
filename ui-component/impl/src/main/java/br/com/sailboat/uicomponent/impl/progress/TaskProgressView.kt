@@ -3,7 +3,6 @@ package br.com.sailboat.uicomponent.impl.progress
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView

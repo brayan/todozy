@@ -77,7 +77,7 @@ internal class TaskListViewModel(
             is OnClickTask -> onClickTask(viewIntent.taskId)
             is OnSubmitSearchTerm -> onSubmitSearchTerm(viewIntent.term)
             is OnClickUndoTask -> onClickUndoTask(viewIntent.taskId, viewIntent.status)
-            is OnSwipeTask -> onSwipeTask(viewIntent.position, viewIntent.status)
+            is OnSwipeTask -> onSwipeTask(viewIntent.taskId, viewIntent.status)
             is OnSelectProgressRange -> onSelectProgressRange(viewIntent.range)
         }
     }
@@ -490,7 +490,6 @@ internal class TaskListViewModel(
 
         if (position >= 0) {
             itemsView.removeAt(position)
-            viewState.viewAction.postValue(TaskListViewAction.UpdateRemovedTask(position))
         }
 
         currentTasks = currentTasks.filterNot { it.id == taskId }
@@ -504,13 +503,15 @@ internal class TaskListViewModel(
     }
 
     private fun onSwipeTask(
-        position: Int,
+        taskId: Long,
         status: TaskStatus,
     ) {
         viewModelScope.launch {
             try {
                 val itemsView = viewState.itemsView.value ?: return@launch
-                val taskUiModel = itemsView.getOrNull(position) as? TaskUiModel ?: return@launch
+                val taskUiModel =
+                    itemsView.firstOrNull { (it as? TaskUiModel)?.taskId == taskId } as? TaskUiModel
+                        ?: return@launch
 
                 cancelInlineFeedback(taskUiModel.taskId)
 
@@ -521,7 +522,6 @@ internal class TaskListViewModel(
                         uiModel = taskUiModel,
                         metrics = inlineMetrics,
                         status = status,
-                        position = position,
                     )
 
                 publishItemsWithInlineFeedback(itemsView)
@@ -624,5 +624,4 @@ private data class InlineTaskFeedback(
     val uiModel: TaskUiModel,
     val metrics: TaskMetrics?,
     val status: TaskStatus,
-    val position: Int,
 )
