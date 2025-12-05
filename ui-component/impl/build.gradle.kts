@@ -54,6 +54,7 @@ dependencies {
     implementation(Compose.material)
     implementation(Compose.uiToolingPreview)
     implementation(Compose.lifecycleRuntimeKtx)
+    testImplementation(Compose.uiTestJunit4)
 
     testImplementation(Junit.junit)
 

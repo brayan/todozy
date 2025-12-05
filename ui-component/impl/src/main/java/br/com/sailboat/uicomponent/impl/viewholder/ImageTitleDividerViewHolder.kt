@@ -1,16 +1,38 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
-import br.com.sailboat.uicomponent.impl.databinding.VhImageTitleDividerBinding
+import androidx.compose.material.Surface
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.uicomponent.impl.image.ImageTitleDividerItem
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.ImageTitleDividerUiModel
 
-class ImageTitleDividerViewHolder(parent: ViewGroup) :
-    BaseViewHolder<ImageTitleDividerUiModel, VhImageTitleDividerBinding>(
-        VhImageTitleDividerBinding.inflate(getInflater(parent), parent, false),
+class ImageTitleDividerViewHolder(
+    parent: ViewGroup,
+) : RecyclerView.ViewHolder(
+        ComposeView(parent.context).apply {
+            layoutParams =
+                RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT,
+                )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        },
     ) {
-    override fun bind(item: ImageTitleDividerUiModel) = with(binding) {
-        vhImageTitleDividerImg.setImageResource(item.imageRes)
-        vhImageTitleDividerTvTitle.text = item.title
+    private val composeView get() = itemView as ComposeView
+
+    fun bind(item: ImageTitleDividerUiModel) {
+        composeView.setContent {
+            TodozyTheme {
+                Surface {
+                    ImageTitleDividerItem(
+                        imageRes = item.imageRes,
+                        title = item.title.orEmpty(),
+                    )
+                }
+            }
+        }
     }
 }

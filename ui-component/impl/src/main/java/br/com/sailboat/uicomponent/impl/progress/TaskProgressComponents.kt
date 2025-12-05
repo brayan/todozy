@@ -41,9 +41,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.uicomponent.impl.R
+import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -51,7 +53,7 @@ import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
-internal val DefaultTaskProgressDayOrder =
+val DefaultTaskProgressDayOrder =
     listOf(
         DayOfWeek.MONDAY,
         DayOfWeek.TUESDAY,
@@ -63,7 +65,8 @@ internal val DefaultTaskProgressDayOrder =
     )
 
 @Composable
-internal fun TaskProgressContent(
+fun TaskProgressContent(
+    modifier: Modifier = Modifier,
     days: List<TaskProgressDay>,
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
@@ -74,6 +77,7 @@ internal fun TaskProgressContent(
     highlightNotDone: Boolean = false,
     flatColors: Boolean = highlightNotDone,
 ) {
+    val spacing = LocalTodozySpacing.current
     val palette = rememberProgressPalette(flatColors = flatColors || highlightNotDone)
     val totalDone = remember(days) { days.sumOf { it.doneCount } }
     val formatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM) }
@@ -83,15 +87,13 @@ internal fun TaskProgressContent(
     val cellSize = remember(dayOrder.size) { if (dayOrder.size <= 2) 24.dp else 16.dp }
 
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         TaskProgressRangeSelector(
             selectedRange = selectedRange,
             onRangeSelected = onRangeSelected,
         )
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(spacing.small))
         if (isLoading) {
             TaskProgressSkeleton(dayOrder = dayOrder, cellSize = cellSize)
         } else {
@@ -104,10 +106,12 @@ internal fun TaskProgressContent(
                             onSelectDay(if (selectedDay == day) null else day)
                         }
                     }
+
                     enableDayDetails -> { day ->
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onSelectDay(if (selectedDay == day) null else day)
                     }
+
                     else -> onDayClick
                 }
 
@@ -133,6 +137,7 @@ private fun TaskProgressRangeSelector(
     selectedRange: TaskProgressRange,
     onRangeSelected: (TaskProgressRange) -> Unit,
 ) {
+    val spacing = LocalTodozySpacing.current
     val haptic = LocalHapticFeedback.current
     val ranges =
         remember {
@@ -144,24 +149,24 @@ private fun TaskProgressRangeSelector(
             )
         }
 
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(spacing.small),
+    ) {
         items(ranges) { range ->
             val selected = range == selectedRange
             val shape = RoundedCornerShape(12.dp)
             Surface(
-                modifier =
-                    Modifier
-                        .clip(shape)
-                        .clickable {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            onRangeSelected(range)
-                        },
-                color =
-                    if (selected) {
-                        colorResource(id = R.color.md_teal_100)
-                    } else {
-                        MaterialTheme.colors.surface
+                modifier = Modifier
+                    .clip(shape)
+                    .clickable {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onRangeSelected(range)
                     },
+                color = if (selected) {
+                    colorResource(id = R.color.md_teal_100)
+                } else {
+                    MaterialTheme.colors.surface
+                },
                 shape = shape,
                 border =
                     BorderStroke(
@@ -176,14 +181,18 @@ private fun TaskProgressRangeSelector(
             ) {
                 Text(
                     text = range.toLabel(),
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.caption.copy(fontSize = 13.sp),
                     color =
                         if (selected) {
                             colorResource(id = R.color.md_teal_700)
                         } else {
                             MaterialTheme.colors.onSurface
                         },
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                    modifier =
+                        Modifier.padding(
+                            horizontal = spacing.small,
+                            vertical = spacing.xsmall,
+                        ),
                 )
             }
         }
@@ -282,7 +291,9 @@ private fun TaskProgressGrid(
                                         }
                                     }
                                     .semantics {
-                                        semanticsDescription?.let { desc -> contentDescription = desc }
+                                        semanticsDescription?.let { desc ->
+                                            contentDescription = desc
+                                        }
                                     },
                         ) {
                             if (enableDayDetails && selectedDay == day) {

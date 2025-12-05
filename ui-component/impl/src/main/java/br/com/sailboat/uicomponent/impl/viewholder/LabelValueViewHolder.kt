@@ -1,16 +1,34 @@
 package br.com.sailboat.uicomponent.impl.viewholder
 
 import android.view.ViewGroup
-import br.com.sailboat.todozy.utility.android.recyclerview.BaseViewHolder
-import br.com.sailboat.uicomponent.impl.databinding.VhLabelValueBinding
+import androidx.compose.material.Surface
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.recyclerview.widget.RecyclerView
+import br.com.sailboat.uicomponent.impl.label.LabelValueItem
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.LabelValueUiModel
 
 class LabelValueViewHolder(parent: ViewGroup) :
-    BaseViewHolder<LabelValueUiModel, VhLabelValueBinding>(
-        VhLabelValueBinding.inflate(getInflater(parent), parent, false),
+    RecyclerView.ViewHolder(
+        ComposeView(parent.context).apply {
+            layoutParams =
+                RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT,
+                )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        },
     ) {
-    override fun bind(item: LabelValueUiModel) = with(binding) {
-        vhLabelValueTvLabel.text = item.label
-        vhLabelValueTvValue.text = item.value
+    private val composeView get() = itemView as ComposeView
+
+    fun bind(item: LabelValueUiModel) {
+        composeView.setContent {
+            TodozyTheme {
+                Surface {
+                    LabelValueItem(label = item.label, value = item.value)
+                }
+            }
+        }
     }
 }

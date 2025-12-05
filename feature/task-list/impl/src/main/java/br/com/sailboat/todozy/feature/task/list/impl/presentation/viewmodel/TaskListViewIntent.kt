@@ -11,7 +11,7 @@ internal sealed class TaskListViewIntent {
     object OnClickNewTask : TaskListViewIntent()
     data class OnClickTask(val taskId: Long) : TaskListViewIntent()
     data class OnSubmitSearchTerm(val term: String) : TaskListViewIntent()
-    data class OnSwipeTask(val position: Int, val status: TaskStatus) : TaskListViewIntent()
+    data class OnSwipeTask(val taskId: Long, val status: TaskStatus) : TaskListViewIntent()
     data class OnClickUndoTask(val taskId: Long, val status: TaskStatus) : TaskListViewIntent()
     data class OnSelectProgressRange(val range: TaskProgressRange) : TaskListViewIntent()
 }

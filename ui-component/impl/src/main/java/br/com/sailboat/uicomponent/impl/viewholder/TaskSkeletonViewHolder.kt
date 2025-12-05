@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sailboat.uicomponent.impl.skeleton.TaskSkeletonItem
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.TaskSkeletonUiModel
 
 class TaskSkeletonViewHolder(
@@ -19,7 +20,11 @@ class TaskSkeletonViewHolder(
                 RecyclerView.LayoutParams.WRAP_CONTENT,
             )
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-        setContent { TaskSkeletonItem() }
+        setContent {
+            TodozyTheme {
+                TaskSkeletonItem()
+            }
+        }
     },
 ) {
     fun bind(

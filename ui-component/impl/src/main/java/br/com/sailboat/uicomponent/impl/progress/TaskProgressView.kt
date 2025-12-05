@@ -3,13 +3,13 @@ package br.com.sailboat.uicomponent.impl.progress
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import java.time.DayOfWeek
 
 class TaskProgressView
@@ -41,7 +41,7 @@ class TaskProgressView
         init {
             addView(composeView)
             composeView.setContent {
-                MaterialTheme {
+                TodozyTheme {
                     Surface {
                         TaskProgressContent(
                             days = daysState.value,
