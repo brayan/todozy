@@ -61,7 +61,7 @@
     <string name="app_full_name"><![CDATA[Todozy - Tasks & Habits]]></string>
     <string name="app_description">Todozy is a minimalist task management app that helps you to be more productive and build new habits.</string>
     <string name="ept_list_no_projects_found">No projects found</string>
-    <string name="label_tasks">Tasks</string>
+    <string name="label_tasks">Todozy</string>
     <string name="progress">Progress</string>
     <string name="msg_deadline_must_be_greater">Deadline must be greater than the initial date</string>
     <string name="tasks_done">Tasks done</string>
