@@ -57,7 +57,7 @@
     <string name="filter_history">Filtrar histórico</string>
     <string name="app_full_name"><![CDATA[Todozy - Tarefas e Hábitos]]></string>
     <string name="app_description">Todozy é um aplicativo minimalista de gerenciamento de tarefas que te ajuda a ser mais produtivo e a construir novos hábitos.</string>
-    <string name="label_tasks">Tarefas</string>
+    <string name="label_tasks">Todozy</string>
     <string name="progress">Progresso</string>
     <string name="msg_deadline_must_be_greater">A data de conclusão deve ser maior que a data inicial</string>
     <string name="tasks_done">Tarefas feitas</string>
@@ -112,6 +112,7 @@
     <string name="last_12_months">Últimos 12 meses</string>
     <string name="all_days">Todos os dias</string>
     <string name="tasks_done_format">%1$d concluídas</string>
+    <string name="tooltip_tasks_summary">%1$d/%2$d concluídas</string>
     <string name="date_range">Intervalo entre datas</string>
     <string name="and">e</string>
     <string name="none">Nenhum</string>
