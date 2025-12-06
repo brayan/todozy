@@ -34,9 +34,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -241,20 +239,6 @@ private fun TaskListTopBar(
                         tint = Color.White,
                     )
                 }
-                IconButton(onClick = onOpenHistory) {
-                    Icon(
-                        Icons.Default.History,
-                        contentDescription = stringResource(id = UiR.string.history),
-                        tint = Color.White,
-                    )
-                }
-                IconButton(onClick = onOpenSettings) {
-                    Icon(
-                        Icons.Default.Settings,
-                        contentDescription = stringResource(id = UiR.string.settings),
-                        tint = Color.White,
-                    )
-                }
             }
 
             if (isSearchExpanded) {
@@ -316,19 +300,26 @@ private fun SwipeableTaskItem(
     onSwipe: (TaskStatus) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val semanticColors = LocalTodozySemanticColors.current
     val spacing = LocalTodozySpacing.current
-    val dismissState =
-        androidx.compose.material.rememberDismissState(
-            confirmStateChange = { newValue ->
-                when (newValue) {
-                    DismissValue.DismissedToEnd -> onSwipe(TaskStatus.DONE)
-                    DismissValue.DismissedToStart -> onSwipe(TaskStatus.NOT_DONE)
-                    else -> Unit
-                }
-                false
-            },
-        )
+    val dismissState = androidx.compose.material.rememberDismissState()
+
+    LaunchedEffect(task.taskId, task.inlineStatus, task.showInlineMetrics) {
+        dismissState.snapTo(DismissValue.Default)
+    }
+
+    LaunchedEffect(dismissState.currentValue) {
+        when (dismissState.currentValue) {
+            DismissValue.DismissedToEnd -> {
+                onSwipe(TaskStatus.DONE)
+                dismissState.reset()
+            }
+            DismissValue.DismissedToStart -> {
+                onSwipe(TaskStatus.NOT_DONE)
+                dismissState.reset()
+            }
+            else -> Unit
+        }
+    }
 
     if (task.showInlineMetrics) {
         TaskItem(
@@ -341,7 +332,7 @@ private fun SwipeableTaskItem(
         SwipeToDismiss(
             state = dismissState,
             directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
-            dismissThresholds = { FractionalThreshold(0.6f) },
+            dismissThresholds = { FractionalThreshold(0.35f) },
             background = {
                 val direction = dismissState.dismissDirection
                 val (icon, backgroundColor) =

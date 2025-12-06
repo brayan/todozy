@@ -16,6 +16,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />

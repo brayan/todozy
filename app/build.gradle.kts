@@ -113,7 +113,10 @@ dependencies {
     implementation(project(Module.splashImpl))
     implementation(project(Module.platformImpl))
     implementation(project(Module.uiComponentImpl))
+    implementation(project(Module.navigationPublicAndroid))
 
+    implementation(Navigation.fragmentKtx)
+    implementation(Navigation.uiKtx)
     implementation(Koin.android)
     implementation(Timber.timber)
 

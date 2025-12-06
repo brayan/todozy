@@ -14,6 +14,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
+import br.com.sailboat.todozy.feature.navigation.android.HomeDestination
+import br.com.sailboat.todozy.feature.navigation.android.HomeTabNavigator
 import br.com.sailboat.todozy.feature.navigation.android.SettingsNavigator
 import br.com.sailboat.todozy.feature.navigation.android.TaskDetailsNavigator
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
@@ -113,10 +115,6 @@ internal class TaskListFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         observeActions()
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
     }
 
@@ -144,7 +142,12 @@ internal class TaskListFragment : Fragment() {
     }
 
     private fun navigateToSettings() {
-        settingsNavigator.navigateToSettings(requireContext(), launcher)
+        val homeNavigator = activity as? HomeTabNavigator
+        if (homeNavigator != null) {
+            homeNavigator.switchTo(HomeDestination.SETTINGS)
+        } else {
+            settingsNavigator.navigateToSettings(requireContext(), launcher)
+        }
     }
 
     private fun navigateToTaskDetails(taskId: Long) {
@@ -152,7 +155,12 @@ internal class TaskListFragment : Fragment() {
     }
 
     private fun navigateToHistory() {
-        taskHistoryNavigator.navigateToTaskHistory(requireContext())
+        val homeNavigator = activity as? HomeTabNavigator
+        if (homeNavigator != null) {
+            homeNavigator.switchTo(HomeDestination.HISTORY)
+        } else {
+            taskHistoryNavigator.navigateToTaskHistory(requireContext())
+        }
     }
 
     private fun showErrorLoadingTasks() {
