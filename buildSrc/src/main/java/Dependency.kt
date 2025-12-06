@@ -81,6 +81,15 @@ object AndroidX {
     const val activity = "androidx.activity:activity:${Versions.activity}"
 }
 
+object Navigation {
+    object Version {
+        const val navigation = "2.7.7"
+    }
+
+    const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.navigation}"
+    const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.navigation}"
+}
+
 object AndroidXTest {
     object Version {
         const val test = "1.5.0"
