@@ -31,6 +31,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -116,6 +117,56 @@ internal class TaskListViewModelTest {
 
         coVerify(exactly = 1) { scheduleAllAlarmsUseCase() }
         coVerify { getTaskProgressUseCase(TaskProgressFilter(TaskProgressRange.LAST_YEAR)) }
+    }
+
+    @Test
+    fun `should not reload tasks on resume before first load`() = runTest(coroutinesTestRule.dispatcher) {
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnResume())
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { getTasksUseCase(any()) }
+    }
+
+    @Test
+    fun `should refresh from cache on resume without forcing reload`() = runTest(coroutinesTestRule.dispatcher) {
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+        advanceUntilIdle()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnResume())
+        advanceUntilIdle()
+
+        coVerify(exactly = 4) { getTasksUseCase(any()) }
+    }
+
+    @Test
+    fun `should reload tasks when resume is forced`() = runTest(coroutinesTestRule.dispatcher) {
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+        advanceUntilIdle()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnResume(forceReload = true))
+        advanceUntilIdle()
+
+        coVerify(exactly = 8) { getTasksUseCase(any()) }
+    }
+
+    @Test
+    fun `should reload tasks when day has changed`() = runTest(coroutinesTestRule.dispatcher) {
+        prepareScenario()
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+        advanceUntilIdle()
+        setLastFullLoadDate(LocalDate.now().minusDays(1))
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnResume())
+        advanceUntilIdle()
+
+        coVerify(exactly = 8) { getTasksUseCase(any()) }
     }
 
     @Test
@@ -450,6 +501,12 @@ internal class TaskListViewModelTest {
             TaskMetrics(doneTasks = 70, notDoneTasks = 5, consecutiveDone = 70),
             viewModel.viewState.taskMetrics.value,
         )
+    }
+
+    private fun setLastFullLoadDate(date: LocalDate) {
+        val field = TaskListViewModel::class.java.getDeclaredField("lastFullLoadDate")
+        field.isAccessible = true
+        field.set(viewModel, date)
     }
 
     private fun prepareScenario(

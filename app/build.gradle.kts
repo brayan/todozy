@@ -97,6 +97,10 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Compose.Version.compiler
     }
 }
 
@@ -119,6 +123,9 @@ dependencies {
     implementation(Navigation.uiKtx)
     implementation(Koin.android)
     implementation(Timber.timber)
+    implementation(Compose.ui)
+    implementation(Compose.material)
+    implementation(Compose.materialIconsExtended)
 
     testImplementation(Junit.junit)
     testImplementation(MockK.core)

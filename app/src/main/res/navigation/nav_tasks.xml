@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_tasks_graph"
+    app:startDestination="@id/nav_tasks">
+
+    <fragment
+        android:id="@+id/nav_tasks"
+        android:name="br.com.sailboat.todozy.feature.task.list.impl.presentation.TaskListFragment" />
+</navigation>

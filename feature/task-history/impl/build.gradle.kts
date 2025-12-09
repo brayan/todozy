@@ -43,6 +43,7 @@ dependencies {
     implementation(project(Module.navigationPublicAndroid))
     implementation(project(Module.taskHistoryPublic))
     implementation(project(Module.taskDetailsPublic))
+    implementation(Navigation.fragmentKtx)
 
     implementation(Coroutines.core)
     implementation(Coroutines.android)

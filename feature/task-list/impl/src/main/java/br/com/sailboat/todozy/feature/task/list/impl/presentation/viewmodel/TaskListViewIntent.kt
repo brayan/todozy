@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.domain.model.TaskStatus
 
 internal sealed class TaskListViewIntent {
     object OnStart : TaskListViewIntent()
+    data class OnResume(val forceReload: Boolean = false) : TaskListViewIntent()
     object OnClickMenuAbout : TaskListViewIntent()
     object OnClickMenuSettings : TaskListViewIntent()
     object OnClickMenuHistory : TaskListViewIntent()
