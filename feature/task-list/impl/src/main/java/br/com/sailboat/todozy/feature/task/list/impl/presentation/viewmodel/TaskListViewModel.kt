@@ -57,19 +57,30 @@ internal class TaskListViewModel(
     private val logService: LogService,
     private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
 ) : BaseViewModel<TaskListViewState, TaskListViewIntent>() {
+    private val taskCategories =
+        listOf(
+            TaskCategory.BEFORE_TODAY,
+            TaskCategory.TODAY,
+            TaskCategory.TOMORROW,
+            TaskCategory.NEXT_DAYS,
+        )
     private var taskFilter = TaskFilter(category = TaskCategory.TODAY)
     private var selectedProgressRange = TaskProgressRange.LAST_YEAR
     private var currentTasks: List<Task> = emptyList()
+    private var currentTasksByCategory: Map<TaskCategory, List<Task>> = emptyMap()
     private var baseTaskMetrics: TaskMetrics? = null
     private val baseTaskConsecutive: MutableMap<Long, Int> = mutableMapOf()
     private val inlineTaskFeedbacks: MutableMap<Long, InlineTaskFeedback> = mutableMapOf()
     private val inlineTaskJobs: MutableMap<Long, Job> = mutableMapOf()
     private var progressJob: Job? = null
     private val progressCache: MutableMap<ProgressCacheKey, List<TaskProgressDay>> = mutableMapOf()
+    private var hasLoaded = false
+    private var lastFullLoadDate: LocalDate? = null
 
     override fun dispatchViewIntent(viewIntent: TaskListViewIntent) {
         when (viewIntent) {
             is OnStart -> onStart()
+            is TaskListViewIntent.OnResume -> onResume(viewIntent.forceReload)
             is OnClickMenuAbout -> onClickMenuAbout()
             is OnClickMenuSettings -> onClickMenuSettings()
             is OnClickMenuHistory -> onClickMenuHistory()
@@ -83,15 +94,38 @@ internal class TaskListViewModel(
     }
 
     private fun onStart() = viewModelScope.launch {
+        performFullLoad(closeNotifications = true)
+    }
+
+    private fun onResume(forceReload: Boolean) = viewModelScope.launch {
+        if (hasLoaded.not()) {
+            return@launch
+        }
+
+        val today = LocalDate.now()
+        val midnightPassed = lastFullLoadDate?.isBefore(today) == true
+
+        when {
+            forceReload -> performFullLoad(closeNotifications = true)
+            midnightPassed -> performFullLoad(closeNotifications = true)
+            else -> refreshTasksFromCache()
+        }
+    }
+
+    private suspend fun performFullLoad(closeNotifications: Boolean = false) {
         try {
             viewState.tasksLoading.postValue(true)
             viewState.taskProgressLoading.postValue(true)
-            viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
+            if (closeNotifications) {
+                viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
+            }
             loadTasks()
             viewState.tasksLoading.postValue(false)
             loadTaskMetrics()
             loadProgress()
             scheduleAllAlarmsUseCase()
+            lastFullLoadDate = LocalDate.now()
+            hasLoaded = true
         } catch (e: Exception) {
             logService.error(e)
             viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
@@ -198,16 +232,9 @@ internal class TaskListViewModel(
     }
 
     private suspend fun loadTasks() = coroutineScope {
-        val domainTasks = mutableListOf<Task>()
-        val taskCategories =
-            listOf(
-                TaskCategory.BEFORE_TODAY,
-                TaskCategory.TODAY,
-                TaskCategory.TOMORROW,
-                TaskCategory.NEXT_DAYS,
-            )
+        val domainTasksByCategory = mutableMapOf<TaskCategory, List<Task>>()
 
-        val tasks =
+        val tasksUiModels =
             taskCategories.map { category ->
                 async {
                     val filter =
@@ -220,13 +247,30 @@ internal class TaskListViewModel(
                             getTasksUseCase(filter).getOrThrow()
                         }
 
-                    domainTasks.addAll(tasks)
+                    domainTasksByCategory[category] = tasks
                     taskListUiModelFactory.create(tasks, category)
                 }
             }.awaitAll().flatten()
 
-        val itemsWithFeedback = applyInlineFeedbacks(tasks)
-        currentTasks = domainTasks
+        val itemsWithFeedback = applyInlineFeedbacks(tasksUiModels)
+        currentTasksByCategory = domainTasksByCategory.toMap()
+        currentTasks = taskCategories.flatMap { category -> domainTasksByCategory[category].orEmpty() }
+        viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
+    }
+
+    private fun refreshTasksFromCache() {
+        if (currentTasksByCategory.isEmpty()) {
+            return
+        }
+
+        val uiModels =
+            taskCategories
+                .map { category ->
+                    val tasks = currentTasksByCategory[category].orEmpty()
+                    taskListUiModelFactory.create(tasks, category)
+                }.flatten()
+
+        val itemsWithFeedback = applyInlineFeedbacks(uiModels)
         viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
     }
 

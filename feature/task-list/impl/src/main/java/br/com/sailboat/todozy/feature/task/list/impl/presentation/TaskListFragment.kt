@@ -1,5 +1,6 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -35,10 +36,13 @@ internal class TaskListFragment : Fragment() {
     private val taskFormNavigator: TaskFormNavigator by inject()
     private val aboutNavigator: AboutNavigator by inject()
     private val settingsNavigator: SettingsNavigator by inject()
+    private var forceReloadOnResume = false
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+            if (it.resultCode == Activity.RESULT_OK) {
+                forceReloadOnResume = true
+            }
         }
 
     override fun onCreateView(
@@ -98,8 +102,6 @@ internal class TaskListFragment : Fragment() {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
                 },
-                onOpenHistory = { viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory) },
-                onOpenSettings = { viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings) },
                 onSearch = { term ->
                     viewModel.dispatchViewIntent(
                         TaskListViewIntent.OnSubmitSearchTerm(term = term),
@@ -116,6 +118,14 @@ internal class TaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeActions()
         viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.dispatchViewIntent(
+            TaskListViewIntent.OnResume(forceReload = forceReloadOnResume),
+        )
+        forceReloadOnResume = false
     }
 
     private fun observeActions() {
@@ -173,9 +183,5 @@ internal class TaskListFragment : Fragment() {
 
     private fun navigateToAbout() {
         activity?.run { aboutNavigator.navigateToAbout(this) }
-    }
-
-    companion object {
-        fun newInstance() = TaskListFragment()
     }
 }

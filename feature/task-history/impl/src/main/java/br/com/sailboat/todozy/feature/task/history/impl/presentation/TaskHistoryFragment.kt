@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.sailboat.todozy.feature.task.history.impl.databinding.FrgTaskHistoryBinding
 import br.com.sailboat.todozy.feature.task.history.impl.presentation.dialog.TaskHistoryFilterDialog
@@ -151,6 +152,7 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
         initViews()
         observeViewModel()
         viewModel.dispatchViewIntent(OnStart)
+        observeRefreshRequests()
     }
 
     override fun onResume() {
@@ -249,6 +251,15 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
         deleteTaskHistoryDialog =
             childFragmentManager.findFragmentByTag(DeleteTaskHistoryDialog.TAG) as? DeleteTaskHistoryDialog
         deleteTaskHistoryDialog?.callback = deleteTaskHistoryCallback
+    }
+
+    private fun observeRefreshRequests() {
+        val navController = findNavController()
+        navController.currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<Long>(HISTORY_REFRESH_KEY)
+            ?.observe(viewLifecycleOwner) {
+                viewModel.dispatchViewIntent(OnStart)
+            }
     }
 
     private fun navigateToMenuFilter(viewAction: TaskHistoryViewAction.NavigateToMenuFilter) {
@@ -411,3 +422,5 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
         )
     }
 }
+
+private const val HISTORY_REFRESH_KEY = "history-refresh-request"

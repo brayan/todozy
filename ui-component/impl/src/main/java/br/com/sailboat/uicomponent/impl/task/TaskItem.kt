@@ -192,7 +192,7 @@ private fun InlineMetrics(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacingSmall),
+        horizontalArrangement = Arrangement.spacedBy(spacingSmall * 1.5f),
     ) {
         MetricsContent(
             metrics = metrics,
@@ -257,9 +257,11 @@ private fun MetricsContent(
     if (metricChips.isEmpty()) return
 
     Row(
-        modifier = modifier.defaultMinSize(minHeight = 40.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 40.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacingSmall),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         metricChips.forEach { chip ->
             MetricChip(

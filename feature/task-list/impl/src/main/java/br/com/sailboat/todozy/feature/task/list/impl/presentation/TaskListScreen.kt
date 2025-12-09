@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -39,15 +40,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
@@ -82,8 +89,6 @@ internal fun TaskListScreen(
     onTaskSwipe: (taskId: Long, TaskStatus) -> Unit,
     onTaskUndo: (Long, TaskStatus) -> Unit,
     onNewTask: () -> Unit,
-    onOpenHistory: () -> Unit,
-    onOpenSettings: () -> Unit,
     onSearch: (String) -> Unit,
 ) {
     TodozyTheme {
@@ -114,8 +119,6 @@ internal fun TaskListScreen(
                         onSearch(query)
                     },
                     onToggleSearch = { isSearchExpanded = it },
-                    onOpenHistory = onOpenHistory,
-                    onOpenSettings = onOpenSettings,
                 )
             },
             floatingActionButton = {
@@ -176,7 +179,12 @@ internal fun TaskListScreen(
                                             task = item,
                                             onClick = onTaskClick,
                                             onUndoClick = onTaskUndo,
-                                            onSwipe = { status -> onTaskSwipe(item.taskId, status) },
+                                            onSwipe = { status ->
+                                                onTaskSwipe(
+                                                    item.taskId,
+                                                    status,
+                                                )
+                                            },
                                             modifier = Modifier.animateItem(),
                                         )
 
@@ -207,10 +215,21 @@ private fun TaskListTopBar(
     isSearchExpanded: Boolean,
     onSearchChange: (String) -> Unit,
     onToggleSearch: (Boolean) -> Unit,
-    onOpenHistory: () -> Unit,
-    onOpenSettings: () -> Unit,
 ) {
     val spacing = LocalTodozySpacing.current
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(isSearchExpanded) {
+        if (isSearchExpanded) {
+            focusRequester.requestFocus()
+            keyboardController?.show()
+        } else {
+            focusManager.clearFocus()
+            keyboardController?.hide()
+        }
+    }
     Surface(
         color = colorResource(id = UiR.color.md_blue_500),
         elevation = 4.dp,
@@ -246,7 +265,10 @@ private fun TaskListTopBar(
                 TextField(
                     value = searchText,
                     onValueChange = onSearchChange,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester),
                     singleLine = true,
                     placeholder = { Text(text = stringResource(id = AndroidUtilR.string.search)) },
                     leadingIcon = {
@@ -272,6 +294,10 @@ private fun TaskListTopBar(
                             )
                         }
                     },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                        ),
                     colors =
                         TextFieldDefaults.textFieldColors(
                             backgroundColor = Color.White,
@@ -313,10 +339,12 @@ private fun SwipeableTaskItem(
                 onSwipe(TaskStatus.DONE)
                 dismissState.reset()
             }
+
             DismissValue.DismissedToStart -> {
                 onSwipe(TaskStatus.NOT_DONE)
                 dismissState.reset()
             }
+
             else -> Unit
         }
     }
@@ -335,16 +363,15 @@ private fun SwipeableTaskItem(
             dismissThresholds = { FractionalThreshold(0.35f) },
             background = {
                 val direction = dismissState.dismissDirection
-                val (icon, backgroundColor) =
-                    when (direction) {
-                        DismissDirection.StartToEnd ->
-                            UiR.drawable.ic_vec_thumb_up_white_24dp to colorResource(id = UiR.color.md_teal_200)
+                val (icon, backgroundColor) = when (direction) {
+                    DismissDirection.StartToEnd ->
+                        UiR.drawable.ic_vec_thumb_up_white_24dp to colorResource(id = UiR.color.md_teal_200)
 
-                        DismissDirection.EndToStart ->
-                            UiR.drawable.ic_vect_thumb_down_white_24dp to colorResource(id = UiR.color.md_red_200)
+                    DismissDirection.EndToStart ->
+                        UiR.drawable.ic_vect_thumb_down_white_24dp to colorResource(id = UiR.color.md_red_200)
 
-                        else -> null to Color.Transparent
-                    }
+                    else -> null to Color.Transparent
+                }
 
                 if (icon != null) {
                     Row(
