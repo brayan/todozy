@@ -1,19 +1,9 @@
 plugins {
-    id("java-library")
-    id("org.jetbrains.kotlin.jvm")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+    id("todozy.jvm.library")
 }
 
 dependencies {
-    implementation(project(Module.kotlinUtil))
-    implementation(project(Module.uiComponentPublic))
-    implementation(project(Module.domain))
+    implementation(projects.utility.kotlinUtil)
+    implementation(projects.uiComponent.public)
+    implementation(projects.domain)
 }

@@ -1,62 +1,34 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("todozy.android.library.compose")
 }
 
 android {
-    compileSdk = BuildVersion.compileSdk
     namespace = "br.com.sailboat.uicomponent.impl"
 
-    defaultConfig {
-        minSdk = BuildVersion.minSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
-        compose = true
         viewBinding = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Compose.Version.compiler
     }
 }
 
 dependencies {
-    implementation(project(Module.kotlinUtil))
-    implementation(project(Module.androidUtil))
-    implementation(project(Module.uiComponentPublic))
-    implementation(project(Module.domain))
+    implementation(projects.utility.kotlinUtil)
+    implementation(projects.utility.androidUtil)
+    implementation(projects.uiComponent.public)
+    implementation(projects.domain)
 
-    implementation(AndroidX.appcompat)
-    implementation(AndroidX.recyclerview)
-    implementation(AndroidX.materialDesign)
-    implementation(Junit.junit)
-    implementation(Coroutines.test)
-    implementation(Koin.android)
-    implementation(Compose.ui)
-    implementation(Compose.material)
-    implementation(Compose.uiToolingPreview)
-    implementation(Compose.lifecycleRuntimeKtx)
-    testImplementation(Compose.uiTestJunit4)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.material)
+    implementation(libs.junit4)
+    implementation(libs.coroutines.test)
+    implementation(libs.koin.android)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.lifecycle.runtime)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
 
-    testImplementation(Junit.junit)
+    testImplementation(libs.junit4)
 
-    androidTestImplementation(AndroidXTest.espresso)
+    androidTestImplementation(libs.espresso.core)
 }

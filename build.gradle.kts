@@ -3,22 +3,15 @@ import org.gradle.api.GradleException
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
-buildscript {
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath(BuildPlugin.android)
-        classpath(BuildPlugin.kotlin)
-        classpath(BuildPlugin.googleServices)
-        classpath(BuildPlugin.crashlytics)
-    }
-}
-
 plugins {
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.crashlytics) apply false
+    alias(libs.plugins.ktlint)
 }
 
 subprojects {
@@ -28,7 +21,9 @@ subprojects {
                 isCoreLibraryDesugaringEnabled = true
             }
         }
-        dependencies.add("coreLibraryDesugaring", Desugar.jdkLibs)
+        dependencies {
+            add("coreLibraryDesugaring", libs.desugar.jdk.libs)
+        }
     }
     plugins.withId("com.android.library") {
         extensions.configure<BaseExtension>("android") {
@@ -36,7 +31,9 @@ subprojects {
                 isCoreLibraryDesugaringEnabled = true
             }
         }
-        dependencies.add("coreLibraryDesugaring", Desugar.jdkLibs)
+        dependencies {
+            add("coreLibraryDesugaring", libs.desugar.jdk.libs)
+        }
     }
 }
 
@@ -46,10 +43,6 @@ var testsFailed = 0L
 var testsSkipped = 0L
 
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
 // Test Logging
@@ -114,7 +107,7 @@ allprojects {
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 tasks.register("forbidSimpleDateFormat") {
