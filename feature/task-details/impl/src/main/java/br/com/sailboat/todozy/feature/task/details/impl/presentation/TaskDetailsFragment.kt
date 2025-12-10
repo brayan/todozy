@@ -56,7 +56,10 @@ internal class TaskDetailsFragment : Fragment() {
     private var deleteTaskDialog: TwoOptionsDialog? = null
 
     private val editTaskLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                activity?.setResult(Activity.RESULT_OK)
+            }
             viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnReturnToDetails)
         }
 

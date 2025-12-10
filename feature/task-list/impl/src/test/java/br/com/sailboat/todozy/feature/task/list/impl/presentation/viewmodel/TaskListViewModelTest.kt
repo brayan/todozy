@@ -36,6 +36,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
+private const val SEARCH_DEBOUNCE_IN_MILLIS = 300L
 
 @ExperimentalCoroutinesApi
 internal class TaskListViewModelTest {
@@ -243,6 +244,7 @@ internal class TaskListViewModelTest {
             prepareScenario(tasksView = tasksView)
 
             viewModel.dispatchViewIntent(TaskListViewIntent.OnSubmitSearchTerm(term = term))
+            advanceTimeBy(SEARCH_DEBOUNCE_IN_MILLIS)
             advanceUntilIdle()
 
             coVerifyOrder {

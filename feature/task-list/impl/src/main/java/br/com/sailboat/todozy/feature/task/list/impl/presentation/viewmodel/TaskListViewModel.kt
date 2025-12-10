@@ -35,6 +35,7 @@ import br.com.sailboat.todozy.utility.kotlin.extension.toStartOfDayCalendar
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -45,6 +46,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 private const val TASK_SWIPE_DELAY_IN_MILLIS = 4000L
+private const val SEARCH_DEBOUNCE_IN_MILLIS = 300L
 
 internal class TaskListViewModel(
     override val viewState: TaskListViewState = TaskListViewState(),
@@ -74,6 +76,7 @@ internal class TaskListViewModel(
     private val inlineTaskJobs: MutableMap<Long, Job> = mutableMapOf()
     private var progressJob: Job? = null
     private val progressCache: MutableMap<ProgressCacheKey, List<TaskProgressDay>> = mutableMapOf()
+    private var searchJob: Job? = null
     private var hasLoaded = false
     private var lastFullLoadDate: LocalDate? = null
 
@@ -87,7 +90,7 @@ internal class TaskListViewModel(
             is OnClickNewTask -> onClickNewTask()
             is OnClickTask -> onClickTask(viewIntent.taskId)
             is OnSubmitSearchTerm -> onSubmitSearchTerm(viewIntent.term)
-            is OnClickUndoTask -> onClickUndoTask(viewIntent.taskId, viewIntent.status)
+            is OnClickUndoTask -> onClickUndoTask(viewIntent.taskId)
             is OnSwipeTask -> onSwipeTask(viewIntent.taskId, viewIntent.status)
             is OnSelectProgressRange -> onSelectProgressRange(viewIntent.range)
         }
@@ -154,24 +157,30 @@ internal class TaskListViewModel(
         viewState.viewAction.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
     }
 
-    private fun onSubmitSearchTerm(term: String) = viewModelScope.launch {
-        try {
-            viewState.tasksLoading.postValue(true)
-            viewState.taskProgressLoading.postValue(true)
-            val hasQueryChanged = taskFilter.text != term
-            taskFilter = taskFilter.copy(text = term)
-            if (hasQueryChanged) {
-                clearProgressCache()
+    private fun onSubmitSearchTerm(term: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            try {
+                delay(SEARCH_DEBOUNCE_IN_MILLIS)
+                viewState.tasksLoading.postValue(true)
+                viewState.taskProgressLoading.postValue(true)
+                val hasQueryChanged = taskFilter.text != term
+                taskFilter = taskFilter.copy(text = term)
+                if (hasQueryChanged) {
+                    clearProgressCache()
+                }
+                loadTasks()
+                loadTaskMetrics()
+                loadProgress(force = true)
+            } catch (_: CancellationException) {
+                return@launch
+            } catch (e: Exception) {
+                logService.error(e)
+                viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
+            } finally {
+                viewState.tasksLoading.postValue(false)
+                viewState.taskProgressLoading.postValue(false)
             }
-            loadTasks()
-            viewState.tasksLoading.postValue(false)
-            loadTaskMetrics()
-            loadProgress(force = true)
-        } catch (e: Exception) {
-            logService.error(e)
-            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
-        } finally {
-            viewState.taskProgressLoading.postValue(false)
         }
     }
 
@@ -216,10 +225,9 @@ internal class TaskListViewModel(
                             taskId = Entity.NO_ID,
                             text = taskFilter.text,
                         )
-                    val progress =
-                        withContext(dispatcherProvider.default()) {
-                            getTaskProgressUseCase(progressFilter).getOrThrow()
-                        }
+                    val progress = withContext(dispatcherProvider.default()) {
+                        getTaskProgressUseCase(progressFilter).getOrThrow()
+                    }
                     progressCache[cacheKey] = progress
                     viewState.taskProgressRange.postValue(selectedProgressRange)
                     viewState.taskProgressDays.postValue(progress)
@@ -233,28 +241,26 @@ internal class TaskListViewModel(
 
     private suspend fun loadTasks() = coroutineScope {
         val domainTasksByCategory = mutableMapOf<TaskCategory, List<Task>>()
-
-        val tasksUiModels =
-            taskCategories.map { category ->
-                async {
-                    val filter =
-                        TaskFilter(
-                            text = taskFilter.text,
-                            category = category,
-                        )
-                    val tasks =
-                        withContext(dispatcherProvider.io()) {
-                            getTasksUseCase(filter).getOrThrow()
-                        }
-
-                    domainTasksByCategory[category] = tasks
-                    taskListUiModelFactory.create(tasks, category)
+        val tasksUiModels = taskCategories.map { category ->
+            async {
+                val filter = TaskFilter(
+                    text = taskFilter.text,
+                    category = category,
+                )
+                val tasks = withContext(dispatcherProvider.io()) {
+                    getTasksUseCase(filter).getOrThrow()
                 }
-            }.awaitAll().flatten()
+
+                domainTasksByCategory[category] = tasks
+                taskListUiModelFactory.create(tasks, category)
+            }
+        }.awaitAll().flatten()
 
         val itemsWithFeedback = applyInlineFeedbacks(tasksUiModels)
         currentTasksByCategory = domainTasksByCategory.toMap()
-        currentTasks = taskCategories.flatMap { category -> domainTasksByCategory[category].orEmpty() }
+        currentTasks = taskCategories.flatMap { category ->
+            domainTasksByCategory[category].orEmpty()
+        }
         viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
     }
 
@@ -263,12 +269,10 @@ internal class TaskListViewModel(
             return
         }
 
-        val uiModels =
-            taskCategories
-                .map { category ->
-                    val tasks = currentTasksByCategory[category].orEmpty()
-                    taskListUiModelFactory.create(tasks, category)
-                }.flatten()
+        val uiModels = taskCategories.map { category ->
+            val tasks = currentTasksByCategory[category].orEmpty()
+            taskListUiModelFactory.create(tasks, category)
+        }.flatten()
 
         val itemsWithFeedback = applyInlineFeedbacks(uiModels)
         viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
@@ -277,41 +281,37 @@ internal class TaskListViewModel(
     private suspend fun loadTaskMetrics() {
         runCatching {
             coroutineScope {
-                val taskIds =
-                    if (currentTasks.isNotEmpty()) {
-                        currentTasks.map { it.id }
-                    } else {
-                        viewState.itemsView.value
-                            ?.mapNotNull { (it as? TaskUiModel)?.taskId }
-                            .orEmpty()
-                    }
+                val taskIds = if (currentTasks.isNotEmpty()) {
+                    currentTasks.map { it.id }
+                } else {
+                    viewState.itemsView.value
+                        ?.mapNotNull { (it as? TaskUiModel)?.taskId }
+                        .orEmpty()
+                }
 
                 if (taskIds.isEmpty()) {
                     baseTaskConsecutive.clear()
                     return@coroutineScope null
                 }
 
-                val globalMetricsDeferred =
-                    async(dispatcherProvider.default()) {
-                        val filter = historyFilterForRange()
-                        getTaskMetricsUseCase(filter).getOrThrow()
-                    }
+                val globalMetricsDeferred = async(dispatcherProvider.default()) {
+                    val filter = historyFilterForRange()
+                    getTaskMetricsUseCase(filter).getOrThrow()
+                }
 
-                val perTaskConsecutiveDeferred =
-                    async(dispatcherProvider.default()) {
-                        if (taskIds.isEmpty()) {
-                            emptyMap()
-                        } else {
-                            val deferredMap =
-                                taskIds.associateWith { taskId ->
-                                    async {
-                                        val filter = historyFilterForRange(taskId, includeText = true)
-                                        getTaskMetricsUseCase(filter).getOrThrow().consecutiveDone
-                                    }
-                                }
-                            deferredMap.mapValues { it.value.await() }
+                val perTaskConsecutiveDeferred = async(dispatcherProvider.default()) {
+                    if (taskIds.isEmpty()) {
+                        emptyMap()
+                    } else {
+                        val deferredMap = taskIds.associateWith { taskId ->
+                            async {
+                                val filter = historyFilterForRange(taskId, includeText = true)
+                                getTaskMetricsUseCase(filter).getOrThrow().consecutiveDone
+                            }
                         }
+                        deferredMap.mapValues { it.value.await() }
                     }
+                }
 
                 val globalMetrics = globalMetricsDeferred.await()
                 val perTaskConsecutive = perTaskConsecutiveDeferred.await()
@@ -366,10 +366,7 @@ internal class TaskListViewModel(
         )
     }
 
-    private fun onClickUndoTask(
-        taskId: Long,
-        status: TaskStatus,
-    ) = viewModelScope.launch {
+    private fun onClickUndoTask(taskId: Long) = viewModelScope.launch {
         try {
             cancelInlineFeedback(taskId)
             inlineTaskFeedbacks.remove(taskId)
@@ -452,6 +449,7 @@ internal class TaskListViewModel(
                     doneTasks += 1
                     consecutiveDone += 1
                 }
+
                 TaskStatus.NOT_DONE -> {
                     notDoneTasks += 1
                     val baseConsecutive = baseTaskConsecutive[feedback.uiModel.taskId] ?: 0
