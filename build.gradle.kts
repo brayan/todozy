@@ -2,7 +2,6 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.kotlin.dsl.the
 
 plugins {
     alias(libs.plugins.android.application) apply false
