@@ -1,54 +1,25 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.firebase.crashlytics")
+    id("todozy.android.library.crashlytics")
 }
 
 android {
-    compileSdk = BuildVersion.compileSdk
     namespace = "br.com.sailboat.todozy.platform.impl"
-
-    defaultConfig {
-        minSdk = BuildVersion.minSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation(platform(Firebase.bom))
-    implementation(project(Module.kotlinUtil))
-    implementation(project(Module.androidUtil))
+    implementation(platform(libs.firebase.bom))
+    implementation(projects.utility.kotlinUtil)
+    implementation(projects.utility.androidUtil)
 
-    implementation(AndroidX.appcompat)
-    implementation(AndroidX.materialDesign)
-    implementation(Timber.timber)
-    implementation(Koin.android)
-    implementation(Firebase.core)
-    implementation(Firebase.crashlytics)
-    implementation(Firebase.analytics)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    implementation(libs.timber)
+    implementation(libs.koin.android)
+    implementation(libs.firebase.core)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
-    testImplementation(Junit.junit)
+    testImplementation(libs.junit4)
 
-    androidTestImplementation(AndroidXTest.espresso)
+    androidTestImplementation(libs.espresso.core)
 }

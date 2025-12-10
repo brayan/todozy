@@ -4,7 +4,7 @@
 - Kotlin DSL multi-module Gradle. Entry point in `app/` with DI wiring. Core business rules in `domain/`; shared helpers live in `utility/kotlin-util` and Android extensions in `utility/android-util`.
 - UI kit split into `ui-component/public` (contracts) and `ui-component/impl` (views/resources). Features live under `feature/<name>/{public,impl}` (task-list, task-form, task-history, task-details, alarm, settings, about, splash, navigation) with data/domain/presentation layers.
 - Platform integrations (DB, logging, Crashlytics) sit in `platform/impl`. Resources stay per module; non-transitive R is on, so import the correct module `R`.
-- Build constants and dependency aliases live in `buildSrc` (`BuildVersion`, `Dependency`, `Module`). Prefer those over hardcoded values.
+- Dependency aliases and SDK versions live in `gradle/libs.versions.toml`. Prefer those over hardcoded values; shared Gradle wiring sits in `build-logic` convention plugins (`todozy.*`).
 
 ## Build, Test, and Development Commands
 - `./gradlew assembleDebug` — builds with AGP 8.10.1, Kotlin 1.9.22, Java 17, compileSdk 36/targetSdk 35/minSdk 24.

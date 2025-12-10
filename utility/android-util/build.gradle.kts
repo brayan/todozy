@@ -1,50 +1,22 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("todozy.android.library")
 }
 
 android {
-    compileSdk = BuildVersion.compileSdk
     namespace = "br.com.sailboat.todozy.utility.android"
-
-    defaultConfig {
-        minSdk = BuildVersion.minSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation(project(Module.kotlinUtil))
+    implementation(projects.utility.kotlinUtil)
 
-    implementation(AndroidX.appcompat)
-    implementation(AndroidX.materialDesign)
-    implementation(AndroidX.recyclerview)
-    implementation(Coroutines.core)
-    implementation(Coroutines.android)
-    implementation(Koin.android)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+    implementation(libs.koin.android)
 
-    testImplementation(Junit.junit)
+    testImplementation(libs.junit4)
 
-    androidTestImplementation(AndroidXTest.espresso)
+    androidTestImplementation(libs.espresso.core)
 }
