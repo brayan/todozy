@@ -1,6 +1,15 @@
 package br.com.sailboat.todozy.feature.task.list.impl.presentation
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +19,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -22,13 +32,11 @@ import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -39,6 +47,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,6 +57,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
@@ -55,6 +66,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskProgressDay
@@ -73,8 +86,11 @@ import br.com.sailboat.uicomponent.model.SubheadUiModel
 import br.com.sailboat.uicomponent.model.TaskSkeletonUiModel
 import br.com.sailboat.uicomponent.model.TaskUiModel
 import br.com.sailboat.uicomponent.model.UiModel
+import kotlin.math.roundToInt
 import br.com.sailboat.todozy.utility.android.R as AndroidUtilR
 import br.com.sailboat.uicomponent.impl.R as UiR
+
+private const val SWIPE_DISMISS_THRESHOLD_FRACTION = 0.6f
 
 @Composable
 internal fun TaskListScreen(
@@ -317,7 +333,7 @@ private fun TaskListTopBar(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun SwipeableTaskItem(
     task: TaskUiModel,
@@ -327,83 +343,19 @@ private fun SwipeableTaskItem(
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalTodozySpacing.current
-    val dismissState = androidx.compose.material.rememberDismissState()
+    val baseModifier = modifier
+        .fillMaxWidth()
+        .animateContentSize(animationSpec = tween(durationMillis = 200))
 
-    LaunchedEffect(task.taskId, task.inlineStatus, task.showInlineMetrics) {
-        dismissState.snapTo(DismissValue.Default)
-    }
-
-    LaunchedEffect(dismissState.currentValue) {
-        when (dismissState.currentValue) {
-            DismissValue.DismissedToEnd -> {
-                onSwipe(TaskStatus.DONE)
-                dismissState.reset()
-            }
-
-            DismissValue.DismissedToStart -> {
-                onSwipe(TaskStatus.NOT_DONE)
-                dismissState.reset()
-            }
-
-            else -> Unit
-        }
-    }
-
-    if (task.showInlineMetrics) {
-        TaskItem(
-            task = task,
-            onClick = onClick,
-            onUndoClick = onUndoClick,
-            modifier = modifier,
-        )
-    } else {
-        SwipeToDismiss(
-            state = dismissState,
-            directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
-            dismissThresholds = { FractionalThreshold(0.35f) },
-            background = {
-                val direction = dismissState.dismissDirection
-                val (icon, backgroundColor) = when (direction) {
-                    DismissDirection.StartToEnd ->
-                        UiR.drawable.ic_vec_thumb_up_white_24dp to colorResource(id = UiR.color.md_teal_200)
-
-                    DismissDirection.EndToStart ->
-                        UiR.drawable.ic_vect_thumb_down_white_24dp to colorResource(id = UiR.color.md_red_200)
-
-                    else -> null to Color.Transparent
-                }
-
-                if (icon != null) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(backgroundColor)
-                            .padding(horizontal = spacing.medium),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement =
-                            when (direction) {
-                                DismissDirection.StartToEnd -> Arrangement.Start
-                                DismissDirection.EndToStart -> Arrangement.End
-                                else -> Arrangement.Start
-                            },
-                    ) {
-                        Icon(
-                            painter = painterResource(id = icon),
-                            contentDescription = null,
-                            tint = Color.White,
-                        )
-                    }
-                }
-            },
-            modifier = modifier,
-        ) {
-            TaskItem(
-                task = task,
-                onClick = onClick,
-                onUndoClick = onUndoClick,
-            )
-        }
-    }
+    AnchoredSwipeToDismiss(
+        task = task,
+        modifier = baseModifier,
+        spacingHorizontal = spacing.medium,
+        onSwipe = onSwipe,
+        onClick = onClick,
+        onUndoClick = onUndoClick,
+        enableSwipe = task.showInlineMetrics.not(),
+    )
 }
 
 @Composable
@@ -513,4 +465,137 @@ private fun stableTaskListKey(
     is TaskSkeletonUiModel -> "task-skeleton-${item.placeholderId}"
     is SubheadUiModel -> "subhead-${item.subhead}"
     else -> "${item.uiModelId}-$index"
+}
+
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@Composable
+private fun AnchoredSwipeToDismiss(
+    task: TaskUiModel,
+    modifier: Modifier = Modifier,
+    spacingHorizontal: Dp,
+    onSwipe: (TaskStatus) -> Unit,
+    onClick: (Long) -> Unit,
+    onUndoClick: (Long, TaskStatus) -> Unit,
+    enableSwipe: Boolean,
+) {
+    var widthPx by remember { mutableFloatStateOf(0f) }
+    var heightPx by remember { mutableFloatStateOf(0f) }
+    val density = LocalDensity.current
+
+    val anchors = remember(widthPx) {
+        if (widthPx == 0f) {
+            DraggableAnchors<DismissValue> { DismissValue.Default at 0f }
+        } else {
+            DraggableAnchors<DismissValue> {
+                DismissValue.Default at 0f
+                DismissValue.DismissedToStart at -widthPx
+                DismissValue.DismissedToEnd at widthPx
+            }
+        }
+    }
+
+    val dismissState = remember { AnchoredDraggableState(DismissValue.Default) }
+    val flingBehavior = AnchoredDraggableDefaults.flingBehavior(
+        state = dismissState,
+        positionalThreshold = { distance -> distance * SWIPE_DISMISS_THRESHOLD_FRACTION },
+    )
+
+    LaunchedEffect(anchors) {
+        dismissState.updateAnchors(anchors)
+    }
+
+    LaunchedEffect(task.taskId, task.inlineStatus, task.showInlineMetrics) {
+        dismissState.snapTo(DismissValue.Default)
+    }
+
+    LaunchedEffect(dismissState.currentValue) {
+        when (dismissState.currentValue) {
+            DismissValue.DismissedToEnd -> {
+                onSwipe(TaskStatus.DONE)
+                dismissState.snapTo(DismissValue.Default)
+            }
+
+            DismissValue.DismissedToStart -> {
+                onSwipe(TaskStatus.NOT_DONE)
+                dismissState.snapTo(DismissValue.Default)
+            }
+
+            else -> Unit
+        }
+    }
+
+    val offsetX = dismissState.offset.takeIf { !it.isNaN() } ?: 0f
+    val direction =
+        when {
+            offsetX > 0f -> DismissDirection.StartToEnd
+            offsetX < 0f -> DismissDirection.EndToStart
+            else -> null
+        }
+
+    Box(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .onSizeChanged { size ->
+                    widthPx = size.width.toFloat()
+                    heightPx = size.height.toFloat()
+                },
+    ) {
+        val (icon, backgroundColor) =
+            when (direction) {
+                DismissDirection.StartToEnd ->
+                    UiR.drawable.ic_vec_thumb_up_white_24dp to colorResource(id = UiR.color.md_teal_200)
+
+                DismissDirection.EndToStart ->
+                    UiR.drawable.ic_vect_thumb_down_white_24dp to colorResource(id = UiR.color.md_red_200)
+
+                else -> null to Color.Transparent
+            }
+
+        if (icon != null) {
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .let { base ->
+                            if (heightPx > 0f) {
+                                base.height(with(density) { heightPx.toDp() })
+                            } else {
+                                base
+                            }
+                        }
+                        .background(backgroundColor)
+                        .padding(horizontal = spacingHorizontal),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement =
+                    when (direction) {
+                        DismissDirection.StartToEnd -> Arrangement.Start
+                        DismissDirection.EndToStart -> Arrangement.End
+                        else -> Arrangement.Start
+                    },
+            ) {
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    tint = Color.White,
+                )
+            }
+        }
+
+        TaskItem(
+            task = task,
+            onClick = onClick,
+            onUndoClick = onUndoClick,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .offset { IntOffset(offsetX.roundToInt(), 0) }
+                    .anchoredDraggable(
+                        state = dismissState,
+                        orientation = Orientation.Horizontal,
+                        enabled = enableSwipe,
+                        flingBehavior = flingBehavior,
+                    ),
+        )
+    }
 }
