@@ -5,6 +5,7 @@
 - UI kit split into `ui-component/public` (contracts) and `ui-component/impl` (views/resources). Features live under `feature/<name>/{public,impl}` (task-list, task-form, task-history, task-details, alarm, settings, about, splash, navigation) with data/domain/presentation layers.
 - Platform integrations (DB, logging, Crashlytics) sit in `platform/impl`. Resources stay per module; non-transitive R is on, so import the correct module `R`.
 - Dependency aliases and SDK versions live in `gradle/libs.versions.toml`. Prefer those over hardcoded values; shared Gradle wiring sits in `build-logic` convention plugins (`todozy.*`).
+- Whenever Codex is asked to make changes, it must present a plan first and wait for my explicit confirmation before coding.
 
 ## Build, Test, and Development Commands
 - `./gradlew assembleDebug` — builds with AGP 8.10.1, Kotlin 1.9.22, Java 17, compileSdk 36/targetSdk 35/minSdk 24.
