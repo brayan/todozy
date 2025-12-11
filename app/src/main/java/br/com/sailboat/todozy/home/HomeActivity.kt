@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
                             icon = {
                                 Icon(
                                     imageVector = item.icon,
-                                    contentDescription = stringResource(id = item.title)
+                                    contentDescription = stringResource(id = item.title),
                                 )
                             },
                             label = { Text(text = stringResource(id = item.title)) },
@@ -119,7 +119,10 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
         selectTab(itemId, allowReselectPop = true)
     }
 
-    private fun selectTab(itemId: Int, allowReselectPop: Boolean) {
+    private fun selectTab(
+        itemId: Int,
+        allowReselectPop: Boolean,
+    ) {
         if (itemId == AppR.id.nav_history) {
             notifyHistoryTabSelected()
         }

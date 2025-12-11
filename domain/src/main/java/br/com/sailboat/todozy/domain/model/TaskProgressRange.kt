@@ -6,7 +6,8 @@ enum class TaskProgressRange {
     ALL,
     LAST_YEAR,
     LAST_30_DAYS,
-    LAST_7_DAYS;
+    LAST_7_DAYS,
+    ;
 
     fun startDate(today: LocalDate): LocalDate = when (this) {
         ALL -> today

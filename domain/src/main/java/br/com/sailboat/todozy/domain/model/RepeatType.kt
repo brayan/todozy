@@ -9,7 +9,8 @@ enum class RepeatType {
     SECOND,
     MINUTE,
     HOUR,
-    CUSTOM;
+    CUSTOM,
+    ;
 
     companion object {
         fun isAlarmRepeating(alarm: Alarm): Boolean {
