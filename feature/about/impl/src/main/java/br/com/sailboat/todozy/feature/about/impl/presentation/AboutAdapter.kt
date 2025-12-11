@@ -12,12 +12,10 @@ import br.com.sailboat.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-internal class AboutAdapter :
-    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ) = when (viewType) {
+internal class AboutAdapter : ListAdapter<UiModel, RecyclerView.ViewHolder>(
+    UiModelDiffUtilCallback()
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         UiModelType.IMAGE_TITLE.ordinal -> ImageTitleDividerViewHolder(parent)
         UiModelType.LABEL_VALUE.ordinal -> LabelValueViewHolder(parent)
         else -> EmptyViewHolder(parent)
@@ -34,4 +32,5 @@ internal class AboutAdapter :
     }
 
     override fun getItemViewType(position: Int) = getItem(position).uiModelId
+
 }

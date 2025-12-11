@@ -1,11 +1,10 @@
 import com.android.build.api.dsl.ApplicationExtension
-import java.util.Properties
-import org.gradle.api.JavaVersion
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -56,12 +55,11 @@ extensions.configure<ApplicationExtension> {
 
     buildTypes {
         getByName("release") {
-            signingConfig =
-                if (hasSigningProps(localProps)) {
-                    signingConfigs.getByName("config")
-                } else {
-                    signingConfigs.getByName("debug")
-                }
+            signingConfig = if (hasSigningProps(localProps)) {
+                signingConfigs.getByName("config")
+            } else {
+                signingConfigs.getByName("debug")
+            }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -70,12 +68,11 @@ extensions.configure<ApplicationExtension> {
             isDebuggable = false
         }
         getByName("debug") {
-            signingConfig =
-                if (hasSigningProps(localProps)) {
-                    signingConfigs.getByName("config")
-                } else {
-                    signingConfigs.getByName("debug")
-                }
+            signingConfig = if (hasSigningProps(localProps)) {
+                signingConfigs.getByName("config")
+            } else {
+                signingConfigs.getByName("debug")
+            }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -113,8 +110,8 @@ extensions.configure<ApplicationExtension> {
     }
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "17"
+extensions.configure<KotlinAndroidProjectExtension> {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }

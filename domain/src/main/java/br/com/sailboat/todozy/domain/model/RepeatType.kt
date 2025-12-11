@@ -9,8 +9,7 @@ enum class RepeatType {
     SECOND,
     MINUTE,
     HOUR,
-    CUSTOM,
-    ;
+    CUSTOM;
 
     companion object {
         fun isAlarmRepeating(alarm: Alarm): Boolean {
@@ -18,7 +17,7 @@ enum class RepeatType {
         }
 
         fun indexOf(index: Int): RepeatType {
-            for (repeatType in values()) {
+            for (repeatType in RepeatType.entries) {
                 if (repeatType.ordinal == index) {
                     return repeatType
                 }

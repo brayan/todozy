@@ -377,8 +377,6 @@ internal class TaskHistoryFragment : Fragment(), SearchMenu by SearchMenuImpl() 
     private fun initToolbar() {
         val toolbar = binding.appbarTaskHistory.toolbarScroll.toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
         toolbar.setTitle(UiR.string.history)
     }
 

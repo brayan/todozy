@@ -24,34 +24,33 @@ private fun ActivityResultLauncher<Intent>.launchHome(
     launch(intent)
 }
 
-internal val appNavigationModule: List<Module> =
-    listOf(
-        module(override = true) {
-            factory<TaskListNavigator> {
-                object : TaskListNavigator {
-                    override fun navigateToTaskList(context: Context) {
-                        context.startHome(HomeDestination.TASKS)
-                    }
+internal val appNavigationModule: List<Module> = listOf(
+    module {
+        factory<TaskListNavigator> {
+            object : TaskListNavigator {
+                override fun navigateToTaskList(context: Context) {
+                    context.startHome(HomeDestination.TASKS)
                 }
             }
+        }
 
-            factory<TaskHistoryNavigator> {
-                object : TaskHistoryNavigator {
-                    override fun navigateToTaskHistory(context: Context) {
-                        context.startHome(HomeDestination.HISTORY)
-                    }
+        factory<TaskHistoryNavigator> {
+            object : TaskHistoryNavigator {
+                override fun navigateToTaskHistory(context: Context) {
+                    context.startHome(HomeDestination.HISTORY)
                 }
             }
+        }
 
-            factory<SettingsNavigator> {
-                object : SettingsNavigator {
-                    override fun navigateToSettings(
-                        context: Context,
-                        launcher: ActivityResultLauncher<Intent>,
-                    ) {
-                        launcher.launchHome(context, HomeDestination.SETTINGS)
-                    }
+        factory<SettingsNavigator> {
+            object : SettingsNavigator {
+                override fun navigateToSettings(
+                    context: Context,
+                    launcher: ActivityResultLauncher<Intent>,
+                ) {
+                    launcher.launchHome(context, HomeDestination.SETTINGS)
                 }
             }
-        },
-    )
+        }
+    },
+)

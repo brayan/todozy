@@ -2,6 +2,7 @@ package br.com.sailboat.todozy.home
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.BottomNavigation
@@ -15,7 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
@@ -26,44 +27,44 @@ import br.com.sailboat.todozy.databinding.ActivityHomeBinding
 import br.com.sailboat.todozy.feature.navigation.android.HomeDestination
 import br.com.sailboat.todozy.feature.navigation.android.HomeNavigationExtras.EXTRA_HOME_DESTINATION
 import br.com.sailboat.todozy.feature.navigation.android.HomeTabNavigator
+import br.com.sailboat.todozy.home.model.BottomBarItem
 import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.todozy.R as AppR
 import br.com.sailboat.uicomponent.impl.R as UiR
 
 class HomeActivity : AppCompatActivity(), HomeTabNavigator {
     private lateinit var binding: ActivityHomeBinding
-    private var selectedTabId by mutableStateOf(AppR.id.nav_tasks)
+    private var selectedTabId by mutableIntStateOf(AppR.id.nav_tasks)
 
-    private val navHostIds =
-        mapOf(
-            AppR.id.nav_tasks to AppR.id.tasks_nav_host,
-            AppR.id.nav_history to AppR.id.history_nav_host,
-            AppR.id.nav_settings to AppR.id.settings_nav_host,
-        )
-    private val navGraphIds =
-        mapOf(
-            AppR.id.nav_tasks to AppR.navigation.nav_tasks,
-            AppR.id.nav_history to AppR.navigation.nav_history,
-            AppR.id.nav_settings to AppR.navigation.nav_settings,
-        )
-    private val bottomBarItems =
-        listOf(
-            BottomBarItem(
-                id = AppR.id.nav_tasks,
-                icon = Icons.AutoMirrored.Filled.ListAlt,
-                title = UiR.string.label_tasks,
-            ),
-            BottomBarItem(
-                id = AppR.id.nav_history,
-                icon = Icons.Filled.History,
-                title = UiR.string.history,
-            ),
-            BottomBarItem(
-                id = AppR.id.nav_settings,
-                icon = Icons.Filled.Settings,
-                title = UiR.string.settings,
-            ),
-        )
+    private val navHostIds = mapOf(
+        AppR.id.nav_tasks to AppR.id.tasks_nav_host,
+        AppR.id.nav_history to AppR.id.history_nav_host,
+        AppR.id.nav_settings to AppR.id.settings_nav_host,
+    )
+
+    private val navGraphIds = mapOf(
+        AppR.id.nav_tasks to AppR.navigation.nav_tasks,
+        AppR.id.nav_history to AppR.navigation.nav_history,
+        AppR.id.nav_settings to AppR.navigation.nav_settings,
+    )
+
+    private val bottomBarItems = listOf(
+        BottomBarItem(
+            id = AppR.id.nav_tasks,
+            icon = Icons.AutoMirrored.Filled.ListAlt,
+            title = UiR.string.label_tasks,
+        ),
+        BottomBarItem(
+            id = AppR.id.nav_history,
+            icon = Icons.Filled.History,
+            title = UiR.string.history,
+        ),
+        BottomBarItem(
+            id = AppR.id.nav_settings,
+            icon = Icons.Filled.Settings,
+            title = UiR.string.settings,
+        ),
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +90,10 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
                             selected = selected,
                             onClick = { onBottomTabSelected(item.id) },
                             icon = {
-                                Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title))
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = stringResource(id = item.title)
+                                )
                             },
                             label = { Text(text = stringResource(id = item.title)) },
                             selectedContentColor = MaterialTheme.colors.primary,
@@ -103,12 +107,11 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
     }
 
     private fun applyStartDestination() {
-        val targetDestination =
-            when (intent.getSerializableExtra(EXTRA_HOME_DESTINATION) as? HomeDestination) {
-                HomeDestination.HISTORY -> AppR.id.nav_history
-                HomeDestination.SETTINGS -> AppR.id.nav_settings
-                else -> AppR.id.nav_tasks
-            }
+        val targetDestination = when (intent.homeDestinationExtra()) {
+            HomeDestination.HISTORY -> AppR.id.nav_history
+            HomeDestination.SETTINGS -> AppR.id.nav_settings
+            else -> AppR.id.nav_tasks
+        }
         selectTab(targetDestination, allowReselectPop = false)
     }
 
@@ -116,10 +119,7 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
         selectTab(itemId, allowReselectPop = true)
     }
 
-    private fun selectTab(
-        itemId: Int,
-        allowReselectPop: Boolean,
-    ) {
+    private fun selectTab(itemId: Int, allowReselectPop: Boolean) {
         if (itemId == AppR.id.nav_history) {
             notifyHistoryTabSelected()
         }
@@ -138,7 +138,8 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
 
         navHostIds.forEach { (destinationId, containerId) ->
             val fragment = supportFragmentManager.findFragmentById(containerId) ?: return@forEach
-            val containerView = binding.root.findViewById<androidx.fragment.app.FragmentContainerView>(containerId)
+            val containerView =
+                binding.root.findViewById<androidx.fragment.app.FragmentContainerView>(containerId)
             if (destinationId == itemId) {
                 containerView?.isVisible = true
                 transaction.show(fragment)
@@ -176,12 +177,11 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
     }
 
     override fun switchTo(destination: HomeDestination) {
-        val targetId =
-            when (destination) {
-                HomeDestination.TASKS -> AppR.id.nav_tasks
-                HomeDestination.HISTORY -> AppR.id.nav_history
-                HomeDestination.SETTINGS -> AppR.id.nav_settings
-            }
+        val targetId = when (destination) {
+            HomeDestination.TASKS -> AppR.id.nav_tasks
+            HomeDestination.HISTORY -> AppR.id.nav_history
+            HomeDestination.SETTINGS -> AppR.id.nav_settings
+        }
         selectTab(targetId, allowReselectPop = false)
     }
 
@@ -197,11 +197,14 @@ class HomeActivity : AppCompatActivity(), HomeTabNavigator {
 
 private const val HISTORY_REFRESH_KEY = "history-refresh-request"
 
-private data class BottomBarItem(
-    val id: Int,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
-    val title: Int,
-)
+private fun Intent.homeDestinationExtra(): HomeDestination? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getSerializableExtra(EXTRA_HOME_DESTINATION, HomeDestination::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getSerializableExtra(EXTRA_HOME_DESTINATION) as? HomeDestination
+    }
+}
 
 private fun HomeActivity.notifyHistoryTabSelected() {
     val navController = this.navHostFragmentFor(AppR.id.nav_history).navController
