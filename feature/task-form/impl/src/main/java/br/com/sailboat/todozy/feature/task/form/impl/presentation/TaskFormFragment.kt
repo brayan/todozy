@@ -17,6 +17,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.domain.model.RepeatType
 import br.com.sailboat.todozy.feature.task.form.impl.databinding.FragmentTaskFormBinding
+import br.com.sailboat.todozy.feature.task.form.impl.presentation.extension.toUtcStartOfDayInMillis
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewAction
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAddAlarm
 import br.com.sailboat.todozy.feature.task.form.impl.presentation.viewmodel.TaskFormViewIntent.OnClickAlarmDate
@@ -206,7 +207,7 @@ internal class TaskFormFragment : Fragment() {
         val picker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(UiR.string.label_date))
-                .setSelection(action.currentDate.timeInMillis)
+                .setSelection(action.currentDate.toUtcStartOfDayInMillis())
                 .build()
 
         picker.addOnPositiveButtonClickListener { selection ->

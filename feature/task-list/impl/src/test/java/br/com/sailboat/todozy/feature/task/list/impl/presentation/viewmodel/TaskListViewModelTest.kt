@@ -5,6 +5,7 @@ import br.com.sailboat.todozy.domain.model.Task
 import br.com.sailboat.todozy.domain.model.TaskCategory
 import br.com.sailboat.todozy.domain.model.TaskFilter
 import br.com.sailboat.todozy.domain.model.TaskMetrics
+import br.com.sailboat.todozy.domain.model.TaskProgressDay
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.alarm.domain.usecase.ScheduleAllAlarmsUseCase
@@ -503,6 +504,55 @@ internal class TaskListViewModelTest {
             TaskMetrics(doneTasks = 70, notDoneTasks = 5, consecutiveDone = 70),
             viewModel.viewState.taskMetrics.value,
         )
+    }
+
+    @Test
+    fun `should reload progress after midnight instead of using cache`() = runTest(coroutinesTestRule.dispatcher) {
+        val initialProgress =
+            listOf(
+                TaskProgressDay(
+                    date = LocalDate.now().minusDays(1),
+                    doneCount = 1,
+                    notDoneCount = 0,
+                    totalCount = 1,
+                ),
+            )
+        val refreshedProgress =
+            listOf(
+                TaskProgressDay(
+                    date = LocalDate.now(),
+                    doneCount = 2,
+                    notDoneCount = 0,
+                    totalCount = 2,
+                ),
+            )
+
+        val todayTask =
+            Task(
+                id = 42L,
+                name = "Task",
+                notes = null,
+            )
+        coEvery { getTasksUseCase(match { it.category == TaskCategory.TODAY }) } returns
+            Result.success(listOf(todayTask))
+        coEvery { getTasksUseCase(match { it.category != TaskCategory.TODAY }) } returns Result.success(emptyList())
+        coEvery { taskListUiModelFactory.create(any(), any()) } returns
+            listOf(TaskUiModel(taskId = todayTask.id, taskName = todayTask.name))
+        coEvery { getTaskMetricsUseCase(any()) } returns Result.success(TaskMetrics(0, 0, 0))
+        coEvery { getTaskProgressUseCase(any()) } returnsMany
+            listOf(Result.success(initialProgress), Result.success(refreshedProgress))
+
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnStart)
+        advanceUntilIdle()
+
+        assertEquals(initialProgress, viewModel.viewState.taskProgressDays.value)
+
+        setLastFullLoadDate(LocalDate.now().minusDays(1))
+        viewModel.dispatchViewIntent(TaskListViewIntent.OnResume(forceReload = false))
+        advanceUntilIdle()
+
+        assertEquals(refreshedProgress, viewModel.viewState.taskProgressDays.value)
+        coVerify(exactly = 2) { getTaskProgressUseCase(any()) }
     }
 
     private fun setLastFullLoadDate(date: LocalDate) {

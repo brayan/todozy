@@ -89,8 +89,6 @@ internal class SettingsFragment : Fragment() {
 
     private fun initToolbar() = with(binding) {
         appbar.toolbar.setTitle(UiR.string.settings)
-        appbar.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
-        appbar.toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun initToneViews() = activity?.run {

@@ -12,8 +12,9 @@ import br.com.sailboat.uicomponent.model.LabelValueUiModel
 import br.com.sailboat.uicomponent.model.UiModel
 import br.com.sailboat.uicomponent.model.UiModelType
 
-internal class AboutAdapter :
-    ListAdapter<UiModel, RecyclerView.ViewHolder>(UiModelDiffUtilCallback()) {
+internal class AboutAdapter : ListAdapter<UiModel, RecyclerView.ViewHolder>(
+    UiModelDiffUtilCallback(),
+) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

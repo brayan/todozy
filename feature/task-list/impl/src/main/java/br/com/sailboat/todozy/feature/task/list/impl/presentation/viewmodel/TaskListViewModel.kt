@@ -119,6 +119,7 @@ internal class TaskListViewModel(
         try {
             viewState.tasksLoading.postValue(true)
             viewState.taskProgressLoading.postValue(true)
+            clearProgressCache()
             if (closeNotifications) {
                 viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
             }
