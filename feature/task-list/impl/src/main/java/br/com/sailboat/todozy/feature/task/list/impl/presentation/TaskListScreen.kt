@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
@@ -64,7 +63,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -75,11 +73,11 @@ import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.domain.model.TaskStatus
 import br.com.sailboat.todozy.feature.task.list.impl.R
 import br.com.sailboat.todozy.utility.kotlin.extension.isTrue
+import br.com.sailboat.uicomponent.impl.metrics.TaskMetricsRow
 import br.com.sailboat.uicomponent.impl.progress.TaskProgressContent
 import br.com.sailboat.uicomponent.impl.skeleton.TaskSkeletonItem
 import br.com.sailboat.uicomponent.impl.subhead.SubheadItem
 import br.com.sailboat.uicomponent.impl.task.TaskItem
-import br.com.sailboat.uicomponent.impl.theme.LocalTodozySemanticColors
 import br.com.sailboat.uicomponent.impl.theme.LocalTodozySpacing
 import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import br.com.sailboat.uicomponent.model.SubheadUiModel
@@ -327,7 +325,10 @@ private fun TaskListTopBar(
 
             taskMetrics?.let {
                 Spacer(modifier = Modifier.height(spacing.small))
-                MetricsRow(taskMetrics = it)
+                TaskMetricsRow(
+                    taskMetrics = it,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         }
     }
@@ -356,82 +357,6 @@ private fun SwipeableTaskItem(
         onUndoClick = onUndoClick,
         enableSwipe = task.showInlineMetrics.not(),
     )
-}
-
-@Composable
-private fun MetricsRow(taskMetrics: TaskMetrics) {
-    val spacing = LocalTodozySpacing.current
-    val semanticColors = LocalTodozySemanticColors.current
-    val doneTint = colorResource(id = UiR.color.md_teal_300)
-    val notDoneTint = colorResource(id = UiR.color.md_red_300)
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.medium),
-    ) {
-        if (taskMetrics.consecutiveDone > 0) {
-            MetricIconWithValue(
-                iconId = UiR.drawable.ic_fire_black_24dp,
-                tint = semanticColors.warning,
-                value = taskMetrics.consecutiveDone,
-                modifier = Modifier.weight(1f),
-            )
-        }
-        MetricIconWithValue(
-            iconId = UiR.drawable.ic_vec_thumb_up_white_24dp,
-            tint = doneTint,
-            value = taskMetrics.doneTasks,
-            modifier = Modifier.weight(1f),
-        )
-        MetricIconWithValue(
-            iconId = UiR.drawable.ic_vect_thumb_down_white_24dp,
-            tint = notDoneTint,
-            value = taskMetrics.notDoneTasks,
-            modifier = Modifier.weight(1f),
-        )
-    }
-}
-
-@Composable
-private fun MetricIconWithValue(
-    iconId: Int,
-    tint: Color,
-    value: Int,
-    modifier: Modifier = Modifier,
-) {
-    val spacing = LocalTodozySpacing.current
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.xsmall),
-    ) {
-        Surface(
-            shape = CircleShape,
-            color = Color.White,
-            elevation = 0.dp,
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .size(28.dp)
-                        .padding(spacing.xxsmall),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    painter = painterResource(id = iconId),
-                    contentDescription = null,
-                    tint = tint,
-                    modifier = Modifier.height(18.dp),
-                )
-            }
-        }
-        Text(
-            text = value.toString(),
-            style = MaterialTheme.typography.subtitle1,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-        )
-    }
 }
 
 @Composable

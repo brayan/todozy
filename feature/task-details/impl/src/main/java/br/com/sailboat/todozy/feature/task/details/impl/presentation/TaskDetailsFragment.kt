@@ -3,20 +3,17 @@ package br.com.sailboat.todozy.feature.task.details.impl.presentation
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.view.MenuProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.sailboat.todozy.domain.model.TaskMetrics
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.navigation.android.TaskFormNavigator
 import br.com.sailboat.todozy.feature.task.details.impl.databinding.FrgTaskDetailsBinding
@@ -24,7 +21,6 @@ import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.T
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewIntent.OnClickConfirmDeleteTask
 import br.com.sailboat.todozy.feature.task.details.impl.presentation.viewmodel.TaskDetailsViewModel
-import br.com.sailboat.todozy.utility.android.fragment.hapticHandled
 import br.com.sailboat.todozy.utility.android.view.gone
 import br.com.sailboat.todozy.utility.android.view.setSafeClickListener
 import br.com.sailboat.todozy.utility.android.view.visible
@@ -33,6 +29,7 @@ import br.com.sailboat.uicomponent.impl.dialog.twooptions.TwoOptionsDialog
 import br.com.sailboat.uicomponent.impl.helper.getTaskId
 import br.com.sailboat.uicomponent.impl.helper.putTaskId
 import br.com.sailboat.uicomponent.impl.progress.TaskProgressHeaderAdapter
+import br.com.sailboat.uicomponent.impl.theme.TodozyTheme
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.todozy.feature.task.details.impl.R as TaskDetailsR
@@ -96,7 +93,6 @@ internal class TaskDetailsFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.toolbar.setTitle(UiR.string.task_details)
         val fabLabel = getString(TaskDetailsR.string.fab_edit_task)
         binding.fab.root.text = fabLabel
         binding.fab.root.setIconResource(UiR.drawable.ic_edit_white_24dp)
@@ -124,12 +120,17 @@ internal class TaskDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
         }
 
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationIcon(UiR.drawable.ic_arrow_back_white_24dp)
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        binding.taskDetailsTopBar.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        binding.taskDetailsTopBar.setContent {
+            TodozyTheme {
+                val taskMetrics by viewModel.viewState.taskMetrics.observeAsState()
+                TaskDetailsTopBar(
+                    taskMetrics = taskMetrics,
+                    onNavigateBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
+                    onClickDelete = { viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete) },
+                )
+            }
         }
-        addMenuProvider()
     }
 
     private fun observeViewModel() {
@@ -145,9 +146,6 @@ internal class TaskDetailsFragment : Fragment() {
         }
         viewModel.viewState.taskDetails.observe(viewLifecycleOwner) { items ->
             taskDetailsAdapter?.submitList(items)
-        }
-        viewModel.viewState.taskMetrics.observe(viewLifecycleOwner) { taskMetrics ->
-            taskMetrics?.run { showMetrics(this) } ?: hideMetrics()
         }
         viewModel.viewState.taskProgressDays.observe(viewLifecycleOwner) { renderProgress() }
         viewModel.viewState.taskProgressDayOrder.observe(viewLifecycleOwner) { renderProgress() }
@@ -193,52 +191,6 @@ internal class TaskDetailsFragment : Fragment() {
 
     private fun showErrorLoadingTaskDetails() {
         Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun addMenuProvider() {
-        requireActivity().addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(
-                    menu: Menu,
-                    menuInflater: MenuInflater,
-                ) {
-                    menuInflater.inflate(TaskDetailsR.menu.menu_task_details, menu)
-                }
-
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    return when (menuItem.itemId) {
-                        TaskDetailsR.id.menu_delete -> {
-                            return hapticHandled {
-                                viewModel.dispatchViewIntent(TaskDetailsViewIntent.OnClickMenuDelete)
-                            }
-                        }
-                        else -> false
-                    }
-                }
-            },
-            viewLifecycleOwner,
-        )
-    }
-
-    private fun showMetrics(taskMetrics: TaskMetrics) {
-        binding.taskMetrics.tvMetricsDone.text = taskMetrics.doneTasks.toString()
-        binding.taskMetrics.tvMetricsNotDone.text = taskMetrics.notDoneTasks.toString()
-        binding.taskMetrics.tvMetricsFire.text = taskMetrics.consecutiveDone.toString()
-
-        if (taskMetrics.consecutiveDone == 0) {
-            binding.taskMetrics.taskMetricsLlFire.gone()
-        } else {
-            binding.taskMetrics.taskMetricsLlFire.visible()
-        }
-
-        binding.appbar.setExpanded(true, true)
-        binding.appbarTaskDetailsFlMetrics.visible()
-        binding.taskMetrics.root.visible()
-    }
-
-    private fun hideMetrics() {
-        binding.taskMetrics.root.gone()
-        binding.appbarTaskDetailsFlMetrics.gone()
     }
 
     private fun renderProgress() {

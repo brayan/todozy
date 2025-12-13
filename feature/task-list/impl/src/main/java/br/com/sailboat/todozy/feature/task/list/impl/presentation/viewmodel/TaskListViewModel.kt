@@ -117,14 +117,14 @@ internal class TaskListViewModel(
 
     private suspend fun performFullLoad(closeNotifications: Boolean = false) {
         try {
-            viewState.tasksLoading.postValue(true)
-            viewState.taskProgressLoading.postValue(true)
+            viewState.tasksLoading.value = true
+            viewState.taskProgressLoading.value = true
             clearProgressCache()
             if (closeNotifications) {
-                viewState.viewAction.postValue(TaskListViewAction.CloseNotifications)
+                viewState.viewAction.tryEmit(TaskListViewAction.CloseNotifications)
             }
             loadTasks()
-            viewState.tasksLoading.postValue(false)
+            viewState.tasksLoading.value = false
             loadTaskMetrics()
             loadProgress()
             scheduleAllAlarmsUseCase()
@@ -132,30 +132,30 @@ internal class TaskListViewModel(
             hasLoaded = true
         } catch (e: Exception) {
             logService.error(e)
-            viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
+            viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorLoadingTasks)
         } finally {
-            viewState.taskProgressLoading.postValue(false)
+            viewState.taskProgressLoading.value = false
         }
     }
 
     private fun onClickMenuAbout() {
-        viewState.viewAction.value = TaskListViewAction.NavigateToAbout
+        viewState.viewAction.tryEmit(TaskListViewAction.NavigateToAbout)
     }
 
     private fun onClickMenuSettings() {
-        viewState.viewAction.value = TaskListViewAction.NavigateToSettings
+        viewState.viewAction.tryEmit(TaskListViewAction.NavigateToSettings)
     }
 
     private fun onClickMenuHistory() {
-        viewState.viewAction.value = TaskListViewAction.NavigateToHistory
+        viewState.viewAction.tryEmit(TaskListViewAction.NavigateToHistory)
     }
 
     private fun onClickNewTask() {
-        viewState.viewAction.value = TaskListViewAction.NavigateToTaskForm
+        viewState.viewAction.tryEmit(TaskListViewAction.NavigateToTaskForm)
     }
 
     private fun onClickTask(taskId: Long) {
-        viewState.viewAction.value = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
+        viewState.viewAction.tryEmit(TaskListViewAction.NavigateToTaskDetails(taskId = taskId))
     }
 
     private fun onSubmitSearchTerm(term: String) {
@@ -163,8 +163,8 @@ internal class TaskListViewModel(
         searchJob = viewModelScope.launch {
             try {
                 delay(SEARCH_DEBOUNCE_IN_MILLIS)
-                viewState.tasksLoading.postValue(true)
-                viewState.taskProgressLoading.postValue(true)
+                viewState.tasksLoading.value = true
+                viewState.taskProgressLoading.value = true
                 val hasQueryChanged = taskFilter.text != term
                 taskFilter = taskFilter.copy(text = term)
                 if (hasQueryChanged) {
@@ -177,10 +177,10 @@ internal class TaskListViewModel(
                 return@launch
             } catch (e: Exception) {
                 logService.error(e)
-                viewState.viewAction.value = TaskListViewAction.ShowErrorLoadingTasks
+                viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorLoadingTasks)
             } finally {
-                viewState.tasksLoading.postValue(false)
-                viewState.taskProgressLoading.postValue(false)
+                viewState.tasksLoading.value = false
+                viewState.taskProgressLoading.value = false
             }
         }
     }
@@ -190,7 +190,7 @@ internal class TaskListViewModel(
             return
         }
         selectedProgressRange = range
-        viewState.taskProgressRange.postValue(range)
+        viewState.taskProgressRange.value = range
         loadProgress()
         viewModelScope.launch { loadTaskMetrics() }
     }
@@ -199,18 +199,18 @@ internal class TaskListViewModel(
         if (currentTasks.isEmpty()) {
             progressJob?.cancel()
             progressCache.remove(currentProgressCacheKey())
-            viewState.taskProgressLoading.postValue(false)
-            viewState.taskProgressRange.postValue(selectedProgressRange)
-            viewState.taskProgressDays.postValue(emptyList())
+            viewState.taskProgressLoading.value = false
+            viewState.taskProgressRange.value = selectedProgressRange
+            viewState.taskProgressDays.value = emptyList()
             return
         }
 
         val cacheKey = currentProgressCacheKey()
         val cachedProgress = progressCache[cacheKey]
         if (cachedProgress != null && force.not()) {
-            viewState.taskProgressRange.postValue(selectedProgressRange)
-            viewState.taskProgressDays.postValue(cachedProgress)
-            viewState.taskProgressLoading.postValue(false)
+            viewState.taskProgressRange.value = selectedProgressRange
+            viewState.taskProgressDays.value = cachedProgress
+            viewState.taskProgressLoading.value = false
             return
         }
 
@@ -218,7 +218,7 @@ internal class TaskListViewModel(
         progressJob =
             viewModelScope.launch {
                 try {
-                    viewState.taskProgressLoading.postValue(true)
+                    viewState.taskProgressLoading.value = true
 
                     val progressFilter =
                         TaskProgressFilter(
@@ -230,12 +230,12 @@ internal class TaskListViewModel(
                         getTaskProgressUseCase(progressFilter).getOrThrow()
                     }
                     progressCache[cacheKey] = progress
-                    viewState.taskProgressRange.postValue(selectedProgressRange)
-                    viewState.taskProgressDays.postValue(progress)
+                    viewState.taskProgressRange.value = selectedProgressRange
+                    viewState.taskProgressDays.value = progress
                 } catch (e: Exception) {
                     logService.error(e)
                 } finally {
-                    viewState.taskProgressLoading.postValue(false)
+                    viewState.taskProgressLoading.value = false
                 }
             }
     }
@@ -262,7 +262,7 @@ internal class TaskListViewModel(
         currentTasks = taskCategories.flatMap { category ->
             domainTasksByCategory[category].orEmpty()
         }
-        viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
+        viewState.itemsView.value = itemsWithFeedback.toMutableList()
     }
 
     private fun refreshTasksFromCache() {
@@ -276,7 +276,7 @@ internal class TaskListViewModel(
         }.flatten()
 
         val itemsWithFeedback = applyInlineFeedbacks(uiModels)
-        viewState.itemsView.postValue(itemsWithFeedback.toMutableList())
+        viewState.itemsView.value = itemsWithFeedback.toMutableList()
     }
 
     private suspend fun loadTaskMetrics() {
@@ -286,8 +286,7 @@ internal class TaskListViewModel(
                     currentTasks.map { it.id }
                 } else {
                     viewState.itemsView.value
-                        ?.mapNotNull { (it as? TaskUiModel)?.taskId }
-                        .orEmpty()
+                        .mapNotNull { (it as? TaskUiModel)?.taskId }
                 }
 
                 if (taskIds.isEmpty()) {
@@ -330,7 +329,7 @@ internal class TaskListViewModel(
         }.onSuccess { metrics ->
             if (metrics == null) {
                 baseTaskMetrics = null
-                viewState.taskMetrics.postValue(null)
+                viewState.taskMetrics.value = null
             } else {
                 baseTaskMetrics = metrics
                 publishTaskMetricsWithPending()
@@ -339,7 +338,7 @@ internal class TaskListViewModel(
             logService.error(throwable)
             baseTaskMetrics = null
             baseTaskConsecutive.clear()
-            viewState.taskMetrics.postValue(null)
+            viewState.taskMetrics.value = null
         }
     }
 
@@ -375,7 +374,7 @@ internal class TaskListViewModel(
             publishTaskMetricsWithPending()
         } catch (e: Exception) {
             logService.error(e)
-            viewState.viewAction.value = TaskListViewAction.ShowErrorCompletingTask
+            viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorCompletingTask)
         }
     }
 
@@ -388,9 +387,9 @@ internal class TaskListViewModel(
         logService.error(throwable)
     }.getOrNull()
 
-    private fun publishItemsWithInlineFeedback(baseItems: List<UiModel>? = viewState.itemsView.value) {
-        val updatedItems = applyInlineFeedbacks(baseItems.orEmpty())
-        viewState.itemsView.postValue(updatedItems.toMutableList())
+    private fun publishItemsWithInlineFeedback(baseItems: List<UiModel> = viewState.itemsView.value) {
+        val updatedItems = applyInlineFeedbacks(baseItems)
+        viewState.itemsView.value = updatedItems.toMutableList()
     }
 
     private fun applyInlineFeedbacks(items: List<UiModel>): List<UiModel> {
@@ -436,7 +435,7 @@ internal class TaskListViewModel(
     private fun publishTaskMetricsWithPending() {
         val pending = inlineTaskFeedbacks.values
         if (pending.isEmpty() && baseTaskMetrics == null) {
-            viewState.taskMetrics.postValue(null)
+            viewState.taskMetrics.value = null
             return
         }
 
@@ -459,13 +458,12 @@ internal class TaskListViewModel(
             }
         }
 
-        viewState.taskMetrics.postValue(
+        viewState.taskMetrics.value =
             TaskMetrics(
                 doneTasks = doneTasks,
                 notDoneTasks = notDoneTasks,
                 consecutiveDone = consecutiveDone,
-            ),
-        )
+            )
     }
 
     private fun scheduleInlineFeedbackCommit(taskId: Long) {
@@ -496,7 +494,7 @@ internal class TaskListViewModel(
             publishTaskMetricsWithPending()
         }.onFailure { throwable ->
             logService.error(throwable)
-            viewState.viewAction.postValue(TaskListViewAction.ShowErrorCompletingTask)
+            viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorCompletingTask)
             publishItemsWithInlineFeedback()
             publishTaskMetricsWithPending()
         }
@@ -528,7 +526,7 @@ internal class TaskListViewModel(
     }
 
     private fun removeTaskFromList(taskId: Long) {
-        val itemsView = viewState.itemsView.value?.toMutableList() ?: mutableListOf()
+        val itemsView = viewState.itemsView.value.toMutableList()
         val position = itemsView.indexOfFirst { (it as? TaskUiModel)?.taskId == taskId }
 
         if (position >= 0) {
@@ -551,7 +549,7 @@ internal class TaskListViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val itemsView = viewState.itemsView.value ?: return@launch
+                val itemsView = viewState.itemsView.value
                 val taskUiModel =
                     itemsView.firstOrNull { (it as? TaskUiModel)?.taskId == taskId } as? TaskUiModel
                         ?: return@launch
@@ -572,7 +570,7 @@ internal class TaskListViewModel(
                 scheduleInlineFeedbackCommit(taskUiModel.taskId)
             } catch (e: Exception) {
                 logService.error(e)
-                viewState.viewAction.value = TaskListViewAction.ShowErrorCompletingTask
+                viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorCompletingTask)
             }
         }
     }
@@ -594,8 +592,8 @@ internal class TaskListViewModel(
         progressCache.putAll(updatedCache)
 
         progressCache[cacheKey]?.let { updatedDays ->
-            viewState.taskProgressDays.postValue(updatedDays)
-            viewState.taskProgressRange.postValue(selectedProgressRange)
+            viewState.taskProgressDays.value = updatedDays
+            viewState.taskProgressRange.value = selectedProgressRange
         }
     }
 

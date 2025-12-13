@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.compose.lifecycle.runtime.compose)
     implementation(libs.koin.android)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)

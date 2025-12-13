@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fab_edit_task">Edit Task</string>
+    <string name="metrics_title">Metrics</string>
 </resources>
