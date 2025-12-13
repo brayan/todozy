@@ -12,29 +12,11 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/taskDetailsTopBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:titleTextAppearance="@style/ToolbarTitle">
-
-            <FrameLayout
-                android:id="@+id/appbar_task_details__fl__metrics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_medium"
-                android:layout_marginTop="10dp"
-                android:visibility="gone">
-
-                <include
-                    android:id="@+id/task_metrics"
-                    layout="@layout/task_metrics" />
-
-            </FrameLayout>
-        </androidx.appcompat.widget.Toolbar>
+            android:minHeight="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

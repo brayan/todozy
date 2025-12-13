@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import br.com.sailboat.todozy.domain.model.TaskProgressRange
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.navigation.android.HomeDestination
@@ -25,6 +28,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewModel
 import br.com.sailboat.uicomponent.impl.helper.NotificationHelper
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import br.com.sailboat.uicomponent.impl.R as UiR
@@ -56,14 +60,14 @@ internal class TaskListFragment : Fragment() {
         )
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
-            val tasksLoading by viewModel.viewState.tasksLoading.observeAsState(false)
-            val items by viewModel.viewState.itemsView.observeAsState(mutableListOf())
-            val taskMetrics by viewModel.viewState.taskMetrics.observeAsState()
-            val taskProgressDays by viewModel.viewState.taskProgressDays.observeAsState(emptyList())
-            val taskProgressRange by viewModel.viewState.taskProgressRange.observeAsState(
+            val tasksLoading by viewModel.viewState.tasksLoading.collectAsStateWithLifecycle(false)
+            val items by viewModel.viewState.itemsView.collectAsStateWithLifecycle(emptyList())
+            val taskMetrics by viewModel.viewState.taskMetrics.collectAsStateWithLifecycle()
+            val taskProgressDays by viewModel.viewState.taskProgressDays.collectAsStateWithLifecycle(emptyList())
+            val taskProgressRange by viewModel.viewState.taskProgressRange.collectAsStateWithLifecycle(
                 TaskProgressRange.LAST_YEAR,
             )
-            val taskProgressLoading by viewModel.viewState.taskProgressLoading.observeAsState(false)
+            val taskProgressLoading by viewModel.viewState.taskProgressLoading.collectAsStateWithLifecycle(false)
             val haptics = LocalHapticFeedback.current
 
             TaskListScreen(
@@ -129,16 +133,21 @@ internal class TaskListFragment : Fragment() {
     }
 
     private fun observeActions() {
-        viewModel.viewState.viewAction.observe(viewLifecycleOwner) { viewAction ->
-            when (viewAction) {
-                is TaskListViewAction.CloseNotifications -> closeNotifications()
-                is TaskListViewAction.NavigateToAbout -> navigateToAbout()
-                is TaskListViewAction.NavigateToHistory -> navigateToHistory()
-                is TaskListViewAction.NavigateToSettings -> navigateToSettings()
-                is TaskListViewAction.NavigateToTaskForm -> navigateToTaskForm()
-                is TaskListViewAction.NavigateToTaskDetails -> navigateToTaskDetails(viewAction.taskId)
-                is TaskListViewAction.ShowErrorCompletingTask -> showErrorCompletingTask()
-                is TaskListViewAction.ShowErrorLoadingTasks -> showErrorLoadingTasks()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.viewState.viewAction.collect { viewAction ->
+                    when (viewAction) {
+                        is TaskListViewAction.CloseNotifications -> closeNotifications()
+                        is TaskListViewAction.NavigateToAbout -> navigateToAbout()
+                        is TaskListViewAction.NavigateToHistory -> navigateToHistory()
+                        is TaskListViewAction.NavigateToSettings -> navigateToSettings()
+                        is TaskListViewAction.NavigateToTaskForm -> navigateToTaskForm()
+                        is TaskListViewAction.NavigateToTaskDetails -> navigateToTaskDetails(viewAction.taskId)
+                        is TaskListViewAction.ShowErrorCompletingTask -> showErrorCompletingTask()
+                        is TaskListViewAction.ShowErrorLoadingTasks -> showErrorLoadingTasks()
+                    }
+                    viewModel.viewState.viewAction.resetReplayCache()
+                }
             }
         }
     }

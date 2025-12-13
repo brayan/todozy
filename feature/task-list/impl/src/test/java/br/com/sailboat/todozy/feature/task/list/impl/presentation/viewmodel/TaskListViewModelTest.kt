@@ -81,7 +81,7 @@ internal class TaskListViewModelTest {
 
         assertEquals(
             TaskListViewAction.CloseNotifications,
-            viewModel.viewState.viewAction.value,
+            latestAction(),
         )
     }
 
@@ -191,7 +191,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuAbout)
 
-        assertEquals(TaskListViewAction.NavigateToAbout, viewModel.viewState.viewAction.value)
+        assertEquals(TaskListViewAction.NavigateToAbout, latestAction())
     }
 
     @Test
@@ -200,7 +200,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuHistory)
 
-        assertEquals(TaskListViewAction.NavigateToHistory, viewModel.viewState.viewAction.value)
+        assertEquals(TaskListViewAction.NavigateToHistory, latestAction())
     }
 
     @Test
@@ -209,7 +209,7 @@ internal class TaskListViewModelTest {
 
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickMenuSettings)
 
-        assertEquals(TaskListViewAction.NavigateToSettings, viewModel.viewState.viewAction.value)
+        assertEquals(TaskListViewAction.NavigateToSettings, latestAction())
     }
 
     @Test
@@ -217,7 +217,7 @@ internal class TaskListViewModelTest {
         prepareScenario()
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)
 
-        assertEquals(TaskListViewAction.NavigateToTaskForm, viewModel.viewState.viewAction.value)
+        assertEquals(TaskListViewAction.NavigateToTaskForm, latestAction())
     }
 
     @Test
@@ -228,7 +228,7 @@ internal class TaskListViewModelTest {
         viewModel.dispatchViewIntent(TaskListViewIntent.OnClickTask(taskId = taskId))
 
         val expected = TaskListViewAction.NavigateToTaskDetails(taskId = taskId)
-        assertEquals(expected, viewModel.viewState.viewAction.value)
+        assertEquals(expected, latestAction())
     }
 
     @Test
@@ -586,4 +586,6 @@ internal class TaskListViewModelTest {
         coEvery { getTaskMetricsUseCase(any()) } returns Result.success(TaskMetrics(0, 0, 0))
         coEvery { completeTaskUseCase(any(), any()) } returns Result.success(Unit)
     }
+
+    private fun latestAction(): TaskListViewAction? = viewModel.viewState.viewAction.replayCache.lastOrNull()
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("todozy.android.library")
+    id("todozy.android.library.compose")
 }
 
 android {
@@ -26,6 +26,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.material)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit4)
     testImplementation(libs.mockk.core)
