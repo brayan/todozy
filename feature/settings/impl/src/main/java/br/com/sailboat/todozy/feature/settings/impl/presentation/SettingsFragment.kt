@@ -1,10 +1,15 @@
 package br.com.sailboat.todozy.feature.settings.impl.presentation
 
+import android.app.Activity
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import br.com.sailboat.todozy.feature.navigation.android.AboutNavigator
 import br.com.sailboat.todozy.feature.settings.impl.databinding.FrgSettingsBinding
@@ -21,6 +26,18 @@ internal class SettingsFragment : Fragment() {
     private val aboutNavigator: AboutNavigator by inject()
 
     private lateinit var binding: FrgSettingsBinding
+
+    private val exportDatabaseLauncher =
+        registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+            uri?.run {
+                viewModel.dispatchViewIntent(SettingsViewIntent.OnSelectExportDatabaseUri(uri))
+            }
+        }
+
+    private val importDatabaseLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            uri?.run { showConfirmImportDatabaseDialog(uri) }
+        }
 
     private val pickRingtoneLauncher =
         registerForActivityResult(PickRingtoneContract()) { uri ->
@@ -53,6 +70,7 @@ internal class SettingsFragment : Fragment() {
         initAbout()
         initCheckBoxVibrate()
         initToneVibrate()
+        initBackupViews()
     }
 
     private fun observeViewModel() {
@@ -75,6 +93,16 @@ internal class SettingsFragment : Fragment() {
             when (action) {
                 is SettingsViewAction.NavigateToAlarmToneSelector -> navigateToAlarmToneSelector(action)
                 is SettingsViewAction.NavigateToAbout -> navigateToAbout()
+                is SettingsViewAction.CreateDatabaseBackupDocument -> exportDatabaseLauncher.launch(action.fileName)
+                is SettingsViewAction.OpenDatabaseBackupDocument -> importDatabaseLauncher.launch(
+                    arrayOf(
+                        "application/json",
+                        "text/*",
+                    ),
+                )
+                is SettingsViewAction.ShowDatabaseExportSuccess -> showDatabaseExportSuccess()
+                is SettingsViewAction.ShowDatabaseImportSuccess -> showDatabaseImportSuccess()
+                is SettingsViewAction.ShowDatabaseBackupError -> showDatabaseBackupError()
             }
         }
     }
@@ -111,5 +139,38 @@ internal class SettingsFragment : Fragment() {
 
     private fun initToneVibrate() = with(binding) {
         flSettingsVibrate.setSafeClickListener { cbSettingsVibrate.performClick() }
+    }
+
+    private fun initBackupViews() = with(binding) {
+        tvSettingsExportDatabase.setSafeClickListener {
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickExportDatabase)
+        }
+        tvSettingsImportDatabase.setSafeClickListener {
+            viewModel.dispatchViewIntent(SettingsViewIntent.OnClickImportDatabase)
+        }
+    }
+
+    private fun showConfirmImportDatabaseDialog(uri: Uri) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(UiR.string.are_you_sure)
+            .setMessage(getString(UiR.string.msg_confirm_database_import))
+            .setPositiveButton(UiR.string.import_action) { _, _ ->
+                viewModel.dispatchViewIntent(SettingsViewIntent.OnConfirmImportDatabase(uri))
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun showDatabaseExportSuccess() {
+        Toast.makeText(activity, UiR.string.msg_database_exported, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDatabaseImportSuccess() {
+        activity?.setResult(Activity.RESULT_OK)
+        Toast.makeText(activity, UiR.string.msg_database_imported, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDatabaseBackupError() {
+        Toast.makeText(activity, UiR.string.msg_error, Toast.LENGTH_SHORT).show()
     }
 }

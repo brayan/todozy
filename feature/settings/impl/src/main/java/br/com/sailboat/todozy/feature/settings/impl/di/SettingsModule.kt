@@ -17,6 +17,8 @@ import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibra
 import br.com.sailboat.todozy.feature.settings.impl.domain.usecase.SetAlarmVibrateSettingUseCaseImpl
 import br.com.sailboat.todozy.feature.settings.impl.presentation.navigator.SettingsNavigatorImpl
 import br.com.sailboat.todozy.feature.settings.impl.presentation.viewmodel.SettingsViewModel
+import br.com.sailboat.todozy.utility.android.sqlite.DatabaseJsonBackupService
+import br.com.sailboat.todozy.utility.kotlin.LogService
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -29,6 +31,8 @@ private val presentation =
                 setAlarmSoundSettingUseCase = get(),
                 getAlarmVibrateSettingUseCase = get(),
                 setAlarmVibrateSettingUseCase = get(),
+                databaseJsonBackupService = get<DatabaseJsonBackupService>(),
+                logService = get<LogService>(),
             )
         }
         factory<SettingsNavigator> { SettingsNavigatorImpl() }
