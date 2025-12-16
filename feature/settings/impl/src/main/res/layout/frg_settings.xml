@@ -85,6 +85,40 @@
     <include layout="@layout/divider" />
 
     <TextView
+        style="@style/TextViewLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_medium"
+        android:paddingTop="@dimen/spacing_medium"
+        android:text="@string/backup" />
+
+    <TextView
+        android:id="@+id/tvSettingsExportDatabase"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/spacing_medium"
+        android:text="@string/export_database_json"
+        android:textColor="@color/md_blue_grey_700"
+        android:textSize="@dimen/text_size_small" />
+
+    <include layout="@layout/divider" />
+
+    <TextView
+        android:id="@+id/tvSettingsImportDatabase"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/spacing_medium"
+        android:text="@string/import_database_json"
+        android:textColor="@color/md_blue_grey_700"
+        android:textSize="@dimen/text_size_small" />
+
+    <include layout="@layout/divider" />
+
+    <TextView
         android:id="@+id/tvSettingsAbout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
