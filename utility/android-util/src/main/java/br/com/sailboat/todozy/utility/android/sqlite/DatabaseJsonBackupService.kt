@@ -6,4 +6,3 @@ interface DatabaseJsonBackupService {
     suspend fun exportToJson(uri: Uri)
     suspend fun importFromJson(uri: Uri)
 }
-

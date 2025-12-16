@@ -23,78 +23,76 @@ internal class DatabaseJsonBackupServiceImpl(
     private val context: Context,
     private val databaseOpenHelperService: DatabaseOpenHelperService,
 ) : DatabaseJsonBackupService {
-    override suspend fun exportToJson(uri: Uri) =
-        withContext(Dispatchers.IO) {
-            val database = databaseOpenHelperService.readable
+    override suspend fun exportToJson(uri: Uri) = withContext(Dispatchers.IO) {
+        val database = databaseOpenHelperService.readable
 
-            val tableNames = getUserTableNames(database)
-            val tablesJson = JSONObject()
+        val tableNames = getUserTableNames(database)
+        val tablesJson = JSONObject()
 
-            for (tableName in tableNames) {
-                val cursor = database.rawQuery("SELECT * FROM \"$tableName\"", null)
-                cursor.use {
-                    tablesJson.put(tableName, cursorToJsonArray(cursor))
-                }
-            }
-
-            val root =
-                JSONObject().apply {
-                    put("format", BACKUP_FORMAT)
-                    put("version", BACKUP_VERSION)
-                    put("databaseVersion", database.version)
-                    put("exportedAtEpochMillis", System.currentTimeMillis())
-                    put("tables", tablesJson)
-                }
-
-            val outputStream =
-                context.contentResolver.openOutputStream(uri)
-                    ?: error("Could not open output stream for uri=$uri")
-
-            outputStream.use { stream ->
-                stream.writer(Charsets.UTF_8).use { writer ->
-                    writer.write(root.toString(2))
-                }
+        for (tableName in tableNames) {
+            val cursor = database.rawQuery("SELECT * FROM \"$tableName\"", null)
+            cursor.use {
+                tablesJson.put(tableName, cursorToJsonArray(cursor))
             }
         }
 
-    override suspend fun importFromJson(uri: Uri) =
-        withContext(Dispatchers.IO) {
-            val inputStream =
-                context.contentResolver.openInputStream(uri)
-                    ?: error("Could not open input stream for uri=$uri")
+        val root =
+            JSONObject().apply {
+                put("format", BACKUP_FORMAT)
+                put("version", BACKUP_VERSION)
+                put("databaseVersion", database.version)
+                put("exportedAtEpochMillis", System.currentTimeMillis())
+                put("tables", tablesJson)
+            }
 
-            val jsonString = inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-            val root = JSONObject(jsonString)
+        val outputStream =
+            context.contentResolver.openOutputStream(uri)
+                ?: error("Could not open output stream for uri=$uri")
 
-            val format = root.optString("format")
-            require(format == BACKUP_FORMAT) { "Invalid backup format: $format" }
-
-            val version = root.optInt("version")
-            require(version == BACKUP_VERSION) { "Unsupported backup version: $version" }
-
-            val tablesJson = root.getJSONObject("tables")
-
-            val database = databaseOpenHelperService.writable
-            val tableNames = getUserTableNames(database)
-            val insertOrder = sortTablesByForeignKeys(database, tableNames)
-            val deleteOrder = insertOrder.asReversed()
-
-            database.beginTransactionNonExclusive()
-            try {
-                for (tableName in deleteOrder) {
-                    database.delete(tableName, null, null)
-                }
-
-                for (tableName in insertOrder) {
-                    val rows = tablesJson.optJSONArray(tableName) ?: continue
-                    insertRows(database, tableName, rows)
-                }
-
-                database.setTransactionSuccessful()
-            } finally {
-                database.endTransaction()
+        outputStream.use { stream ->
+            stream.writer(Charsets.UTF_8).use { writer ->
+                writer.write(root.toString(2))
             }
         }
+    }
+
+    override suspend fun importFromJson(uri: Uri) = withContext(Dispatchers.IO) {
+        val inputStream =
+            context.contentResolver.openInputStream(uri)
+                ?: error("Could not open input stream for uri=$uri")
+
+        val jsonString = inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        val root = JSONObject(jsonString)
+
+        val format = root.optString("format")
+        require(format == BACKUP_FORMAT) { "Invalid backup format: $format" }
+
+        val version = root.optInt("version")
+        require(version == BACKUP_VERSION) { "Unsupported backup version: $version" }
+
+        val tablesJson = root.getJSONObject("tables")
+
+        val database = databaseOpenHelperService.writable
+        val tableNames = getUserTableNames(database)
+        val insertOrder = sortTablesByForeignKeys(database, tableNames)
+        val deleteOrder = insertOrder.asReversed()
+
+        database.beginTransactionNonExclusive()
+        try {
+            for (tableName in deleteOrder) {
+                database.delete(tableName, null, null)
+            }
+
+            for (tableName in insertOrder) {
+                val rows = tablesJson.optJSONArray(tableName) ?: continue
+                insertRows(database, tableName, rows)
+            }
+
+            database.setTransactionSuccessful()
+        } finally {
+            database.endTransaction()
+        }
+    }
 
     private fun getUserTableNames(database: SQLiteDatabase): List<String> {
         val cursor =
@@ -264,4 +262,3 @@ internal class DatabaseJsonBackupServiceImpl(
         }
     }
 }
-
