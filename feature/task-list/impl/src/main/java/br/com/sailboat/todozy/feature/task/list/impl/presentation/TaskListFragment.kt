@@ -102,6 +102,10 @@ internal class TaskListFragment : Fragment() {
                         ),
                     )
                 },
+                onMarkDoneForToday = { taskId ->
+                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.dispatchViewIntent(TaskListViewIntent.OnMarkDoneForToday(taskId))
+                },
                 onNewTask = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     viewModel.dispatchViewIntent(TaskListViewIntent.OnClickNewTask)

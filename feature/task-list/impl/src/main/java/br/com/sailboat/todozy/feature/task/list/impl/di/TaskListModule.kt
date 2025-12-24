@@ -9,6 +9,8 @@ import br.com.sailboat.todozy.feature.task.list.impl.data.repository.TaskReposit
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCaseImpl
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.GetTasksUseCaseImpl
+import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.MarkTaskDoneForTodayUseCase
+import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.MarkTaskDoneForTodayUseCaseImpl
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskCategoryToStringMapper
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.mapper.TaskToTaskUiModelMapper
@@ -33,6 +35,7 @@ private val presentation =
                 getTaskMetricsUseCase = get(),
                 getTaskProgressUseCase = get(),
                 completeTaskUseCase = get(),
+                markTaskDoneForTodayUseCase = get(),
                 taskListUiModelFactory = get(),
                 logService = get(),
             )
@@ -43,6 +46,7 @@ private val domain =
     module {
         factory<GetTasksUseCase> { GetTasksUseCaseImpl(get()) }
         factory<CompleteTaskUseCase> { CompleteTaskUseCaseImpl(get(), get(), get(), get(), get()) }
+        factory<MarkTaskDoneForTodayUseCase> { MarkTaskDoneForTodayUseCaseImpl(get(), get()) }
     }
 
 private val data =
