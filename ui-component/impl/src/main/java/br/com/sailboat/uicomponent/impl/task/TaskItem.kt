@@ -9,7 +9,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,7 +28,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -64,16 +67,18 @@ private val TASK_ROW_MIN_HEIGHT = 64.dp
 
 @Composable
 @Suppress("FunctionName")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun TaskItem(
     task: TaskUiModel,
     modifier: Modifier = Modifier,
     onClick: (Long) -> Unit,
+    onLongClick: (Long) -> Unit = {},
     onUndoClick: (Long, TaskStatus) -> Unit,
 ) {
     val context = LocalContext.current
     val spacing = LocalTodozySpacing.current
     val inlineElevation = 6.dp
+    val interactionSource = remember { MutableInteractionSource() }
     val contentPadding =
         PaddingValues(
             start = spacing.medium,
@@ -87,13 +92,19 @@ fun TaskItem(
     val alarmColor = task.alarmColor?.let { Color(it) } ?: MaterialTheme.colors.primary
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .animateContentSize()
+                .combinedClickable(
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                    onClick = { onClick(task.taskId) },
+                    onLongClick = { onLongClick(task.taskId) },
+                ),
         backgroundColor = MaterialTheme.colors.surface,
         elevation = if (task.showInlineMetrics) inlineElevation else 0.dp,
         shape = MaterialTheme.shapes.medium.copy(all = ZeroCornerSize),
-        onClick = { onClick(task.taskId) },
     ) {
         AnimatedContent(
             targetState = task.showInlineMetrics,

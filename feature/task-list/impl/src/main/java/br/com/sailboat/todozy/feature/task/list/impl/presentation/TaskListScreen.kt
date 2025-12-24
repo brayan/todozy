@@ -29,6 +29,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Icon
@@ -102,6 +104,7 @@ internal fun TaskListScreen(
     onTaskClick: (Long) -> Unit,
     onTaskSwipe: (taskId: Long, TaskStatus) -> Unit,
     onTaskUndo: (Long, TaskStatus) -> Unit,
+    onMarkDoneForToday: (Long) -> Unit,
     onNewTask: () -> Unit,
     onSearch: (String) -> Unit,
 ) {
@@ -112,6 +115,7 @@ internal fun TaskListScreen(
         val metricsToShow = if (tasksLoading.isTrue()) null else taskMetrics
         val listState = rememberLazyListState()
         var pendingScrollToTop by rememberSaveable { mutableStateOf(false) }
+        var contextMenuTaskId by rememberSaveable { mutableStateOf<Long?>(null) }
 
         LaunchedEffect(tasksLoading, taskProgressLoading) {
             if (tasksLoading || taskProgressLoading) {
@@ -191,13 +195,26 @@ internal fun TaskListScreen(
                                     is TaskUiModel ->
                                         SwipeableTaskItem(
                                             task = item,
-                                            onClick = onTaskClick,
+                                            onClick = { taskId ->
+                                                contextMenuTaskId = null
+                                                onTaskClick(taskId)
+                                            },
                                             onUndoClick = onTaskUndo,
                                             onSwipe = { status ->
+                                                contextMenuTaskId = null
                                                 onTaskSwipe(
                                                     item.taskId,
                                                     status,
                                                 )
+                                            },
+                                            isContextMenuVisible = contextMenuTaskId == item.taskId,
+                                            onOpenContextMenu = { taskId ->
+                                                contextMenuTaskId = taskId
+                                            },
+                                            onDismissContextMenu = { contextMenuTaskId = null },
+                                            onMarkDoneForToday = { taskId ->
+                                                contextMenuTaskId = null
+                                                onMarkDoneForToday(taskId)
                                             },
                                             modifier = Modifier.animateItem(),
                                         )
@@ -341,6 +358,10 @@ private fun SwipeableTaskItem(
     onClick: (Long) -> Unit,
     onUndoClick: (Long, TaskStatus) -> Unit,
     onSwipe: (TaskStatus) -> Unit,
+    isContextMenuVisible: Boolean,
+    onOpenContextMenu: (Long) -> Unit,
+    onDismissContextMenu: () -> Unit,
+    onMarkDoneForToday: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalTodozySpacing.current
@@ -355,6 +376,10 @@ private fun SwipeableTaskItem(
         onSwipe = onSwipe,
         onClick = onClick,
         onUndoClick = onUndoClick,
+        isContextMenuVisible = isContextMenuVisible,
+        onOpenContextMenu = onOpenContextMenu,
+        onDismissContextMenu = onDismissContextMenu,
+        onMarkDoneForToday = onMarkDoneForToday,
         enableSwipe = task.showInlineMetrics.not(),
     )
 }
@@ -401,6 +426,10 @@ private fun AnchoredSwipeToDismiss(
     onSwipe: (TaskStatus) -> Unit,
     onClick: (Long) -> Unit,
     onUndoClick: (Long, TaskStatus) -> Unit,
+    isContextMenuVisible: Boolean,
+    onOpenContextMenu: (Long) -> Unit,
+    onDismissContextMenu: () -> Unit,
+    onMarkDoneForToday: (Long) -> Unit,
     enableSwipe: Boolean,
 ) {
     var widthPx by remember { mutableFloatStateOf(0f) }
@@ -511,6 +540,7 @@ private fun AnchoredSwipeToDismiss(
             task = task,
             onClick = onClick,
             onUndoClick = onUndoClick,
+            onLongClick = { onOpenContextMenu(task.taskId) },
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -522,5 +552,16 @@ private fun AnchoredSwipeToDismiss(
                         flingBehavior = flingBehavior,
                     ),
         )
+
+        DropdownMenu(
+            expanded = isContextMenuVisible,
+            onDismissRequest = onDismissContextMenu,
+        ) {
+            DropdownMenuItem(
+                onClick = { onMarkDoneForToday(task.taskId) },
+            ) {
+                Text(text = stringResource(id = R.string.task_menu_mark_done_for_today))
+            }
+        }
     }
 }

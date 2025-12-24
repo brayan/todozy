@@ -14,6 +14,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilt
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
+import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.MarkTaskDoneForTodayUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.todozy.utility.kotlin.LogService
 import br.com.sailboat.todozy.utility.kotlin.model.Entity
@@ -52,6 +53,7 @@ internal class TaskListViewModelTest {
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase = mockk(relaxed = true)
     private val getTaskProgressUseCase: GetTaskProgressUseCase = mockk(relaxed = true)
     private val completeTaskUseCase: CompleteTaskUseCase = mockk(relaxed = true)
+    private val markTaskDoneForTodayUseCase: MarkTaskDoneForTodayUseCase = mockk(relaxed = true)
     private val taskListUiModelFactory: TaskListUiModelFactory = mockk(relaxed = true)
     private val logService: LogService = mockk(relaxed = true)
 
@@ -66,6 +68,7 @@ internal class TaskListViewModelTest {
                 getTaskMetricsUseCase = getTaskMetricsUseCase,
                 getTaskProgressUseCase = getTaskProgressUseCase,
                 completeTaskUseCase = completeTaskUseCase,
+                markTaskDoneForTodayUseCase = markTaskDoneForTodayUseCase,
                 taskListUiModelFactory = taskListUiModelFactory,
                 logService = logService,
                 dispatcherProvider = coroutinesTestRule.dispatcherProvider,
@@ -202,6 +205,17 @@ internal class TaskListViewModelTest {
 
         assertEquals(TaskListViewAction.NavigateToHistory, latestAction())
     }
+
+    @Test
+    fun `should call markTaskDoneForTodayUseCase when dispatchViewAction is called with OnMarkDoneForToday`() =
+        runTest(coroutinesTestRule.dispatcher) {
+            prepareScenario()
+
+            viewModel.dispatchViewIntent(TaskListViewIntent.OnMarkDoneForToday(taskId = 42L))
+            advanceUntilIdle()
+
+            coVerify { markTaskDoneForTodayUseCase(42L) }
+        }
 
     @Test
     fun `should navigate to settings screen when dispatchViewAction is called with OnClickMenuSettings`() {
@@ -585,6 +599,7 @@ internal class TaskListViewModelTest {
         coEvery { getTaskProgressUseCase(any()) } returns Result.success(emptyList())
         coEvery { getTaskMetricsUseCase(any()) } returns Result.success(TaskMetrics(0, 0, 0))
         coEvery { completeTaskUseCase(any(), any()) } returns Result.success(Unit)
+        coEvery { markTaskDoneForTodayUseCase(any()) } returns Result.success(Unit)
     }
 
     private fun latestAction(): TaskListViewAction? = viewModel.viewState.viewAction.replayCache.lastOrNull()

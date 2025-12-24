@@ -15,6 +15,7 @@ import br.com.sailboat.todozy.feature.task.history.domain.model.TaskProgressFilt
 import br.com.sailboat.todozy.feature.task.history.domain.usecase.GetTaskProgressUseCase
 import br.com.sailboat.todozy.feature.task.list.domain.usecase.GetTasksUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.CompleteTaskUseCase
+import br.com.sailboat.todozy.feature.task.list.impl.domain.usecase.MarkTaskDoneForTodayUseCase
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.factory.TaskListUiModelFactory
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuAbout
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickMenuHistory
@@ -22,6 +23,7 @@ import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.Task
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickNewTask
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickTask
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnClickUndoTask
+import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnMarkDoneForToday
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSelectProgressRange
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnStart
 import br.com.sailboat.todozy.feature.task.list.impl.presentation.viewmodel.TaskListViewIntent.OnSubmitSearchTerm
@@ -55,6 +57,7 @@ internal class TaskListViewModel(
     private val getTaskMetricsUseCase: GetTaskMetricsUseCase,
     private val getTaskProgressUseCase: GetTaskProgressUseCase,
     private val completeTaskUseCase: CompleteTaskUseCase,
+    private val markTaskDoneForTodayUseCase: MarkTaskDoneForTodayUseCase,
     private val taskListUiModelFactory: TaskListUiModelFactory,
     private val logService: LogService,
     private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider,
@@ -89,6 +92,7 @@ internal class TaskListViewModel(
             is OnClickMenuHistory -> onClickMenuHistory()
             is OnClickNewTask -> onClickNewTask()
             is OnClickTask -> onClickTask(viewIntent.taskId)
+            is OnMarkDoneForToday -> onMarkDoneForToday(viewIntent.taskId)
             is OnSubmitSearchTerm -> onSubmitSearchTerm(viewIntent.term)
             is OnClickUndoTask -> onClickUndoTask(viewIntent.taskId)
             is OnSwipeTask -> onSwipeTask(viewIntent.taskId, viewIntent.status)
@@ -156,6 +160,19 @@ internal class TaskListViewModel(
 
     private fun onClickTask(taskId: Long) {
         viewState.viewAction.tryEmit(TaskListViewAction.NavigateToTaskDetails(taskId = taskId))
+    }
+
+    private fun onMarkDoneForToday(taskId: Long) = viewModelScope.launch {
+        try {
+            withContext(dispatcherProvider.io()) {
+                markTaskDoneForTodayUseCase(taskId).getOrThrow()
+            }
+            updateTodayProgress(TaskStatus.DONE)
+            loadTaskMetrics()
+        } catch (e: Exception) {
+            logService.error(e)
+            viewState.viewAction.tryEmit(TaskListViewAction.ShowErrorCompletingTask)
+        }
     }
 
     private fun onSubmitSearchTerm(term: String) {
